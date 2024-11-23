@@ -6,6 +6,8 @@ export default {
       main: "#133E87",
       secondary: "#608BC1",
       danger: "#D93A40",
+      white: "#FFFFFF",
+      background: "#F3F2F0",
       "light-danger": "#FEEEEF",
       "gray-100": "#ccc",
       "gray-200": "#D9D9D9",
