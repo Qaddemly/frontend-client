@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+* {
+  transition:
+    color 0.3s,
+    background-color 0.3s,
+    border-color 0.3s;
+}
+body {
+  font-family: "Roboto", serif;
+  transition: color;
+  transition-delay: 0.3s;
+}
+input::placeholder {
+  color: #999;
+}
+input:focus {
+  outline: 2px solid #608bc1;
+}
+button {
+  outline: none;
+}
