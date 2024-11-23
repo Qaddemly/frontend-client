@@ -5,6 +5,7 @@ export default {
     colors: {
       main: "#133E87",
       secondary: "#608BC1",
+      "light-secondary": "#CBDCEB",
       danger: "#D93A40",
       white: "#FFFFFF",
       background: "#F3F2F0",
