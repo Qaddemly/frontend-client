@@ -42,10 +42,11 @@ function Signup() {
             />
 
             <AuthButton
-              text="Continue"
               className="mb-8 mt-5"
               onClick={() => setStep((s) => s + 1)}
-            />
+            >
+              Continue
+            </AuthButton>
           </div>
         </>
       )}
@@ -84,10 +85,9 @@ function Signup() {
               icon={faLock}
             />
 
-            <AuthButton
-              text="Continue"
-              onClick={() => navigate("/emailVerfiy")}
-            />
+            <AuthButton onClick={() => navigate("/emailVerfiy")}>
+              Continue
+            </AuthButton>
           </div>
         </>
       )}

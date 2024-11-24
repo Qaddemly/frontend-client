@@ -4,6 +4,7 @@ export default {
   theme: {
     colors: {
       main: "#133E87",
+      "light-main": "#42659f",
       secondary: "#608BC1",
       "light-secondary": "#CBDCEB",
       danger: "#D93A40",
