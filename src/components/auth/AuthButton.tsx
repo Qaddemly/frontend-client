@@ -1,16 +1,18 @@
+import { ReactNode } from "react";
+
 type AuthButtonProps = {
-  text: string;
+  children: ReactNode;
   className?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 };
 
-function AuthButton({ text, className, onClick }: AuthButtonProps) {
+function AuthButton({ children, className, onClick }: AuthButtonProps) {
   return (
     <button
-      className={`text-white bg-light-secondary w-full rounded-md py-2 font-medium hover:bg-main ${className}`}
+      className={`text-white bg-light-main rounded-md py-2 font-medium hover:bg-main ${className}`}
       onClick={onClick}
     >
-      {text}
+      {children}
     </button>
   );
 }

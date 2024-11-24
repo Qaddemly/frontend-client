@@ -4,7 +4,7 @@ import ActivationInputs from "../components/auth/signup/ActivationInputs";
 import Logo from "../components/common/Logo";
 import AuthLayout from "../layout/AuthLayout";
 
-function EmailVerify() {
+function EmailVerfiy() {
   return (
     <AuthLayout>
       <Logo />
@@ -17,7 +17,7 @@ function EmailVerify() {
         <ActivationInputs />
       </div>
 
-      <AuthButton text="Verfiy Email" className="mb-5" />
+      <AuthButton className="mb-5">Verfiy Email</AuthButton>
 
       <AuthLink
         msg="Didn't recieive an email ?"
@@ -28,4 +28,4 @@ function EmailVerify() {
   );
 }
 
-export default EmailVerify;
+export default EmailVerfiy;
