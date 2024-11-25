@@ -2,14 +2,25 @@ import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
+import { FieldValues, RegisterOptions, UseFormRegister } from "react-hook-form";
 
 type AuthInputProps = {
   icon?: IconDefinition;
-  label: string;
+  label?: string;
   props: React.InputHTMLAttributes<HTMLInputElement>;
+  register?: UseFormRegister<FieldValues>;
+  options?: RegisterOptions;
+  onChange?: (props: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-function AuthInput({ label, props, icon }: AuthInputProps) {
+function AuthInput({
+  label,
+  props,
+  icon,
+  register,
+  options,
+  onChange,
+}: AuthInputProps) {
   const [showPassword, setShowPassword] = useState(false);
   return (
     <div>
@@ -37,9 +48,11 @@ function AuthInput({ label, props, icon }: AuthInputProps) {
         )}
 
         <input
+          {...(props.id && register ? register(props.id, options) : {})}
           {...props}
           type={showPassword ? "text" : props.type}
-          className={`w-full rounded-md border border-gray-100 px-9 py-[7px] ${props.className}`}
+          className={`w-full rounded-md border-2 border-gray-100 ${icon ? "px-9" : "px-3"} py-[7px] ${props.className}`}
+          onChange={onChange}
         />
       </div>
     </div>
