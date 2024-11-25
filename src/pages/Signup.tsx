@@ -70,7 +70,7 @@ function Signup() {
               label="Password"
               props={{
                 id: "password",
-                placeholder: "passowrd",
+                placeholder: "•••••••••",
                 type: "password",
               }}
               icon={faLock}
@@ -79,7 +79,7 @@ function Signup() {
               label="Confirm Password"
               props={{
                 id: "confirmPassword",
-                placeholder: "confirmPassword",
+                placeholder: "•••••••••",
                 type: "password",
               }}
               icon={faLock}

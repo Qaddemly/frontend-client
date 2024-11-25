@@ -39,7 +39,7 @@ function Login() {
             label="Password"
             props={{
               id: "password",
-              placeholder: "password",
+              placeholder: "•••••••••",
               type: "password",
             }}
           />
