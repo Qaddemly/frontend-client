@@ -51,7 +51,7 @@ function AuthInput({
           {...(props.id && register ? register(props.id, options) : {})}
           {...props}
           type={showPassword ? "text" : props.type}
-          className={`w-full rounded-md border-2 border-gray-100 ${icon ? "px-9" : "px-3"} py-[7px] ${props.className}`}
+          className={`${props.className?.split("-")[0] == "w" ? props.className : "w-full"} rounded-md border-2 border-gray-100 ${icon ? "px-9" : "px-3"} py-[7px]`}
           onChange={onChange}
         />
       </div>

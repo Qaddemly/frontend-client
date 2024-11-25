@@ -49,7 +49,7 @@ function Login() {
           Forget Password?
         </Link>
 
-        <AuthButton className="my-5">Login</AuthButton>
+        <AuthButton className="my-5 w-full">Login</AuthButton>
 
         <AuthLink to="/signup" msg="Don't have an account ?" text="sign up" />
       </div>

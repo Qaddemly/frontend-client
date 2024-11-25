@@ -17,7 +17,7 @@ function EmailVerfiy() {
         <ActivationInputs />
       </div>
 
-      <AuthButton className="mb-5">Verfiy Email</AuthButton>
+      <AuthButton className="mb-5 w-full">Verfiy Email</AuthButton>
 
       <AuthLink
         msg="Didn't recieive an email ?"

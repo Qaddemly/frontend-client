@@ -42,7 +42,7 @@ function Signup() {
             />
 
             <AuthButton
-              className="mb-8 mt-5"
+              className="mb-8 mt-5 w-full"
               onClick={() => setStep((s) => s + 1)}
             >
               Continue
@@ -85,7 +85,10 @@ function Signup() {
               icon={faLock}
             />
 
-            <AuthButton onClick={() => navigate("/emailVerfiy")}>
+            <AuthButton
+              className="w-full"
+              onClick={() => navigate("/emailVerfiy")}
+            >
               Continue
             </AuthButton>
           </div>
