@@ -2,9 +2,10 @@ import { faImage, faPhone } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AuthInput from "../auth/AuthInput";
 // import YourResume from "./YourResume";
-// import Head from "./Head";
+import Head from "./Head";
 import Navbar from "../home/Navbar";
 import Sidebar from "./Sidebar";
+import YourResume from "./YourResume";
 
 function Personal() {
   return (
@@ -12,7 +13,7 @@ function Personal() {
       <div className="mt-5">
         <Navbar />
         <Sidebar />
-        {/* <Head /> */}
+        <Head />
         <div className="mt-20 px-10">
           <span className="text-gray-500"> Profile Photo</span>
           <div className="mt-5 block h-[250px] w-[250px] items-center border-2 border-dashed bg-gray-100">
@@ -111,7 +112,7 @@ function Personal() {
         <button className="mt-5 rounded-md border-2 border-main bg-main px-4 py-2 text-white">
           Save Changes
         </button>
-        {/* <YourResume /> */}
+        <YourResume />
       </div>
     </>
   );

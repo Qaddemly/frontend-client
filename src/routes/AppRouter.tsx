@@ -7,6 +7,7 @@ import UserInfo from "../pages/UserInfo";
 import EmailVerfiy from "../pages/EmailVerfiy";
 import Personal from "../components/profile/Personal";
 import Experience from "../components/profile/Experience";
+import Education from "../components/profile/Education";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -14,6 +15,7 @@ const router = createBrowserRouter([
   { path: "/signup", element: <Signup /> },
   { path: "/profile", element: <Profile /> },
   { path: "/profile/personal", element: <Personal /> },
+  { path: "/profile/education", element: <Education /> },
   { path: "/profile/experience", element: <Experience /> },
   { path: "/emailVerfiy", element: <EmailVerfiy /> },
   { path: "/userInfo", element: <UserInfo /> },

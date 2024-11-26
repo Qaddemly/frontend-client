@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBriefcase, faFileLines } from "@fortawesome/free-solid-svg-icons";
 import { faBookmark } from "@fortawesome/free-solid-svg-icons";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
-import Personal from "./Personal";
+import Head from "./Head";
 
 function Sidebar() {
   return (
@@ -37,7 +37,7 @@ function Sidebar() {
             </li>
           </ul>
         </div>
-        <Personal />
+        <Head />
       </div>
     </>
   );
