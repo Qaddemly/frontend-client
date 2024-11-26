@@ -9,12 +9,41 @@ import AuthLayout from "../layout/AuthLayout";
 import AuthButton from "../components/auth/AuthButton";
 import AuthLink from "../components/auth/AuthLink";
 import { useState } from "react";
-import AuthInput from "../components/auth/AuthInput";
 import { useNavigate } from "react-router-dom";
+import AuthInputField from "../components/auth/AuthInputField";
+import AuthInput from "../components/auth/AuthInput";
+import { useForm } from "react-hook-form";
+import { formSettings } from "../components/auth";
+
+interface ISignupInputs {
+  firstName: string;
+  lastName: string;
+  password: string;
+  confirmPassword: string;
+}
 
 function Signup() {
   const [step, setStep] = useState(1);
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<{ email: string }>(formSettings);
+
+  const {
+    watch,
+    register: register2,
+    formState: { errors: errors2 },
+    handleSubmit: handleSubmit2,
+  } = useForm<ISignupInputs>({
+    mode: "onBlur",
+    reValidateMode: "onChange",
+    criteriaMode: "all",
+    shouldFocusError: true,
+  });
 
   return (
     <AuthLayout>
@@ -34,56 +63,119 @@ function Signup() {
             <div className="w-[184px] border border-gray-100"></div>
           </div>
 
-          <div className="mt-8 text-left">
-            <AuthInput
+          <form
+            onSubmit={handleSubmit(() => setStep((s) => s + 1))}
+            className="mt-8 text-left"
+          >
+            <AuthInputField
+              errors={errors}
+              id="email"
               icon={faEnvelope}
               label="Email Address"
-              props={{ id: "email", placeholder: "test@example.com" }}
-            />
-
-            <AuthButton
-              className="mb-8 mt-5"
-              onClick={() => setStep((s) => s + 1)}
             >
-              Continue
-            </AuthButton>
-          </div>
+              <AuthInput
+                register={register}
+                name="email"
+                icon={faEnvelope}
+                options={{ required: "email is required" }}
+                props={{
+                  id: "email",
+                  placeholder: "test@example.com",
+                  type: "email",
+                }}
+              />
+            </AuthInputField>
+
+            <AuthButton className="mb-8 mt-5 w-full">Continue</AuthButton>
+          </form>
         </>
       )}
 
       {step == 2 && (
         <>
           <div className="my-8 space-y-5 text-left">
-            <div className="flex gap-5">
-              <AuthInput
+            <form onSubmit={handleSubmit2(() => {})} className="flex gap-5">
+              <AuthInputField
+                id="firstName"
                 label="First Name"
-                props={{ id: "firstName", placeholder: "John", type: "text" }}
                 icon={faCircleUser}
-              />
-              <AuthInput
-                props={{ id: "lastName", placeholder: "Doe", type: "text" }}
+                errors={errors2}
+              >
+                <AuthInput
+                  register={register2}
+                  options={{ required: "first name is required" }}
+                  name="firstName"
+                  props={{ id: "firstName", placeholder: "John", type: "text" }}
+                  icon={faCircleUser}
+                />
+              </AuthInputField>
+
+              <AuthInputField
+                id="lastName"
                 label="Last Name"
                 icon={faCircleUser}
-              />
-            </div>
-            <AuthInput
+                errors={errors2}
+              >
+                <AuthInput
+                  register={register2}
+                  options={{ required: "last name is required" }}
+                  name="lastName"
+                  props={{ id: "lastName", placeholder: "Doe", type: "text" }}
+                  icon={faCircleUser}
+                />
+              </AuthInputField>
+            </form>
+            <AuthInputField
+              showPassword={showPassword}
+              setShowPassword={setShowPassword}
+              errors={errors2}
+              id="password"
+              icon={faLock}
               label="Password"
-              props={{
-                id: "password",
-                placeholder: "•••••••••",
-                type: "password",
-              }}
-              icon={faLock}
-            />
-            <AuthInput
+            >
+              <AuthInput
+                showPassword={showPassword}
+                register={register2}
+                options={{
+                  required: "password is required",
+                  minLength: { value: 8, message: "min value 8 charcters" },
+                }}
+                name="password"
+                props={{
+                  id: "password",
+                  placeholder: "•••••••••",
+                  type: "password",
+                }}
+                icon={faLock}
+              />
+            </AuthInputField>
+
+            <AuthInputField
+              showPassword={showConfirmPassword}
+              setShowPassword={setShowConfirmPassword}
+              id="confirmPassword"
               label="Confirm Password"
-              props={{
-                id: "confirmPassword",
-                placeholder: "•••••••••",
-                type: "password",
-              }}
+              errors={errors2}
               icon={faLock}
-            />
+            >
+              <AuthInput
+                showPassword={showConfirmPassword}
+                register={register2}
+                options={{
+                  required: "confirm password is required",
+                  minLength: { value: 8, message: "min value 8 charcters" },
+                  validate: (value) =>
+                    value == watch("password") || "password do not match",
+                }}
+                name="confirmPassword"
+                props={{
+                  id: "confirmPassword",
+                  placeholder: "•••••••••",
+                  type: "password",
+                }}
+                icon={faLock}
+              />
+            </AuthInputField>
 
             <AuthButton onClick={() => navigate("/emailVerfiy")}>
               Continue

@@ -1,14 +1,32 @@
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
-import { faLock } from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import AuthLayout from "../layout/AuthLayout";
 import Logo from "../components/common/Logo";
 import GoogleButton from "../components/auth/GoogleButton";
 import AuthButton from "../components/auth/AuthButton";
 import AuthLink from "../components/auth/AuthLink";
+import { SubmitHandler, useForm } from "react-hook-form";
+import AuthInputField from "../components/auth/AuthInputField";
+import { useState } from "react";
 import AuthInput from "../components/auth/AuthInput";
+import { formSettings } from "../components/auth";
+interface ILoginInputs {
+  email: string;
+  password: string;
+}
 
 function Login() {
+  const [showPassword, setShowPassword] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ILoginInputs>(formSettings);
+
+  const onSubmit: SubmitHandler<ILoginInputs> = (data) => {
+    console.log(data);
+  };
+
   return (
     <AuthLayout>
       <Logo />
@@ -22,37 +40,62 @@ function Login() {
         <div className="w-[184px] border border-gray-100"></div>
       </div>
 
-      <div className="my-8 text-left">
-        <div className="mb-8 space-y-5">
-          <AuthInput
-            icon={faEnvelope}
+      <form onSubmit={handleSubmit(onSubmit)} className="my-8 text-left">
+        <div className="mb-8 space-y-3">
+          <AuthInputField
+            errors={errors}
+            showPassword={showPassword}
+            setShowPassword={setShowPassword}
             label="Email Address"
-            props={{
-              id: "email",
-              placeholder: "test@example.com",
-              type: "email",
-            }}
-          />
+            id="email"
+            icon={faEnvelope}
+          >
+            <AuthInput
+              register={register}
+              name="email"
+              options={{ required: "email is required" }}
+              showPassword={showPassword}
+              icon={faEnvelope}
+              props={{
+                type: "email",
+                id: "email",
+                placeholder: "test@example.com",
+                className: "w-full",
+              }}
+            />
+          </AuthInputField>
 
-          <AuthInput
-            icon={faLock}
+          <AuthInputField
+            errors={errors}
             label="Password"
-            props={{
-              id: "password",
-              placeholder: "•••••••••",
-              type: "password",
-            }}
-          />
+            id="password"
+            icon={faLock}
+          >
+            <AuthInput
+              register={register}
+              name="password"
+              options={{
+                required: "password is required",
+                minLength: { value: 8, message: "min value 8 charcters" },
+              }}
+              icon={faLock}
+              props={{
+                id: "password",
+                placeholder: "•••••••••",
+                type: "password",
+              }}
+            />
+          </AuthInputField>
         </div>
 
-        <Link to="/" className="font-medium text-main underline">
+        <Link to="/forgetPassword" className="font-medium text-main underline">
           Forget Password?
         </Link>
 
         <AuthButton className="my-5">Login</AuthButton>
 
         <AuthLink to="/signup" msg="Don't have an account ?" text="sign up" />
-      </div>
+      </form>
     </AuthLayout>
   );
 }

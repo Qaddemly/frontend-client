@@ -1,15 +1,31 @@
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  FieldValues,
+  Path,
+  RegisterOptions,
+  UseFormRegister,
+} from "react-hook-form";
 
-type FileUploadProps = {
+type FileUploadProps<T extends FieldValues> = {
   icon: IconDefinition;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  register?: UseFormRegister<T>;
+  options?: RegisterOptions<T>;
+  name?: Path<T>;
 };
-function FileUpload({ icon }: FileUploadProps) {
+function FileUpload<T extends FieldValues>({
+  icon,
+  onChange,
+  register,
+  options,
+  name,
+}: FileUploadProps<T>) {
   return (
     <div className="flex w-full items-center justify-center">
       <label
         htmlFor="dropzone-file"
-        className="hover:bg-light-secondary flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed border-gray-300 bg-[#eee]"
+        className="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed border-gray-300 bg-[#eee] hover:bg-light-secondary"
       >
         <div className="flex flex-col items-center justify-center pb-6 pt-5">
           <FontAwesomeIcon icon={icon} className="ml-2 text-5xl text-main" />
@@ -22,7 +38,13 @@ function FileUpload({ icon }: FileUploadProps) {
             SVG, PNG, JPG or GIF (MAX. 800x400px)
           </p>
         </div>
-        <input id="dropzone-file" type="file" className="hidden" />
+        <input
+          {...(register && name ? register(name, options) : {})}
+          onChange={onChange}
+          id="dropzone-file"
+          type="file"
+          className="hidden"
+        />
       </label>
     </div>
   );
