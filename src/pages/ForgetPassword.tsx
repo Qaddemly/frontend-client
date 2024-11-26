@@ -1,9 +1,8 @@
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import AuthInput from "../components/auth/AuthInput";
 import Logo from "../components/common/Logo";
 import AuthLayout from "../layout/AuthLayout";
 import AuthButton from "../components/auth/AuthButton";
-import AuthInputField from "../components/auth/AuthInputField";
-import AuthInput from "../components/auth/AuthInput";
 
 function ForgetPassword() {
   return (
@@ -15,16 +14,15 @@ function ForgetPassword() {
       </p>
 
       <div className="mt-5 space-y-5 text-left">
-        <AuthInputField icon={faEnvelope} id="email" label="Email Address">
-          <AuthInput
-            props={{
-              type: "email",
-              placeholder: "test@example.com",
-              id: "email",
-            }}
-            icon={faEnvelope}
-          />
-        </AuthInputField>
+        <AuthInput
+          label="Email Address"
+          props={{
+            type: "email",
+            placeholder: "test@example.com",
+            id: "email",
+          }}
+          icon={faEnvelope}
+        />
 
         <AuthButton className="w-full">Reset Password</AuthButton>
       </div>

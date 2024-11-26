@@ -1,65 +1,46 @@
 import { faGraduationCap } from "@fortawesome/free-solid-svg-icons";
 import UserInfoLayout from "../../../layout/UserInfoLayout";
-import AuthStartToEndDate from "../AuthStartToEndDate";
-import { UserInfoProps } from "../../../types/Auth.types";
-import { FieldValues, Path } from "react-hook-form";
-import AuthInputField from "../AuthInputField";
+import { UserInfoStep } from "../../../types/index.types";
 import AuthInput from "../AuthInput";
+import AuthButton from "../AuthButton";
+import AuthStartToEndDate from "../AuthStartToEndDate";
+import AuthPrevAndSkipButtons from "../AuthPrevAndSkipButtons";
 
-function UserInfoEducation<T extends FieldValues>({
-  register,
-  errors,
-}: UserInfoProps<T>) {
+function UserInfoEducation({ setStep }: UserInfoStep) {
   return (
     <UserInfoLayout title="Education">
       <div className="flex flex-col gap-4 text-left">
-        <AuthInputField
-          id="university"
-          label="University"
+        <AuthInput
           icon={faGraduationCap}
-          errors={errors}
-        >
-          <AuthInput
-            register={register}
-            name={"university" as Path<T>}
-            icon={faGraduationCap}
-            props={{
-              id: "university",
-              type: "text",
-              placeholder: "Ex. Tanta University",
-            }}
-          />
-        </AuthInputField>
-
-        <AuthInputField
-          errors={errors}
-          id="fieldOfStudy"
+          label="University"
+          props={{
+            id: "university",
+            type: "text",
+            placeholder: "Ex. Tanta University",
+          }}
+        />
+        <AuthInput
           label="Field of Study"
-        >
-          <AuthInput
-            register={register}
-            name={"fieldOfStudy" as Path<T>}
-            props={{
-              id: "fieldOfStudy",
-              type: "text",
-              placeholder: "Ex. Engineering",
-            }}
-          />
-        </AuthInputField>
+          props={{
+            id: "fieldOfStudy",
+            type: "text",
+            placeholder: "Ex. Engineering",
+          }}
+        />
+        <AuthInput
+          label="GPA"
+          props={{
+            id: "gpa",
+            type: "number",
+            placeholder: "Ex. 3.67",
+          }}
+        />
 
-        <AuthInputField errors={errors} id="gpa" label="GPA">
-          <AuthInput
-            register={register}
-            name={"gpa" as Path<T>}
-            props={{
-              id: "gpa",
-              type: "number",
-              placeholder: "Ex. 3.67",
-            }}
-          />
-        </AuthInputField>
+        <AuthStartToEndDate />
 
-        {register && <AuthStartToEndDate register={register} />}
+        <AuthButton className="px-4 py-2">Submit</AuthButton>
+
+        <AuthPrevAndSkipButtons setStep={setStep} />
       </div>
     </UserInfoLayout>
   );

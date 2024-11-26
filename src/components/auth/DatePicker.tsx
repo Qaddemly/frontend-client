@@ -1,23 +1,4 @@
-import {
-  FieldValues,
-  Path,
-  RegisterOptions,
-  UseFormRegister,
-} from "react-hook-form";
-
-type DatePickerProps<T extends FieldValues> = {
-  onChange?: React.ChangeEventHandler<HTMLInputElement>;
-  register?: UseFormRegister<T>;
-  options?: RegisterOptions<T>;
-  name?: Path<T>;
-};
-
-function DatePicker<T extends FieldValues>({
-  onChange,
-  register,
-  options,
-  name,
-}: DatePickerProps<T>) {
+function DatePicker({ id }: { id: string }) {
   return (
     <div className="relative w-fit">
       <div className="absolute inset-y-0 start-0 flex items-center ps-3.5">
@@ -32,8 +13,7 @@ function DatePicker<T extends FieldValues>({
         </svg>
       </div>
       <input
-        {...(register && name ? register(name, options) : {})}
-        onChange={onChange}
+        id={id}
         type="date"
         className="block rounded-md border-2 border-gray-100 p-2.5 ps-10 text-sm"
       />
