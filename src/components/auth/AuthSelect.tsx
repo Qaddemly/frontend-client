@@ -1,28 +1,41 @@
 import { ReactNode } from "react";
+import {
+  FieldValues,
+  Path,
+  RegisterOptions,
+  UseFormRegister,
+} from "react-hook-form";
 
-type AuthSelectProps = {
+type AuthSelectProps<T extends FieldValues> = {
   label: string;
   id: string;
   children: ReactNode;
   className?: string;
   value?: string | number | string[];
   onChange?: (props: React.ChangeEvent<HTMLSelectElement>) => void;
+  register?: UseFormRegister<T>;
+  options?: RegisterOptions<T>;
+  name?: Path<T>;
 };
 
-function AuthSelect({
+function AuthSelect<T extends FieldValues>({
   label,
   id,
   children,
   className,
   value,
   onChange,
-}: AuthSelectProps) {
+  register,
+  options,
+  name,
+}: AuthSelectProps<T>) {
   return (
     <div className="text-left">
       <label htmlFor={id} className="mb-2 block font-medium">
         {label}
       </label>
       <select
+        {...(register && name ? register(name, options) : {})}
         id={id}
         value={value}
         onChange={onChange}
