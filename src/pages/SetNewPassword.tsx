@@ -31,7 +31,7 @@ function SetNewPassword() {
             props={{
               type: "password",
               id: "newPassword",
-              placeholder: " •••••••••",
+              placeholder: "•••••••••",
             }}
             icon={faLock}
           />
