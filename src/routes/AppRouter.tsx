@@ -8,6 +8,8 @@ import EmailVerfiy from "../pages/EmailVerfiy";
 import Personal from "../components/profile/Personal";
 import Experience from "../components/profile/Experience";
 import Education from "../components/profile/Education";
+import ForgetPassword from "../pages/ForgetPassword";
+import SetNewPassword from "../pages/SetNewPassword";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -19,6 +21,8 @@ const router = createBrowserRouter([
   { path: "/profile/experience", element: <Experience /> },
   { path: "/emailVerfiy", element: <EmailVerfiy /> },
   { path: "/userInfo", element: <UserInfo /> },
+  { path: "/forgetPasswor", element: <ForgetPassword /> },
+  { path: "/setNewPassword", element: <SetNewPassword /> },
 ]);
 
 function AppRouter() {
