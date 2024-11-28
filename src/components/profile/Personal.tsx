@@ -1,19 +1,15 @@
-import { faImage, faPhone } from "@fortawesome/free-solid-svg-icons";
+import { faImage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AuthInput from "../auth/AuthInput";
 // import YourResume from "./YourResume";
-import Head from "./Head";
-import Navbar from "../home/Navbar";
-import Sidebar from "./Sidebar";
+
 import YourResume from "./YourResume";
+import AuthInputField from "../auth/AuthInputField";
 
 function Personal() {
   return (
     <>
       <div className="mt-5">
-        <Navbar />
-        <Sidebar />
-        <Head />
         <div className="mt-20 px-10">
           <span className="text-gray-500"> Profile Photo</span>
           <div className="mt-5 block h-[250px] w-[250px] items-center border-2 border-dashed bg-gray-100">
@@ -33,23 +29,25 @@ function Personal() {
 
         <div className="space-x-10">
           <div className="flex space-x-3">
-            <label className="font-semibold">First Name</label>
-            <AuthInput
-              props={{
-                placeholder: "John",
-                type: "text",
-              }}
-            />
+            <AuthInputField id="firstName" label="firstname">
+              <AuthInput
+                props={{
+                  placeholder: "John",
+                  type: "text",
+                  id: "firstName",
+                }}
+              />
+            </AuthInputField>
           </div>
 
           <div className="flex space-x-3">
             <label className="font-semibold">Last Name</label>
-            <AuthInput
+            {/* <AuthInput
               props={{
                 placeholder: "Tom",
                 type: "text",
               }}
-            />
+            /> */}
           </div>
 
           <div className="flex space-x-3">
@@ -60,28 +58,28 @@ function Personal() {
               <option label="+30">+20</option>
               <option label="+50">+20</option>
             </select>
-            <AuthInput
+            {/* <AuthInput
               icon={faPhone}
               props={{
                 placeholder: "123 456 789",
                 type: "telephone",
               }}
-            />
+            /> */}
             <div className="flex space-x-3">
               <label className="font-semibold">Address</label>
 
-              <AuthInput
+              {/* <AuthInput
                 props={{
                   placeholder: "Country",
                   type: "text",
                 }}
-              />
-              <AuthInput
+              /> */}
+              {/* <AuthInput
                 props={{
                   placeholder: "City",
                   type: "text",
                 }}
-              />
+              /> */}
             </div>
             <div className="flex space-x-3">
               <label className="font-semibold">Date Of Birth</label>
