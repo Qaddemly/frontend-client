@@ -2,13 +2,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBriefcase, faFileLines } from "@fortawesome/free-solid-svg-icons";
 import { faBookmark } from "@fortawesome/free-solid-svg-icons";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
-import Head from "./Head";
 
 function Sidebar() {
   return (
     <>
       <div className="mt-5 flex">
-        <div className="h-[100vh] w-[20%] px-10">
+        <div className="h-[100vh] px-10">
           <ul className="text-xl text-gray-600">
             <li className="mb-6 cursor-pointer px-2 hover:bg-secondary hover:text-white">
               <FontAwesomeIcon icon={faFileLines} className="" />
@@ -37,7 +36,6 @@ function Sidebar() {
             </li>
           </ul>
         </div>
-        <Head />
       </div>
     </>
   );

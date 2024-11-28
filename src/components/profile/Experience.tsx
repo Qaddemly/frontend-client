@@ -1,15 +1,10 @@
-import AuthInput from "../auth/AuthInput";
 import AuthSelect from "../auth/AuthSelect";
-import AuthStartToEndDate from "../auth/AuthStartToEndDate";
-import Navbar from "../home/Navbar";
-import Sidebar from "./Sidebar";
+
 import YourResume from "./YourResume";
 
 function Experience() {
   return (
     <div>
-      <Navbar />
-      <Sidebar />
       <div className="flex">
         <div>
           <div className="space-x-10">
@@ -17,12 +12,12 @@ function Experience() {
               <label className="flex items-center font-semibold">
                 Job Title
               </label>
-              <AuthInput
+              {/* <AuthInput
                 props={{
                   placeholder: "EX. Sales Manager",
                   type: "text",
                 }}
-              />
+              /> */}
             </div>
           </div>
 
@@ -35,21 +30,21 @@ function Experience() {
           </div>
           <div className="flex items-center space-x-3">
             <label className="font-semibold">Company name</label>
-            <AuthInput
+            {/* <AuthInput
               props={{
                 placeholder: "EX. Microsoft",
                 type: "text",
               }}
-            />
+            /> */}
           </div>
           <div className="flex space-x-3">
             <label className="flex items-center font-semibold">Location</label>
-            <AuthInput
+            {/* <AuthInput
               props={{
                 placeholder: "EX. London , Tanta",
                 type: "text",
               }}
-            />
+            /> */}
           </div>
           <div className="flex space-x-3">
             <AuthSelect label="Location type" id="locationType">
@@ -58,7 +53,7 @@ function Experience() {
             </AuthSelect>
           </div>
 
-          <AuthStartToEndDate />
+          {/* <AuthStartToEndDate /> */}
           <button className="mt-5 rounded-md border-2 border-main bg-main px-4 py-2 text-white">
             Save Changes
           </button>

@@ -5,26 +5,33 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 
 function Head() {
   return (
     <>
       <span className="text-2xl">Profile</span>
       <ul className="mt-10 flex justify-start space-x-9 text-gray-600">
-        <li className="hover:cursor-pointer hover:text-main hover:underline">
+        <Link
+          to="/profile/personal"
+          className="hover:cursor-pointer hover:text-main hover:underline"
+        >
           <FontAwesomeIcon icon={faUser} />
           <span className="ml-2">Personal</span>
-        </li>
+        </Link>
 
         <li className="hover:cursor-pointer hover:text-main hover:underline">
           <FontAwesomeIcon icon={faBookOpen} />
           <span className="ml-2">Education</span>
         </li>
 
-        <li className="hover:cursor-pointer hover:text-main hover:underline">
+        <Link
+          to="/profile/experience"
+          className="hover:cursor-pointer hover:text-main hover:underline"
+        >
           <FontAwesomeIcon icon={faBriefcase} />
           <span className="ml-2">Experience</span>
-        </li>
+        </Link>
 
         <li className="hover:cursor-pointer hover:text-main hover:underline">
           <FontAwesomeIcon icon={faListCheck} />
