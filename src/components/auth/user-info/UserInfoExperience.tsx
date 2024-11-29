@@ -3,15 +3,20 @@ import UserInfoLayout from "../../../layout/UserInfoLayout";
 import AuthSelect from "../AuthSelect";
 import AuthStartToEndDate from "../AuthStartToEndDate";
 import AuthButton from "../AuthButton";
-import { UserInfoProps } from "../../../types/Auth.types";
-import { FieldValues, Path } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import AuthInputField from "../AuthInputField";
 import AuthInput from "../AuthInput";
+import { Country, EmploymentType, LocationType } from "..";
 
-function UserInfoExperience<T extends FieldValues>({
-  register,
-  errors,
-}: UserInfoProps<T>) {
+function UserInfoExperience() {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
+
+  const employmentTypeValues = Object.values(EmploymentType);
+  const locationTypeValues = Object.values(LocationType);
+  const coutnryValues = Object.values(Country);
   return (
     <UserInfoLayout title="Eperience">
       <div className="flex flex-col gap-4 text-left">
@@ -23,7 +28,7 @@ function UserInfoExperience<T extends FieldValues>({
         >
           <AuthInput
             register={register}
-            name={"jobTitle" as Path<T>}
+            name={"jobTitle"}
             icon={faBriefcase}
             props={{
               id: "jobTitle",
@@ -32,15 +37,22 @@ function UserInfoExperience<T extends FieldValues>({
             }}
           />
         </AuthInputField>
-        <AuthSelect label="Employment type" id="employmentType">
-          <option value="fullTime">Full Time</option>
-          <option value="internship">Internship</option>
-          <option value="partTime">Part Time</option>
+        <AuthSelect
+          register={register}
+          name="employmentType"
+          label="Employment type"
+          id="employmentType"
+        >
+          {employmentTypeValues.map((value) => (
+            <option value={value} key={value}>
+              {value}
+            </option>
+          ))}
         </AuthSelect>
         <AuthInputField errors={errors} id="companyName" label="Company name">
           <AuthInput
             register={register}
-            name={"companyName" as Path<T>}
+            name={"companyName"}
             props={{
               id: "companyName",
               type: "text",
@@ -48,28 +60,36 @@ function UserInfoExperience<T extends FieldValues>({
             }}
           />
         </AuthInputField>
-        <AuthInputField errors={errors} id="location" label="Location">
-          <AuthInput
-            register={register}
-            name={"location" as Path<T>}
-            props={{
-              id: "location",
-              type: "text",
-              placeholder: "Ex. London, United Kingdom",
-            }}
-          />
-        </AuthInputField>
-        <AuthSelect label="Location type" id="locationType">
-          <option value="insite">Insite</option>
-          <option value="remote">Remote</option>
+        <AuthSelect
+          register={register}
+          name="location"
+          label="Location"
+          id="location"
+        >
+          {coutnryValues.map((value) => (
+            <option key={value} value={value}>
+              {value}
+            </option>
+          ))}
+        </AuthSelect>
+        <AuthSelect
+          name="locationType"
+          register={register}
+          label="Location type"
+          id="locationType"
+        >
+          {locationTypeValues.map((value) => (
+            <option value={value} key={value}>
+              {value}
+            </option>
+          ))}
         </AuthSelect>
 
         <div className="mb-4 flex items-center">
           <input
-            id="green-checkbox"
+            {...register("currentlyWork")}
             type="checkbox"
-            value="d"
-            className="text-green-600 focus:ring-green-500 h-4 w-4 rounded border-gray-300 bg-gray-100 focus:ring-2"
+            className="text-green-600 focus:ring-green-500 h-4 w-4 rounded border-gray-300"
           />
 
           <label htmlFor="default-checkbox" className="ms-2 font-medium">
@@ -77,7 +97,11 @@ function UserInfoExperience<T extends FieldValues>({
           </label>
         </div>
 
-        <AuthStartToEndDate register={register} />
+        <AuthStartToEndDate
+          startDate="startJobDate"
+          endDate="endJobDate"
+          register={register}
+        />
 
         <AuthButton type="button" className="w-full px-4 py-2">
           Add New Experience

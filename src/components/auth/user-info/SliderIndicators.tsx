@@ -6,7 +6,7 @@ function SliderIndicators({
   setStep: (s: (prevStep: number) => number) => void;
 }) {
   return (
-    <div className="absolute bottom-[6rem] left-1/2 z-30 flex -translate-x-1/2 space-x-3 rtl:space-x-reverse">
+    <div className="z-30 mt-5 flex space-x-3 rtl:space-x-reverse">
       <button
         type="button"
         className={`h-3 w-3 rounded-full ${step == 1 ? "bg-main" : "bg-gray-100"}`}

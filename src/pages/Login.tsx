@@ -9,7 +9,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import AuthInputField from "../components/auth/AuthInputField";
 import { useState } from "react";
 import AuthInput from "../components/auth/AuthInput";
-import { formSettings } from "../components/auth";
 interface ILoginInputs {
   email: string;
   password: string;
@@ -17,11 +16,12 @@ interface ILoginInputs {
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ILoginInputs>(formSettings);
+  } = useForm<ILoginInputs>();
 
   const onSubmit: SubmitHandler<ILoginInputs> = (data) => {
     console.log(data);
@@ -92,7 +92,7 @@ function Login() {
           Forget Password?
         </Link>
 
-        <AuthButton className="my-5">Login</AuthButton>
+        <AuthButton className="my-5 w-full">Login</AuthButton>
 
         <AuthLink to="/signup" msg="Don't have an account ?" text="sign up" />
       </form>

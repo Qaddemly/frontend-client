@@ -4,21 +4,16 @@ import AuthButton from "../AuthButton";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AuthSelect from "../AuthSelect";
-import { UserInfoProps } from "../../../types/Auth.types";
-import { FieldValues, Path } from "react-hook-form";
 import { Languages } from "..";
 import AuthInputField from "../AuthInputField";
 import AuthInput from "../AuthInput";
+import { useUserInfo } from "../../../context/UserInfoContext";
 
-function UserInfoSoftSkills<T extends FieldValues>({
-  register,
-  errors,
-}: UserInfoProps<T>) {
+function UserInfoSoftSkills() {
   const [skill, setSkill] = useState("");
-  const [skills, setSkills] = useState<string[]>([]);
-  const [language, setLanguage] = useState("");
-  const [languages, setLanguages] = useState<string[]>([]);
+  const [language, setLanguage] = useState<Languages | "">("");
   const languageValues = Object.values(Languages);
+  const { setLanguages, setSkills, languages, skills } = useUserInfo();
 
   function handleAddSkillsClick() {
     if (skill.length) {
@@ -32,19 +27,17 @@ function UserInfoSoftSkills<T extends FieldValues>({
   function handleAddLanguagesClick() {
     if (language.length)
       setLanguages((langs) =>
-        languages.find((s) => s === language)
+        langs.find((s) => s === language)
           ? [...langs]
-          : [...langs, language],
+          : [...langs, language as Languages],
       );
   }
 
   return (
     <UserInfoLayout title="Soft Skills">
       <div className="flex flex-col gap-5 text-left">
-        <AuthInputField errors={errors} id="softSkills" label="Your skills">
+        <AuthInputField id="softSkills" label="Your skills">
           <AuthInput
-            register={register}
-            name={"softSkills" as Path<T>}
             props={{
               type: "text",
               id: "softSkills",
@@ -88,7 +81,7 @@ function UserInfoSoftSkills<T extends FieldValues>({
           label="Your languages"
           id="languages"
           value={language}
-          onChange={(e) => setLanguage(e.target.value)}
+          onChange={(e) => setLanguage(e.target.value as Languages)}
         >
           {languageValues.map((value) => (
             <option key={value} value={value}>

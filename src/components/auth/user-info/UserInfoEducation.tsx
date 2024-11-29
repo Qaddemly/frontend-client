@@ -1,15 +1,16 @@
 import { faGraduationCap } from "@fortawesome/free-solid-svg-icons";
 import UserInfoLayout from "../../../layout/UserInfoLayout";
 import AuthStartToEndDate from "../AuthStartToEndDate";
-import { UserInfoProps } from "../../../types/Auth.types";
-import { FieldValues, Path } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import AuthInput from "../AuthInput";
 import AuthInputField from "../AuthInputField";
 
-function UserInfoEducation<T extends FieldValues>({
-  register,
-  errors,
-}: UserInfoProps<T>) {
+function UserInfoEducation() {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
+
   return (
     <UserInfoLayout title="Education">
       <div className="flex flex-col gap-4 text-left">
@@ -21,7 +22,7 @@ function UserInfoEducation<T extends FieldValues>({
         >
           <AuthInput
             register={register}
-            name={"university" as Path<T>}
+            name={"university"}
             icon={faGraduationCap}
             props={{
               id: "university",
@@ -38,7 +39,7 @@ function UserInfoEducation<T extends FieldValues>({
         >
           <AuthInput
             register={register}
-            name={"fieldOfStudy" as Path<T>}
+            name={"fieldOfStudy"}
             props={{
               id: "fieldOfStudy",
               type: "text",
@@ -49,7 +50,11 @@ function UserInfoEducation<T extends FieldValues>({
         <AuthInputField errors={errors} id="gpa" label="GPA">
           <AuthInput
             register={register}
-            name={"gpa" as Path<T>}
+            name={"gpa"}
+            options={{
+              min: { value: 1, message: "min value 1" },
+              max: { value: 4, message: "max value 4" },
+            }}
             props={{
               id: "gpa",
               type: "number",
@@ -58,7 +63,11 @@ function UserInfoEducation<T extends FieldValues>({
           />
         </AuthInputField>
 
-        <AuthStartToEndDate register={register} />
+        <AuthStartToEndDate
+          startDate="startEducationDate"
+          endDate="endEducationDate"
+          register={register}
+        />
       </div>
     </UserInfoLayout>
   );

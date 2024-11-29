@@ -25,7 +25,7 @@ function FileUpload<T extends FieldValues>({
     <div className="flex w-full items-center justify-center">
       <label
         htmlFor="dropzone-file"
-        className="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed border-gray-300 bg-[#eee] hover:bg-light-secondary"
+        className="relative flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed border-gray-300 bg-[#eee] hover:bg-light-secondary"
       >
         <div className="flex flex-col items-center justify-center pb-6 pt-5">
           <FontAwesomeIcon icon={icon} className="ml-2 text-5xl text-main" />
@@ -43,7 +43,7 @@ function FileUpload<T extends FieldValues>({
           onChange={onChange}
           id="dropzone-file"
           type="file"
-          className="hidden"
+          className="absolute bottom-0 left-0 text-sm text-gray-500 focus:outline-none"
         />
       </label>
     </div>

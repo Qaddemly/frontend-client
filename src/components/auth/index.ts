@@ -1,9 +1,11 @@
-export const formSettings: Partial<{
+interface FormSettings {
   mode: "onBlur";
   reValidateMode: "onChange";
   criteriaMode: "all";
-  shouldFocusError: true;
-}> = {
+  shouldFocusError: boolean;
+}
+
+export const formSettings: FormSettings = {
   mode: "onBlur",
   reValidateMode: "onChange",
   criteriaMode: "all",
@@ -459,7 +461,7 @@ export enum EmploymentType {
   Seasonal = "Seasonal",
 }
 export enum LocationType {
-  Remote = "remote",
-  OnSite = "on-site",
-  Hypird = "hypird",
+  Remote = "Remote",
+  OnSite = "On-site",
+  Hypird = "Hypird",
 }
