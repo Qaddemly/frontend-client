@@ -1,10 +1,13 @@
-import AuthButton from "../components/auth/AuthButton";
 import AuthLink from "../components/auth/AuthLink";
 import ActivationInputs from "../components/auth/signup/ActivationInputs";
 import Logo from "../components/common/Logo";
 import AuthLayout from "../layout/AuthLayout";
 
 function EmailVerfiy() {
+  function handleSubmit(code: string) {
+    console.log(code);
+  }
+
   return (
     <AuthLayout>
       <Logo />
@@ -14,10 +17,8 @@ function EmailVerfiy() {
       </p>
 
       <div className="my-5 flex justify-center gap-3">
-        <ActivationInputs />
+        <ActivationInputs length={6} onComplete={handleSubmit} />
       </div>
-
-      <AuthButton className="mb-5 w-full">Verfiy Email</AuthButton>
 
       <AuthLink
         msg="Didn't recieive an email ?"

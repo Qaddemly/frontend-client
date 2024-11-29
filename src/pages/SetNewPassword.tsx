@@ -5,10 +5,28 @@ import AuthButton from "../components/auth/AuthButton";
 import AuthInputField from "../components/auth/AuthInputField";
 import AuthInput from "../components/auth/AuthInput";
 import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { formSettings } from "../components/auth";
+
+interface ISetNewPassword {
+  newPassword: string;
+  confirmNewPassword: string;
+}
 
 function SetNewPassword() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+  } = useForm<ISetNewPassword>(formSettings);
+
+  const onSubmit: SubmitHandler<ISetNewPassword> = (data) => {
+    console.log(data);
+  };
+
   return (
     <AuthLayout>
       <Logo />
@@ -18,8 +36,12 @@ function SetNewPassword() {
         security.
       </p>
 
-      <div className="mt-5 space-y-5 text-left">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="mt-5 space-y-5 text-left"
+      >
         <AuthInputField
+          errors={errors}
           showPassword={showPassword}
           setShowPassword={setShowPassword}
           icon={faLock}
@@ -27,6 +49,12 @@ function SetNewPassword() {
           label="New Password"
         >
           <AuthInput
+            register={register}
+            name="newPassword"
+            options={{
+              required: "new password is reqiured",
+              minLength: { value: 8, message: "min value 8 charcters" },
+            }}
             showPassword={showPassword}
             props={{
               type: "password",
@@ -37,6 +65,7 @@ function SetNewPassword() {
           />
         </AuthInputField>
         <AuthInputField
+          errors={errors}
           icon={faLock}
           id="confirmNewPassword"
           label="Confirm New Password"
@@ -44,7 +73,15 @@ function SetNewPassword() {
           setShowPassword={setShowConfirmPassword}
         >
           <AuthInput
+            register={register}
+            name="confirmNewPassword"
             showPassword={showConfirmPassword}
+            options={{
+              required: "confirm password is reqiured",
+              minLength: { value: 8, message: "min value 8 charcters" },
+              validate: (value) =>
+                getValues("newPassword") === value || "password do not match",
+            }}
             props={{
               type: "password",
               id: "confirmNewPassword",
@@ -53,8 +90,8 @@ function SetNewPassword() {
             icon={faLock}
           />
         </AuthInputField>
-        <AuthButton className="w-full">Upadate Password</AuthButton>
-      </div>
+        <AuthButton className="w-full">Update Password</AuthButton>
+      </form>
     </AuthLayout>
   );
 }
