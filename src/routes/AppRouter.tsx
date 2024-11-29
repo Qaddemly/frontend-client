@@ -10,6 +10,7 @@ import Experience from "../components/profile/Experience";
 import Education from "../components/profile/Education";
 import ForgetPassword from "../pages/ForgetPassword";
 import SetNewPassword from "../pages/SetNewPassword";
+import MySkills from "../components/profile/MySkills";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
       { path: "/profile/personal", element: <Personal /> },
       { path: "/profile/education", element: <Education /> },
       { path: "/profile/experience", element: <Experience /> },
+      { path: "/profile/my-skills", element: <MySkills /> },
     ],
   },
   { path: "/emailVerfiy", element: <EmailVerfiy /> },

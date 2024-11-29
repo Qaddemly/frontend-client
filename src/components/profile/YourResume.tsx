@@ -3,7 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function YourResume() {
   return (
-    <div className="mx-10 mb-10">
+    <div className="mb-10">
+      <div className="my-10 pl-[850px]">
+        <button className="mt-5 rounded-md border-2 border-main bg-main px-4 py-2 text-white">
+          Save Changes
+        </button>
+      </div>
       <span className="text-xl font-semibold">Your CV/Resume</span>
       <ul className="mt-5 flex items-center justify-between space-x-7">
         <li className="space-x-2 rounded-md bg-gray-200 px-5 py-3">
