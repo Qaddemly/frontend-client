@@ -1,90 +1,70 @@
-import { forwardRef, useEffect, useRef } from "react";
+import React, { useRef, useEffect } from "react";
 
-function ActivationInputs() {
-  const num1Ref = useRef<HTMLInputElement>(null);
-  const num2Ref = useRef<HTMLInputElement>(null);
-  const num3Ref = useRef<HTMLInputElement>(null);
-  const num4Ref = useRef<HTMLInputElement>(null);
-  const num5Ref = useRef<HTMLInputElement>(null);
-  const num6Ref = useRef<HTMLInputElement>(null);
-
-  useEffect(function () {
-    if (num1Ref.current) {
-      num1Ref.current.focus();
-    }
-  }, []);
-
-  return (
-    <>
-      <ActivationNum name="num1" ref={num1Ref} nextRef={num2Ref} />
-      <ActivationNum
-        name="num2"
-        ref={num2Ref}
-        nextRef={num3Ref}
-        prevRef={num1Ref}
-      />
-      <ActivationNum
-        name="num3"
-        ref={num3Ref}
-        nextRef={num4Ref}
-        prevRef={num2Ref}
-      />
-      <ActivationNum
-        name="num4"
-        ref={num4Ref}
-        nextRef={num5Ref}
-        prevRef={num3Ref}
-      />
-      <ActivationNum
-        name="num5"
-        ref={num5Ref}
-        nextRef={num6Ref}
-        prevRef={num4Ref}
-      />
-      <ActivationNum name="num6" ref={num6Ref} prevRef={num5Ref} />
-    </>
-  );
+interface ActivationInputProps {
+  length: number;
+  onComplete: (code: string) => void;
 }
 
-export default ActivationInputs;
+const ActivationInput: React.FC<ActivationInputProps> = ({
+  length,
+  onComplete,
+}) => {
+  const inputRefs = useRef<(HTMLInputElement | null)[]>(
+    Array(length).fill(null),
+  );
 
-type ActivationNum = {
-  name: string;
-  nextRef?: React.RefObject<HTMLInputElement>;
-  prevRef?: React.RefObject<HTMLInputElement>;
+  useEffect(() => {
+    inputRefs.current[0]?.focus();
+  }, []);
+
+  const handleChange = (
+    index: number,
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const { value } = event.target;
+    if (/^\d$/.test(value)) {
+      if (index < length - 1) {
+        inputRefs.current[index + 1]?.focus();
+      }
+      if (index === length - 1) {
+        const code = inputRefs.current.map((input) => input?.value).join("");
+        onComplete(code);
+      }
+    } else {
+      event.target.value = "";
+    }
+  };
+
+  const handleKeyDown = (
+    index: number,
+    event: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
+    if (
+      event.key === "Backspace" &&
+      !inputRefs.current[index]?.value &&
+      index > 0
+    ) {
+      inputRefs.current[index - 1]?.focus();
+    }
+  };
+
+  return (
+    <div className="flex justify-center gap-3">
+      {Array.from({ length }).map((_, index) => (
+        <input
+          key={index}
+          ref={(el) => (inputRefs.current[index] = el)}
+          type="text"
+          inputMode="numeric"
+          pattern="[0-9]*"
+          maxLength={1}
+          className="h-12 w-12 rounded-md border border-gray-300 text-center text-xl font-medium text-main"
+          onChange={(event) => handleChange(index, event)}
+          onKeyDown={(event) => handleKeyDown(index, event)}
+        />
+      ))}
+    </div>
+  );
 };
 
-const ActivationNum = forwardRef<HTMLInputElement, ActivationNum>(
-  ({ name, nextRef, prevRef }, ref) => {
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (!/^\d$/.test(e.target.value)) {
-        e.target.value = "";
-        return;
-      }
-
-      if (e.target.value.length === 1 && nextRef?.current)
-        nextRef.current.focus();
-    };
-
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (
-        e.key === "Backspace" &&
-        e.currentTarget.value === "" &&
-        prevRef?.current
-      )
-        prevRef.current.focus();
-    };
-
-    return (
-      <input
-        ref={ref}
-        type="text"
-        maxLength={1}
-        name={name}
-        className="h-12 w-12 rounded-lg border-2 border-gray-100 text-center text-xl font-bold focus:outline-secondary"
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-      />
-    );
-  },
-);
+export default ActivationInput;

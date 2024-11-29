@@ -42,6 +42,7 @@ function AuthInputField<T extends FieldValues>({
           id == "newPassword" ||
           id == "confirmNewPassword") && (
           <button
+            type="button"
             className="absolute right-3 top-3 ml-2 h-[22px] w-[22px] cursor-pointer text-gray-300"
             onClick={() => setShowPassword && setShowPassword(!showPassword)}
           >

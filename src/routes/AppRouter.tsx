@@ -26,7 +26,7 @@ const router = createBrowserRouter([
   },
   { path: "/emailVerfiy", element: <EmailVerfiy /> },
   { path: "/userInfo", element: <UserInfo /> },
-  { path: "/forgetPasswor", element: <ForgetPassword /> },
+  { path: "/forgetPassword", element: <ForgetPassword /> },
   { path: "/setNewPassword", element: <SetNewPassword /> },
 ]);
 
