@@ -10,17 +10,18 @@ import AuthInputField from "../AuthInputField";
 import AuthInput from "../AuthInput";
 import { Country, Prefixes } from "..";
 import AuthSelect from "../AuthSelect";
-import { FieldValues, Path } from "react-hook-form";
-import { UserInfoProps } from "../../../types/Auth.types";
+import { useFormContext } from "react-hook-form";
+import { validateDateOfBirth } from "../../../utils/helpers";
 
-function UserInfoPersonal<T extends FieldValues>({
-  register,
-  errors,
-}: UserInfoProps<T>) {
+function UserInfoPersonal() {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
+
   const prefixValues = Object.values(Prefixes).filter(
     (value) => typeof value == "string",
   );
-
   const coutnryValues = Object.values(Country);
 
   return (
@@ -29,14 +30,11 @@ function UserInfoPersonal<T extends FieldValues>({
         <div className="flex items-end gap-3">
           <AuthSelect
             register={register}
-            name={"prefix" as Path<T>}
+            name={"prefix"}
             label="Phone"
             id="phone"
             className="w-fit"
           >
-            <option value="" disabled>
-              USA (+1)
-            </option>
             {prefixValues.map((key) => (
               <option key={key} value={key}>
                 {key} +({Prefixes[key as keyof typeof Prefixes]})
@@ -47,7 +45,7 @@ function UserInfoPersonal<T extends FieldValues>({
           <AuthInputField errors={errors} icon={faPhone} id="phone">
             <AuthInput
               register={register}
-              name={"phone" as Path<T>}
+              name={"phone"}
               icon={faPhone}
               props={{ placeholder: "123-456-789", id: "phone", type: "tel" }}
             />
@@ -57,14 +55,11 @@ function UserInfoPersonal<T extends FieldValues>({
         <div className="flex items-end gap-3 text-left">
           <AuthSelect
             register={register}
-            name={"country" as Path<T>}
+            name={"country"}
             label="Address"
             id="country"
             className="w-fit"
           >
-            <option value="" disabled>
-              Select a country
-            </option>
             {coutnryValues.map((key) => (
               <option key={key} value={key}>
                 {key}
@@ -75,7 +70,7 @@ function UserInfoPersonal<T extends FieldValues>({
           <AuthInputField errors={errors} icon={faEarthAmericas} id="city">
             <AuthInput
               register={register}
-              name={"city" as Path<T>}
+              name={"city"}
               icon={faEarthAmericas}
               props={{
                 placeholder: "City",
@@ -91,20 +86,22 @@ function UserInfoPersonal<T extends FieldValues>({
           <label htmlFor="dateOfBirth" className="font-medium">
             Date of Birth
           </label>
-          <DatePicker register={register} name={"dateOfBirth" as Path<T>} />
+          <DatePicker
+            register={register}
+            name={"dateOfBirth"}
+            options={{
+              validate: (value) => validateDateOfBirth(value),
+            }}
+          />
+          {errors.dateOfBirth &&
+            typeof errors.dateOfBirth?.message === "string" && (
+              <p className="text-sm text-danger">
+                {errors.dateOfBirth.message}
+              </p>
+            )}
         </div>
 
-        <FileUpload
-          register={register}
-          name={"image" as Path<T>}
-          icon={faImage}
-        />
-
-        {/* <div className="mt-5 flex justify-between">
-          <AuthButton name="submit" className="w-fit px-4 py-2">
-            Submit
-          </AuthButton>
-        </div> */}
+        <FileUpload register={register} name={"image"} icon={faImage} />
       </div>
     </UserInfoLayout>
   );

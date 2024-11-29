@@ -7,17 +7,20 @@ import {
 } from "../components/auth";
 
 export interface IUserInfo {
+  // Personal
   phone: string;
   prefix: Prefixes;
   country: Country;
   city: string;
   dateOfBirth: string;
-  image: FileList;
+  image: string;
+  // Education
   university: string;
   fieldOfStudy: string;
   gpa: number;
   startEducationDate: string;
   endEducationDate: string;
+  // Experience
   jobTitle: string;
   employmentType: EmploymentType;
   companyName: string;
@@ -26,7 +29,9 @@ export interface IUserInfo {
   currentlyWork: boolean;
   startJobDate: string;
   endtJobDate: string;
+  // Soft Skills
   softSkills: string[];
   languages: Languages[];
+  // Resume
   resume: string;
 }

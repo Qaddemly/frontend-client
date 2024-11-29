@@ -39,7 +39,7 @@ function AuthSelect<T extends FieldValues>({
         id={id}
         value={value}
         onChange={onChange}
-        className={`w-full rounded-md border-2 border-gray-100 px-2 py-2 text-gray-300 outline-none focus:border-secondary ${className}`}
+        className={`w-full rounded-md border-2 border-gray-100 px-2 py-2 text-gray-300 outline-none focus:border-secondary ${className} location-input`}
       >
         {children}
       </select>
