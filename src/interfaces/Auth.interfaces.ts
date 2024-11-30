@@ -8,12 +8,16 @@ import {
 
 export interface IUserInfo {
   // Personal
-  phone: string;
-  prefix: Prefixes;
-  country: Country;
-  city: string;
+  phone: {
+    number: string;
+    countryCode: Prefixes;
+  };
+  address: {
+    country: Country;
+    city: string;
+  };
   dateOfBirth: string;
-  image: string;
+  profilePicture: string;
   // Education
   university: string;
   fieldOfStudy: string;
@@ -21,17 +25,20 @@ export interface IUserInfo {
   startEducationDate: string;
   endEducationDate: string;
   // Experience
-  jobTitle: string;
-  employmentType: EmploymentType;
-  companyName: string;
-  location: Country;
-  locationType: LocationType;
-  currentlyWork: boolean;
-  startJobDate: string;
-  endtJobDate: string;
+  experience: IExperience;
   // Soft Skills
   softSkills: string[];
   languages: Languages[];
   // Resume
   resume: string;
+}
+export interface IExperience {
+  jobTitle: string;
+  employmentType: EmploymentType;
+  companyName: string;
+  location: Country;
+  locationType: LocationType;
+  stillWorking: boolean;
+  startJobDate: string;
+  endJobDate: string;
 }

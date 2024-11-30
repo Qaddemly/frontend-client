@@ -30,7 +30,7 @@ function UserInfoPersonal() {
         <div className="flex items-end gap-3">
           <AuthSelect
             register={register}
-            name={"prefix"}
+            name="phone.countryCode"
             label="Phone"
             id="phone"
             className="w-fit"
@@ -45,7 +45,7 @@ function UserInfoPersonal() {
           <AuthInputField errors={errors} icon={faPhone} id="phone">
             <AuthInput
               register={register}
-              name={"phone"}
+              name={"phone.number"}
               icon={faPhone}
               props={{ placeholder: "123-456-789", id: "phone", type: "tel" }}
             />
@@ -55,7 +55,7 @@ function UserInfoPersonal() {
         <div className="flex items-end gap-3 text-left">
           <AuthSelect
             register={register}
-            name={"country"}
+            name={"address.country"}
             label="Address"
             id="country"
             className="w-fit"
@@ -70,7 +70,7 @@ function UserInfoPersonal() {
           <AuthInputField errors={errors} icon={faEarthAmericas} id="city">
             <AuthInput
               register={register}
-              name={"city"}
+              name={"address.city"}
               icon={faEarthAmericas}
               props={{
                 placeholder: "City",
@@ -101,7 +101,7 @@ function UserInfoPersonal() {
             )}
         </div>
 
-        <FileUpload register={register} name={"image"} icon={faImage} />
+        <FileUpload register={register} name={"profilePicture"} icon={faImage} />
       </div>
     </UserInfoLayout>
   );
