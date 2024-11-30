@@ -1,4 +1,4 @@
-import { useForm, SubmitHandler, Path } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import {
   faCircleUser,
   faEarthAmericas,
