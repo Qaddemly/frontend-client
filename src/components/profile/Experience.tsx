@@ -1,14 +1,34 @@
+import { SubmitHandler, useForm } from "react-hook-form";
+import AuthButton from "../auth/AuthButton";
 import AuthInput from "../auth/AuthInput";
 import AuthInputField from "../auth/AuthInputField";
 import AuthSelect from "../auth/AuthSelect";
 import AuthStartToEndDate from "../auth/AuthStartToEndDate";
 
 function Experience() {
+  type TExperience = {
+    job_title: string;
+    employment_type: string;
+    company_name: string;
+    location: string;
+    location_type: string;
+  };
+  const {
+    register,
+    handleSubmit,
+    // formState: { errors },
+  } = useForm<TExperience>();
+  const submitForm: SubmitHandler<TExperience> = (data) => {
+    console.log(data);
+  };
+
   return (
-    <div>
+    <form onSubmit={handleSubmit(submitForm)}>
       <div className="mt-10 flex space-x-5">
         <AuthInputField id="Job title" label="Job title">
           <AuthInput
+            register={register}
+            name="job_title"
             props={{
               placeholder: "Ex. Retail Sales Manager",
               type: "text",
@@ -17,7 +37,12 @@ function Experience() {
           />
         </AuthInputField>
 
-        <AuthSelect label="Employment type" id="employmentType">
+        <AuthSelect
+          label="Employment type"
+          register={register}
+          name="employment_type"
+          id="employmentType"
+        >
           <option value="fullTime">Full Time</option>
           <option value="internship">Internship</option>
           <option value="partTime">Part Time</option>
@@ -26,6 +51,8 @@ function Experience() {
       <div className="mt-10 flex">
         <AuthInputField id="Company name" label="Company name">
           <AuthInput
+            register={register}
+            name="company_name"
             props={{
               placeholder: "Ex. Microsoft",
               type: "text",
@@ -37,6 +64,8 @@ function Experience() {
       <div className="mt-10 flex space-x-5">
         <AuthInputField id="location" label="Location">
           <AuthInput
+            register={register}
+            name="location"
             props={{
               id: "location",
               type: "text",
@@ -44,12 +73,16 @@ function Experience() {
             }}
           />
         </AuthInputField>
-        <AuthSelect label="Location type" id="locationType">
+        <AuthSelect
+          register={register}
+          name="location_type"
+          label="Location type"
+          id="locationType"
+        >
           <option value="insite">Insite</option>
           <option value="remote">Remote</option>
         </AuthSelect>
       </div>
-
       <div className="mb-10 mt-10 flex items-center">
         <input
           id="green-checkbox"
@@ -62,8 +95,14 @@ function Experience() {
           I am currently working in this role
         </label>
       </div>
-      <AuthStartToEndDate />
-    </div>
+      {/* <AuthStartToEndDate
+        startDate="startEducationDate"
+        endDate="endEducationDate"
+        register={register}
+      /> */}
+      {/* <AuthStartToEndDate /> */}
+      <AuthButton className="ml-[650px] px-2 py-2">Save Changes</AuthButton>
+    </form>
   );
 }
 
