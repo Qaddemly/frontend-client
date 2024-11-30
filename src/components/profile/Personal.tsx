@@ -1,4 +1,6 @@
+import { useForm, SubmitHandler, Path } from "react-hook-form";
 import {
+  faCircleUser,
   faEarthAmericas,
   faImage,
   faPhone,
@@ -10,12 +12,27 @@ import AuthInputField from "../auth/AuthInputField";
 import AuthSelect from "../auth/AuthSelect";
 import { Country, Prefixes } from "../auth";
 import DatePicker from "../auth/DatePicker";
+import AuthButton from "../auth/AuthButton";
 
 function Personal() {
   const coutnryValues = Object.values(Country);
   const prefixValues = Object.values(Prefixes).filter(
     (value) => typeof value == "string",
   );
+
+  type TPersonal = {
+    firstName: string;
+    lastName: string;
+    phone: { number: string; countryCode: Prefixes };
+    address: { country: Country; city: string };
+    profilePicture: string;
+    dateOfBirth: string;
+  };
+
+  const { register, handleSubmit } = useForm<TPersonal>();
+  const submitForm: SubmitHandler<TPersonal> = (data) => {
+    console.log(data);
+  };
 
   return (
     <div className="mt-5 flex">
@@ -36,10 +53,13 @@ function Personal() {
         </div>
       </div>
 
-      <div className="mt-10 px-10">
+      <form className="mt-10 px-10" onSubmit={handleSubmit(submitForm)}>
         <div className="mt-10 flex space-x-5">
-          <AuthInputField id="firstName" label="FirstName">
+          <AuthInputField id="firstName" icon={faCircleUser} label="FirstName">
             <AuthInput
+              register={register}
+              name="firstName"
+              icon={faCircleUser}
               props={{
                 placeholder: "John",
                 type: "text",
@@ -48,8 +68,11 @@ function Personal() {
             />
           </AuthInputField>
 
-          <AuthInputField id="lastName" label="LastName">
+          <AuthInputField id="lastName" icon={faCircleUser} label="LastName">
             <AuthInput
+              register={register}
+              name="lastName"
+              icon={faCircleUser}
               props={{
                 placeholder: "Tom",
                 type: "text",
@@ -61,7 +84,8 @@ function Personal() {
 
         <div className="mt-10 flex items-end gap-3">
           <AuthSelect
-            name={"prefix"}
+            register={register}
+            name="phone.countryCode"
             label="Phone"
             id="phone"
             className="w-fit"
@@ -78,14 +102,21 @@ function Personal() {
 
           <AuthInputField icon={faPhone} id="phone">
             <AuthInput
-              name={"phone"}
+              register={register}
+              name={"phone.number"}
               icon={faPhone}
               props={{ placeholder: "123-456-789", id: "phone", type: "tel" }}
             />
           </AuthInputField>
         </div>
         <div className="mt-10 flex items-end gap-3 text-left">
-          <AuthSelect label="Address" id="country" className="w-fit">
+          <AuthSelect
+            register={register}
+            name={"address.country"}
+            label="Address"
+            id="country"
+            className="w-fit"
+          >
             <option value="" disabled>
               Select a country
             </option>
@@ -98,6 +129,8 @@ function Personal() {
 
           <AuthInputField icon={faEarthAmericas} id="city">
             <AuthInput
+              register={register}
+              name="address.city"
               icon={faEarthAmericas}
               props={{
                 placeholder: "City",
@@ -112,9 +145,10 @@ function Personal() {
           <label htmlFor="dateOfBirth" className="font-medium">
             Date of Birth
           </label>
-          <DatePicker name={"dateOfBirth"} />
+          <DatePicker name={"dateOfBirth"} register={register} />
         </div>
-      </div>
+        <AuthButton className="ml-[450px]">Save Changes</AuthButton>
+      </form>
     </div>
   );
 }
