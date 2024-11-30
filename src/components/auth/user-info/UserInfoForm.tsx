@@ -7,11 +7,26 @@ import UserInfoEducation from "./UserInfoEducation";
 import UserInfoExperience from "./UserInfoExperience";
 import UserInfoSoftSkills from "./UserInfoSoftSkills";
 import UserInfoResume from "./UserInfoResume";
-import { formSettings } from "..";
+import { Country, EmploymentType, formSettings, LocationType } from "..";
 
 function UserInfoForm() {
-  const methods = useForm<IUserInfo>(formSettings);
-  const { setStep, step, languages, skills } = useUserInfo();
+  const methods = useForm<IUserInfo>({
+    ...formSettings,
+    defaultValues: {
+      experience: {
+        jobTitle: "",
+        employmentType: EmploymentType.FullTime,
+        companyName: "",
+        location: Country.USA,
+        locationType: LocationType.OnSite,
+        stillWorking: false,
+        startJobDate: "",
+        endJobDate: "",
+      },
+    },
+  });
+  const { setStep, step, languages, skills, experience, setExperience } =
+    useUserInfo();
 
   const onSubmit: SubmitHandler<IUserInfo> = async (data) => {
     const isValid = await methods.trigger();
@@ -29,26 +44,39 @@ function UserInfoForm() {
           value.length !== 0,
       ),
     );
-    if (data.city === "") {
+    if (data.address.city === "") {
       filteredData = Object.fromEntries(
-        Object.entries(filteredData).filter(([key]) => key !== "country"),
+        Object.entries(filteredData).filter(([key]) => key !== "address"),
       );
     }
-    if (data.phone === "") {
+    if (data.phone.number === "") {
       filteredData = Object.fromEntries(
-        Object.entries(filteredData).filter(([key]) => key !== "prefix"),
+        Object.entries(filteredData).filter(([key]) => key !== "phone"),
       );
-      if (data.jobTitle === "") {
-        filteredData = Object.fromEntries(
-          Object.entries(filteredData).filter(
-            ([key]) =>
-              key !== "location" &&
-              key !== "locationType" &&
-              key !== "currentlyWork" &&
-              key !== "employmentType",
-          ),
-        );
-      }
+    }
+    if (data.experience.jobTitle.length) {
+      filteredData = Object.fromEntries(
+        Object.entries(filteredData).filter(([key]) => key !== "jobTitle"),
+      );
+      const newExperience = [
+        ...experience,
+        {
+          jobTitle: data.experience.jobTitle,
+          employmentType: data.experience.employmentType,
+          companyName: data.experience.companyName,
+          location: data.experience.location,
+          locationType: data.experience.locationType,
+          stillWorking: data.experience.stillWorking,
+          startJobDate: data.experience.startJobDate,
+          endJobDate: data.experience.endJobDate,
+        },
+      ];
+      setExperience(newExperience);
+      filteredData = { ...filteredData, experience: newExperience };
+    } else {
+      filteredData = Object.fromEntries(
+        Object.entries(filteredData).filter(([key]) => key !== "experience"),
+      );
     }
     if (languages.length) filteredData = { ...filteredData, languages };
     if (skills.length) filteredData = { ...filteredData, softSkills: skills };

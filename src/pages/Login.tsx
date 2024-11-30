@@ -9,13 +9,22 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import AuthInputField from "../components/auth/AuthInputField";
 import { useState } from "react";
 import AuthInput from "../components/auth/AuthInput";
-interface ILoginInputs {
+import { useLoginMutation } from "../components/auth/api/authApi";
+export interface ILoginInputs {
   email: string;
   password: string;
+}
+interface IError {
+  details: number;
+  data: {
+    message: string;
+    status: string;
+  };
 }
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [login] = useLoginMutation();
 
   const {
     register,
@@ -23,8 +32,15 @@ function Login() {
     formState: { errors },
   } = useForm<ILoginInputs>();
 
-  const onSubmit: SubmitHandler<ILoginInputs> = (data) => {
+  const onSubmit: SubmitHandler<ILoginInputs> = async (data) => {
     console.log(data);
+    try {
+      const res = await login(data).unwrap();
+      console.log(res);
+    } catch (err) {
+      const error = err as IError;
+      console.log(error.data.message);
+    }
   };
 
   return (
@@ -44,8 +60,6 @@ function Login() {
         <div className="mb-8 space-y-3">
           <AuthInputField
             errors={errors}
-            showPassword={showPassword}
-            setShowPassword={setShowPassword}
             label="Email Address"
             id="email"
             icon={faEnvelope}
@@ -54,7 +68,6 @@ function Login() {
               register={register}
               name="email"
               options={{ required: "email is required" }}
-              showPassword={showPassword}
               icon={faEnvelope}
               props={{
                 type: "email",
@@ -66,6 +79,8 @@ function Login() {
           </AuthInputField>
 
           <AuthInputField
+            showPassword={showPassword}
+            setShowPassword={setShowPassword}
             errors={errors}
             label="Password"
             id="password"
@@ -74,6 +89,7 @@ function Login() {
             <AuthInput
               register={register}
               name="password"
+              showPassword={showPassword}
               options={{
                 required: "password is required",
                 minLength: { value: 8, message: "min value 8 charcters" },
