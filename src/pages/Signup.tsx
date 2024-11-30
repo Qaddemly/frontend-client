@@ -9,41 +9,53 @@ import AuthLayout from "../layout/AuthLayout";
 import AuthButton from "../components/auth/AuthButton";
 import AuthLink from "../components/auth/AuthLink";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { SubmitHandler } from "react-hook-form";
 import AuthInputField from "../components/auth/AuthInputField";
 import AuthInput from "../components/auth/AuthInput";
 import { useForm } from "react-hook-form";
 import { formSettings } from "../components/auth";
 
-interface ISignupInputs {
+interface ISignupInputsStep1 {
+  email: string;
+}
+interface ISignupInputsStep2 {
   firstName: string;
   lastName: string;
   password: string;
-  confirmPassword: string;
+  passwordConfirm: string;
 }
+
+export interface ISignupInputs extends ISignupInputsStep1, ISignupInputsStep2 {}
 
 function Signup() {
   const [step, setStep] = useState(1);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm<{ email: string }>(formSettings);
 
   const {
-    watch,
+    register: register1,
+    formState: { errors: errors1 },
+    handleSubmit: handleSubmit1,
+    getValues: getValues1,
+  } = useForm<ISignupInputsStep1>(formSettings);
+
+  const {
     register: register2,
     formState: { errors: errors2 },
     handleSubmit: handleSubmit2,
-  } = useForm<ISignupInputs>({
+    getValues: getValues2,
+  } = useForm<ISignupInputsStep2>({
     mode: "onBlur",
     reValidateMode: "onChange",
     criteriaMode: "all",
     shouldFocusError: true,
   });
+
+  const onSubmit: SubmitHandler<ISignupInputsStep2> = (data) => {
+    const fullData: ISignupInputs = { ...data, email: getValues1("email") };
+    console.log(fullData);
+  };
 
   return (
     <AuthLayout>
@@ -64,17 +76,17 @@ function Signup() {
           </div>
 
           <form
-            onSubmit={handleSubmit(() => setStep((s) => s + 1))}
+            onSubmit={handleSubmit1(() => setStep((s) => s + 1))}
             className="mt-8 text-left"
           >
             <AuthInputField
-              errors={errors}
+              errors={errors1}
               id="email"
               icon={faEnvelope}
               label="Email Address"
             >
               <AuthInput
-                register={register}
+                register={register1}
                 name="email"
                 icon={faEnvelope}
                 options={{ required: "email is required" }}
@@ -93,8 +105,11 @@ function Signup() {
 
       {step == 2 && (
         <>
-          <div className="my-8 space-y-5 text-left">
-            <form onSubmit={handleSubmit2(() => {})} className="flex gap-5">
+          <form
+            onSubmit={handleSubmit2(onSubmit)}
+            className="my-8 space-y-5 text-left"
+          >
+            <div className="flex gap-5">
               <AuthInputField
                 id="firstName"
                 label="First Name"
@@ -124,7 +139,7 @@ function Signup() {
                   icon={faCircleUser}
                 />
               </AuthInputField>
-            </form>
+            </div>
             <AuthInputField
               showPassword={showPassword}
               setShowPassword={setShowPassword}
@@ -153,7 +168,7 @@ function Signup() {
             <AuthInputField
               showPassword={showConfirmPassword}
               setShowPassword={setShowConfirmPassword}
-              id="confirmPassword"
+              id="passwordConfirm"
               label="Confirm Password"
               errors={errors2}
               icon={faLock}
@@ -165,11 +180,11 @@ function Signup() {
                   required: "confirm password is required",
                   minLength: { value: 8, message: "min value 8 charcters" },
                   validate: (value) =>
-                    value == watch("password") || "password do not match",
+                    getValues2("password") === value || "password do not match",
                 }}
-                name="confirmPassword"
+                name="passwordConfirm"
                 props={{
-                  id: "confirmPassword",
+                  id: "passwordConfirm",
                   placeholder: "•••••••••",
                   type: "password",
                 }}
@@ -177,10 +192,8 @@ function Signup() {
               />
             </AuthInputField>
 
-            <AuthButton onClick={() => navigate("/emailVerfiy")}>
-              Continue
-            </AuthButton>
-          </div>
+            <AuthButton className="w-full">Continue</AuthButton>
+          </form>
         </>
       )}
       <AuthLink to="/login" msg="Already have an account ?" text="Login" />
