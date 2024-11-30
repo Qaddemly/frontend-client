@@ -8,7 +8,7 @@ function Profile() {
     <>
       <div>
         <NavProfile />
-        <div className="flex gap-10">
+        <div className="flex">
           <Sidebar />
           <div>
             <Head />
