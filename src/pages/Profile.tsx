@@ -1,17 +1,19 @@
 import { Outlet } from "react-router-dom";
-import Navbar from "../components/home/Navbar";
 import Sidebar from "../components/profile/Sidebar";
 import Head from "../components/profile/Head";
+import YourResume from "../components/profile/YourResume";
+import NavProfile from "../components/profile/NavProfile";
 function Profile() {
   return (
     <>
       <div>
-        <Navbar />
+        <NavProfile />
         <div className="flex gap-10">
           <Sidebar />
           <div>
             <Head />
             <Outlet />
+            <YourResume />
           </div>
         </div>
       </div>
