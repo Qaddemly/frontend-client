@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function YourResume() {
   return (
-    <div className="mb-10">
+    <div className="mb-10 px-6">
       <span className="text-xl font-semibold">Your CV/Resume</span>
       <ul className="mt-5 flex items-center justify-between space-x-7">
         <li className="space-x-2 rounded-md bg-gray-200 px-5 py-3">

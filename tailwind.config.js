@@ -11,6 +11,7 @@ export default {
       white: "#FFFFFF",
       background: "#F3F2F0",
       "light-danger": "#FEEEEF",
+      offWhite: "#E4E5E8",
       "gray-100": "#ccc",
       "gray-200": "#D9D9D9",
       "gray-300": "#999",

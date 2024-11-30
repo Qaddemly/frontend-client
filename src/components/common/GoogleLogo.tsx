@@ -1,4 +1,4 @@
-function GoogleLogo() {
+function GoogleLogo({ className }: { className?: string }) {
   return (
     <svg
       width="30px"
@@ -7,6 +7,7 @@ function GoogleLogo() {
       data-name="Layer 1"
       id="Layer_1"
       xmlns="http://www.w3.org/2000/svg"
+      className={className}
     >
       <path
         d="M23.75,16A7.7446,7.7446,0,0,1,8.7177,18.6259L4.2849,22.1721A13.244,13.244,0,0,0,29.25,16"

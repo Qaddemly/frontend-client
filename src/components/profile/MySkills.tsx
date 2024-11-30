@@ -24,14 +24,13 @@ function MySkills() {
               placeholder: "Ex. creative, problem solving, ... ",
               type: "text",
               id: "My-Skills",
+              className: "w-[30rem]",
             }}
           />
         </AuthInputField>
       </div>
 
-      <AuthButton className="my-5 ml-[450px] px-2 py-2">
-        Add New Skill
-      </AuthButton>
+      <AuthButton className="my-5 px-2 py-2">Add New Skill</AuthButton>
 
       <div className="mb-10">
         <AuthInputField id="Your-languages" label="Your languages">
@@ -42,9 +41,11 @@ function MySkills() {
               placeholder: "Ex. Arabic, English, French ...  ",
               type: "text",
               id: "Your-languages",
+              className: "w-[30rem]",
             }}
           />
         </AuthInputField>
+        <AuthButton className="my-5 px-2 py-2">Add New Language</AuthButton>
       </div>
     </form>
   );
