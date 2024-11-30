@@ -1,12 +1,25 @@
+import { SubmitHandler, useForm } from "react-hook-form";
 import AuthInput from "../auth/AuthInput";
 import AuthInputField from "../auth/AuthInputField";
+import AuthButton from "../auth/AuthButton";
 
 function MySkills() {
+  type TMySkills = {
+    my_skills: string;
+    languages: string;
+  };
+
+  const { register, handleSubmit } = useForm<TMySkills>();
+  const submitForm: SubmitHandler<TMySkills> = (data) => {
+    console.log(data);
+  };
   return (
-    <div>
+    <form onSubmit={handleSubmit(submitForm)}>
       <div className="mt-10">
         <AuthInputField id="My-Skills" label="My Skills">
           <AuthInput
+            register={register}
+            name="my_skills"
             props={{
               placeholder: "Ex. creative, problem solving, ... ",
               type: "text",
@@ -16,15 +29,15 @@ function MySkills() {
         </AuthInputField>
       </div>
 
-      <div className="my-5 pl-[450px]">
-        <button className="mt-5 rounded-md border-2 border-main bg-main px-4 py-2 text-white">
-          Add New Skill
-        </button>
-      </div>
+      <AuthButton className="my-5 ml-[450px] px-2 py-2">
+        Add New Skill
+      </AuthButton>
 
-      <div className="">
+      <div className="mb-10">
         <AuthInputField id="Your-languages" label="Your languages">
           <AuthInput
+            register={register}
+            name="languages"
             props={{
               placeholder: "Ex. Arabic, English, French ...  ",
               type: "text",
@@ -33,7 +46,7 @@ function MySkills() {
           />
         </AuthInputField>
       </div>
-    </div>
+    </form>
   );
 }
 

@@ -29,7 +29,11 @@ function Personal() {
     dateOfBirth: string;
   };
 
-  const { register, handleSubmit } = useForm<TPersonal>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<TPersonal>();
   const submitForm: SubmitHandler<TPersonal> = (data) => {
     console.log(data);
   };
@@ -146,8 +150,15 @@ function Personal() {
             Date of Birth
           </label>
           <DatePicker name={"dateOfBirth"} register={register} />
+
+          {errors.dateOfBirth &&
+            typeof errors.dateOfBirth?.message === "string" && (
+              <p className="text-sm text-danger">
+                {errors.dateOfBirth.message}
+              </p>
+            )}
         </div>
-        <AuthButton className="ml-[450px]">Save Changes</AuthButton>
+        <AuthButton className="ml-[650px] px-2 py-2">Save Changes</AuthButton>
       </form>
     </div>
   );
