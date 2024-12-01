@@ -11,15 +11,12 @@ import { useState } from "react";
 import AuthInput from "../components/auth/AuthInput";
 import { useLoginMutation } from "../components/auth/api/authApi";
 import toast from "react-hot-toast";
-import { IError } from "../interfaces/Auth.interfaces";
-export interface ILoginInputs {
-  email: string;
-  password: string;
-}
+import { IError, ILoginInputs } from "../interfaces/Auth.interfaces";
+import Loader from "../components/common/Loader";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const [login] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
 
   const {
@@ -29,10 +26,8 @@ function Login() {
   } = useForm<ILoginInputs>();
 
   const onSubmit: SubmitHandler<ILoginInputs> = async (data) => {
-    console.log(data);
     try {
       const res = await login(data).unwrap();
-      console.log(res);
       toast.success(`Welcome ${res.user.firstName}`);
       navigate("/userInfo");
     } catch (err) {
@@ -43,6 +38,7 @@ function Login() {
 
   return (
     <AuthLayout>
+      {isLoading && <Loader />}
       <Logo />
       <p className="text-secondary">Welcome Back</p>
 

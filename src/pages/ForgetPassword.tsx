@@ -6,22 +6,39 @@ import AuthInput from "../components/auth/AuthInput";
 import AuthButton from "../components/auth/AuthButton";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { formSettings } from "../components/auth";
-interface IForgetPassword {
-  email: string;
-}
+import { IError, IForgetMyPassword } from "../interfaces/Auth.interfaces";
+import { useForgetMyPasswordMutation } from "../components/auth/api/authApi";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import Loader from "../components/common/Loader";
 
 function ForgetPassword() {
+  const [forgetMyPassword, { isLoading }] = useForgetMyPasswordMutation();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IForgetPassword>(formSettings);
+  } = useForm<IForgetMyPassword>(formSettings);
 
-  const onSubmit: SubmitHandler<IForgetPassword> = (data) => {
+  const onSubmit: SubmitHandler<IForgetMyPassword> = async (data) => {
     console.log(data);
+    try {
+      const res = await forgetMyPassword(data).unwrap();
+      localStorage.setItem(
+        "resetVerificationToken",
+        res.resetVerificationToken,
+      );
+      toast.success("Check your email");
+      navigate("/emailVerfiy");
+    } catch (err) {
+      const error = err as IError;
+      toast.error(error.data.message);
+    }
   };
   return (
     <AuthLayout>
+      {isLoading && <Loader />}
       <Logo />
       <p className="mt-5 text-xl font-medium">Forget Password</p>
       <p className="text-sm text-gray-300">

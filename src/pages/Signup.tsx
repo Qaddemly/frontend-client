@@ -14,29 +14,27 @@ import AuthInputField from "../components/auth/AuthInputField";
 import AuthInput from "../components/auth/AuthInput";
 import { useForm } from "react-hook-form";
 import { formSettings } from "../components/auth";
-import { useSignUpMutation } from "../components/auth/api/authApi";
-import { IError } from "../interfaces/Auth.interfaces";
+import {
+  useSignUpMutation,
+  useSignUpWithGoogleMutation,
+} from "../components/auth/api/authApi";
+import {
+  IError,
+  ISignupInputs,
+  ISignupInputsStep1,
+  ISignupInputsStep2,
+} from "../interfaces/Auth.interfaces";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-
-interface ISignupInputsStep1 {
-  email: string;
-}
-interface ISignupInputsStep2 {
-  firstName: string;
-  lastName: string;
-  password: string;
-  confirmPassword: string;
-}
-
-export interface ISignupInputs extends ISignupInputsStep1, ISignupInputsStep2 {}
+import Loader from "../components/common/Loader";
 
 function Signup() {
   const [step, setStep] = useState(1);
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [signUp] = useSignUpMutation();
+  const [signUp, { isLoading }] = useSignUpMutation();
+  const [signUpWithGoogle] = useSignUpWithGoogleMutation();
 
   const {
     register: register1,
@@ -59,7 +57,6 @@ function Signup() {
 
   const onSubmit: SubmitHandler<ISignupInputsStep2> = async (data) => {
     const fullData: ISignupInputs = { ...data, email: getValues1("email") };
-    console.log(fullData);
     try {
       const res = await signUp(fullData).unwrap();
       console.log(res);
@@ -72,9 +69,19 @@ function Signup() {
     }
   };
 
+  async function handleSignUpWithGoogle() {
+    try {
+      const res = await signUpWithGoogle().unwrap();
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <AuthLayout>
       <Logo />
+      {isLoading && <Loader />}
       <p className="text-secondary">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci
         laudantium cum amet
@@ -82,7 +89,10 @@ function Signup() {
 
       {step == 1 && (
         <>
-          <GoogleButton text="Sign up with Google" />
+          <GoogleButton
+            text="Sign up with Google"
+            onClick={handleSignUpWithGoogle}
+          />
 
           <div className="mt-6 flex items-center gap-2">
             <div className="w-[184px] border border-gray-100"></div>
