@@ -1,11 +1,30 @@
+import toast from "react-hot-toast";
+import { useActivateEmailMutation } from "../components/auth/api/authApi";
 import AuthLink from "../components/auth/AuthLink";
 import ActivationInputs from "../components/auth/signup/ActivationInputs";
 import Logo from "../components/common/Logo";
 import AuthLayout from "../layout/AuthLayout";
+import { useNavigate } from "react-router-dom";
+import { IError } from "../interfaces/Auth.interfaces";
 
 function EmailVerfiy() {
-  function handleSubmit(code: string) {
-    console.log(code);
+  const [activateEmail] = useActivateEmailMutation();
+  const navigate = useNavigate();
+
+  async function handleSubmit(code: string) {
+    const activationToken = localStorage.getItem("activationToken");
+    if (!activationToken) {
+      toast.error("Activation token is missing");
+      return;
+    }
+    try {
+      const res = await activateEmail({ code, activationToken }).unwrap();
+      toast.success(res.message);
+      navigate("/login");
+    } catch (err) {
+      const error = err as IError;
+      toast.error(error.data.message);
+    }
   }
 
   return (

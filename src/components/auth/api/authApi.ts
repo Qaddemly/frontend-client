@@ -1,70 +1,43 @@
-import { Languages } from "..";
+import {
+  IActivateEmailResponse,
+  IEmailVerfiyInputs,
+  ILoginResponse,
+  ISignupResponse,
+} from "../../../interfaces/Auth.interfaces";
 import { ILoginInputs } from "../../../pages/Login";
+import { ISignupInputs } from "../../../pages/Signup";
 import { apiSlice } from "../../../services/apiSlice";
 
-export interface SuccessLoginResponse {
-  success: boolean;
-  user: User;
-  accessToken: string;
-}
-
-export interface User {
-  _id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  password: string;
-  skills: string[];
-  role: string;
-  active: boolean;
-  isActivated: boolean;
-  experience: Experience[];
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-  passwordChangedAt: string;
-  address: Address;
-  dateOfBirth: string;
-  phone: Phone;
-  profilePicture: string;
-  resume: string;
-  languages: Languages[];
-}
-
-export interface Experience {
-  jobTitle: string;
-  employmentType: string;
-  companyName: string;
-  location: string;
-  locationType: string;
-  stillWorking: boolean;
-  startDate: string;
-  _id: string;
-}
-
-export interface Address {
-  country: string;
-  city: string;
-  _id: string;
-}
-
-export interface Phone {
-  countryCode: number;
-  number: string;
-  _id: string;
-}
+const BASE_AUTH_URL = "/auth";
 
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation<SuccessLoginResponse, ILoginInputs>({
+    login: builder.mutation<ILoginResponse, ILoginInputs>({
       query: (data) => ({
-        url: "/auth/login",
+        url: `${BASE_AUTH_URL}/login`,
         method: "POST",
         body: data,
       }),
     }),
+    signUp: builder.mutation<ISignupResponse, ISignupInputs>({
+      query: (data) => ({
+        url: `${BASE_AUTH_URL}/signUp`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    activateEmail: builder.mutation<IActivateEmailResponse, IEmailVerfiyInputs>(
+      {
+        query: ({ code, activationToken }) => ({
+          url: `${BASE_AUTH_URL}/activateEmail/${activationToken}`,
+          method: "PUT",
+          body: { code },
+        }),
+      },
+    ),
   }),
   overrideExisting: false,
 });
 
-export const { useLoginMutation } = authApi;
+export const { useLoginMutation, useSignUpMutation, useActivateEmailMutation } =
+  authApi;

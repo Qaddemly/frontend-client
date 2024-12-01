@@ -14,6 +14,10 @@ import AuthInputField from "../components/auth/AuthInputField";
 import AuthInput from "../components/auth/AuthInput";
 import { useForm } from "react-hook-form";
 import { formSettings } from "../components/auth";
+import { useSignUpMutation } from "../components/auth/api/authApi";
+import { IError } from "../interfaces/Auth.interfaces";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 interface ISignupInputsStep1 {
   email: string;
@@ -22,16 +26,17 @@ interface ISignupInputsStep2 {
   firstName: string;
   lastName: string;
   password: string;
-  passwordConfirm: string;
+  confirmPassword: string;
 }
 
 export interface ISignupInputs extends ISignupInputsStep1, ISignupInputsStep2 {}
 
 function Signup() {
   const [step, setStep] = useState(1);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [signUp] = useSignUpMutation();
 
   const {
     register: register1,
@@ -52,9 +57,19 @@ function Signup() {
     shouldFocusError: true,
   });
 
-  const onSubmit: SubmitHandler<ISignupInputsStep2> = (data) => {
+  const onSubmit: SubmitHandler<ISignupInputsStep2> = async (data) => {
     const fullData: ISignupInputs = { ...data, email: getValues1("email") };
     console.log(fullData);
+    try {
+      const res = await signUp(fullData).unwrap();
+      console.log(res);
+      navigate("/emailVerfiy");
+      toast.success(res.message);
+      localStorage.setItem("activationToken", res.activationToken);
+    } catch (err) {
+      const error = err as IError;
+      toast.error(error.data.message);
+    }
   };
 
   return (
@@ -168,7 +183,7 @@ function Signup() {
             <AuthInputField
               showPassword={showConfirmPassword}
               setShowPassword={setShowConfirmPassword}
-              id="passwordConfirm"
+              id="confirmPassword"
               label="Confirm Password"
               errors={errors2}
               icon={faLock}
@@ -182,9 +197,9 @@ function Signup() {
                   validate: (value) =>
                     getValues2("password") === value || "password do not match",
                 }}
-                name="passwordConfirm"
+                name="confirmPassword"
                 props={{
-                  id: "passwordConfirm",
+                  id: "confirmPassword",
                   placeholder: "•••••••••",
                   type: "password",
                 }}
