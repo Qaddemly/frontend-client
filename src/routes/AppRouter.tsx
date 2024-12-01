@@ -11,6 +11,7 @@ import Education from "../components/profile/Education";
 import ForgetPassword from "../pages/ForgetPassword";
 import SetNewPassword from "../pages/SetNewPassword";
 import MySkills from "../components/profile/MySkills";
+import { Toaster } from "react-hot-toast";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -33,7 +34,27 @@ const router = createBrowserRouter([
 ]);
 
 function AppRouter() {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <Toaster
+        position="top-center"
+        gutter={12}
+        containerStyle={{ margin: "8px" }}
+        toastOptions={{
+          success: { duration: 3000 },
+          error: { duration: 3000 },
+          style: {
+            fontSize: "16px",
+            maxWidth: "500px",
+            padding: "16px 24px",
+            backgroundColor: "white",
+            color: "var(--color-grey-700)",
+          },
+        }}
+      />
+    </>
+  );
 }
 
 export default AppRouter;

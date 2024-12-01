@@ -1,5 +1,5 @@
 import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "../layout/AuthLayout";
 import Logo from "../components/common/Logo";
 import GoogleButton from "../components/auth/GoogleButton";
@@ -10,21 +10,14 @@ import AuthInputField from "../components/auth/AuthInputField";
 import { useState } from "react";
 import AuthInput from "../components/auth/AuthInput";
 import { useLoginMutation } from "../components/auth/api/authApi";
-export interface ILoginInputs {
-  email: string;
-  password: string;
-}
-interface IError {
-  details: number;
-  data: {
-    message: string;
-    status: string;
-  };
-}
+import toast from "react-hot-toast";
+import { IError, ILoginInputs } from "../interfaces/Auth.interfaces";
+import Loader from "../components/common/Loader";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const [login] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -33,18 +26,19 @@ function Login() {
   } = useForm<ILoginInputs>();
 
   const onSubmit: SubmitHandler<ILoginInputs> = async (data) => {
-    console.log(data);
     try {
       const res = await login(data).unwrap();
-      console.log(res);
+      toast.success(`Welcome ${res.user.firstName}`);
+      navigate("/userInfo");
     } catch (err) {
       const error = err as IError;
-      console.log(error.data.message);
+      toast.error(error.data.message);
     }
   };
 
   return (
     <AuthLayout>
+      {isLoading && <Loader />}
       <Logo />
       <p className="text-secondary">Welcome Back</p>
 
