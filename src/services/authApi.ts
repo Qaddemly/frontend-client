@@ -5,16 +5,18 @@ import {
   IForgetMyPasswordResponse,
   ILoginInputs,
   ILoginResponse,
+  ILogoutResponse,
   IResendActivateCodeResponse,
   IResendForgetPasswordCodeResponse,
   ISetNewPasswordInputs,
   ISetNewPasswordResponse,
   ISignupInputs,
   ISignupResponse,
+  IUserInfoResponse,
   IVerifyForgetPasswordInputs,
   IVerifyForgetPasswordResponse,
-} from "../../../interfaces/Auth.interfaces";
-import { apiSlice } from "../../../services/apiSlice";
+} from "../interfaces/Auth.interfaces";
+import { apiSlice } from "./apiSlice";
 
 const BASE_AUTH_URL = "/auth";
 
@@ -38,6 +40,13 @@ export const authApi = apiSlice.injectEndpoints({
         url: `${BASE_AUTH_URL}/signUp`,
         method: "POST",
         body: data,
+      }),
+    }),
+    userInfo: builder.mutation<IUserInfoResponse, FormData>({
+      query: (formData) => ({
+        url: `${BASE_AUTH_URL}/completeRegistration`,
+        method: "PUT",
+        body: formData,
       }),
     }),
     activateEmail: builder.mutation<IActivateEmailResponse, IEmailVerfiyInputs>(
@@ -97,6 +106,12 @@ export const authApi = apiSlice.injectEndpoints({
         method: "PUT",
       }),
     }),
+    logout: builder.mutation<ILogoutResponse, void>({
+      query: () => ({
+        url: `${BASE_AUTH_URL}/logout`,
+        method: "POST",
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -105,10 +120,12 @@ export const {
   useLoginMutation,
   useSignUpWithGoogleMutation,
   useSignUpMutation,
+  useUserInfoMutation,
   useActivateEmailMutation,
   useForgetMyPasswordMutation,
   useVerifyForgetPasswordMutation,
   useSetNewPasswordMutation,
   useResendActivateCodeMutation,
   useResendForgetPasswordCodeMutation,
+  useLogoutMutation,
 } = authApi;

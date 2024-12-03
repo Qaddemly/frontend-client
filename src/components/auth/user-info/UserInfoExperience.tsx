@@ -32,8 +32,8 @@ function UserInfoExperience() {
         location: getValues("experience.location"),
         locationType: getValues("experience.locationType"),
         stillWorking: getValues("experience.stillWorking"),
-        startJobDate: getValues("experience.startJobDate"),
-        endJobDate: getValues("experience.endJobDate"),
+        startDate: getValues("experience.startDate"),
+        endDate: getValues("experience.endDate"),
       },
     ]);
     resetField("experience.jobTitle");
@@ -47,7 +47,7 @@ function UserInfoExperience() {
   }
 
   return (
-    <UserInfoLayout title="Eperience">
+    <UserInfoLayout title="Experience">
       <div className="flex flex-col gap-4 text-left">
         <AuthInputField
           icon={faBriefcase}
@@ -128,8 +128,8 @@ function UserInfoExperience() {
         </div>
 
         <AuthStartToEndDate
-          startDate={"experience.startJobDate"}
-          endDate={"experience.endJobDate"}
+          startDate={"experience.startDate"}
+          endDate={"experience.endDate"}
           register={register}
         />
 

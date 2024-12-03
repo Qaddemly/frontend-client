@@ -1,24 +1,31 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBriefcase, faFileLines } from "@fortawesome/free-solid-svg-icons";
-import { faBookmark } from "@fortawesome/free-solid-svg-icons";
-import { faGear } from "@fortawesome/free-solid-svg-icons";
+import { faChevronRight, faUser } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 function Sidebar() {
+  const [activeTab, setActiveTab] = useState("profile");
   return (
     <>
-      <div className="flex p-5">
-        <div className="h-[100vh] border-r border-r-gray-100">
-          <ul className="text-xl text-gray-600">
+      <div className="flex w-[20rem] flex-col gap-5 border-r border-r-gray-100 bg-[#eee]">
+        <div>
+          <p className="p-5 text-3xl font-medium">Settings</p>
+        </div>
+        <div className="">
+          <ul className="text-xl">
             <Link
               to="/profile/personal"
-              className="mb-6 flex cursor-pointer items-center rounded-sm px-2 hover:bg-main hover:text-white"
+              onClick={() => setActiveTab("profile")}
+              className={`flex cursor-pointer items-center justify-between rounded-sm border-b-2 border-b-[#eee] p-5 hover:border-b-main ${activeTab === "profile" ? "border-l-4 border-l-main bg-white" : "border-l-0"}`}
             >
-              <FontAwesomeIcon icon={faFileLines} className="" />
-              <span className="ml-4">Profile</span>
+              <div className="flex items-center gap-2">
+                <FontAwesomeIcon icon={faUser} />
+                <span>Profile</span>
+              </div>
+              <FontAwesomeIcon icon={faChevronRight} className="text-sm" />
             </Link>
 
-            <li className="mb-6 flex cursor-pointer items-center rounded-sm px-2 hover:bg-main hover:text-white">
+            {/* <li className="mb-6 flex cursor-pointer items-center rounded-sm px-2 hover:bg-main hover:text-white">
               <FontAwesomeIcon icon={faFileLines} className="" />
               <span className="ml-4">Overview</span>
             </li>
@@ -32,12 +39,7 @@ function Sidebar() {
               <FontAwesomeIcon icon={faBookmark} />
 
               <span className="ml-4">Favorite Job</span>
-            </li>
-
-            <li className="mb-6 flex cursor-pointer items-center rounded-sm px-2 hover:bg-main hover:text-white">
-              <FontAwesomeIcon icon={faGear} className="" />
-              <span className="ml-4">Settings</span>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

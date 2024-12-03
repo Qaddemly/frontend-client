@@ -17,7 +17,7 @@ import { formSettings } from "../components/auth";
 import {
   useSignUpMutation,
   useSignUpWithGoogleMutation,
-} from "../components/auth/api/authApi";
+} from "../services/authApi";
 import {
   IError,
   ISignupInputs,
@@ -59,7 +59,6 @@ function Signup() {
     const fullData: ISignupInputs = { ...data, email: getValues1("email") };
     try {
       const res = await signUp(fullData).unwrap();
-      console.log(res);
       navigate("/emailVerfiy");
       toast.success(res.message);
       localStorage.setItem("activationToken", res.activationToken);

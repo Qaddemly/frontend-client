@@ -1,5 +1,5 @@
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import { IUserInfo } from "../../../interfaces/Auth.interfaces";
+import { IError, IUserInfo } from "../../../interfaces/Auth.interfaces";
 import { useUserInfo } from "../../../context/UserInfoContext";
 import SliderControllres from "./SliderControllres";
 import UserInfoPersonal from "./UserInfoPersonal";
@@ -8,8 +8,15 @@ import UserInfoExperience from "./UserInfoExperience";
 import UserInfoSoftSkills from "./UserInfoSoftSkills";
 import UserInfoResume from "./UserInfoResume";
 import { Country, EmploymentType, formSettings, LocationType } from "..";
+import { createFormData } from "../../../utils/helpers";
+import Loader from "../../common/Loader";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { useUserInfoMutation } from "../../../services/authApi";
 
 function UserInfoForm() {
+  const [userInfo, { isLoading }] = useUserInfoMutation();
+  const navigate = useNavigate();
   const methods = useForm<IUserInfo>({
     ...formSettings,
     defaultValues: {
@@ -20,8 +27,8 @@ function UserInfoForm() {
         location: Country.USA,
         locationType: LocationType.OnSite,
         stillWorking: false,
-        startJobDate: "",
-        endJobDate: "",
+        startDate: "",
+        endDate: "",
       },
     },
   });
@@ -67,8 +74,8 @@ function UserInfoForm() {
           location: data.experience.location,
           locationType: data.experience.locationType,
           stillWorking: data.experience.stillWorking,
-          startJobDate: data.experience.startJobDate,
-          endJobDate: data.experience.endJobDate,
+          startDate: data.experience.startDate,
+          endDate: data.experience.endDate,
         },
       ];
       setExperience(newExperience);
@@ -78,13 +85,32 @@ function UserInfoForm() {
         Object.entries(filteredData).filter(([key]) => key !== "experience"),
       );
     }
+    if (data.education?.university?.length === 0)
+      filteredData = Object.fromEntries(
+        Object.entries(filteredData).filter(([key]) => key !== "education"),
+      );
     if (languages.length) filteredData = { ...filteredData, languages };
     if (skills.length) filteredData = { ...filteredData, softSkills: skills };
     console.log(filteredData);
+    const formData = createFormData(filteredData);
+
+    // for (const [key, value] of formData.entries()) {
+    //   console.log(`${key}:`, value);
+    // }
+    if (Object.entries(filteredData).length)
+      try {
+        const res = await userInfo(formData).unwrap();
+        toast.success(res.message);
+        navigate("/");
+      } catch (err) {
+        const error = err as IError;
+        toast.error(error.data.message);
+      }
   };
 
   return (
     <FormProvider {...methods}>
+      {isLoading && <Loader />}
       <form className="relative" onSubmit={methods.handleSubmit(onSubmit)}>
         {step == 1 && <UserInfoPersonal />}
         {step == 2 && <UserInfoEducation />}

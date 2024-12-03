@@ -1,10 +1,5 @@
 import toast from "react-hot-toast";
-import {
-  useActivateEmailMutation,
-  useResendActivateCodeMutation,
-  useResendForgetPasswordCodeMutation,
-  useVerifyForgetPasswordMutation,
-} from "../components/auth/api/authApi";
+
 import AuthLink from "../components/auth/AuthLink";
 import ActivationInputs from "../components/auth/signup/ActivationInputs";
 import Logo from "../components/common/Logo";
@@ -12,6 +7,12 @@ import AuthLayout from "../layout/AuthLayout";
 import { useNavigate } from "react-router-dom";
 import { IError } from "../interfaces/Auth.interfaces";
 import Loader from "../components/common/Loader";
+import {
+  useActivateEmailMutation,
+  useResendActivateCodeMutation,
+  useResendForgetPasswordCodeMutation,
+  useVerifyForgetPasswordMutation,
+} from "../services/authApi";
 
 function EmailVerfiy() {
   const [activateEmail, { isLoading: isLoading1 }] = useActivateEmailMutation();

@@ -36,3 +36,32 @@ export const validateStartToEndDate = (
   if (startYear === endYear && startDay > endDay) return "date is not correct";
   else return true;
 };
+
+export const createFormData = (data: Record<string, unknown>) => {
+  const formData = new FormData();
+
+  const appendToFormData = (key: string, value: unknown) => {
+    if (Array.isArray(value)) {
+      value.forEach((item, index) => {
+        appendToFormData(`${key}[${index}]`, item);
+      });
+    } else if (value instanceof FileList) {
+      console.log("file");
+
+      formData.append(key, value[0]);
+    } else if (typeof value === "object" && value !== null) {
+      console.log("obj");
+
+      Object.entries(value).forEach(([nestedKey, nestedValue]) => {
+        appendToFormData(`${key}[${nestedKey}]`, nestedValue);
+      });
+    } else {
+      formData.append(key, String(value));
+    }
+  };
+  Object.entries(data).forEach(([key, value]) => {
+    appendToFormData(key, value);
+  });
+
+  return formData;
+};

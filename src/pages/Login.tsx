@@ -9,15 +9,26 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import AuthInputField from "../components/auth/AuthInputField";
 import { useState } from "react";
 import AuthInput from "../components/auth/AuthInput";
-import { useLoginMutation } from "../components/auth/api/authApi";
+import { useLoginMutation } from "../services/authApi";
 import toast from "react-hot-toast";
 import { IError, ILoginInputs } from "../interfaces/Auth.interfaces";
 import Loader from "../components/common/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../components/auth/UserSlice";
+import { RootState } from "../store/store";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [login, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user } = useSelector((state: RootState) => state.user);
+  const createAtMin = new Date(user.createdAt)
+    .toTimeString()
+    .split(" ")[0]
+    .split(":")[1];
+  const now = new Date();
+  const currentMin = now.getMinutes();
 
   const {
     register,
@@ -29,7 +40,9 @@ function Login() {
     try {
       const res = await login(data).unwrap();
       toast.success(`Welcome ${res.user.firstName}`);
-      navigate("/userInfo");
+      if (currentMin - Number(createAtMin) < 10) navigate("/userInfo");
+      else navigate("/");
+      dispatch(setUser(res.user));
     } catch (err) {
       const error = err as IError;
       toast.error(error.data.message);

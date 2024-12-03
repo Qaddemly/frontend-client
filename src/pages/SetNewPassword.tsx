@@ -8,7 +8,7 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { formSettings } from "../components/auth";
 import { IError, ISetNewPassword } from "../interfaces/Auth.interfaces";
-import { useSetNewPasswordMutation } from "../components/auth/api/authApi";
+import { useSetNewPasswordMutation } from "../services/authApi";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/common/Loader";

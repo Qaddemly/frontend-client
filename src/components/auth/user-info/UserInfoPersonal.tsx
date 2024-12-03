@@ -1,8 +1,4 @@
-import {
-  faEarthAmericas,
-  faImage,
-  faPhone,
-} from "@fortawesome/free-solid-svg-icons";
+import { faImage, faPhone } from "@fortawesome/free-solid-svg-icons";
 import DatePicker from "../DatePicker";
 import FileUpload from "../FileUpload";
 import UserInfoLayout from "../../../layout/UserInfoLayout";
@@ -22,7 +18,12 @@ function UserInfoPersonal() {
   const prefixValues = Object.values(Prefixes).filter(
     (value) => typeof value == "string",
   );
-  const coutnryValues = Object.values(Country);
+  // const countryValues = Object.values(Country).filter(
+  //   (value) => typeof value == "string",
+  // );
+  const countryKeys = Object.keys(Country).filter(
+    (key) => typeof Country[key as keyof typeof Country] === "string",
+  );
 
   return (
     <UserInfoLayout title="More infromations lead you to right profile">
@@ -35,9 +36,12 @@ function UserInfoPersonal() {
             id="phone"
             className="w-fit"
           >
-            {prefixValues.map((key) => (
-              <option key={key} value={key}>
-                {key} +({Prefixes[key as keyof typeof Prefixes]})
+            {prefixValues.map((value) => (
+              <option
+                key={value}
+                value={Prefixes[value as keyof typeof Prefixes]}
+              >
+                {value} +({Prefixes[value as keyof typeof Prefixes]})
               </option>
             ))}
           </AuthSelect>
@@ -47,7 +51,11 @@ function UserInfoPersonal() {
               register={register}
               name={"phone.number"}
               icon={faPhone}
-              props={{ placeholder: "123-456-789", id: "phone", type: "tel" }}
+              props={{
+                placeholder: "123-456-789",
+                id: "phone",
+                type: "number",
+              }}
             />
           </AuthInputField>
         </div>
@@ -60,18 +68,17 @@ function UserInfoPersonal() {
             id="country"
             className="w-fit"
           >
-            {coutnryValues.map((key) => (
-              <option key={key} value={key}>
-                {key}
+            {countryKeys.map((value) => (
+              <option key={value} value={value}>
+                {value}
               </option>
             ))}
           </AuthSelect>
 
-          <AuthInputField errors={errors} icon={faEarthAmericas} id="city">
+          <AuthInputField errors={errors} id="city">
             <AuthInput
               register={register}
               name={"address.city"}
-              icon={faEarthAmericas}
               props={{
                 placeholder: "City",
                 type: "text",
@@ -101,7 +108,12 @@ function UserInfoPersonal() {
             )}
         </div>
 
-        <FileUpload register={register} name={"profilePicture"} icon={faImage} />
+        <p className="mt-4 text-left font-medium">Profile Picture</p>
+        <FileUpload
+          register={register}
+          name={"profilePicture"}
+          icon={faImage}
+        />
       </div>
     </UserInfoLayout>
   );
