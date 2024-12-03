@@ -22,7 +22,7 @@ function UserInfoEducation() {
         >
           <AuthInput
             register={register}
-            name={"university"}
+            name={"education.university"}
             icon={faGraduationCap}
             props={{
               id: "university",
@@ -39,7 +39,7 @@ function UserInfoEducation() {
         >
           <AuthInput
             register={register}
-            name={"fieldOfStudy"}
+            name={"education.fieldOfStudy"}
             props={{
               id: "fieldOfStudy",
               type: "text",
@@ -50,7 +50,7 @@ function UserInfoEducation() {
         <AuthInputField errors={errors} id="gpa" label="GPA">
           <AuthInput
             register={register}
-            name={"gpa"}
+            name={"education.gpa"}
             options={{
               min: { value: 1, message: "min value 1" },
               max: { value: 4, message: "max value 4" },
@@ -64,8 +64,8 @@ function UserInfoEducation() {
         </AuthInputField>
 
         <AuthStartToEndDate
-          startDate="startEducationDate"
-          endDate="endEducationDate"
+          startDate="education.startDate"
+          endDate="education.endDate"
           register={register}
         />
       </div>

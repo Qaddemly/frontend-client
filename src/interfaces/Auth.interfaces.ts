@@ -13,11 +13,7 @@ export interface IUserInfo {
   dateOfBirth: string;
   profilePicture: string;
   // Education
-  university: string;
-  fieldOfStudy: string;
-  gpa: number;
-  startEducationDate: string;
-  endEducationDate: string;
+  eduction: IEducation;
   // Experience
   experience: IExperience;
   // Soft Skills
@@ -33,10 +29,17 @@ export interface IExperience {
   location: Country;
   locationType: LocationType;
   stillWorking: boolean;
-  startJobDate: string;
-  endJobDate: string;
+  startDate: string;
+  endDate: string;
 }
-
+export interface IEducation {
+  university: string;
+  fieldOfStudy: string;
+  gap: number;
+  startDate: string;
+  endDate: string;
+  _id: string;
+}
 export interface User {
   _id: string;
   email: string;
@@ -54,6 +57,7 @@ export interface User {
   passwordChangedAt: string;
   address: Address;
   dateOfBirth: string;
+  education: IEducation;
   phone: Phone;
   profilePicture: string;
   resume: string;
@@ -128,7 +132,9 @@ export interface ILoginResponse {
 export interface ISignupResponse extends IResponse {
   activationToken: string;
 }
-
+export interface IUserInfoResponse extends IResponse {
+  user: User;
+}
 export type IActivateEmailResponse = IResponse;
 
 export interface IForgetMyPasswordResponse {
