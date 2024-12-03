@@ -1,5 +1,5 @@
-function Logo() {
-  return <p className="text-5xl font-semibold text-main">Qaddemly</p>;
+function Logo({ fontSize = "text-5xl" }: { fontSize?: string }) {
+  return <p className={`${fontSize} font-semibold text-main`}>Qaddemly</p>;
 }
 
 export default Logo;

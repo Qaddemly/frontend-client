@@ -13,7 +13,7 @@ export interface IUserInfo {
   dateOfBirth: string;
   profilePicture: string;
   // Education
-  eduction: IEducation;
+  education: IEducation;
   // Experience
   experience: IExperience;
   // Soft Skills
@@ -35,7 +35,7 @@ export interface IExperience {
 export interface IEducation {
   university: string;
   fieldOfStudy: string;
-  gap: number;
+  gpa: number;
   startDate: string;
   endDate: string;
   _id: string;

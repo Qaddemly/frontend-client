@@ -1,11 +1,9 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
   faCircleUser,
-  faEarthAmericas,
   faImage,
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AuthInput from "../auth/AuthInput";
 
 import AuthInputField from "../auth/AuthInputField";
@@ -13,12 +11,21 @@ import AuthSelect from "../auth/AuthSelect";
 import { Country, Prefixes } from "../auth";
 import DatePicker from "../auth/DatePicker";
 import AuthButton from "../auth/AuthButton";
+import FileUpload from "../auth/FileUpload";
+import { useUpdateProfileMutation } from "./api/profileApi";
+import Loader from "../common/Loader";
+import { createFormData } from "../../utils/helpers";
+import toast from "react-hot-toast";
+import { IError } from "../../interfaces/Auth.interfaces";
 
 function Personal() {
-  const coutnryValues = Object.values(Country);
+  const countryKeys = Object.keys(Country).filter(
+    (key) => typeof Country[key as keyof typeof Country] === "string",
+  );
   const prefixValues = Object.values(Prefixes).filter(
     (value) => typeof value == "string",
   );
+  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
 
   type TPersonal = {
     firstName: string;
@@ -33,30 +40,47 @@ function Personal() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<TPersonal>();
-  const submitForm: SubmitHandler<TPersonal> = (data) => {
-    console.log(data);
+
+  const submitForm: SubmitHandler<TPersonal> = async (data) => {
+    let filteredData = Object.fromEntries(
+      Object.entries(data).filter(([, value]) => value !== ""),
+    );
+    if (!data.address.city.length) {
+      filteredData = Object.fromEntries(
+        Object.entries(filteredData).filter(([key]) => key !== "address"),
+      );
+    }
+    if (!data.phone.number.length) {
+      filteredData = Object.fromEntries(
+        Object.entries(filteredData).filter(([key]) => key !== "phone"),
+      );
+    }
+    if (!data.profilePicture.length) {
+      filteredData = Object.fromEntries(
+        Object.entries(filteredData).filter(
+          ([key]) => key !== "profilePicture",
+        ),
+      );
+    }
+
+    const formData = createFormData(filteredData);
+    if (Object.entries(filteredData).length)
+      try {
+        const res = await updateProfile(formData).unwrap();
+        console.log(res);
+        toast.success("Profile Updated");
+        reset();
+      } catch (err) {
+        const error = err as IError;
+        toast.error(error.data.message);
+      }
   };
 
   return (
-    <div className="mt-5 flex">
-      <div className="mt-10">
-        <span className="text-gray-500"> Profile Photo</span>
-        <div className="mt-5 block h-[250px] w-[250px] items-center border-2 border-dashed bg-gray-100">
-          <FontAwesomeIcon
-            icon={faImage}
-            className="ml-[100px] mt-[90px] text-4xl text-gray-600"
-          />
-
-          <span className="mt-3 flex items-center justify-center text-light-main underline">
-            Click to upload
-          </span>
-          <p className="mt-3 flex items-center justify-center text-gray-500">
-            Max File Size 15MB
-          </p>
-        </div>
-      </div>
-
+    <div className="mt-5">
+      {isLoading && <Loader />}
       <form className="mt-10 px-10" onSubmit={handleSubmit(submitForm)}>
         <div className="mt-10 flex space-x-5">
           <AuthInputField id="firstName" icon={faCircleUser} label="FirstName">
@@ -94,12 +118,12 @@ function Personal() {
             id="phone"
             className="w-fit"
           >
-            <option value="" className="flex" disabled>
-              USA (+1)
-            </option>
-            {prefixValues.map((key) => (
-              <option key={key} value={key}>
-                {key} +({Prefixes[key as keyof typeof Prefixes]})
+            {prefixValues.map((value) => (
+              <option
+                key={value}
+                value={Prefixes[value as keyof typeof Prefixes]}
+              >
+                {value} +({Prefixes[value as keyof typeof Prefixes]})
               </option>
             ))}
           </AuthSelect>
@@ -109,7 +133,11 @@ function Personal() {
               register={register}
               name={"phone.number"}
               icon={faPhone}
-              props={{ placeholder: "123-456-789", id: "phone", type: "tel" }}
+              props={{
+                placeholder: "123-456-789",
+                id: "phone",
+                type: "number",
+              }}
             />
           </AuthInputField>
         </div>
@@ -124,18 +152,17 @@ function Personal() {
             <option value="" disabled>
               Select a country
             </option>
-            {coutnryValues.map((key) => (
+            {countryKeys.map((key) => (
               <option key={key} value={key}>
                 {key}
               </option>
             ))}
           </AuthSelect>
 
-          <AuthInputField icon={faEarthAmericas} id="city">
+          <AuthInputField id="city">
             <AuthInput
               register={register}
               name="address.city"
-              icon={faEarthAmericas}
               props={{
                 placeholder: "City",
                 type: "text",
@@ -157,6 +184,15 @@ function Personal() {
                 {errors.dateOfBirth.message}
               </p>
             )}
+        </div>
+        <div className="mt-5 flex flex-col items-start pr-[30rem]">
+          <span className="font-medium"> Profile Photo</span>
+
+          <FileUpload
+            register={register}
+            name={"profilePicture"}
+            icon={faImage}
+          />
         </div>
         <AuthButton className="ml-[650px] px-2 py-2">Save Changes</AuthButton>
       </form>

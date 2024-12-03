@@ -85,7 +85,7 @@ function UserInfoForm() {
         Object.entries(filteredData).filter(([key]) => key !== "experience"),
       );
     }
-    if (data?.eduction?.university?.length)
+    if (data.education?.university?.length === 0)
       filteredData = Object.fromEntries(
         Object.entries(filteredData).filter(([key]) => key !== "education"),
       );
@@ -97,7 +97,6 @@ function UserInfoForm() {
     // for (const [key, value] of formData.entries()) {
     //   console.log(`${key}:`, value);
     // }
-    console.log(formData.entries.length);
     if (Object.entries(filteredData).length)
       try {
         const res = await userInfo(formData).unwrap();

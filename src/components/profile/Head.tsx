@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 function Head() {
   return (
     <>
-      <div className="mt-5">
+      <div className="ml-10 mt-5">
         <Link to="/profile/personal" className="text-2xl">
           Profile
         </Link>
