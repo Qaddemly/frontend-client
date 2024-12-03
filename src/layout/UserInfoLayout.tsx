@@ -3,6 +3,7 @@ import Logo from "../components/common/Logo";
 import AuthButton from "../components/auth/AuthButton";
 import SliderIndicators from "../components/auth/user-info/SliderIndicators";
 import { useUserInfo } from "../context/UserInfoContext";
+import UserMenu from "../components/profile/UserMenu";
 
 function UserInfoLayout({
   children,
@@ -15,7 +16,10 @@ function UserInfoLayout({
   return (
     <>
       <nav className="bg-white p-5">
-        <Logo />
+        <div className="flex justify-between">
+          <Logo fontSize="text-3xl" />
+          <UserMenu />
+        </div>
       </nav>
       <div className="min-h-screen bg-background p-20">
         <div className="m-auto w-[40rem] rounded-xl bg-white p-12 text-center shadow-md">

@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { IError } from "../../interfaces/Auth.interfaces";
 import toast from "react-hot-toast";
-import { useUpdateProfileMutation } from "./api/profileApi";
+import { useUpdateProfileMutation } from "../../services/profileApi";
 import Loader from "../common/Loader";
 import { createFormData } from "../../utils/helpers";
 
@@ -40,16 +40,17 @@ function MySkills() {
 
   async function handleSubmit() {
     const formData = createFormData({ skills, languages });
-    try {
-      const res = await updateProfile(formData).unwrap();
-      console.log(res);
-      toast.success("Profile Updated");
-      setSkill("");
-      setLanguage("");
-    } catch (err) {
-      const error = err as IError;
-      toast.error(error.data.message);
-    }
+    if (Object.entries(formData).length)
+      try {
+        const res = await updateProfile(formData).unwrap();
+        console.log(res);
+        toast.success("Profile Updated");
+        setSkill("");
+        setLanguage("");
+      } catch (err) {
+        const error = err as IError;
+        toast.error(error.data.message);
+      }
   }
   return (
     <div className="w-[40rem] px-10">

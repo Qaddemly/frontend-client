@@ -1,6 +1,10 @@
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { RootState } from "../../store/store";
+import UserMenu from "../profile/UserMenu";
 
 function Navbar() {
+  const { user } = useSelector((state: RootState) => state.user);
   return (
     <>
       <nav className="flex items-center justify-between bg-white px-6 py-3">
@@ -29,20 +33,24 @@ function Navbar() {
             </li>
           </ul>
         </div>
-        <div className="flex space-x-2">
-          <Link
-            to="/signup"
-            className="rounded-md border border-main px-6 py-2 text-main hover:bg-main hover:text-white"
-          >
-            Sign up
-          </Link>
-          <Link
-            to="/login"
-            className="rounded-md border bg-main px-6 py-2 text-white hover:border-main hover:bg-white hover:text-main"
-          >
-            Log in
-          </Link>
-        </div>
+        {!user.active ? (
+          <div className="flex space-x-2">
+            <Link
+              to="/signup"
+              className="rounded-md border border-main px-6 py-2 text-main hover:bg-main hover:text-white"
+            >
+              Sign up
+            </Link>
+            <Link
+              to="/login"
+              className="rounded-md border bg-main px-6 py-2 text-white hover:border-main hover:bg-white hover:text-main"
+            >
+              Log in
+            </Link>
+          </div>
+        ) : (
+          <UserMenu />
+        )}
       </nav>
     </>
   );

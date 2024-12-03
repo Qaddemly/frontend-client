@@ -4,7 +4,7 @@ import AuthInputField from "../auth/AuthInputField";
 import AuthButton from "../auth/AuthButton";
 import AuthStartToEndDate from "../auth/AuthStartToEndDate";
 import Loader from "../common/Loader";
-import { useUpdateProfileMutation } from "./api/profileApi";
+import { useUpdateProfileMutation } from "../../services/profileApi";
 import { IEducation, IError } from "../../interfaces/Auth.interfaces";
 import { createFormData } from "../../utils/helpers";
 import toast from "react-hot-toast";

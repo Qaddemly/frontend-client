@@ -12,7 +12,7 @@ import { Country, Prefixes } from "../auth";
 import DatePicker from "../auth/DatePicker";
 import AuthButton from "../auth/AuthButton";
 import FileUpload from "../auth/FileUpload";
-import { useUpdateProfileMutation } from "./api/profileApi";
+import { useUpdateProfileMutation } from "../../services/profileApi";
 import Loader from "../common/Loader";
 import { createFormData } from "../../utils/helpers";
 import toast from "react-hot-toast";

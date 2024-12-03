@@ -5,7 +5,7 @@ import AuthInputField from "../auth/AuthInputField";
 import AuthSelect from "../auth/AuthSelect";
 import { IError, IExperience } from "../../interfaces/Auth.interfaces";
 import AuthStartToEndDate from "../auth/AuthStartToEndDate";
-import { useUpdateProfileMutation } from "./api/profileApi";
+import { useUpdateProfileMutation } from "../../services/profileApi";
 import Loader from "../common/Loader";
 import { Country, EmploymentType, LocationType } from "../auth";
 import { createFormData } from "../../utils/helpers";
@@ -24,7 +24,6 @@ function Experience() {
   const { register, handleSubmit, reset } = methods;
 
   const submitForm: SubmitHandler<TExperience> = async (data) => {
-    console.log(data);
     const filteredData = Object.fromEntries(
       Object.entries(data.experience).filter(([key]) => key !== "experience"),
     );

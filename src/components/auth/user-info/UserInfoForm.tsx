@@ -9,10 +9,10 @@ import UserInfoSoftSkills from "./UserInfoSoftSkills";
 import UserInfoResume from "./UserInfoResume";
 import { Country, EmploymentType, formSettings, LocationType } from "..";
 import { createFormData } from "../../../utils/helpers";
-import { useUserInfoMutation } from "../api/authApi";
 import Loader from "../../common/Loader";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useUserInfoMutation } from "../../../services/authApi";
 
 function UserInfoForm() {
   const [userInfo, { isLoading }] = useUserInfoMutation();

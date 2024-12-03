@@ -9,15 +9,18 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import AuthInputField from "../components/auth/AuthInputField";
 import { useState } from "react";
 import AuthInput from "../components/auth/AuthInput";
-import { useLoginMutation } from "../components/auth/api/authApi";
+import { useLoginMutation } from "../services/authApi";
 import toast from "react-hot-toast";
 import { IError, ILoginInputs } from "../interfaces/Auth.interfaces";
 import Loader from "../components/common/Loader";
+import { useDispatch } from "react-redux";
+import { setUser } from "../components/auth/UserSlice";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [login, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -30,6 +33,7 @@ function Login() {
       const res = await login(data).unwrap();
       toast.success(`Welcome ${res.user.firstName}`);
       navigate("/userInfo");
+      dispatch(setUser(res.user));
     } catch (err) {
       const error = err as IError;
       toast.error(error.data.message);

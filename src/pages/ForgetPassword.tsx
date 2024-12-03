@@ -7,7 +7,7 @@ import AuthButton from "../components/auth/AuthButton";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { formSettings } from "../components/auth";
 import { IError, IForgetMyPassword } from "../interfaces/Auth.interfaces";
-import { useForgetMyPasswordMutation } from "../components/auth/api/authApi";
+import { useForgetMyPasswordMutation } from "../services/authApi";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/common/Loader";

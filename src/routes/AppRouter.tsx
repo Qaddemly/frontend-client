@@ -12,14 +12,22 @@ import ForgetPassword from "../pages/ForgetPassword";
 import SetNewPassword from "../pages/SetNewPassword";
 import MySkills from "../components/profile/MySkills";
 import { Toaster } from "react-hot-toast";
+import ProtectedRoute from "./ProtectedRoute";
 
 const router = createBrowserRouter([
-  { path: "/", element: <Home /> },
+  {
+    path: "/",
+    element: <Home />,
+  },
   { path: "/login", element: <Login /> },
   { path: "/signup", element: <Signup /> },
   {
     path: "/profile",
-    element: <Profile />,
+    element: (
+      <ProtectedRoute>
+        <Profile />,
+      </ProtectedRoute>
+    ),
     children: [
       { index: true, element: <Personal /> },
       { path: "personal", element: <Personal /> },
