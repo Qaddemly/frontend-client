@@ -148,3 +148,4 @@ export type ISetNewPasswordResponse = IResponse;
 
 export type IResendActivateCodeResponse = IResponse;
 export type IResendForgetPasswordCodeResponse = IResponse;
+export type ILogoutResponse = IResponse;
