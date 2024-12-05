@@ -1,10 +1,10 @@
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import Button from "../auth/Button";
 import Input from "../common/Input";
-import InputField from "../auth/InputField";
-import Select from "../auth/Select";
+import InputField from "../common/InputField";
+import StartToEndDate from "../common/StartToEndDate";
+import Button from "../common/Button";
+import Select from "../common/Select";
 import { IError, IExperience } from "../../interfaces/Auth.interfaces";
-import StartToEndDate from "../auth/StartToEndDate";
 import { useUpdateProfileMutation } from "../../services/profileApi";
 import Loader from "../common/Loader";
 import { Country, EmploymentType, LocationType } from "../auth";

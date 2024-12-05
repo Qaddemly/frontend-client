@@ -8,13 +8,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { RootState } from "../../store/store";
-import { useRef, useState } from "react";
-import Button from "../auth/Button";
+import Button from "../common/Button";
 import { useClickOutside } from "../../hooks/useOutsideClick";
 import { useLogoutMutation } from "../../services/authApi";
 import toast from "react-hot-toast";
 import { IError } from "../../interfaces/Auth.interfaces";
 import Loader from "../common/Loader";
+import { useRef, useState } from "react";
 
 function UserMenu() {
   const { user } = useSelector((state: RootState) => state.user);

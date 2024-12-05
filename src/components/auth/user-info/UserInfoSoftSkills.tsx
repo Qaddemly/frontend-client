@@ -1,13 +1,13 @@
 import { useState } from "react";
 import UserInfoLayout from "../../../layout/UserInfoLayout";
-import Button from "../Button";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Select from "../Select";
 import { Languages } from "..";
-import InputField from "../InputField";
 import Input from "../../common/Input";
+import InputField from "../../common/InputField";
 import { useUserInfo } from "../../../context/UserInfoContext";
+import Button from "../../common/Button";
+import Select from "../../common/Select";
 
 function UserInfoSoftSkills() {
   const [skill, setSkill] = useState("");

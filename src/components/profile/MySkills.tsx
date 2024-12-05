@@ -1,9 +1,9 @@
 import Input from "../common/Input";
-import InputField from "../auth/InputField";
-import Button from "../auth/Button";
 import { Languages } from "../auth";
 import { useState } from "react";
-import Select from "../auth/Select";
+import InputField from "../common/InputField";
+import Button from "../common/Button";
+import Select from "../common/Select";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { IError } from "../../interfaces/Auth.interfaces";

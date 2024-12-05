@@ -5,12 +5,11 @@ import {
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
 import Input from "../common/Input";
-
-import InputField from "../auth/InputField";
-import Select from "../auth/Select";
+import InputField from "../common/InputField";
+import Button from "../common/Button";
+import Select from "../common/Select";
 import { Country, Prefixes } from "../auth";
 import DatePicker from "../common/DatePicker";
-import Button from "../auth/Button";
 import FileUpload from "../common/FileUpload";
 import { useUpdateProfileMutation } from "../../services/profileApi";
 import Loader from "../common/Loader";
