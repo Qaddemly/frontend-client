@@ -1,9 +1,7 @@
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import Logo from "../components/common/Logo";
 import AuthLayout from "../layout/AuthLayout";
-import AuthButton from "../components/auth/AuthButton";
-import AuthInputField from "../components/auth/AuthInputField";
-import AuthInput from "../components/auth/AuthInput";
+import Input from "../components/common/Input";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { formSettings } from "../components/auth";
@@ -12,6 +10,8 @@ import { useSetNewPasswordMutation } from "../services/authApi";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/common/Loader";
+import InputField from "../components/common/InputField";
+import Button from "../components/common/Button";
 
 function SetNewPassword() {
   const [showPassword, setShowPassword] = useState(false);
@@ -60,7 +60,7 @@ function SetNewPassword() {
         onSubmit={handleSubmit(onSubmit)}
         className="mt-5 space-y-5 text-left"
       >
-        <AuthInputField
+        <InputField
           errors={errors}
           showPassword={showPassword}
           setShowPassword={setShowPassword}
@@ -68,7 +68,7 @@ function SetNewPassword() {
           id="newPassword"
           label="New Password"
         >
-          <AuthInput
+          <Input
             register={register}
             name="newPassword"
             options={{
@@ -83,8 +83,8 @@ function SetNewPassword() {
             }}
             icon={faLock}
           />
-        </AuthInputField>
-        <AuthInputField
+        </InputField>
+        <InputField
           errors={errors}
           icon={faLock}
           id="newPasswordConfirm"
@@ -92,7 +92,7 @@ function SetNewPassword() {
           showPassword={showConfirmPassword}
           setShowPassword={setShowConfirmPassword}
         >
-          <AuthInput
+          <Input
             register={register}
             name="newPasswordConfirm"
             showPassword={showConfirmPassword}
@@ -109,8 +109,8 @@ function SetNewPassword() {
             }}
             icon={faLock}
           />
-        </AuthInputField>
-        <AuthButton className="w-full">Update Password</AuthButton>
+        </InputField>
+        <Button className="w-full">Update Password</Button>
       </form>
     </AuthLayout>
   );

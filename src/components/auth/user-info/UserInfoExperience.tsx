@@ -1,11 +1,11 @@
 import { faBriefcase } from "@fortawesome/free-solid-svg-icons";
 import UserInfoLayout from "../../../layout/UserInfoLayout";
-import AuthSelect from "../AuthSelect";
-import AuthStartToEndDate from "../AuthStartToEndDate";
-import AuthButton from "../AuthButton";
+import Select from "../Select";
+import StartToEndDate from "../StartToEndDate";
+import Button from "../Button";
 import { useFormContext } from "react-hook-form";
-import AuthInputField from "../AuthInputField";
-import AuthInput from "../AuthInput";
+import InputField from "../InputField";
+import Input from "../../common/Input";
 import { Country, EmploymentType, LocationType } from "..";
 import { useUserInfo } from "../../../context/UserInfoContext";
 
@@ -49,13 +49,13 @@ function UserInfoExperience() {
   return (
     <UserInfoLayout title="Experience">
       <div className="flex flex-col gap-4 text-left">
-        <AuthInputField
+        <InputField
           icon={faBriefcase}
           errors={errors}
           id="jobTitle"
           label="Job Title"
         >
-          <AuthInput
+          <Input
             register={register}
             name={"experience.jobTitle"}
             icon={faBriefcase}
@@ -65,8 +65,8 @@ function UserInfoExperience() {
               placeholder: "Ex. Software Engineer",
             }}
           />
-        </AuthInputField>
-        <AuthSelect
+        </InputField>
+        <Select
           register={register}
           name="experience.employmentType"
           label="Employment type"
@@ -77,9 +77,9 @@ function UserInfoExperience() {
               {value}
             </option>
           ))}
-        </AuthSelect>
-        <AuthInputField errors={errors} id="companyName" label="Company name">
-          <AuthInput
+        </Select>
+        <InputField errors={errors} id="companyName" label="Company name">
+          <Input
             register={register}
             name={"experience.companyName"}
             props={{
@@ -88,8 +88,8 @@ function UserInfoExperience() {
               placeholder: "Ex. Microsoft",
             }}
           />
-        </AuthInputField>
-        <AuthSelect
+        </InputField>
+        <Select
           register={register}
           name="experience.location"
           label="Location"
@@ -100,8 +100,8 @@ function UserInfoExperience() {
               {value}
             </option>
           ))}
-        </AuthSelect>
-        <AuthSelect
+        </Select>
+        <Select
           name="experience.locationType"
           register={register}
           label="Location type"
@@ -112,7 +112,7 @@ function UserInfoExperience() {
               {value}
             </option>
           ))}
-        </AuthSelect>
+        </Select>
 
         <div className="mb-4 flex items-center">
           <input
@@ -127,19 +127,19 @@ function UserInfoExperience() {
           </label>
         </div>
 
-        <AuthStartToEndDate
+        <StartToEndDate
           startDate={"experience.startDate"}
           endDate={"experience.endDate"}
           register={register}
         />
 
-        <AuthButton
+        <Button
           onClick={handleAddNewExperience}
           type="button"
           className="w-full px-4 py-2"
         >
           Add New Experience
-        </AuthButton>
+        </Button>
       </div>
     </UserInfoLayout>
   );

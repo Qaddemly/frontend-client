@@ -8,13 +8,7 @@ type AuthButtonProps = {
   type?: React.ButtonHTMLAttributes<HTMLButtonElement>["type"];
 };
 
-function AuthButton({
-  children,
-  className,
-  onClick,
-  name,
-  type,
-}: AuthButtonProps) {
+function Button({ children, className, onClick, name, type }: AuthButtonProps) {
   return (
     <button
       type={type}
@@ -27,4 +21,4 @@ function AuthButton({
   );
 }
 
-export default AuthButton;
+export default Button;

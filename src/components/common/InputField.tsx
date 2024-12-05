@@ -16,7 +16,7 @@ type AuthInputProps<T extends FieldValues> = {
   errors?: FieldErrors<T>;
 };
 
-function AuthInputField<T extends FieldValues>({
+function InputField<T extends FieldValues>({
   label,
   id,
   icon,
@@ -67,4 +67,4 @@ function AuthInputField<T extends FieldValues>({
   );
 }
 
-export default AuthInputField;
+export default InputField;

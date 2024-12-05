@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { RootState } from "../../store/store";
 import { useRef, useState } from "react";
-import AuthButton from "../auth/AuthButton";
+import Button from "../auth/Button";
 import { useClickOutside } from "../../hooks/useOutsideClick";
 import { useLogoutMutation } from "../../services/authApi";
 import toast from "react-hot-toast";
@@ -85,12 +85,12 @@ function UserMenu() {
               </div>
             </Link>
           </div>
-          <AuthButton
+          <Button
             onClick={handleLogout}
             className="m-3 bg-danger hover:bg-danger"
           >
             Logout
-          </AuthButton>
+          </Button>
         </div>
       )}
     </>

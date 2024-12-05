@@ -18,7 +18,7 @@ type AuthSelectProps<T extends FieldValues> = {
   name?: Path<T>;
 };
 
-function AuthSelect<T extends FieldValues>({
+function Select<T extends FieldValues>({
   label,
   id,
   children,
@@ -47,4 +47,4 @@ function AuthSelect<T extends FieldValues>({
   );
 }
 
-export default AuthSelect;
+export default Select;

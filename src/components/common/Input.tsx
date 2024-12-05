@@ -14,7 +14,7 @@ interface IAuthInput<T extends FieldValues> {
   value?: string | number | string[];
 }
 
-function AuthInput<T extends FieldValues>({
+function Input<T extends FieldValues>({
   register,
   options,
   props,
@@ -36,4 +36,4 @@ function AuthInput<T extends FieldValues>({
   );
 }
 
-export default AuthInput;
+export default Input;

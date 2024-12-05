@@ -7,7 +7,7 @@ import {
 import DatePicker from "./DatePicker";
 import { validateStartToEndDate } from "../../utils/helpers";
 
-function AuthStartToEndDate<T extends FieldValues>({
+function StartToEndDate<T extends FieldValues>({
   register,
   startDate,
   endDate,
@@ -43,4 +43,4 @@ function AuthStartToEndDate<T extends FieldValues>({
   );
 }
 
-export default AuthStartToEndDate;
+export default StartToEndDate;
