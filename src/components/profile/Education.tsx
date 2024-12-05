@@ -1,8 +1,8 @@
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import AuthInput from "../auth/AuthInput";
-import AuthInputField from "../auth/AuthInputField";
-import AuthButton from "../auth/AuthButton";
-import AuthStartToEndDate from "../auth/AuthStartToEndDate";
+import Input from "../common/Input";
+import InputField from "../auth/InputField";
+import Button from "../auth/Button";
+import StartToEndDate from "../auth/StartToEndDate";
 import Loader from "../common/Loader";
 import { useUpdateProfileMutation } from "../../services/profileApi";
 import { IEducation, IError } from "../../interfaces/Auth.interfaces";
@@ -50,8 +50,8 @@ function Education() {
         className="mt-10 w-[40rem] space-y-3 px-10"
         onSubmit={handleSubmit(submitForm)}
       >
-        <AuthInputField id="University" errors={errors} label="University">
-          <AuthInput
+        <InputField id="University" errors={errors} label="University">
+          <Input
             register={register}
             name="education.university"
             props={{
@@ -60,14 +60,10 @@ function Education() {
               id: "University",
             }}
           />
-        </AuthInputField>
+        </InputField>
 
-        <AuthInputField
-          id="Field of study"
-          errors={errors}
-          label="Field of study"
-        >
-          <AuthInput
+        <InputField id="Field of study" errors={errors} label="Field of study">
+          <Input
             register={register}
             name="education.fieldOfStudy"
             props={{
@@ -76,10 +72,10 @@ function Education() {
               id: "Field of study",
             }}
           />
-        </AuthInputField>
+        </InputField>
 
-        <AuthInputField id="GPA" errors={errors} label="GPA">
-          <AuthInput
+        <InputField id="GPA" errors={errors} label="GPA">
+          <Input
             register={register}
             name="education.gpa"
             options={{
@@ -92,17 +88,17 @@ function Education() {
               id: "GPA",
             }}
           />
-        </AuthInputField>
+        </InputField>
 
         <div>
-          <AuthStartToEndDate
+          <StartToEndDate
             startDate="education.startDate"
             endDate="education.endDate"
             register={register}
           />
         </div>
 
-        <AuthButton className="ml-[650px] px-2 py-2">Save Changes</AuthButton>
+        <Button className="ml-[650px] px-2 py-2">Save Changes</Button>
       </form>
     </FormProvider>
   );

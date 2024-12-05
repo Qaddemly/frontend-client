@@ -4,14 +4,14 @@ import {
   faImage,
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
-import AuthInput from "../auth/AuthInput";
+import Input from "../common/Input";
 
-import AuthInputField from "../auth/AuthInputField";
-import AuthSelect from "../auth/AuthSelect";
+import InputField from "../auth/InputField";
+import Select from "../auth/Select";
 import { Country, Prefixes } from "../auth";
-import DatePicker from "../auth/DatePicker";
-import AuthButton from "../auth/AuthButton";
-import FileUpload from "../auth/FileUpload";
+import DatePicker from "../common/DatePicker";
+import Button from "../auth/Button";
+import FileUpload from "../common/FileUpload";
 import { useUpdateProfileMutation } from "../../services/profileApi";
 import Loader from "../common/Loader";
 import { createFormData } from "../../utils/helpers";
@@ -83,8 +83,8 @@ function Personal() {
       {isLoading && <Loader />}
       <form className="mt-10 px-10" onSubmit={handleSubmit(submitForm)}>
         <div className="mt-10 flex space-x-5">
-          <AuthInputField id="firstName" icon={faCircleUser} label="FirstName">
-            <AuthInput
+          <InputField id="firstName" icon={faCircleUser} label="FirstName">
+            <Input
               register={register}
               name="firstName"
               icon={faCircleUser}
@@ -94,10 +94,10 @@ function Personal() {
                 id: "firstName",
               }}
             />
-          </AuthInputField>
+          </InputField>
 
-          <AuthInputField id="lastName" icon={faCircleUser} label="LastName">
-            <AuthInput
+          <InputField id="lastName" icon={faCircleUser} label="LastName">
+            <Input
               register={register}
               name="lastName"
               icon={faCircleUser}
@@ -107,11 +107,11 @@ function Personal() {
                 id: "lastName",
               }}
             />
-          </AuthInputField>
+          </InputField>
         </div>
 
         <div className="mt-10 flex items-end gap-3">
-          <AuthSelect
+          <Select
             register={register}
             name="phone.countryCode"
             label="Phone"
@@ -126,10 +126,10 @@ function Personal() {
                 {value} +({Prefixes[value as keyof typeof Prefixes]})
               </option>
             ))}
-          </AuthSelect>
+          </Select>
 
-          <AuthInputField icon={faPhone} id="phone">
-            <AuthInput
+          <InputField icon={faPhone} id="phone">
+            <Input
               register={register}
               name={"phone.number"}
               icon={faPhone}
@@ -139,10 +139,10 @@ function Personal() {
                 type: "number",
               }}
             />
-          </AuthInputField>
+          </InputField>
         </div>
         <div className="mt-10 flex items-end gap-3 text-left">
-          <AuthSelect
+          <Select
             register={register}
             name={"address.country"}
             label="Address"
@@ -157,10 +157,10 @@ function Personal() {
                 {key}
               </option>
             ))}
-          </AuthSelect>
+          </Select>
 
-          <AuthInputField id="city">
-            <AuthInput
+          <InputField id="city">
+            <Input
               register={register}
               name="address.city"
               props={{
@@ -170,7 +170,7 @@ function Personal() {
                 className: "w-[9rem]",
               }}
             />
-          </AuthInputField>
+          </InputField>
         </div>
         <div className="mt-10 flex flex-col gap-2 text-left">
           <label htmlFor="dateOfBirth" className="font-medium">
@@ -194,7 +194,7 @@ function Personal() {
             icon={faImage}
           />
         </div>
-        <AuthButton className="ml-[650px] px-2 py-2">Save Changes</AuthButton>
+        <Button className="ml-[650px] px-2 py-2">Save Changes</Button>
       </form>
     </div>
   );

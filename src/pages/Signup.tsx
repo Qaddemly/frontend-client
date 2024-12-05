@@ -6,12 +6,10 @@ import {
 import GoogleButton from "../components/auth/GoogleButton";
 import Logo from "../components/common/Logo";
 import AuthLayout from "../layout/AuthLayout";
-import AuthButton from "../components/auth/AuthButton";
 import AuthLink from "../components/auth/AuthLink";
 import { useState } from "react";
 import { SubmitHandler } from "react-hook-form";
-import AuthInputField from "../components/auth/AuthInputField";
-import AuthInput from "../components/auth/AuthInput";
+import Input from "../components/common/Input";
 import { useForm } from "react-hook-form";
 import { formSettings } from "../components/auth";
 import {
@@ -27,6 +25,8 @@ import {
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/common/Loader";
+import Button from "../components/common/Button";
+import InputField from "../components/common/InputField";
 
 function Signup() {
   const [step, setStep] = useState(1);
@@ -103,13 +103,13 @@ function Signup() {
             onSubmit={handleSubmit1(() => setStep((s) => s + 1))}
             className="mt-8 text-left"
           >
-            <AuthInputField
+            <InputField
               errors={errors1}
               id="email"
               icon={faEnvelope}
               label="Email Address"
             >
-              <AuthInput
+              <Input
                 register={register1}
                 name="email"
                 icon={faEnvelope}
@@ -120,9 +120,9 @@ function Signup() {
                   type: "email",
                 }}
               />
-            </AuthInputField>
+            </InputField>
 
-            <AuthButton className="mb-8 mt-5 w-full">Continue</AuthButton>
+            <Button className="mb-8 mt-5 w-full">Continue</Button>
           </form>
         </>
       )}
@@ -134,37 +134,37 @@ function Signup() {
             className="my-8 space-y-5 text-left"
           >
             <div className="flex gap-5">
-              <AuthInputField
+              <InputField
                 id="firstName"
                 label="First Name"
                 icon={faCircleUser}
                 errors={errors2}
               >
-                <AuthInput
+                <Input
                   register={register2}
                   options={{ required: "first name is required" }}
                   name="firstName"
                   props={{ id: "firstName", placeholder: "John", type: "text" }}
                   icon={faCircleUser}
                 />
-              </AuthInputField>
+              </InputField>
 
-              <AuthInputField
+              <InputField
                 id="lastName"
                 label="Last Name"
                 icon={faCircleUser}
                 errors={errors2}
               >
-                <AuthInput
+                <Input
                   register={register2}
                   options={{ required: "last name is required" }}
                   name="lastName"
                   props={{ id: "lastName", placeholder: "Doe", type: "text" }}
                   icon={faCircleUser}
                 />
-              </AuthInputField>
+              </InputField>
             </div>
-            <AuthInputField
+            <InputField
               showPassword={showPassword}
               setShowPassword={setShowPassword}
               errors={errors2}
@@ -172,7 +172,7 @@ function Signup() {
               icon={faLock}
               label="Password"
             >
-              <AuthInput
+              <Input
                 showPassword={showPassword}
                 register={register2}
                 options={{
@@ -187,9 +187,9 @@ function Signup() {
                 }}
                 icon={faLock}
               />
-            </AuthInputField>
+            </InputField>
 
-            <AuthInputField
+            <InputField
               showPassword={showConfirmPassword}
               setShowPassword={setShowConfirmPassword}
               id="confirmPassword"
@@ -197,7 +197,7 @@ function Signup() {
               errors={errors2}
               icon={faLock}
             >
-              <AuthInput
+              <Input
                 showPassword={showConfirmPassword}
                 register={register2}
                 options={{
@@ -214,9 +214,9 @@ function Signup() {
                 }}
                 icon={faLock}
               />
-            </AuthInputField>
+            </InputField>
 
-            <AuthButton className="w-full">Continue</AuthButton>
+            <Button className="w-full">Continue</Button>
           </form>
         </>
       )}

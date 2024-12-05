@@ -1,11 +1,11 @@
 import { faImage, faPhone } from "@fortawesome/free-solid-svg-icons";
-import DatePicker from "../DatePicker";
-import FileUpload from "../FileUpload";
+import DatePicker from "../../common/DatePicker";
+import FileUpload from "../../common/FileUpload";
 import UserInfoLayout from "../../../layout/UserInfoLayout";
-import AuthInputField from "../AuthInputField";
-import AuthInput from "../AuthInput";
+import InputField from "../InputField";
+import Input from "../../common/Input";
 import { Country, Prefixes } from "..";
-import AuthSelect from "../AuthSelect";
+import Select from "../Select";
 import { useFormContext } from "react-hook-form";
 import { validateDateOfBirth } from "../../../utils/helpers";
 
@@ -29,7 +29,7 @@ function UserInfoPersonal() {
     <UserInfoLayout title="More infromations lead you to right profile">
       <div className="flex flex-col gap-5">
         <div className="flex items-end gap-3">
-          <AuthSelect
+          <Select
             register={register}
             name="phone.countryCode"
             label="Phone"
@@ -44,10 +44,10 @@ function UserInfoPersonal() {
                 {value} +({Prefixes[value as keyof typeof Prefixes]})
               </option>
             ))}
-          </AuthSelect>
+          </Select>
 
-          <AuthInputField errors={errors} icon={faPhone} id="phone">
-            <AuthInput
+          <InputField errors={errors} icon={faPhone} id="phone">
+            <Input
               register={register}
               name={"phone.number"}
               icon={faPhone}
@@ -57,11 +57,11 @@ function UserInfoPersonal() {
                 type: "number",
               }}
             />
-          </AuthInputField>
+          </InputField>
         </div>
 
         <div className="flex items-end gap-3 text-left">
-          <AuthSelect
+          <Select
             register={register}
             name={"address.country"}
             label="Address"
@@ -73,10 +73,10 @@ function UserInfoPersonal() {
                 {value}
               </option>
             ))}
-          </AuthSelect>
+          </Select>
 
-          <AuthInputField errors={errors} id="city">
-            <AuthInput
+          <InputField errors={errors} id="city">
+            <Input
               register={register}
               name={"address.city"}
               props={{
@@ -86,7 +86,7 @@ function UserInfoPersonal() {
                 className: "w-[9rem]",
               }}
             />
-          </AuthInputField>
+          </InputField>
         </div>
 
         <div className="flex flex-col gap-2 text-left">

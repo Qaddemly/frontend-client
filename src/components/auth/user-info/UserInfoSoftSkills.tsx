@@ -1,12 +1,12 @@
 import { useState } from "react";
 import UserInfoLayout from "../../../layout/UserInfoLayout";
-import AuthButton from "../AuthButton";
+import Button from "../Button";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import AuthSelect from "../AuthSelect";
+import Select from "../Select";
 import { Languages } from "..";
-import AuthInputField from "../AuthInputField";
-import AuthInput from "../AuthInput";
+import InputField from "../InputField";
+import Input from "../../common/Input";
 import { useUserInfo } from "../../../context/UserInfoContext";
 
 function UserInfoSoftSkills() {
@@ -36,8 +36,8 @@ function UserInfoSoftSkills() {
   return (
     <UserInfoLayout title="Soft Skills">
       <div className="flex flex-col gap-5 text-left">
-        <AuthInputField id="softSkills" label="Your skills">
-          <AuthInput
+        <InputField id="softSkills" label="Your skills">
+          <Input
             props={{
               type: "text",
               id: "softSkills",
@@ -47,16 +47,16 @@ function UserInfoSoftSkills() {
             onChange={(e) => setSkill(e.target.value)}
             value={skill}
           />
-        </AuthInputField>
+        </InputField>
 
         <div className="flex justify-center">
-          <AuthButton
+          <Button
             type="button"
             className="w-fit px-2"
             onClick={handleAddSkillsClick}
           >
             Add New Skill
-          </AuthButton>
+          </Button>
         </div>
 
         <div className="flex flex-wrap gap-2">
@@ -77,7 +77,7 @@ function UserInfoSoftSkills() {
           ))}
         </div>
 
-        <AuthSelect
+        <Select
           label="Your languages"
           id="languages"
           value={language}
@@ -88,7 +88,7 @@ function UserInfoSoftSkills() {
               {value}
             </option>
           ))}
-        </AuthSelect>
+        </Select>
 
         <div className="flex flex-wrap gap-2">
           {languages.map((lang, i) => (
@@ -109,13 +109,13 @@ function UserInfoSoftSkills() {
         </div>
 
         <div className="flex justify-center">
-          <AuthButton
+          <Button
             type="button"
             className="w-fit px-2"
             onClick={handleAddLanguagesClick}
           >
             Add New Language
-          </AuthButton>
+          </Button>
         </div>
       </div>
     </UserInfoLayout>

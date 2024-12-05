@@ -1,9 +1,7 @@
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import Logo from "../components/common/Logo";
 import AuthLayout from "../layout/AuthLayout";
-import AuthInputField from "../components/auth/AuthInputField";
-import AuthInput from "../components/auth/AuthInput";
-import AuthButton from "../components/auth/AuthButton";
+import Input from "../components/common/Input";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { formSettings } from "../components/auth";
 import { IError, IForgetMyPassword } from "../interfaces/Auth.interfaces";
@@ -11,6 +9,8 @@ import { useForgetMyPasswordMutation } from "../services/authApi";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/common/Loader";
+import InputField from "../components/common/InputField";
+import Button from "../components/common/Button";
 
 function ForgetPassword() {
   const [forgetMyPassword, { isLoading }] = useForgetMyPasswordMutation();
@@ -49,13 +49,13 @@ function ForgetPassword() {
         onSubmit={handleSubmit(onSubmit)}
         className="mt-5 space-y-5 text-left"
       >
-        <AuthInputField
+        <InputField
           errors={errors}
           icon={faEnvelope}
           id="email"
           label="Email Address"
         >
-          <AuthInput
+          <Input
             register={register}
             name="email"
             options={{ required: "email is required" }}
@@ -66,9 +66,9 @@ function ForgetPassword() {
             }}
             icon={faEnvelope}
           />
-        </AuthInputField>
+        </InputField>
 
-        <AuthButton className="w-full">Reset Password</AuthButton>
+        <Button className="w-full">Reset Password</Button>
       </form>
     </AuthLayout>
   );

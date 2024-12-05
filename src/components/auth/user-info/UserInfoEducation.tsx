@@ -1,9 +1,9 @@
 import { faGraduationCap } from "@fortawesome/free-solid-svg-icons";
 import UserInfoLayout from "../../../layout/UserInfoLayout";
-import AuthStartToEndDate from "../AuthStartToEndDate";
+import StartToEndDate from "../StartToEndDate";
 import { useFormContext } from "react-hook-form";
-import AuthInput from "../AuthInput";
-import AuthInputField from "../AuthInputField";
+import Input from "../../common/Input";
+import InputField from "../InputField";
 
 function UserInfoEducation() {
   const {
@@ -14,13 +14,13 @@ function UserInfoEducation() {
   return (
     <UserInfoLayout title="Education">
       <div className="flex flex-col gap-4 text-left">
-        <AuthInputField
+        <InputField
           errors={errors}
           id="University"
           label="University"
           icon={faGraduationCap}
         >
-          <AuthInput
+          <Input
             register={register}
             name={"education.university"}
             icon={faGraduationCap}
@@ -30,14 +30,10 @@ function UserInfoEducation() {
               placeholder: "Ex. Tanta University",
             }}
           />
-        </AuthInputField>
+        </InputField>
 
-        <AuthInputField
-          errors={errors}
-          id="fieldOfStudy"
-          label="Field of Study"
-        >
-          <AuthInput
+        <InputField errors={errors} id="fieldOfStudy" label="Field of Study">
+          <Input
             register={register}
             name={"education.fieldOfStudy"}
             props={{
@@ -46,9 +42,9 @@ function UserInfoEducation() {
               placeholder: "Ex. Engineering",
             }}
           />
-        </AuthInputField>
-        <AuthInputField errors={errors} id="gpa" label="GPA">
-          <AuthInput
+        </InputField>
+        <InputField errors={errors} id="gpa" label="GPA">
+          <Input
             register={register}
             name={"education.gpa"}
             options={{
@@ -61,9 +57,9 @@ function UserInfoEducation() {
               placeholder: "Ex. 3.67",
             }}
           />
-        </AuthInputField>
+        </InputField>
 
-        <AuthStartToEndDate
+        <StartToEndDate
           startDate="education.startDate"
           endDate="education.endDate"
           register={register}

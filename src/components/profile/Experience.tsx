@@ -1,10 +1,10 @@
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import AuthButton from "../auth/AuthButton";
-import AuthInput from "../auth/AuthInput";
-import AuthInputField from "../auth/AuthInputField";
-import AuthSelect from "../auth/AuthSelect";
+import Button from "../auth/Button";
+import Input from "../common/Input";
+import InputField from "../auth/InputField";
+import Select from "../auth/Select";
 import { IError, IExperience } from "../../interfaces/Auth.interfaces";
-import AuthStartToEndDate from "../auth/AuthStartToEndDate";
+import StartToEndDate from "../auth/StartToEndDate";
 import { useUpdateProfileMutation } from "../../services/profileApi";
 import Loader from "../common/Loader";
 import { Country, EmploymentType, LocationType } from "../auth";
@@ -49,8 +49,8 @@ function Experience() {
         onSubmit={handleSubmit(submitForm)}
       >
         <div className="mb-5 flex justify-between">
-          <AuthInputField id="Job title" label="Job title">
-            <AuthInput
+          <InputField id="Job title" label="Job title">
+            <Input
               register={register}
               name="experience.jobTitle"
               props={{
@@ -59,9 +59,9 @@ function Experience() {
                 id: "Job title",
               }}
             />
-          </AuthInputField>
+          </InputField>
 
-          <AuthSelect
+          <Select
             register={register}
             name="experience.employmentType"
             label="Employment type"
@@ -72,11 +72,11 @@ function Experience() {
                 {value}
               </option>
             ))}
-          </AuthSelect>
+          </Select>
         </div>
 
-        <AuthInputField id="Company name" label="Company name">
-          <AuthInput
+        <InputField id="Company name" label="Company name">
+          <Input
             register={register}
             name="experience.companyName"
             props={{
@@ -85,10 +85,10 @@ function Experience() {
               id: "Company name",
             }}
           />
-        </AuthInputField>
+        </InputField>
 
         <div className="my-5 flex justify-between">
-          <AuthSelect
+          <Select
             register={register}
             name="experience.location"
             label="Location"
@@ -99,9 +99,9 @@ function Experience() {
                 {value}
               </option>
             ))}
-          </AuthSelect>
+          </Select>
 
-          <AuthSelect
+          <Select
             name="experience.locationType"
             register={register}
             label="Location type"
@@ -112,16 +112,16 @@ function Experience() {
                 {value}
               </option>
             ))}
-          </AuthSelect>
+          </Select>
         </div>
 
-        <AuthStartToEndDate
+        <StartToEndDate
           startDate="experience.startDate"
           endDate="experience.endDate"
           register={register}
         />
         <div className="mt-5 flex w-full justify-end">
-          <AuthButton className="px-3">Save Changes</AuthButton>
+          <Button className="px-3">Save Changes</Button>
         </div>
       </form>
     </FormProvider>

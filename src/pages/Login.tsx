@@ -3,12 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "../layout/AuthLayout";
 import Logo from "../components/common/Logo";
 import GoogleButton from "../components/auth/GoogleButton";
-import AuthButton from "../components/auth/AuthButton";
 import AuthLink from "../components/auth/AuthLink";
 import { SubmitHandler, useForm } from "react-hook-form";
-import AuthInputField from "../components/auth/AuthInputField";
 import { useState } from "react";
-import AuthInput from "../components/auth/AuthInput";
+import Input from "../components/common/Input";
 import { useLoginMutation } from "../services/authApi";
 import toast from "react-hot-toast";
 import { IError, ILoginInputs } from "../interfaces/Auth.interfaces";
@@ -16,6 +14,8 @@ import Loader from "../components/common/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../components/auth/UserSlice";
 import { RootState } from "../store/store";
+import InputField from "../components/common/InputField";
+import Button from "../components/common/Button";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -65,13 +65,13 @@ function Login() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="my-8 text-left">
         <div className="mb-8 space-y-3">
-          <AuthInputField
+          <InputField
             errors={errors}
             label="Email Address"
             id="email"
             icon={faEnvelope}
           >
-            <AuthInput
+            <Input
               register={register}
               name="email"
               options={{ required: "email is required" }}
@@ -83,9 +83,9 @@ function Login() {
                 className: "w-full",
               }}
             />
-          </AuthInputField>
+          </InputField>
 
-          <AuthInputField
+          <InputField
             showPassword={showPassword}
             setShowPassword={setShowPassword}
             errors={errors}
@@ -93,7 +93,7 @@ function Login() {
             id="password"
             icon={faLock}
           >
-            <AuthInput
+            <Input
               register={register}
               name="password"
               showPassword={showPassword}
@@ -108,14 +108,14 @@ function Login() {
                 type: "password",
               }}
             />
-          </AuthInputField>
+          </InputField>
         </div>
 
         <Link to="/forgetPassword" className="font-medium text-main underline">
           Forget Password?
         </Link>
 
-        <AuthButton className="my-5 w-full">Login</AuthButton>
+        <Button className="my-5 w-full">Login</Button>
 
         <AuthLink to="/signup" msg="Don't have an account ?" text="sign up" />
       </form>

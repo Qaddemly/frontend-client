@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import Logo from "../components/common/Logo";
-import AuthButton from "../components/auth/AuthButton";
+import Button from "../components/auth/Button";
 import SliderIndicators from "../components/auth/user-info/SliderIndicators";
 import { useUserInfo } from "../context/UserInfoContext";
 import UserMenu from "../components/profile/UserMenu";
@@ -28,7 +28,7 @@ function UserInfoLayout({
         </div>
         <div className="flex flex-col items-center gap-5 bg-background">
           <SliderIndicators step={step} setStep={setStep} />
-          {step === 5 && <AuthButton className="mt-5 px-20">Submit</AuthButton>}
+          {step === 5 && <Button className="mt-5 px-20">Submit</Button>}
         </div>
       </div>
     </>

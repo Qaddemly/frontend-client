@@ -1,9 +1,9 @@
-import AuthInput from "../auth/AuthInput";
-import AuthInputField from "../auth/AuthInputField";
-import AuthButton from "../auth/AuthButton";
+import Input from "../common/Input";
+import InputField from "../auth/InputField";
+import Button from "../auth/Button";
 import { Languages } from "../auth";
 import { useState } from "react";
-import AuthSelect from "../auth/AuthSelect";
+import Select from "../auth/Select";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { IError } from "../../interfaces/Auth.interfaces";
@@ -56,8 +56,8 @@ function MySkills() {
     <div className="w-[40rem] px-10">
       {isLoading && <Loader />}
       <div className="mt-10">
-        <AuthInputField id="softSkills" label="Your skills">
-          <AuthInput
+        <InputField id="softSkills" label="Your skills">
+          <Input
             props={{
               type: "text",
               id: "softSkills",
@@ -67,7 +67,7 @@ function MySkills() {
             onChange={(e) => setSkill(e.target.value)}
             value={skill}
           />
-        </AuthInputField>
+        </InputField>
       </div>
 
       <div className="mt-4 flex flex-wrap gap-2">
@@ -88,17 +88,17 @@ function MySkills() {
         ))}
       </div>
       <div className="flex justify-center">
-        <AuthButton
+        <Button
           type="button"
           className="mt-5 w-fit px-2"
           onClick={handleAddSkillsClick}
         >
           Add New Skill
-        </AuthButton>
+        </Button>
       </div>
 
       <div className="mb-10 mt-5">
-        <AuthSelect
+        <Select
           label="Your languages"
           id="languages"
           value={language}
@@ -109,7 +109,7 @@ function MySkills() {
               {value}
             </option>
           ))}
-        </AuthSelect>
+        </Select>
         <div className="mt-4 flex flex-wrap gap-2">
           {languages.map((lang, i) => (
             <div
@@ -129,18 +129,18 @@ function MySkills() {
         </div>
       </div>
       <div className="flex justify-center">
-        <AuthButton
+        <Button
           type="button"
           className="w-fit px-2"
           onClick={handleAddLanguagesClick}
         >
           Add New Language
-        </AuthButton>
+        </Button>
       </div>
       <div className="mt-5 flex w-full justify-end">
-        <AuthButton onClick={handleSubmit} className="px-3">
+        <Button onClick={handleSubmit} className="px-3">
           Save Changes
-        </AuthButton>
+        </Button>
       </div>
     </div>
   );
