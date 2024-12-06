@@ -29,12 +29,13 @@ export const authApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
-    signUpWithGoogle: builder.mutation<void, void>({
-      query: () => ({
-        url: `${BASE_AUTH_URL}/googleAuth`,
-        method: "GET",
-      }),
-    }),
+    // signUpWithGoogle: builder.mutation<void, void>({
+    //   query: () => ({
+    //     url: `${BASE_AUTH_URL}/googleAuth`,
+    //     method: "GET",
+    //     credentials: "include",
+    //   }),
+    // }),
     signUp: builder.mutation<ISignupResponse, ISignupInputs>({
       query: (data) => ({
         url: `${BASE_AUTH_URL}/signUp`,
@@ -118,7 +119,6 @@ export const authApi = apiSlice.injectEndpoints({
 
 export const {
   useLoginMutation,
-  useSignUpWithGoogleMutation,
   useSignUpMutation,
   useUserInfoMutation,
   useActivateEmailMutation,

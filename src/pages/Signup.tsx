@@ -12,10 +12,7 @@ import { SubmitHandler } from "react-hook-form";
 import Input from "../components/common/Input";
 import { useForm } from "react-hook-form";
 import { formSettings } from "../components/auth";
-import {
-  useSignUpMutation,
-  useSignUpWithGoogleMutation,
-} from "../services/authApi";
+import { useSignUpMutation } from "../services/authApi";
 import {
   IError,
   ISignupInputs,
@@ -34,7 +31,6 @@ function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [signUp, { isLoading }] = useSignUpMutation();
-  const [signUpWithGoogle] = useSignUpWithGoogleMutation();
 
   const {
     register: register1,
@@ -68,15 +64,6 @@ function Signup() {
     }
   };
 
-  async function handleSignUpWithGoogle() {
-    try {
-      const res = await signUpWithGoogle().unwrap();
-      console.log(res);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
   return (
     <AuthLayout>
       <Logo />
@@ -88,10 +75,7 @@ function Signup() {
 
       {step == 1 && (
         <>
-          <GoogleButton
-            text="Sign up with Google"
-            onClick={handleSignUpWithGoogle}
-          />
+          <GoogleButton text="Sign up with Google" />
 
           <div className="mt-6 flex items-center gap-2">
             <div className="w-[184px] border border-gray-100"></div>

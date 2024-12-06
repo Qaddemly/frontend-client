@@ -22,4 +22,8 @@ export const profileApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useUpdateProfileMutation, useGetUserQuery } = profileApi;
+export const {
+  useUpdateProfileMutation,
+  useGetUserQuery,
+  useLazyGetUserQuery,
+} = profileApi;
