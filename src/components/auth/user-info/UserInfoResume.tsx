@@ -1,8 +1,8 @@
 import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons";
 import UserInfoLayout from "../../../layout/UserInfoLayout";
 import FileUpload from "../../common/FileUpload";
-import Button from "../Button";
 import { useFormContext } from "react-hook-form";
+import Button from "../../common/Button";
 
 function UserInfoResume() {
   const { register } = useFormContext();

@@ -1,13 +1,13 @@
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import Input from "../common/Input";
-import InputField from "../auth/InputField";
-import Button from "../auth/Button";
-import StartToEndDate from "../auth/StartToEndDate";
 import Loader from "../common/Loader";
 import { useUpdateProfileMutation } from "../../services/profileApi";
 import { IEducation, IError } from "../../interfaces/Auth.interfaces";
 import { createFormData } from "../../utils/helpers";
 import toast from "react-hot-toast";
+import InputField from "../common/InputField";
+import StartToEndDate from "../common/StartToEndDate";
+import Button from "../common/Button";
 
 function Education() {
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();

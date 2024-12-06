@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
 import Logo from "../components/common/Logo";
-import Button from "../components/auth/Button";
 import SliderIndicators from "../components/auth/user-info/SliderIndicators";
 import { useUserInfo } from "../context/UserInfoContext";
 import UserMenu from "../components/profile/UserMenu";
+import Button from "../components/common/Button";
 
 function UserInfoLayout({
   children,

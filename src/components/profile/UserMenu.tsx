@@ -8,13 +8,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { RootState } from "../../store/store";
-import { useRef, useState } from "react";
-import Button from "../auth/Button";
+import Button from "../common/Button";
 import { useClickOutside } from "../../hooks/useOutsideClick";
 import { useLogoutMutation } from "../../services/authApi";
 import toast from "react-hot-toast";
 import { IError } from "../../interfaces/Auth.interfaces";
 import Loader from "../common/Loader";
+import { useRef, useState } from "react";
 
 function UserMenu() {
   const { user } = useSelector((state: RootState) => state.user);
@@ -66,10 +66,10 @@ function UserMenu() {
       {showMenu && (
         <div
           ref={menuRef}
-          className="absolute right-6 top-[4.3rem] z-10 flex h-[20rem] w-[18rem] flex-col justify-between bg-white shadow-md"
+          className="absolute right-6 top-[4.3rem] z-10 flex h-[20rem] w-[18rem] flex-col justify-between rounded-md bg-white shadow-md"
         >
           <div className="flex flex-col gap-5">
-            <div className="p-3">
+            <div className="p-5">
               <p className="text-lg font-semibold">
                 {user.firstName} {user.lastName}
               </p>

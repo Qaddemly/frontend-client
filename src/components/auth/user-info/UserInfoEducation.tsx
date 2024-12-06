@@ -1,9 +1,9 @@
 import { faGraduationCap } from "@fortawesome/free-solid-svg-icons";
 import UserInfoLayout from "../../../layout/UserInfoLayout";
-import StartToEndDate from "../StartToEndDate";
 import { useFormContext } from "react-hook-form";
 import Input from "../../common/Input";
-import InputField from "../InputField";
+import InputField from "../../common/InputField";
+import StartToEndDate from "../../common/StartToEndDate";
 
 function UserInfoEducation() {
   const {
