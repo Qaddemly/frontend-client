@@ -2,12 +2,12 @@ import { Outlet } from "react-router-dom";
 import Sidebar from "../components/profile/Sidebar";
 import Head from "../components/profile/Head";
 import YourResume from "../components/profile/YourResume";
-import NavProfile from "../components/profile/NavProfile";
+import Navbar from "../components/home/Navbar";
 function Profile() {
   return (
     <>
       <div>
-        <NavProfile />
+        <Navbar />
         <div className="flex">
           <Sidebar />
           <div>
