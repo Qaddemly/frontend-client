@@ -3,7 +3,7 @@ import SearchBar from "../components/common/SearchBar";
 import Footer from "../components/home/Footer";
 import Navbar from "../components/home/Navbar";
 
-function Company() {
+function FindCompany() {
   return (
     <>
       <Navbar />
@@ -78,4 +78,4 @@ function Company() {
   );
 }
 
-export default Company;
+export default FindCompany;

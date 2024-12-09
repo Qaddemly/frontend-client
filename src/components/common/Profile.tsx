@@ -12,6 +12,7 @@ import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 type profileProps = { name: string; rating: number; numberOfReviews: number };
 
 function Profile({ name, rating, numberOfReviews }: profileProps) {
+  // المفروض ازود الصورة في ال props
   return (
     <div className="mx-auto flex w-full flex-col items-center justify-between bg-light-secondary p-6 md:px-12 md:pb-0 md:pt-12">
       {/* Log, Info and Actions */}
@@ -67,7 +68,12 @@ function Profile({ name, rating, numberOfReviews }: profileProps) {
       {/* Navigation Section */}
       <div className="bor mb-0 flex w-full justify-center text-sm text-gray-600">
         <ul className="flex gap-10 border-b border-gray-600 sm:gap-20 md:gap-36">
-          <li className="cursor-pointer pb-2 hover:text-gray-800">About Us</li>
+          <li
+            // href="#about-the-company" //في حاجة غلط مش عارفها
+            className="cursor-pointer pb-2 hover:text-gray-800"
+          >
+            About Us
+          </li>
           <li className="cursor-pointer pb-2 hover:text-gray-800">Jobs</li>
           <li className="cursor-pointer pb-2 hover:text-gray-800">Reviews</li>
         </ul>

@@ -13,7 +13,7 @@ import SetNewPassword from "../pages/SetNewPassword";
 import MySkills from "../components/profile/MySkills";
 import { Toaster } from "react-hot-toast";
 import ProtectedRoute from "./ProtectedRoute";
-import Company from "../pages/Company";
+import FindCompany from "../pages/Company";
 import CompanyProfile from "../pages/CompanyProfile";
 
 const router = createBrowserRouter([
@@ -46,7 +46,7 @@ const router = createBrowserRouter([
   { path: "/userInfo", element: <UserInfo /> },
   { path: "/forgetPassword", element: <ForgetPassword /> },
   { path: "/setNewPassword", element: <SetNewPassword /> },
-  { path: "/company", element: <Company /> },
+  { path: "/company", element: <FindCompany /> },
   { path: "/companyProfile", element: <CompanyProfile /> },
 ]);
 
