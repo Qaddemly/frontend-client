@@ -15,6 +15,11 @@ import { Toaster } from "react-hot-toast";
 import ProtectedRoute from "./ProtectedRoute";
 import FindCompany from "../pages/FindCompany";
 import CompanyProfile from "../pages/CompanyProfile";
+import CreateBusinessAccount from "../components/business account/CreateBusinessAccount";
+import EmployerSettings from "../components/business account/employer settings/EmployerSettings";
+import EmployerAccount from "../components/business account/employer settings/EmployerAccount";
+import CompanyAccount from "../components/business account/employer settings/CompanyAccount";
+import AccessAndPermissions from "../components/business account/employer settings/AccessAndPermissions";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +53,24 @@ const router = createBrowserRouter([
   { path: "/setNewPassword", element: <SetNewPassword /> },
   { path: "/findCompany", element: <FindCompany /> },
   { path: "/companyProfile", element: <CompanyProfile /> },
+  {
+    path: "/createBusinessAccount",
+    element: (
+      // <ProtectedRoute>
+      <CreateBusinessAccount />
+      // </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/employerSettings",
+    element: <EmployerSettings />,
+    children: [
+      { index: true, element: <EmployerAccount /> },
+      { path: "yourAccount", element: <EmployerAccount /> },
+      { path: "companyAccount", element: <CompanyAccount /> },
+      { path: "accessAndPermissions", element: <AccessAndPermissions /> },
+    ],
+  },
 ]);
 
 function AppRouter() {

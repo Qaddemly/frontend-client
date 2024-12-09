@@ -2,15 +2,16 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "../../store/store";
 import UserMenu from "../profile/UserMenu";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import Logo from "../common/Logo";
 
 function Navbar() {
   const { user } = useSelector((state: RootState) => state.user);
   return (
     <>
-      <nav className="flex items-center justify-between bg-white px-6 py-3">
-        <Link to="/" className="px-5 text-[40px] font-bold text-main">
-          Qaddemly
-        </Link>
+      <nav className="flex items-center justify-between border-b border-b-gray-100 bg-white px-6 py-3">
+        <Logo fontSize="text-4xl" />
         <div>
           <ul className="flex items-center justify-between space-x-8">
             <li className="cursor-pointer border-b-2 border-white text-main hover:border-main">
@@ -49,7 +50,22 @@ function Navbar() {
             </Link>
           </div>
         ) : (
-          <UserMenu />
+          <UserMenu type="NormalAccount">
+            <div className="mt-2 flex flex-col gap-3">
+              <div className="px-3 pb-2">
+                <p className="font-medium">{user.email}</p>
+              </div>
+              <Link
+                to="/profile/personal"
+                className="rounded-md hover:bg-[#eee]"
+              >
+                <div className="flex items-center gap-5 px-3 py-2">
+                  <FontAwesomeIcon icon={faUser} className="text-lg" />
+                  <span className="text-lg font-medium">Profile</span>
+                </div>
+              </Link>
+            </div>
+          </UserMenu>
         )}
       </nav>
     </>
