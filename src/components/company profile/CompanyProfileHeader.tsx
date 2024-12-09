@@ -9,9 +9,17 @@ import { faStar } from "@fortawesome/free-regular-svg-icons";
 
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 
-type profileProps = { name: string; rating: number; numberOfReviews: number };
+type CompanyProfileHeaderProps = {
+  name: string;
+  rating: number;
+  numberOfReviews: number;
+};
 
-function Profile({ name, rating, numberOfReviews }: profileProps) {
+function CompanyProfileHeader({
+  name,
+  rating,
+  numberOfReviews,
+}: CompanyProfileHeaderProps) {
   // المفروض ازود الصورة في ال props
   return (
     <div className="mx-auto flex w-full flex-col items-center justify-between bg-light-secondary">
@@ -82,4 +90,4 @@ function Profile({ name, rating, numberOfReviews }: profileProps) {
   );
 }
 
-export default Profile;
+export default CompanyProfileHeader;

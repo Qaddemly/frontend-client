@@ -1,6 +1,6 @@
 import CompanyProfileCard from "./CompanyProfileCard";
-import JobCard from "./JobCard";
-import ReviewCard from "./ReviewCard";
+import JobCard from "../common/JobCard";
+import ReviewCard from "../common/ReviewCard";
 import React, { useState, useEffect } from "react";
 
 function CompanyProfileBody() {
