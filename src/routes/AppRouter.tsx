@@ -13,6 +13,8 @@ import SetNewPassword from "../pages/SetNewPassword";
 import MySkills from "../components/profile/MySkills";
 import { Toaster } from "react-hot-toast";
 import ProtectedRoute from "./ProtectedRoute";
+import FindCompany from "../pages/FindCompany";
+import CompanyProfile from "../pages/CompanyProfile";
 import CreateBusinessAccount from "../components/business account/CreateBusinessAccount";
 import EmployerSettings from "../components/business account/employer settings/EmployerSettings";
 import EmployerAccount from "../components/business account/employer settings/EmployerAccount";
@@ -49,6 +51,8 @@ const router = createBrowserRouter([
   { path: "/userInfo", element: <UserInfo /> },
   { path: "/forgetPassword", element: <ForgetPassword /> },
   { path: "/setNewPassword", element: <SetNewPassword /> },
+  { path: "/findCompany", element: <FindCompany /> },
+  { path: "/companyProfile", element: <CompanyProfile /> },
   {
     path: "/createBusinessAccount",
     element: (
