@@ -4,7 +4,7 @@ import SideNavBusiness from "../components/business account/SideNavBusiness";
 
 function BusinessLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex">
+    <div className="flex min-h-screen">
       <SideNavBusiness />
       <div className="w-full">
         <NavbarBusiness />
