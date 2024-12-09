@@ -1,6 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import GoogleLogo from "./GoogleLogo";
-import { faBookmark, faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import {
+  // faBookmark as faBookmarkSolid,
+  faLocationDot,
+} from "@fortawesome/free-solid-svg-icons";
+import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 
 type JobCardProps = {
   jobTitle: string;
@@ -19,18 +23,21 @@ function JobCard({
 }: JobCardProps) {
   return (
     <>
-      <li className="border border-offWhite p-5 shadow-md">
-        <p className="my-2 text-lg font-medium">{jobTitle}</p>{" "}
-        {/* Techical Support Specialist */}
+      <div className="rounded-lg bg-white p-4 shadow-md transition hover:shadow-lg">
+        <h3 className="my-2 text-lg font-medium">{jobTitle}</h3>
         <div className="flex flex-col gap-6">
           <div className="flex gap-3">
-            <span className="rounded-md bg-light-green px-1 font-medium text-green-100">
-              {/* Part-Time */}
-              {employmentType}
+            <span
+              className={`rounded-md bg-light-green px-1 text-sm font-medium ${
+                employmentType.toLowerCase() === "full-time"
+                  ? "text-green-100"
+                  : "text-yellow"
+              }`}
+            >
+              {employmentType.toLowerCase()}
             </span>
-            <span className="block text-gray-600">
-              Salary: {/* $20,000 - $25,000 */}
-              {salaryRange}
+            <span className="block text-sm text-gray-600">
+              Salary: {salaryRange}
             </span>
           </div>
           <div className="flex items-center justify-between">
@@ -40,28 +47,26 @@ function JobCard({
                 {/*companyLogo} */}
               </div>
               <div className="felx flex-col">
-                <p className="font-medium">
-                  {/* Google Inc. */}
-                  {companyName}
-                </p>
+                <p className="text-base font-medium">{companyName}</p>
                 <div className="flex items-center gap-2 text-gray-300">
                   <FontAwesomeIcon //location icon
                     icon={faLocationDot}
                   />
-                  <p>
-                    {/* USA */}
-                    {companyLocation}
-                  </p>
+                  <p className="text-sm">{companyLocation}</p>
                 </div>
               </div>
             </div>
-            <FontAwesomeIcon // Bookmark icon
+            <FontAwesomeIcon
               icon={faBookmark}
               className="text-2xl text-gray-300"
             />
+            {/* <FontAwesomeIcon // Solid Bookmark icon
+              icon={faBookmarkSolid}
+              className="text-yellow text-2xl"
+            /> */}
           </div>
         </div>
-      </li>
+      </div>
     </>
   );
 }

@@ -10,6 +10,7 @@ export default {
       danger: "#D93A40",
       white: "#FFFFFF",
       background: "#F3F2F0",
+      yellow: "#EECC00",
       "light-danger": "#FEEEEF",
       offWhite: "#E4E5E8",
       "gray-100": "#ccc",
@@ -24,7 +25,17 @@ export default {
       "green-200": "#017550",
       "light-green": "#E7F6EA",
     },
-    extend: {},
+    extend: {
+      animation: {
+        "slide-left": "slide-left 3s infinite",
+      },
+      keyframes: {
+        "slide-left": {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
+      },
+    },
   },
   plugins: [],
 };

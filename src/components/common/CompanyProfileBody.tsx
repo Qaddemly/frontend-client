@@ -1,7 +1,18 @@
-import CompanyCard from "./CompanyCard";
 import CompanyProfileCard from "./CompanyProfileCard";
+import JobCard from "./JobCard";
+import ReviewCard from "./ReviewCard";
+import React, { useState, useEffect } from "react";
 
 function CompanyProfileBody() {
+  const [translateX, setTranslateX] = useState(0);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setTranslateX((prevTranslateX) => prevTranslateX - 300); // Adjust the value for speed
+    }, 10000000000); // Adjust the interval for speed
+
+    return () => clearInterval(intervalId);
+  }, []);
   return (
     <>
       {/* About Us section  */}
@@ -60,15 +71,84 @@ function CompanyProfileBody() {
           Valid jobs
         </h2>
         <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-          <CompanyCard
-            companyName="Google"
-            // companyImage="../assets/google-logo.svg"
-            numberOfReviews={5}
+          <JobCard
+            jobTitle="Technical Support Specialist"
+            employmentType="PART-TIME"
+            salaryRange="$20,000 - $25,000"
+            companyName="Google Inc."
+            companyLocation="Dhaka, Bangladesh"
+          />
+          <JobCard
+            jobTitle="Senior UX Designer"
+            employmentType="FULL-TIME"
+            salaryRange="$20,000 - $25,000"
+            companyName="Google Inc."
+            companyLocation="Dhaka, Bangladesh"
+          />
+          <JobCard
+            jobTitle="Technical Support Specialist"
+            employmentType="PART-TIME"
+            salaryRange="$20,000 - $25,000"
+            companyName="Google Inc."
+            companyLocation="Dhaka, Bangladesh"
+          />
+          <JobCard
+            jobTitle="Technical Support Specialist"
+            employmentType="INTERNSHIP"
+            salaryRange="$20,000 - $25,000"
+            companyName="Google Inc."
+            companyLocation="Tanta, Egypt"
+          />
+          <JobCard
+            jobTitle="Marketing Officer"
+            employmentType="PART-TIME"
+            salaryRange="$20,000 - $25,000"
+            companyName="Google Inc."
+            companyLocation="Dhaka, Bangladesh"
+          />
+          <JobCard
+            jobTitle="Technical Support Specialist"
+            employmentType="Full-TIME"
+            salaryRange="$20,000 - $25,000"
+            companyName="Google Inc."
+            companyLocation="dimashq, Syria"
+          />
+        </div>
+      </div>
+
+      {/* Reviews section  */}
+      <div className="relative">
+        <div
+          className="flex gap-5 overflow-x-hidden"
+          style={{ transform: `translateX(${translateX}px)` }}
+        >
+          <ReviewCard
+            userName="User_new1"
+            date="December 5, 2024"
+            text="Google is a leader in innovation, offering top-notch products like Search, YouTube, and Android that have revolutionized daily life. It's also a fantastic workplace, known for its excellent benefits and focus on creativity."
+            index={5}
+          />
+          <ReviewCard
+            userName="User_new1"
+            date="December 5, 2024"
+            text="Google is a leader in innovation, offering top-notch products like Search, YouTube, and Android that have revolutionized daily life. It's also a fantastic workplace, known for its excellent benefits and focus on creativity."
+            index={5}
+          />
+          <ReviewCard
+            userName="User_new1"
+            date="December 5, 2024"
+            text="Google is a leader in innovation, offering top-notch products like Search, YouTube, and Android that have revolutionized daily life. It's also a fantastic workplace, known for its excellent benefits and focus on creativity."
+            index={5}
           />
         </div>
       </div>
     </>
   );
 }
+
+// name: "User_new1",
+// avatarUrl: "https://example.com/avatar.jpg",
+// date: "December 5, 2024",
+// text: "Google is a leader in innovation, offering top-notch products like Search, YouTube, and Android that have revolutionized daily life. It's also a fantastic workplace, known for its excellent benefits and focus on creativity.",
 
 export default CompanyProfileBody;

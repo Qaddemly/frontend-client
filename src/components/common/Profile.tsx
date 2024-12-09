@@ -14,7 +14,7 @@ type profileProps = { name: string; rating: number; numberOfReviews: number };
 function Profile({ name, rating, numberOfReviews }: profileProps) {
   // المفروض ازود الصورة في ال props
   return (
-    <div className="mx-auto flex w-full flex-col items-center justify-between bg-light-secondary p-6 md:px-12 md:pb-0 md:pt-12">
+    <div className="mx-auto flex w-full flex-col items-center justify-between bg-light-secondary">
       {/* Log, Info and Actions */}
       <div className="mx-auto flex w-full max-w-[1000px] flex-col items-center justify-evenly p-6 md:flex-row md:p-12">
         {/* Logo and Info Section */}
@@ -23,7 +23,7 @@ function Profile({ name, rating, numberOfReviews }: profileProps) {
             {/* rounded-full bg-background */}
             <FontAwesomeIcon
               icon={faGoogle}
-              className="text-[80px] md:text-[160px]"
+              className="text-[80px] text-main md:text-[160px]"
             />
             {/* <GoogleLogo/> */}
             {/* <img
