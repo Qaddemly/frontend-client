@@ -14,6 +14,10 @@ import MySkills from "../components/profile/MySkills";
 import { Toaster } from "react-hot-toast";
 import ProtectedRoute from "./ProtectedRoute";
 import CreateBusinessAccount from "../components/business account/CreateBusinessAccount";
+import EmployerSettings from "../components/business account/employer settings/EmployerSettings";
+import EmployerAccount from "../components/business account/employer settings/EmployerAccount";
+import CompanyAccount from "../components/business account/employer settings/CompanyAccount";
+import AccessAndPermissions from "../components/business account/employer settings/AccessAndPermissions";
 
 const router = createBrowserRouter([
   {
@@ -52,6 +56,16 @@ const router = createBrowserRouter([
       <CreateBusinessAccount />
       // </ProtectedRoute>
     ),
+  },
+  {
+    path: "/employerSettings",
+    element: <EmployerSettings />,
+    children: [
+      { index: true, element: <EmployerAccount /> },
+      { path: "yourAccount", element: <EmployerAccount /> },
+      { path: "companyAccount", element: <CompanyAccount /> },
+      { path: "accessAndPermissions", element: <AccessAndPermissions /> },
+    ],
   },
 ]);
 
