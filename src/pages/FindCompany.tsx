@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSliders } from "@fortawesome/free-solid-svg-icons";
 import { useClickOutside } from "../hooks/useOutsideClick";
 import Select from "../components/common/Select";
-import Slider from "../components/company profile/Slider";
+import Slider from "../components/common/Slider";
 
 function FindCompany() {
   const [isOpen, setIsOpen] = useState(false);
