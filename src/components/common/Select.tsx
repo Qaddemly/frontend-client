@@ -7,15 +7,16 @@ import {
 } from "react-hook-form";
 
 type AuthSelectProps<T extends FieldValues> = {
-  label: string;
+  label?: string;
   id: string;
   children: ReactNode;
   className?: string;
   value?: string | number | string[];
-  onChange?: (props: React.ChangeEvent<HTMLSelectElement>) => void;
-  register?: UseFormRegister<T>;
   options?: RegisterOptions<T>;
   name?: Path<T>;
+  isFilter?: boolean;
+  onChange?: (props: React.ChangeEvent<HTMLSelectElement>) => void;
+  register?: UseFormRegister<T>;
 };
 
 function Select<T extends FieldValues>({
@@ -24,14 +25,18 @@ function Select<T extends FieldValues>({
   children,
   className,
   value,
-  onChange,
-  register,
   options,
   name,
+  isFilter = false,
+  onChange,
+  register,
 }: AuthSelectProps<T>) {
   return (
     <div className="text-left">
-      <label htmlFor={id} className="mb-2 block font-medium">
+      <label
+        htmlFor={id}
+        className={`mb-2 block ${isFilter ? "text-light-secondary-200 font-semibold" : "font-medium"}`}
+      >
         {label}
       </label>
       <select
@@ -39,7 +44,7 @@ function Select<T extends FieldValues>({
         id={id}
         value={value}
         onChange={onChange}
-        className={`w-full rounded-md border-2 border-gray-100 px-2 py-2 text-gray-300 outline-none focus:border-secondary ${className} location-input`}
+        className={`w-full rounded-md border-2 border-gray-100 px-2 py-2 outline-none focus:border-secondary ${className} ${isFilter ? "text-light-secondary-200" : "text-gray-300"} location-input`}
       >
         {children}
       </select>

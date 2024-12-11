@@ -8,7 +8,7 @@ type SearchBarProps = {
 
 function SearchBar({ placeholder, buttonName }: SearchBarProps) {
   return (
-    <div className="max-w[950px] flex items-center rounded-lg border border-gray-300 bg-white px-4 py-2 shadow-sm focus-within:ring-2">
+    <div className="max-w[950px] flex w-full items-center rounded-lg border border-gray-300 bg-white px-4 py-2 shadow-sm focus-within:ring-2">
       {/* <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
        */}
       <FontAwesomeIcon icon={faMagnifyingGlass} className="text-main" />

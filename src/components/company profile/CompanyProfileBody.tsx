@@ -1,18 +1,17 @@
 import CompanyProfileCard from "./CompanyProfileCard";
 import JobCard from "../common/JobCard";
 import ReviewCard from "../common/ReviewCard";
-import React, { useState, useEffect } from "react";
 
 function CompanyProfileBody() {
-  const [translateX, setTranslateX] = useState(0);
+  // const [translateX, setTranslateX] = useState(0);
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setTranslateX((prevTranslateX) => prevTranslateX - 300); // Adjust the value for speed
-    }, 10000000000); // Adjust the interval for speed
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     setTranslateX((prevTranslateX) => prevTranslateX - 300); // Adjust the value for speed
+  //   }, 100); // Adjust the interval for speed
 
-    return () => clearInterval(intervalId);
-  }, []);
+  //   return () => clearInterval(intervalId);
+  // }, []);
   return (
     <>
       {/* About Us section  */}
@@ -117,11 +116,8 @@ function CompanyProfileBody() {
       </div>
 
       {/* Reviews section  */}
-      <div className="relative">
-        <div
-          className="flex gap-5 overflow-x-hidden"
-          style={{ transform: `translateX(${translateX}px)` }}
-        >
+      <div className="relative mb-20 h-[23rem] w-full overflow-hidden sm:h-[17rem]">
+        <div className="animate-slide flex w-[140rem] space-x-10">
           <ReviewCard
             userName="User_new1"
             date="December 5, 2024"
