@@ -3,15 +3,6 @@ import JobCard from "../common/JobCard";
 import ReviewCard from "../common/ReviewCard";
 
 function CompanyProfileBody() {
-  // const [translateX, setTranslateX] = useState(0);
-
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     setTranslateX((prevTranslateX) => prevTranslateX - 300); // Adjust the value for speed
-  //   }, 100); // Adjust the interval for speed
-
-  //   return () => clearInterval(intervalId);
-  // }, []);
   return (
     <>
       {/* About Us section  */}

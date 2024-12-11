@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import CompanyCard from "../components/common/CompanyCard";
 import SearchBar from "../components/common/SearchBar";
 import SidebarFilter from "../components/company profile/SidebarFilter";
@@ -7,13 +7,40 @@ import Navbar from "../components/home/Navbar";
 import Button from "../components/common/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSliders } from "@fortawesome/free-solid-svg-icons";
+import { useClickOutside } from "../hooks/useOutsideClick";
+import Select from "../components/common/Select";
+import Slider from "../components/company profile/Slider";
 
 function FindCompany() {
   const [isOpen, setIsOpen] = useState(false);
+  const divRef = useRef<HTMLDivElement>(null);
+  const sidebarRef = useClickOutside<HTMLDivElement>(
+    () => setIsOpen(false),
+    divRef,
+  );
   return (
     <>
       <Navbar />
-      <SidebarFilter setIsOpen={setIsOpen} isOpen={isOpen} />
+
+      <SidebarFilter
+        setIsOpen={setIsOpen}
+        isOpen={isOpen}
+        ref={sidebarRef}
+        divRef={divRef}
+        title="Company filter"
+      >
+        <Select isFilter={true} label="Industry type" id="industryType">
+          {/* {locationTypeValues.map((value) => (
+              <option value={value} key={value}>
+                {value}
+              </option>
+            ))} */}
+          <option value="">Select industy</option>
+        </Select>
+        <Slider />
+        <Button className="my-5">Filter Companies</Button>
+      </SidebarFilter>
+
       <div className="w-full bg-background pb-10">
         {/* Heading and search bar */}
         <div className="mx-6 max-w-5xl px-7 py-10 md:mx-4">
@@ -25,16 +52,20 @@ function FindCompany() {
           </p>
           <div className="flex items-center gap-10 py-6">
             <SearchBar placeholder="Company name" buttonName="Find companies" />
-            <Button
-              className="hover:none flex items-center gap-2 bg-white px-5 text-lg text-main"
-              onClick={() => setIsOpen((s) => !s)}
-            >
-              Filters
-              <FontAwesomeIcon
-                icon={faSliders}
-                className="rounded-md bg-main p-3 text-xl text-white"
-              />
-            </Button>
+            {!isOpen && (
+              <Button
+                className="hover:none flex items-center gap-2 bg-white px-5 text-lg text-main"
+                onClick={() => {
+                  setIsOpen(true);
+                }}
+              >
+                Filters
+                <FontAwesomeIcon
+                  icon={faSliders}
+                  className="rounded-md bg-main p-3 text-xl text-white"
+                />
+              </Button>
+            )}
           </div>
         </div>
         {/*End of heading and search bar */}
@@ -55,6 +86,11 @@ function FindCompany() {
               companyName="Google"
               // companyImage="../assets/google-logo.svg"
               numberOfReviews={45}
+            />
+            <CompanyCard
+              companyName="Google"
+              // companyImage="../assets/google-logo.svg"
+              numberOfReviews={5}
             />
             <CompanyCard
               companyName="Google"
