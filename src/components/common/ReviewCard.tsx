@@ -14,7 +14,7 @@ function ReviewCard({ userName, date, text, index }: ReviewCardProps) {
   return (
     <div
       key={index}
-      className="flex w-[450px] flex-col gap-3 rounded-3xl bg-white p-12 shadow-md sm:w-[500px] md:w-[650px] lg:w-[800px]"
+      className="flex w-[500rem] flex-col rounded-3xl bg-white p-12 sm:w-[500rem] md:w-[650rem] lg:w-[800rem]"
     >
       <div className="flex flex-col items-center justify-between sm:flex-row">
         <div className="flex flex-col items-center gap-3 sm:flex-row">

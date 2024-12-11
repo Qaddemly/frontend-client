@@ -7,6 +7,7 @@ export default {
       "light-main": "#42659f",
       secondary: "#608BC1",
       "light-secondary": "#CBDCEB",
+      "light-secondary-200": "#98A0B4",
       "danger-300": "#D93A40",
       "danger-200": "#e16166",
       white: "#FFFFFF",
@@ -29,12 +30,12 @@ export default {
     },
     extend: {
       animation: {
-        "slide-left": "slide-left 3s infinite",
+        slide: "slideX 35s linear infinite",
       },
       keyframes: {
-        "slide-left": {
-          "0%": { transform: "translateX(0)" },
-          "100%": { transform: "translateX(-100%)" },
+        slideX: {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(100%)" },
         },
       },
     },
