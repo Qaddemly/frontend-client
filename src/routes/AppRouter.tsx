@@ -13,7 +13,9 @@ import SetNewPassword from "../pages/SetNewPassword";
 import MySkills from "../components/profile/MySkills";
 import { Toaster } from "react-hot-toast";
 import ProtectedRoute from "./ProtectedRoute";
-import Apply from "../components/auth/apply-job/Apply";
+import Apply from "../components/apply/Apply";
+import Message from "../components/messages/Message";
+import PostJob1 from "../components/post_Job/PostJob";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +48,8 @@ const router = createBrowserRouter([
   { path: "/forgetPassword", element: <ForgetPassword /> },
   { path: "/setNewPassword", element: <SetNewPassword /> },
   { path: "/apply-job", element: <Apply /> },
+  { path: "/message", element: <Message /> },
+  { path: "/postjob", element: <PostJob1 /> },
 ]);
 
 function AppRouter() {
