@@ -7,9 +7,12 @@ export default {
       "light-main": "#42659f",
       secondary: "#608BC1",
       "light-secondary": "#CBDCEB",
-      danger: "#D93A40",
+      "light-secondary-200": "#98A0B4",
+      "danger-300": "#D93A40",
+      "danger-200": "#e16166",
       white: "#FFFFFF",
       background: "#F3F2F0",
+      yellow: "#EECC00",
       "light-danger": "#FEEEEF",
       offWhite: "#E4E5E8",
       "gray-100": "#ccc",
@@ -23,8 +26,19 @@ export default {
       "green-100": "#0BA02C",
       "green-200": "#017550",
       "light-green": "#E7F6EA",
+      "main-dark": "#1B1F23",
     },
-    extend: {},
+    extend: {
+      animation: {
+        slide: "slideX 35s linear infinite",
+      },
+      keyframes: {
+        slideX: {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(100%)" },
+        },
+      },
+    },
   },
   plugins: [],
 };

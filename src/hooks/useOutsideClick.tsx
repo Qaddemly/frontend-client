@@ -20,7 +20,7 @@ export function useClickOutside<T extends HTMLElement>(
         return;
       }
 
-      handler(event); // Call the handler when clicked outside
+      handler(event);
     };
 
     document.addEventListener("mousedown", listener);

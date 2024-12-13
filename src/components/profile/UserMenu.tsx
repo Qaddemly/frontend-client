@@ -6,7 +6,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { RootState } from "../../store/store";
 import Button from "../common/Button";
 import { useClickOutside } from "../../hooks/useOutsideClick";
@@ -14,9 +14,14 @@ import { useLogoutMutation } from "../../services/authApi";
 import toast from "react-hot-toast";
 import { IError } from "../../interfaces/Auth.interfaces";
 import Loader from "../common/Loader";
-import { useRef, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 
-function UserMenu() {
+type UserMenuProps = {
+  children: ReactNode;
+  type: "NormalAccount" | "BusinessAccount";
+};
+
+function UserMenu({ children, type }: UserMenuProps) {
   const { user } = useSelector((state: RootState) => state.user);
   const [showMenu, setShowMenu] = useState(false);
   const divRef = useRef<HTMLDivElement>(null);
@@ -45,7 +50,9 @@ function UserMenu() {
         onClick={() => setShowMenu((s) => !s)}
         ref={divRef}
       >
-        <FontAwesomeIcon icon={faBell} className="text-2xl" />
+        {type === "NormalAccount" && (
+          <FontAwesomeIcon icon={faBell} className="text-2xl" />
+        )}
         {!user.profilePicture ? (
           <FontAwesomeIcon
             icon={faUser}
@@ -66,28 +73,12 @@ function UserMenu() {
       {showMenu && (
         <div
           ref={menuRef}
-          className="absolute right-6 top-[4.3rem] z-10 flex h-[20rem] w-[18rem] flex-col justify-between rounded-md bg-white shadow-md"
+          className={`absolute right-6 top-[4.3rem] z-10 flex ${type === "NormalAccount" ? "w-[18rem]" : "w-[24rem]"} flex-col justify-between rounded-md border bg-white py-2 text-gray-800 shadow-md`}
         >
-          <div className="flex flex-col gap-5">
-            <div className="p-5">
-              <p className="text-lg font-semibold">
-                {user.firstName} {user.lastName}
-              </p>
-              <p> {user.email}</p>
-            </div>
-            <Link
-              to="/profile/personal"
-              className="p-3 hover:bg-light-main hover:text-white"
-            >
-              <div className="flex items-center gap-5">
-                <FontAwesomeIcon icon={faUser} className="text-lg" />
-                <span className="text-lg font-medium">Profile</span>
-              </div>
-            </Link>
-          </div>
+          {children}
           <Button
             onClick={handleLogout}
-            className="m-3 bg-danger hover:bg-danger"
+            className="bg-danger-300 hover:bg-danger-200 m-3"
           >
             Logout
           </Button>
