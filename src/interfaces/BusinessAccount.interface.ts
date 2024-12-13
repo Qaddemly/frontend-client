@@ -24,8 +24,20 @@ export interface IBusinessAccount {
   updated_at: string;
 }
 
+export interface IBusinesses {
+  id: number;
+  name: string;
+  logo: string;
+  role: string;
+}
+
 //////////////////////////////////////////////////////////////////////////////
 // Api Response Interfaces
 export interface ICreateBusinessAccountResponse extends IResponse {
   business: IBusinessAccount;
+}
+
+export interface IGetUserBusinessesResponse {
+  status: string;
+  businesses: IBusinesses[];
 }

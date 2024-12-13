@@ -1,15 +1,26 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { IBusinessAccount } from "../../interfaces/BusinessAccount.interface";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  IBusinessAccount,
+  IBusinesses,
+} from "../../interfaces/BusinessAccount.interface";
 import { businessAccountApi } from "../../services/businessAccountApi";
 
 const initialState = {
   businessAccount: {} as IBusinessAccount,
+  userBusinessesAccounts: [] as IBusinesses[],
 };
 
 const businessAccountSlice = createSlice({
   name: "businessAccount",
   initialState,
-  reducers: {},
+  reducers: {
+    setUserBusinessesAccounts: (
+      state,
+      action: PayloadAction<IBusinesses[]>,
+    ) => {
+      state.userBusinessesAccounts = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addMatcher(
       businessAccountApi.endpoints.createBusinessAccount.matchFulfilled,
@@ -20,4 +31,5 @@ const businessAccountSlice = createSlice({
   },
 });
 
+export const { setUserBusinessesAccounts } = businessAccountSlice.actions;
 export default businessAccountSlice.reducer;
