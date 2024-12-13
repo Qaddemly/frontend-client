@@ -119,7 +119,7 @@ export interface ISetNewPasswordInputs extends ISetNewPassword {
 }
 //////////////////////////////////////////////////////////////////////////////
 // Api Response Interfaces
-interface IResponse {
+export interface IResponse {
   success: boolean;
   message: string;
 }
