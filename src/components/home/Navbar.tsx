@@ -1,13 +1,29 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "../../store/store";
 import UserMenu from "../profile/UserMenu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import Logo from "../common/Logo";
+import { useGetUserBusinessesQuery } from "../../services/businessAccountApi";
+import { useEffect } from "react";
+import { setUserBusinessesAccounts } from "../business account/BusinessAccountSlice";
 
 function Navbar() {
   const { user } = useSelector((state: RootState) => state.user);
+  const { data, isError } = useGetUserBusinessesQuery(undefined, {
+    skip: Object.entries(user).length === 0,
+  });
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isError && data) {
+      console.log(isError);
+
+      dispatch(setUserBusinessesAccounts(data.businesses));
+    }
+  }, [data, dispatch, isError]);
+
   return (
     <>
       <nav className="flex items-center justify-between border-b border-b-gray-100 bg-white px-6 py-3">
