@@ -15,11 +15,11 @@ import { Toaster } from "react-hot-toast";
 import ProtectedRoute from "./ProtectedRoute";
 import FindCompany from "../pages/FindCompany";
 import CompanyProfile from "../pages/CompanyProfile";
-import CreateBusinessAccount from "../components/business account/CreateBusinessAccount";
 import EmployerSettings from "../components/business account/employer settings/EmployerSettings";
 import EmployerAccount from "../components/business account/employer settings/EmployerAccount";
 import CompanyAccount from "../components/business account/employer settings/CompanyAccount";
 import AccessAndPermissions from "../components/business account/employer settings/AccessAndPermissions";
+import CreateBusinessAccountForm from "../components/business account/create business account/CreateBusinessAccountForm";
 
 const router = createBrowserRouter([
   {
@@ -57,7 +57,7 @@ const router = createBrowserRouter([
     path: "/createBusinessAccount",
     element: (
       // <ProtectedRoute>
-      <CreateBusinessAccount />
+      <CreateBusinessAccountForm />
       // </ProtectedRoute>
     ),
   },

@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
 import {
+  FieldError,
+  FieldErrors,
   FieldValues,
   Path,
   RegisterOptions,
@@ -15,6 +17,8 @@ type AuthSelectProps<T extends FieldValues> = {
   options?: RegisterOptions<T>;
   name?: Path<T>;
   isFilter?: boolean;
+  required?: boolean;
+  errors?: FieldErrors<T>;
   onChange?: (props: React.ChangeEvent<HTMLSelectElement>) => void;
   register?: UseFormRegister<T>;
 };
@@ -28,6 +32,8 @@ function Select<T extends FieldValues>({
   options,
   name,
   isFilter = false,
+  required,
+  errors,
   onChange,
   register,
 }: AuthSelectProps<T>) {
@@ -35,9 +41,9 @@ function Select<T extends FieldValues>({
     <div className="text-left">
       <label
         htmlFor={id}
-        className={`mb-2 block ${isFilter ? "text-light-secondary-200 font-semibold" : "font-medium"}`}
+        className={`mb-2 block ${isFilter ? "font-semibold text-light-secondary-200" : "font-medium"}`}
       >
-        {label}
+        {label} <span className="text-danger-300">{required ? "*" : ""}</span>
       </label>
       <select
         {...(register && name ? register(name, options) : {})}
@@ -48,6 +54,26 @@ function Select<T extends FieldValues>({
       >
         {children}
       </select>
+      {errors &&
+        id
+          .split(".")
+          .reduce(
+            (acc, part) => (acc && acc[part] ? acc[part] : {}),
+            (errors as FieldErrors<T>) || ({} as FieldErrors<T>),
+          ) && (
+          <span className="text-sm font-medium text-danger-300">
+            {String(
+              (
+                id
+                  .split(".")
+                  .reduce(
+                    (acc, part) => (acc && acc[part] ? acc[part] : {}),
+                    errors as FieldErrors<T>,
+                  ) as FieldError
+              )?.message || "",
+            )}
+          </span>
+        )}
     </div>
   );
 }

@@ -12,8 +12,9 @@ type AuthInputProps<T extends FieldValues> = {
   id: string;
   children: ReactNode;
   showPassword?: boolean;
-  setShowPassword?: (s: boolean) => void;
   errors?: FieldErrors<T>;
+  required?: boolean;
+  setShowPassword?: (s: boolean) => void;
 };
 
 function InputField<T extends FieldValues>({
@@ -22,13 +23,14 @@ function InputField<T extends FieldValues>({
   icon,
   children,
   showPassword,
-  setShowPassword,
   errors,
+  required,
+  setShowPassword,
 }: AuthInputProps<T>) {
   return (
     <div className="">
       <label htmlFor={id} className="font-medium">
-        {label}
+        {label} <span className="text-danger-300">{required ? "*" : ""}</span>
       </label>
       <div className="relative mt-2 flex items-center">
         {icon && (
@@ -57,7 +59,7 @@ function InputField<T extends FieldValues>({
           {children}
 
           {errors && errors[id as keyof T] && (
-            <span className="text-sm font-medium text-danger">
+            <span className="text-sm font-medium text-danger-300">
               {String(errors[id as keyof T]?.message)}
             </span>
           )}
