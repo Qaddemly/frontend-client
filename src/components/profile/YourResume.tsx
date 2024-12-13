@@ -1,5 +1,6 @@
 import { faCirclePlus, faFileLines } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Button from "../common/Button";
 
 function YourResume() {
   return (
@@ -31,14 +32,14 @@ function YourResume() {
           <span className="block px-3 text-gray-300">3.5MB</span>
         </li>
       </ul>
-      <button className="mt-5 rounded-md border-2 border-dashed border-gray-200 px-5 py-3">
+      <Button className="mt-5 rounded-md border-2 border-dashed border-gray-200 px-5 py-3">
         <FontAwesomeIcon icon={faCirclePlus} className="text-main" />
 
         <span className="px-3">Add CV/Resume</span>
         <span className="block text-sm text-gray-300">
           Browse file or drop here; only pdf
         </span>
-      </button>
+      </Button>
     </div>
   );
 }
