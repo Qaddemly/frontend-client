@@ -78,7 +78,7 @@ function UserMenu({ children, type }: UserMenuProps) {
           {children}
           <Button
             onClick={handleLogout}
-            className="bg-danger-300 hover:bg-danger-200 m-3"
+            className="m-3 bg-danger-300 hover:bg-danger-200"
           >
             Logout
           </Button>

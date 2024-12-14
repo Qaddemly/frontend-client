@@ -6,8 +6,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import Logo from "../common/Logo";
 import { useGetUserBusinessesQuery } from "../../services/businessAccountApi";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { setUserBusinessesAccounts } from "../business account/BusinessAccountSlice";
+import Button from "../common/Button";
+import { useClickOutside } from "../../hooks/useOutsideClick";
+import BusinessAccountsMenu from "../business account/BusinessAccountsMenu";
 
 function Navbar() {
   const { user } = useSelector((state: RootState) => state.user);
@@ -15,6 +18,12 @@ function Navbar() {
     skip: Object.entries(user).length === 0,
   });
   const dispatch = useDispatch();
+  const [showMenu, setShowMenu] = useState(false);
+  const divRef = useRef<HTMLDivElement>(null);
+  const menuRef = useClickOutside<HTMLUListElement>(
+    () => setShowMenu(false),
+    divRef,
+  );
 
   useEffect(() => {
     if (isError && data) {
@@ -50,7 +59,7 @@ function Navbar() {
             </li>
           </ul>
         </div>
-        {!user.active ? (
+        {user.active ? (
           <div className="flex space-x-2">
             <Link
               to="/signup"
@@ -66,22 +75,33 @@ function Navbar() {
             </Link>
           </div>
         ) : (
-          <UserMenu type="NormalAccount">
-            <div className="mt-2 flex flex-col gap-3">
-              <div className="px-3 pb-2">
-                <p className="font-medium">{user.email}</p>
-              </div>
-              <Link
-                to="/profile/personal"
-                className="rounded-md hover:bg-[#eee]"
+          <div className="relative flex items-center gap-10">
+            <div>
+              <Button
+                onClick={() => setShowMenu((s) => !s)}
+                className="border border-main bg-white px-5 text-main hover:bg-main hover:text-white"
               >
-                <div className="flex items-center gap-5 px-3 py-2">
-                  <FontAwesomeIcon icon={faUser} className="text-lg" />
-                  <span className="text-lg font-medium">Profile</span>
-                </div>
-              </Link>
+                Business
+              </Button>
+              {showMenu && <BusinessAccountsMenu menuRef={menuRef} />}
             </div>
-          </UserMenu>
+            <UserMenu type="NormalAccount">
+              <div className="mt-2 flex flex-col gap-3">
+                <div className="px-3 pb-2">
+                  <p className="font-medium">{user.email}</p>
+                </div>
+                <Link
+                  to="/profile/personal"
+                  className="rounded-md hover:bg-[#eee]"
+                >
+                  <div className="flex items-center gap-5 px-3 py-2">
+                    <FontAwesomeIcon icon={faUser} className="text-lg" />
+                    <span className="text-lg font-medium">Profile</span>
+                  </div>
+                </Link>
+              </div>
+            </UserMenu>
+          </div>
         )}
       </nav>
     </>

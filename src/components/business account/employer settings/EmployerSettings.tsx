@@ -10,14 +10,6 @@ function EmployerSettings() {
         </div>
         <div className="flex gap-5 pl-5 text-lg font-medium">
           <NavLink
-            to="/employerSettings/yourAccount"
-            className={({ isActive }) =>
-              `px-2 py-1 ${isActive || window.location.pathname === "/employerSettings" ? "rounded-md bg-main text-white" : ""}`
-            }
-          >
-            Your account
-          </NavLink>
-          <NavLink
             to="/employerSettings/companyAccount"
             className={({ isActive }) =>
               `px-2 py-1 ${isActive ? "rounded-md bg-main text-white" : ""}`

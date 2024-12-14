@@ -9,12 +9,12 @@ import InputField from "../common/InputField";
 import Input from "../common/Input";
 import Select from "../common/Select";
 import Button from "../common/Button";
-import NavProfile from "../profile/NavProfile";
+// import NavProfile from "../profile/NavProfile";
 
 function Apply() {
   return (
     <>
-      <NavProfile />
+      {/* <NavProfile /> */}
       <div>
         <p className="ml-8 mt-5 text-3xl font-semibold">Apply For Job</p>
         <p className="ml-10 mt-2">A few steps give you the power to your Job</p>

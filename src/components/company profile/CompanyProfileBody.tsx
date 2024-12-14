@@ -1,6 +1,7 @@
 import CompanyProfileCard from "./CompanyProfileCard";
 import JobCard from "../common/JobCard";
 import ReviewCard from "../common/ReviewCard";
+import Button from "../common/Button";
 
 function CompanyProfileBody() {
   return (
@@ -52,14 +53,14 @@ function CompanyProfileBody() {
       </div>
 
       {/* Valid jobs section  */}
-      <div className="mx-auto max-w-[1000px] px-6 py-12 md:px-12">
+      <div className="relative mx-auto max-w-[1000px] px-6 py-12 md:px-12">
         {/* Section Title */}
-        <h2
-          id="valid-jobs-in-company"
-          className="mb-8 text-center text-2xl font-semibold text-gray-800 md:text-3xl"
-        >
+
+        <h2 className="mb-8 text-center text-2xl font-semibold text-gray-800 md:text-3xl">
           Valid jobs
         </h2>
+        <Button className="absolute right-14 top-12 px-2">View all</Button>
+
         <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
           <JobCard
             jobTitle="Technical Support Specialist"
@@ -107,8 +108,13 @@ function CompanyProfileBody() {
       </div>
 
       {/* Reviews section  */}
-      <div className="relative mb-20 h-[23rem] w-full overflow-hidden sm:h-[17rem]">
-        <div className="animate-slide flex w-[140rem] space-x-10">
+      <div className="relative my-20 h-[23rem] w-full overflow-hidden sm:h-[17rem]">
+        <h2 className="mb-8 text-center text-2xl font-semibold text-gray-800 md:text-3xl">
+          Reviews
+        </h2>
+        <Button className="absolute right-14 top-0 px-2">View all</Button>
+
+        <div className="flex w-[140rem] animate-slide space-x-10">
           <ReviewCard
             userName="User_new1"
             date="December 5, 2024"

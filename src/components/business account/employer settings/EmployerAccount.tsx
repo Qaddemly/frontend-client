@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CardEmployerSettings from "./CardEmployerSettings";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 
+// this component will added to user profile not in business account
 function EmployerAccount() {
   return (
     <div>

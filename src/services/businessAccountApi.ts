@@ -1,6 +1,7 @@
 import {
   IBusinessAccount,
   ICreateBusinessAccountResponse,
+  IGetBusinessAccountInfoResponse,
   IGetUserBusinessesResponse,
 } from "../interfaces/BusinessAccount.interface";
 import { apiSlice } from "./apiSlice";
@@ -25,8 +26,20 @@ export const businessAccountApi = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getBusinessAccountInfo: builder.query<
+      IGetBusinessAccountInfoResponse,
+      { id: number }
+    >({
+      query: ({ id }) => ({
+        url: `${BASE_BUSINESS_URL}/profile/${id}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useCreateBusinessAccountMutation, useGetUserBusinessesQuery } =
-  businessAccountApi;
+export const {
+  useCreateBusinessAccountMutation,
+  useGetUserBusinessesQuery,
+  useGetBusinessAccountInfoQuery,
+} = businessAccountApi;
