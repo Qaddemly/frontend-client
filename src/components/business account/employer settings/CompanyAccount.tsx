@@ -7,8 +7,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 function CompanyAccount() {
+  // const { id } = useParams();
+  // const { data, isLoading } = useGetBusinessAccountInfoQuery({ id });
+
   return (
     <div>
+      {/* {isLoading && <Loader />} */}
       <div className="font-medium">
         <p className="text-3xl">About company</p>
         <p className="text-gray-300">

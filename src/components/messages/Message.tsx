@@ -2,13 +2,13 @@ import Button from "../common/Button";
 import Input from "../common/Input";
 import InputField from "../common/InputField";
 import { faMagnifyingGlass, faUser } from "@fortawesome/free-solid-svg-icons";
-import NavProfile from "../profile/NavProfile";
+// import NavProfile from "../profile/NavProfile";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function Message() {
   return (
     <div>
-      <NavProfile />
+      {/* <NavProfile /> */}
       <div>
         <p className="ml-8 mt-5 text-3xl font-semibold">Messages</p>
         <p className="ml-10 mt-2">The best way to communicate</p>

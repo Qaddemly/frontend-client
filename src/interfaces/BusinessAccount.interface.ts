@@ -41,3 +41,8 @@ export interface IGetUserBusinessesResponse {
   status: string;
   businesses: IBusinesses[];
 }
+
+export interface IGetBusinessAccountInfoResponse {
+  status: string;
+  business: IBusinessAccount;
+}

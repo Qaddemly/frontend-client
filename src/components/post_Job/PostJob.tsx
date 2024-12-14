@@ -1,12 +1,12 @@
 import Button from "../common/Button";
 import Input from "../common/Input";
 import InputField from "../common/InputField";
-import NavProfile from "../profile/NavProfile";
+// import NavProfile from "../profile/NavProfile";
 
 function PostJob1() {
   return (
     <div>
-      <NavProfile />
+      {/* <NavProfile /> */}
       <div>
         <p className="ml-8 mt-5 text-3xl font-semibold">Post Job</p>
         <p className="ml-10 mt-2">A few steps give you the power to your Job</p>
