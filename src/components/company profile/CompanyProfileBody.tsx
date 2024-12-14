@@ -1,11 +1,12 @@
 import CompanyProfileCard from "./CompanyProfileCard";
 import JobCard from "../common/JobCard";
 import ReviewCard from "../common/ReviewCard";
-import Button from "../common/Button";
+import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function CompanyProfileBody() {
   return (
-    <>
+    <div className="overflow-hidden">
       {/* About Us section  */}
       <div className="mx-auto max-w-[1000px] px-6 py-12 md:px-12">
         {/* Section Title */}
@@ -56,10 +57,13 @@ function CompanyProfileBody() {
       <div className="relative mx-auto max-w-[1000px] px-6 py-12 md:px-12">
         {/* Section Title */}
 
-        <h2 className="mb-8 text-center text-2xl font-semibold text-gray-800 md:text-3xl">
-          Valid jobs
-        </h2>
-        <Button className="absolute right-14 top-12 px-2">View all</Button>
+        <div className="flex items-center justify-between font-semibold">
+          <h2 className="text-2xl text-gray-800 md:text-3xl">Valid jobs</h2>
+          <button className="space-x-2 self-end text-xl text-main">
+            <span>View all</span>
+            <FontAwesomeIcon icon={faCircleRight} />
+          </button>
+        </div>
 
         <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
           <JobCard
@@ -108,11 +112,14 @@ function CompanyProfileBody() {
       </div>
 
       {/* Reviews section  */}
-      <div className="relative my-20 h-[23rem] w-full overflow-hidden sm:h-[17rem]">
-        <h2 className="mb-8 text-center text-2xl font-semibold text-gray-800 md:text-3xl">
-          Reviews
-        </h2>
-        <Button className="absolute right-14 top-0 px-2">View all</Button>
+      <div className="relative mx-auto max-w-[1000px] px-6 py-12 md:px-12">
+        <div className="mb-10 flex items-center justify-between font-semibold">
+          <h2 className="text-2xl text-gray-800 md:text-3xl">Reviews</h2>
+          <button className="space-x-2 self-end text-xl text-main">
+            <span>View all</span>
+            <FontAwesomeIcon icon={faCircleRight} />
+          </button>
+        </div>
 
         <div className="flex w-[140rem] animate-slide space-x-10">
           <ReviewCard
@@ -135,7 +142,7 @@ function CompanyProfileBody() {
           />
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
