@@ -13,7 +13,7 @@ export interface IBusinessAccount {
   };
   location_type: LocationType;
   description: string;
-  company_size: string;
+  company_size: number;
   industry: string;
   website: string;
   headquarter: string;
@@ -44,5 +44,9 @@ export interface IGetUserBusinessesResponse {
 
 export interface IGetBusinessAccountInfoResponse {
   status: string;
+  business: IBusinessAccount;
+}
+
+export interface IUpdateBusinessAccount extends IResponse {
   business: IBusinessAccount;
 }
