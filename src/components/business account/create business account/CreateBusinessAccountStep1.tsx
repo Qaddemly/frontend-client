@@ -7,11 +7,13 @@ import Select from "../../common/Select";
 import toast from "react-hot-toast";
 
 type CreateBusinessAccountStep1Props = {
-  setNext: React.Dispatch<React.SetStateAction<boolean>>;
+  setNext?: React.Dispatch<React.SetStateAction<boolean>>;
+  updateAccount: boolean;
 };
 
 function CreateBusinessAccountStep1({
   setNext,
+  updateAccount,
 }: CreateBusinessAccountStep1Props) {
   const locationValues = Object.values(Country);
   const locationTypeValues = Object.values(LocationType);
@@ -27,16 +29,23 @@ function CreateBusinessAccountStep1({
     if (!isValid) {
       toast.error("Threr are fields required");
       return;
-    } else setNext(true);
+    } else if (setNext) setNext(true);
   };
 
   return (
-    <div className="mt-10 flex flex-col gap-5">
-      <InputField errors={errors} label="Company name" id="name" required>
+    <div
+      className={`mt-10 flex flex-col gap-5 ${updateAccount ? "border-r border-gray-100 pr-5" : ""}`}
+    >
+      <InputField
+        errors={!updateAccount ? errors : {}}
+        label="Company name"
+        id="name"
+        required={!updateAccount}
+      >
         <Input
           register={register}
           name="name"
-          options={{ required: "this field is required" }}
+          options={!updateAccount ? { required: "this field is required" } : {}}
           props={{
             type: "text",
             id: "name",
@@ -44,7 +53,11 @@ function CreateBusinessAccountStep1({
           }}
         />
       </InputField>
-      <InputField errors={errors} label="Company email" id="email">
+      <InputField
+        errors={!updateAccount ? errors : {}}
+        label="Company email"
+        id="email"
+      >
         <Input
           register={register}
           name="email"
@@ -58,15 +71,15 @@ function CreateBusinessAccountStep1({
 
       {/* will be enum sync with backend */}
       <InputField
-        errors={errors}
+        errors={!updateAccount ? errors : {}}
         label="Company industry"
         id="industry"
-        required
+        required={!updateAccount}
       >
         <Input
           register={register}
           name="industry"
-          options={{ required: "this field is required" }}
+          options={!updateAccount ? { required: "this field is required" } : {}}
           props={{
             type: "text",
             id: "industry",
@@ -81,8 +94,8 @@ function CreateBusinessAccountStep1({
           name="address.country"
           label="Country"
           id="address.country"
-          errors={errors}
-          required
+          errors={!updateAccount ? errors : {}}
+          required={!updateAccount}
         >
           {locationValues.map((value) => (
             <option value={value} key={value}>
@@ -90,10 +103,12 @@ function CreateBusinessAccountStep1({
             </option>
           ))}
         </Select>
-        <InputField label="City" id="address.city" required>
+        <InputField label="City" id="address.city" required={!updateAccount}>
           <Input
             register={register}
-            options={{ required: "this field is required" }}
+            options={
+              !updateAccount ? { required: "this field is required" } : {}
+            }
             name="address.city"
             props={{ type: "text", id: "address.city", placeholder: "City" }}
           />
@@ -105,7 +120,7 @@ function CreateBusinessAccountStep1({
         name="location_type"
         label="Location type"
         id="locationType"
-        required
+        required={!updateAccount}
       >
         {locationTypeValues.map((value) => (
           <option value={value} key={value}>
@@ -116,17 +131,21 @@ function CreateBusinessAccountStep1({
 
       <div className="flex flex-col gap-2">
         <label htmlFor="companyDescription">
-          Company Description <span className="text-danger-300">*</span>
+          Company Description
+          {!updateAccount && <span className="text-danger-300">*</span>}
         </label>
+
         <textarea
           {...register("description")}
           className="min-h-28 rounded-md p-5 outline-none"
           placeholder="Enter company description"
         />
       </div>
-      <Button type="button" className="px-3" onClick={handleNext}>
-        Next
-      </Button>
+      {!updateAccount && (
+        <Button type="button" className="px-3" onClick={handleNext}>
+          Next
+        </Button>
+      )}
     </div>
   );
 }

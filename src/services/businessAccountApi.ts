@@ -1,8 +1,8 @@
 import {
-  IBusinessAccount,
   ICreateBusinessAccountResponse,
   IGetBusinessAccountInfoResponse,
   IGetUserBusinessesResponse,
+  IUpdateBusinessAccount,
 } from "../interfaces/BusinessAccount.interface";
 import { apiSlice } from "./apiSlice";
 
@@ -12,7 +12,7 @@ export const businessAccountApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     createBusinessAccount: builder.mutation<
       ICreateBusinessAccountResponse,
-      IBusinessAccount
+      FormData
     >({
       query: (data) => ({
         url: `${BASE_BUSINESS_URL}`,
@@ -35,6 +35,16 @@ export const businessAccountApi = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    updateBusinessAccount: builder.mutation<
+      IUpdateBusinessAccount,
+      { id: number; data: FormData }
+    >({
+      query: ({ id, data }) => ({
+        url: `${BASE_BUSINESS_URL}/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -42,4 +52,5 @@ export const {
   useCreateBusinessAccountMutation,
   useGetUserBusinessesQuery,
   useGetBusinessAccountInfoQuery,
+  useUpdateBusinessAccountMutation,
 } = businessAccountApi;

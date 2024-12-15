@@ -5,11 +5,16 @@ import {
   faLocationDot,
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
+import Button from "../../common/Button";
+import { useState } from "react";
+import UpdateCompanyAccount from "./UpdateCompanyAccount";
 
 function CompanyAccount() {
   // const { id } = useParams();
   // const { data, isLoading } = useGetBusinessAccountInfoQuery({ id });
+  const [showUpdateAccount, setShowUpdateAccount] = useState(false);
 
+  if (showUpdateAccount) return <UpdateCompanyAccount />;
   return (
     <div>
       {/* {isLoading && <Loader />} */}
@@ -31,6 +36,7 @@ function CompanyAccount() {
               <FontAwesomeIcon icon={faEnvelope} />
               <p>CompanyName@email.com</p>
             </div>
+
             <div className="flex items-center gap-2 text-gray-300">
               <FontAwesomeIcon icon={faPhone} />
               <p>239489238</p>
@@ -40,6 +46,9 @@ function CompanyAccount() {
               <p>Location</p>
             </div>
           </CardEmployerSettings>
+          <Button onClick={() => setShowUpdateAccount((s) => !s)}>
+            Edit company profile
+          </Button>
         </div>
         <div className="flex w-full flex-col gap-5">
           <CardEmployerSettings>

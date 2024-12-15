@@ -9,6 +9,7 @@ import { useCreateBusinessAccountMutation } from "../../../services/businessAcco
 import Loader from "../../common/Loader";
 import { IError } from "../../../interfaces/Auth.interfaces";
 import toast from "react-hot-toast";
+import { createFormData } from "../../../utils/helpers";
 
 function CreateBusinessAccountForm() {
   const [next, setNext] = useState(false);
@@ -18,7 +19,8 @@ function CreateBusinessAccountForm() {
 
   const onSubmit: SubmitHandler<IBusinessAccount> = async (data) => {
     try {
-      const res = await createBusinessAccount(data).unwrap();
+      const formData = createFormData({ ...data } as Record<string, unknown>);
+      const res = await createBusinessAccount(formData).unwrap();
       toast.success(res.message);
     } catch (err) {
       const error = err as IError;
@@ -41,9 +43,12 @@ function CreateBusinessAccountForm() {
             Provide us with the following information
           </p>
           {next ? (
-            <CreateBusinessAccountStep2 />
+            <CreateBusinessAccountStep2 updateAccount={false} />
           ) : (
-            <CreateBusinessAccountStep1 setNext={setNext} />
+            <CreateBusinessAccountStep1
+              setNext={setNext}
+              updateAccount={false}
+            />
           )}
         </form>
       </FormProvider>
