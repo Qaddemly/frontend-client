@@ -8,16 +8,23 @@ import {
 import Button from "../../common/Button";
 import { useState } from "react";
 import UpdateCompanyAccount from "./UpdateCompanyAccount";
+import { useGetBusinessAccountInfoQuery } from "../../../services/businessAccountApi";
+import { useParams } from "react-router-dom";
+import Loader from "../../common/Loader";
 
+// this page need more handling for ui
 function CompanyAccount() {
-  // const { id } = useParams();
-  // const { data, isLoading } = useGetBusinessAccountInfoQuery({ id });
+  const { companyId } = useParams();
+  const { data, isLoading } = useGetBusinessAccountInfoQuery({
+    id: Number(companyId),
+  });
+  const companyInfo = data?.business;
   const [showUpdateAccount, setShowUpdateAccount] = useState(false);
 
   if (showUpdateAccount) return <UpdateCompanyAccount />;
   return (
     <div>
-      {/* {isLoading && <Loader />} */}
+      {isLoading && <Loader />}
       <div className="font-medium">
         <p className="text-3xl">About company</p>
         <p className="text-gray-300">
@@ -28,22 +35,24 @@ function CompanyAccount() {
       <div className="mt-10 flex gap-10">
         <div className="flex w-1/2 flex-col gap-5">
           <CardEmployerSettings className="items-center justify-center">
-            <p>Company name</p>
+            <p>{companyInfo?.name}</p>
           </CardEmployerSettings>
           <CardEmployerSettings>
             <p>Contact</p>
             <div className="flex items-center gap-2 text-gray-300">
               <FontAwesomeIcon icon={faEnvelope} />
-              <p>CompanyName@email.com</p>
+              <p>{companyInfo?.email ? companyInfo.email : "No email added"}</p>
             </div>
 
             <div className="flex items-center gap-2 text-gray-300">
               <FontAwesomeIcon icon={faPhone} />
-              <p>239489238</p>
+              <p>{companyInfo?.phone ? companyInfo.phone : "No phone added"}</p>
             </div>
             <div className="flex items-center gap-2 text-gray-300">
               <FontAwesomeIcon icon={faLocationDot} />
-              <p>Location</p>
+              <p>
+                {companyInfo?.address.country}, {companyInfo?.address.city}
+              </p>
             </div>
           </CardEmployerSettings>
           <Button onClick={() => setShowUpdateAccount((s) => !s)}>
@@ -53,15 +62,25 @@ function CompanyAccount() {
         <div className="flex w-full flex-col gap-5">
           <CardEmployerSettings>
             <p className="text-md font-medium">Website</p>
-            <p className="text-gray-300">No websites added</p>
+            <p className="text-gray-300">
+              {companyInfo?.website ? companyInfo.website : "No websited added"}
+            </p>
           </CardEmployerSettings>
           <CardEmployerSettings>
             <p className="text-md font-medium">Industry</p>
-            <p className="text-gray-300">No industry added</p>
+            <p className="text-gray-300">{companyInfo?.industry}</p>
           </CardEmployerSettings>
           <CardEmployerSettings>
-            <p className="text-md font-medium">Specialists</p>
-            <p className="text-gray-300">No specialists added</p>
+            <p className="text-md font-medium">Headquarter</p>
+            <p className="text-gray-300">{companyInfo?.headquarter}</p>
+          </CardEmployerSettings>
+          <CardEmployerSettings>
+            <p className="text-md font-medium">CEO</p>
+            <p className="text-gray-300">{companyInfo?.CEO}</p>
+          </CardEmployerSettings>
+          <CardEmployerSettings>
+            <p className="text-md font-medium">Company size</p>
+            <p className="text-gray-300">{companyInfo?.company_size}</p>
           </CardEmployerSettings>
         </div>
       </div>
