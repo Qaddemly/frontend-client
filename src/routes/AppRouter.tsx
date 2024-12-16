@@ -57,7 +57,7 @@ const router = createBrowserRouter([
   { path: "/message", element: <Message /> },
   { path: "/postjob", element: <PostJob1 /> },
   { path: "/findCompany", element: <FindCompany /> },
-  { path: "/companyProfile", element: <CompanyProfile /> },
+  { path: "/companyProfile/:companyId", element: <CompanyProfile /> },
   {
     path: "/createBusinessAccount",
     element: (
@@ -72,7 +72,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <CompanyAccount /> },
       // { path: "yourAccount", element: <EmployerAccount /> },
-      { path: "companyAccount/:id", element: <CompanyAccount /> },
+      { path: "companyAccount/:companyId", element: <CompanyAccount /> },
       { path: "accessAndPermissions", element: <AccessAndPermissions /> },
     ],
   },

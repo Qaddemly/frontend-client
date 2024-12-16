@@ -1,8 +1,10 @@
 import {
   ICreateBusinessAccountResponse,
   IGetBusinessAccountInfoResponse,
+  IGetJobsResponse,
+  IGetReviewsResponse,
   IGetUserBusinessesResponse,
-  IUpdateBusinessAccount,
+  IUpdateBusinessAccountResponse,
 } from "../interfaces/BusinessAccount.interface";
 import { apiSlice } from "./apiSlice";
 
@@ -36,13 +38,37 @@ export const businessAccountApi = apiSlice.injectEndpoints({
       }),
     }),
     updateBusinessAccount: builder.mutation<
-      IUpdateBusinessAccount,
+      IUpdateBusinessAccountResponse,
       { id: number; data: FormData }
     >({
       query: ({ id, data }) => ({
-        url: `${BASE_BUSINESS_URL}/${id}`,
+        url: `${BASE_BUSINESS_URL}/myBusiness/dashboard/edit/${id}`,
         method: "PUT",
         body: data,
+      }),
+    }),
+    getFiveReviews: builder.query<IGetReviewsResponse, { id: number }>({
+      query: ({ id }) => ({
+        url: `${BASE_BUSINESS_URL}/profile/reviewsFive/${id}`,
+        method: "GET",
+      }),
+    }),
+    getSixJobs: builder.query<IGetJobsResponse, { id: number }>({
+      query: ({ id }) => ({
+        url: `${BASE_BUSINESS_URL}/profile/jobsSix/${id}`,
+        method: "GET",
+      }),
+    }),
+    getAllReviews: builder.query<IGetReviewsResponse, { id: number }>({
+      query: ({ id }) => ({
+        url: `${BASE_BUSINESS_URL}/profile/reviews/${id}`,
+        method: "GET",
+      }),
+    }),
+    getAllJobs: builder.query<IGetJobsResponse, { id: number }>({
+      query: ({ id }) => ({
+        url: `${BASE_BUSINESS_URL}/profile/jobs/${id}`,
+        method: "GET",
       }),
     }),
   }),
@@ -53,4 +79,8 @@ export const {
   useGetUserBusinessesQuery,
   useGetBusinessAccountInfoQuery,
   useUpdateBusinessAccountMutation,
+  useGetFiveReviewsQuery,
+  useGetSixJobsQuery,
+  useLazyGetAllReviewsQuery,
+  useLazyGetAllJobsQuery,
 } = businessAccountApi;

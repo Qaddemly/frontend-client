@@ -3,8 +3,31 @@ import JobCard from "../common/JobCard";
 import ReviewCard from "../common/ReviewCard";
 import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IBusinessAccount } from "../../interfaces/BusinessAccount.interface";
+import {
+  useGetFiveReviewsQuery,
+  useGetSixJobsQuery,
+  useLazyGetAllJobsQuery,
+  useLazyGetAllReviewsQuery,
+} from "../../services/businessAccountApi";
+import { useState } from "react";
 
-function CompanyProfileBody() {
+type CompanyProfileBodyProps = {
+  data: IBusinessAccount | undefined;
+  id: number;
+};
+
+function CompanyProfileBody({
+  data: companyData,
+  id,
+}: CompanyProfileBodyProps) {
+  const { data: sixJobsData } = useGetSixJobsQuery({ id });
+  const { data: fiveReviewsData } = useGetFiveReviewsQuery({ id });
+  const [triggerAllJobs, { data: allJobsData }] = useLazyGetAllJobsQuery();
+  const [triggerAllReviews, { data: allReviewsData }] =
+    useLazyGetAllReviewsQuery();
+  const [viewAllJobs, setViewAllJobs] = useState(false);
+  const [viewAllReviews, setViewAllReviews] = useState(false);
   return (
     <div className="overflow-hidden">
       {/* About Us section  */}
@@ -18,36 +41,41 @@ function CompanyProfileBody() {
         </h2>
         {/* Cards Section */}
         <div className="mb-12 grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-4 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
-          <CompanyProfileCard title="CEO" description="Sundar Pichai" />
-          <CompanyProfileCard title="Founded" description="1998" />
-          <CompanyProfileCard title="Revenue" description="Over $280B" />
+          <CompanyProfileCard title="CEO" description={companyData?.CEO} />
+          <CompanyProfileCard
+            title="Founded"
+            description={companyData?.founded}
+          />
+          {/* there is no revenue in backend response */}
+          {/* <CompanyProfileCard title="Revenue" description="Over $280B" /> */}
           <CompanyProfileCard
             title="Company Size"
-            description="More than 190,000"
+            description={companyData?.company_size.toString()}
           />
           <CompanyProfileCard
             title="Founder"
-            description="Larry Page & Sergey Brin"
+            description={companyData?.founder}
           />
-          <CompanyProfileCard title="Website" description="Google " />
+          <CompanyProfileCard
+            title="Website"
+            description={companyData?.website}
+          />
           <CompanyProfileCard
             title="Headquarters"
-            description="Mountain View, CA"
+            description={companyData?.headquarter}
           />
-          <CompanyProfileCard title="Industry" description="Technology" />
+          <CompanyProfileCard
+            title="Industry"
+            description={companyData?.industry}
+          />
         </div>
         {/* Description Section */}
         <div className="text-left text-gray-500">
           <p className="mb-4 text-sm leading-relaxed md:text-base">
-            There's work, and then there's your life's work. The kind of work
-            that gets you up in the morning. Work that's not just a job, but a
-            calling. At Google you can find that calling and live your purpose
-            every day. With our scale and reach, your personal impact becomes
-            part of a collective force for global progress. Because impact
-            matters.
-            {/* Should come from Back-end */}
+            {companyData?.description}
           </p>
-          <a href="#" className="text-main hover:underline">
+          {/* learn more will go to company website */}
+          <a href={companyData?.website} className="text-main hover:underline">
             Learn more
           </a>
         </div>
@@ -56,58 +84,43 @@ function CompanyProfileBody() {
       {/* Valid jobs section  */}
       <div className="relative mx-auto max-w-[1000px] px-6 py-12 md:px-12">
         {/* Section Title */}
-
         <div className="flex items-center justify-between font-semibold">
           <h2 className="text-2xl text-gray-800 md:text-3xl">Valid jobs</h2>
-          <button className="space-x-2 self-end text-xl text-main">
+          <button
+            className="space-x-2 self-end text-xl text-main"
+            onClick={() => {
+              triggerAllJobs({ id });
+              setViewAllJobs(true);
+            }}
+          >
             <span>View all</span>
             <FontAwesomeIcon icon={faCircleRight} />
           </button>
         </div>
 
+        {/* Valid jobs */}
         <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-          <JobCard
-            jobTitle="Technical Support Specialist"
-            employmentType="PART-TIME"
-            salaryRange="$20,000 - $25,000"
-            companyName="Google Inc."
-            companyLocation="Dhaka, Bangladesh"
-          />
-          <JobCard
-            jobTitle="Senior UX Designer"
-            employmentType="FULL-TIME"
-            salaryRange="$20,000 - $25,000"
-            companyName="Google Inc."
-            companyLocation="Dhaka, Bangladesh"
-          />
-          <JobCard
-            jobTitle="Technical Support Specialist"
-            employmentType="PART-TIME"
-            salaryRange="$20,000 - $25,000"
-            companyName="Google Inc."
-            companyLocation="Dhaka, Bangladesh"
-          />
-          <JobCard
-            jobTitle="Technical Support Specialist"
-            employmentType="INTERNSHIP"
-            salaryRange="$20,000 - $25,000"
-            companyName="Google Inc."
-            companyLocation="Tanta, Egypt"
-          />
-          <JobCard
-            jobTitle="Marketing Officer"
-            employmentType="PART-TIME"
-            salaryRange="$20,000 - $25,000"
-            companyName="Google Inc."
-            companyLocation="Dhaka, Bangladesh"
-          />
-          <JobCard
-            jobTitle="Technical Support Specialist"
-            employmentType="Full-TIME"
-            salaryRange="$20,000 - $25,000"
-            companyName="Google Inc."
-            companyLocation="dimashq, Syria"
-          />
+          {viewAllJobs
+            ? sixJobsData?.jobs.map((job) => (
+                <JobCard
+                  key={job.job_id}
+                  jobTitle={job.job_title}
+                  employmentType={job.job_employee_type}
+                  salaryRange={job.job_salary.toString()}
+                  companyName={job.business_name}
+                  companyLocation={job.job_location}
+                />
+              ))
+            : allJobsData?.jobs.map((job) => (
+                <JobCard
+                  key={job.job_id}
+                  jobTitle={job.job_title}
+                  employmentType={job.job_employee_type}
+                  salaryRange={job.job_salary.toString()}
+                  companyName={job.business_name}
+                  companyLocation={job.job_location}
+                />
+              ))}
         </div>
       </div>
 
@@ -115,40 +128,43 @@ function CompanyProfileBody() {
       <div className="relative mx-auto max-w-[1000px] px-6 py-12 md:px-12">
         <div className="mb-10 flex items-center justify-between font-semibold">
           <h2 className="text-2xl text-gray-800 md:text-3xl">Reviews</h2>
-          <button className="space-x-2 self-end text-xl text-main">
+          <button
+            className="space-x-2 self-end text-xl text-main"
+            onClick={() => {
+              triggerAllReviews({ id });
+              setViewAllReviews(true);
+            }}
+          >
             <span>View all</span>
             <FontAwesomeIcon icon={faCircleRight} />
           </button>
         </div>
 
+        {/* Reviews */}
         <div className="flex w-[140rem] animate-slide space-x-10">
-          <ReviewCard
-            userName="User_new1"
-            date="December 5, 2024"
-            text="Google is a leader in innovation, offering top-notch products like Search, YouTube, and Android that have revolutionized daily life. It's also a fantastic workplace, known for its excellent benefits and focus on creativity."
-            index={5}
-          />
-          <ReviewCard
-            userName="User_new1"
-            date="December 5, 2024"
-            text="Google is a leader in innovation, offering top-notch products like Search, YouTube, and Android that have revolutionized daily life. It's also a fantastic workplace, known for its excellent benefits and focus on creativity."
-            index={5}
-          />
-          <ReviewCard
-            userName="User_new1"
-            date="December 5, 2024"
-            text="Google is a leader in innovation, offering top-notch products like Search, YouTube, and Android that have revolutionized daily life. It's also a fantastic workplace, known for its excellent benefits and focus on creativity."
-            index={5}
-          />
+          {viewAllReviews
+            ? fiveReviewsData?.reviews.map((review) => (
+                <ReviewCard
+                  key={review.review_account_id}
+                  userName={`${review.account_first_name} ${review.account_last_name}`}
+                  date={review.review_created_at}
+                  text={review.review_description}
+                  img={review.account_profile_picture}
+                />
+              ))
+            : allReviewsData?.reviews.map((review) => (
+                <ReviewCard
+                  key={review.review_account_id}
+                  userName={`${review.account_first_name} ${review.account_last_name}`}
+                  date={review.review_created_at}
+                  text={review.review_description}
+                  img={review.account_profile_picture}
+                />
+              ))}
         </div>
       </div>
     </div>
   );
 }
-
-// name: "User_new1",
-// avatarUrl: "https://example.com/avatar.jpg",
-// date: "December 5, 2024",
-// text: "Google is a leader in innovation, offering top-notch products like Search, YouTube, and Android that have revolutionized daily life. It's also a fantastic workplace, known for its excellent benefits and focus on creativity.",
 
 export default CompanyProfileBody;
