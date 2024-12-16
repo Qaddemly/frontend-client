@@ -46,7 +46,7 @@ function Navbar() {
               Find Job
             </li>
             <li className="cursor-pointer border-b-2 border-white text-main hover:border-main">
-              Job Tracker
+              Find Company
             </li>
             <li className="cursor-pointer border-b-2 border-white text-main hover:border-main">
               Build Resume
