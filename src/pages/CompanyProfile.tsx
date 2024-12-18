@@ -1,18 +1,24 @@
+import { useParams } from "react-router-dom";
 import CompanyProfileBody from "../components/company profile/CompanyProfileBody";
 import CompanyProfileHeader from "../components/company profile/CompanyProfileHeader";
 import Footer from "../components/home/Footer";
 import Navbar from "../components/home/Navbar";
+import { useGetBusinessAccountInfoQuery } from "../services/businessAccountApi";
+import Loader from "../components/common/Loader";
 
 function CompanyProfile() {
+  const { companyId } = useParams();
+  const { data, isLoading } = useGetBusinessAccountInfoQuery({
+    id: Number(companyId),
+  });
+
+  if (isLoading) return <Loader />;
   return (
     <div className="bg-background">
+      {/* {data?.status === "fail" && toast.error("There is an Error")} */}
       <Navbar />
-      <CompanyProfileHeader
-        name="Google Inc."
-        rating={4.8}
-        numberOfReviews={25}
-      />
-      <CompanyProfileBody />
+      <CompanyProfileHeader data={data?.business} />
+      <CompanyProfileBody data={data?.business} id={Number(companyId)} />
       <Footer />
     </div>
   );

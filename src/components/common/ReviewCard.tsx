@@ -1,32 +1,20 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar as faStarFilled } from "@fortawesome/free-solid-svg-icons";
 import { faStar } from "@fortawesome/free-regular-svg-icons";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 
 type ReviewCardProps = {
   userName: string;
   date: string;
   text: string;
-  index: number;
+  img: string;
 };
 
-function ReviewCard({ userName, date, text, index }: ReviewCardProps) {
+function ReviewCard({ userName, date, text, img }: ReviewCardProps) {
   return (
-    <div
-      key={index}
-      className="flex w-[500rem] flex-col rounded-3xl bg-white p-12 sm:w-[500rem] md:w-[650rem] lg:w-[800rem]"
-    >
+    <div className="flex w-[500rem] flex-col rounded-3xl bg-white p-12 sm:w-[500rem] md:w-[650rem] lg:w-[800rem]">
       <div className="flex flex-col items-center justify-between sm:flex-row">
         <div className="flex flex-col items-center gap-3 sm:flex-row">
-          <FontAwesomeIcon
-            icon={faGoogle}
-            className="text-[50px] text-main md:text-[70px]"
-          />
-          {/* <img
-              src={imgURL}
-              alt={userName}
-              className="h-10 w-10 rounded-full"
-            /> */}
+          <img src={img} alt={userName} className="h-10 w-10 rounded-full" />
           <h3 className="text-lg font-medium">{userName}</h3>
         </div>
         <div className="text-2xl text-gray-800">

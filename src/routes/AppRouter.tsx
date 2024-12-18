@@ -23,6 +23,7 @@ import CompanyAccount from "../components/business account/employer settings/Com
 import AccessAndPermissions from "../components/business account/employer settings/AccessAndPermissions";
 import CreateBusinessAccountForm from "../components/business account/create business account/CreateBusinessAccountForm";
 import PostJob2 from "../components/post_Job/PostJob2";
+import JobProfile from "../pages/JobProfile";
 
 const router = createBrowserRouter([
   {
@@ -59,7 +60,8 @@ const router = createBrowserRouter([
   { path: "/postjob", element: <PostJob1 /> },
   { path: "/postjob2", element: <PostJob2 /> },
   { path: "/findCompany", element: <FindCompany /> },
-  { path: "/companyProfile", element: <CompanyProfile /> },
+  { path: "/companyProfile/:companyId", element: <CompanyProfile /> },
+  { path: "/jobProfile", element: <JobProfile /> },
   {
     path: "/createBusinessAccount",
     element: (
@@ -74,7 +76,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <CompanyAccount /> },
       // { path: "yourAccount", element: <EmployerAccount /> },
-      { path: "companyAccount/:id", element: <CompanyAccount /> },
+      { path: "companyAccount/:companyId", element: <CompanyAccount /> },
       { path: "accessAndPermissions", element: <AccessAndPermissions /> },
     ],
   },
