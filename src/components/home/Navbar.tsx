@@ -11,6 +11,7 @@ import { setUserBusinessesAccounts } from "../business account/BusinessAccountSl
 import Button from "../common/Button";
 import { useClickOutside } from "../../hooks/useOutsideClick";
 import BusinessAccountsMenu from "../business account/BusinessAccountsMenu";
+import NavbarLink from "../common/NavbarLink";
 
 function Navbar() {
   const { user } = useSelector((state: RootState) => state.user);
@@ -39,27 +40,27 @@ function Navbar() {
         <Logo fontSize="text-4xl" />
         <div>
           <ul className="flex items-center justify-between space-x-8">
-            <li className="cursor-pointer border-b-2 border-white text-main hover:border-main">
-              Home
+            <li>
+              <NavbarLink to="/" content="Home" />
             </li>
-            <li className="cursor-pointer border-b-2 border-white text-main hover:border-main">
+            {/* <li className="cursor-pointer border-b-2 text-main hover:border-main">
               Find Job
+            </li> */}
+            <li>
+              <NavbarLink to="/findCompany" content="Find company" />
             </li>
-            <li className="cursor-pointer border-b-2 border-white text-main hover:border-main">
-              Find Company
-            </li>
-            <li className="cursor-pointer border-b-2 border-white text-main hover:border-main">
+            {/* <li className="cursor-pointer border-b-2 text-main hover:border-main">
               Build Resume
             </li>
-            <li className="cursor-pointer border-b-2 border-white text-main hover:border-main">
+            <li className="cursor-pointer border-b-2 text-main hover:border-main">
               ATS Scan
             </li>
-            <li className="cursor-pointer border-b-2 border-white text-main hover:border-main">
+            <li className="cursor-pointer border-b-2 text-main hover:border-main">
               Post Job
-            </li>
+            </li> */}
           </ul>
         </div>
-        {user.active ? (
+        {!user.is_activated ? (
           <div className="flex space-x-2">
             <Link
               to="/signup"

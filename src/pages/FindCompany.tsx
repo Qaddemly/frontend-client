@@ -21,7 +21,6 @@ function FindCompany() {
   return (
     <>
       <Navbar />
-
       <SidebarFilter
         setIsOpen={setIsOpen}
         isOpen={isOpen}

@@ -5,11 +5,13 @@ import {
   LocationType,
   Prefixes,
 } from "../components/auth";
+import { IReview } from "./BusinessAccount.interface";
+import { IResponse } from "./Common.interface";
 
 export interface IUserInfo {
   // Personal
-  phone: Phone;
-  address: Address;
+  phone: IPhone;
+  address: IAddress;
   dateOfBirth: string;
   profilePicture: string;
   // Education
@@ -17,71 +19,79 @@ export interface IUserInfo {
   // Experience
   experience: IExperience;
   // Soft Skills
-  softSkills: string[];
-  languages: Languages[];
+  softSkills: ISkills[];
+  languages: ILanguages[];
   // Resume
-  resume: string;
-}
-export interface IExperience {
-  jobTitle: string;
-  employmentType: EmploymentType;
-  companyName: string;
-  location: Country;
-  locationType: LocationType;
-  stillWorking: boolean;
-  startDate: string;
-  endDate: string;
-}
-export interface IEducation {
-  university: string;
-  fieldOfStudy: string;
-  gpa: number;
-  startDate: string;
-  endDate: string;
-  _id: string;
+  resume: string; // need interface
 }
 export interface User {
-  _id: string;
+  id: string;
+  first_name: string;
+  last_name: string;
   email: string;
-  firstName: string;
-  lastName: string;
   password: string;
-  skills: string[];
-  role: string;
-  active: boolean;
-  isActivated: boolean;
-  experience: IExperience[];
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-  passwordChangedAt: string;
-  address: Address;
-  dateOfBirth: string;
+  date_of_birth: string;
+  profile_picture: string;
+  resume: string[]; // need interface
+  skills: ISkills[];
+  password_changed_at: string;
+  is_activated: boolean;
+  created_at: string;
+  updated_at: string;
+  address: IAddress;
+  phone: IPhone;
+  experiences: IExperience[];
   education: IEducation;
-  phone: Phone;
-  profilePicture: string;
-  resume: string;
-  languages: Languages[];
+  languages: ILanguages[];
+  reviews: IReview[];
+  follow_businesses: string[]; // need interface
+  business_roles: IBusinessRoles[];
+  job_applications: string[]; // need interafce
+  saved_job: string[]; // need interafce
 }
-
-export interface Address {
+export interface IExperience {
+  id: number;
+  job_title: string;
+  employment_type: EmploymentType;
+  company_name: string;
+  location: Country;
+  location_type: LocationType;
+  still_working: boolean;
+  start_date: string;
+  end_date: string;
+}
+export interface IEducation {
+  account_id: number;
+  university: string;
+  field_of_study: string;
+  gpa: number;
+  start_date: string;
+  end_date: string;
+}
+export interface IAddress {
   country: Country;
   city: string;
-  _id: string;
 }
 
-export interface Phone {
-  countryCode: Prefixes;
-  number: string;
-  _id: string;
+export interface IPhone {
+  country_code: Prefixes;
+  number: number;
 }
-export interface IError {
-  details: number;
-  data: {
-    message: string;
-    status: string;
-  };
+export interface IBusinessRoles {
+  id: number;
+  role: string;
+  created_at: string;
+  updated_at: string;
 }
+export interface ISkills {
+  id: number;
+  name: string;
+}
+export interface ILanguages {
+  id: number;
+  name: Languages;
+}
+
 //////////////////////////////////////////////////////////////////////////////
 // Api Request Interfaces
 export interface ILoginInputs {
@@ -119,14 +129,11 @@ export interface ISetNewPasswordInputs extends ISetNewPassword {
 }
 //////////////////////////////////////////////////////////////////////////////
 // Api Response Interfaces
-export interface IResponse {
-  success: boolean;
-  message: string;
-}
 export interface ILoginResponse {
   success: boolean;
   user: User;
   accessToken: string;
+  refreshToken: string;
 }
 
 export interface ISignupResponse extends IResponse {
@@ -144,8 +151,3 @@ export interface IForgetMyPasswordResponse {
 export interface IVerifyForgetPasswordResponse extends IResponse {
   passwordResetToken: string;
 }
-export type ISetNewPasswordResponse = IResponse;
-
-export type IResendActivateCodeResponse = IResponse;
-export type IResendForgetPasswordCodeResponse = IResponse;
-export type ILogoutResponse = IResponse;

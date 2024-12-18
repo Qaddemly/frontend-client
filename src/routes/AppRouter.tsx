@@ -61,7 +61,7 @@ const router = createBrowserRouter([
   { path: "/postjob2", element: <PostJob2 /> },
   { path: "/findCompany", element: <FindCompany /> },
   { path: "/companyProfile/:companyId", element: <CompanyProfile /> },
-  { path: "/jobProfile", element: <JobProfile /> },
+  // { path: "/jobProfile", element: <JobProfile /> },
   {
     path: "/createBusinessAccount",
     element: (

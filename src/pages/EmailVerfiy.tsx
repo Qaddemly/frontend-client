@@ -5,7 +5,6 @@ import ActivationInputs from "../components/auth/signup/ActivationInputs";
 import Logo from "../components/common/Logo";
 import AuthLayout from "../layout/AuthLayout";
 import { useNavigate } from "react-router-dom";
-import { IError } from "../interfaces/Auth.interfaces";
 import Loader from "../components/common/Loader";
 import {
   useActivateEmailMutation,
@@ -13,6 +12,7 @@ import {
   useResendForgetPasswordCodeMutation,
   useVerifyForgetPasswordMutation,
 } from "../services/authApi";
+import { IError } from "../interfaces/Common.interface";
 
 function EmailVerfiy() {
   const [activateEmail, { isLoading: isLoading1 }] = useActivateEmailMutation();
@@ -35,7 +35,7 @@ function EmailVerfiy() {
         localStorage.removeItem("activationToken");
       } catch (err) {
         const error = err as IError;
-        toast.error(error.data.message);
+        toast.error(error.message);
       }
     } else if (resetVerificationToken?.length) {
       try {
@@ -49,7 +49,7 @@ function EmailVerfiy() {
         localStorage.setItem("passwordResetToken", res.passwordResetToken);
       } catch (err) {
         const error = err as IError;
-        toast.error(error.data.message);
+        toast.error(error.message);
       }
     }
   }
@@ -61,7 +61,7 @@ function EmailVerfiy() {
         toast.success(res.message);
       } catch (err) {
         const error = err as IError;
-        toast.error(error.data.message);
+        toast.error(error.message);
       }
     } else if (resetVerificationToken?.length) {
       try {
@@ -71,7 +71,7 @@ function EmailVerfiy() {
         toast.success(res.message);
       } catch (err) {
         const error = err as IError;
-        toast.error(error.data.message);
+        toast.error(error.message);
       }
     }
   }

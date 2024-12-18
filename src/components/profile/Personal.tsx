@@ -11,11 +11,6 @@ import Select from "../common/Select";
 import { Country, Prefixes } from "../auth";
 import DatePicker from "../common/DatePicker";
 import FileUpload from "../common/FileUpload";
-import { useUpdateProfileMutation } from "../../services/profileApi";
-import Loader from "../common/Loader";
-import { createFormData } from "../../utils/helpers";
-import toast from "react-hot-toast";
-import { IError } from "../../interfaces/Auth.interfaces";
 
 function Personal() {
   const countryKeys = Object.keys(Country).filter(
@@ -24,7 +19,8 @@ function Personal() {
   const prefixValues = Object.values(Prefixes).filter(
     (value) => typeof value == "string",
   );
-  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+  // this api is no longer work
+  // const [updateProfile, { isLoading }] = useUpdateProfileMutation();
 
   type TPersonal = {
     firstName: string;
@@ -39,7 +35,7 @@ function Personal() {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
+    // reset,
   } = useForm<TPersonal>();
 
   const submitForm: SubmitHandler<TPersonal> = async (data) => {
@@ -64,22 +60,24 @@ function Personal() {
       );
     }
 
-    const formData = createFormData(filteredData);
-    if (Object.entries(filteredData).length)
-      try {
-        const res = await updateProfile(formData).unwrap();
-        console.log(res);
-        toast.success("Profile Updated");
-        reset();
-      } catch (err) {
-        const error = err as IError;
-        toast.error(error.data.message);
-      }
+    console.log(filteredData);
+
+    // const formData = createFormData(filteredData);
+    // if (Object.entries(filteredData).length)
+    //   try {
+    //     const res = await updateProfile(formData).unwrap();
+    //     console.log(res);
+    //     toast.success("Profile Updated");
+    //     reset();
+    //   } catch (err) {
+    //     const error = err as IError;
+    //     toast.error(error.data.message);
+    //   }
   };
 
   return (
     <div className="mt-5">
-      {isLoading && <Loader />}
+      {/* {isLoading && <Loader />} */}
       <form className="mt-10 px-10" onSubmit={handleSubmit(submitForm)}>
         <div className="mt-10 flex space-x-5">
           <InputField id="firstName" icon={faCircleUser} label="FirstName">
@@ -179,7 +177,7 @@ function Personal() {
 
           {errors.dateOfBirth &&
             typeof errors.dateOfBirth?.message === "string" && (
-              <p className="text-sm text-danger">
+              <p className="text-danger text-sm">
                 {errors.dateOfBirth.message}
               </p>
             )}

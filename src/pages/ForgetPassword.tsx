@@ -4,13 +4,14 @@ import AuthLayout from "../layout/AuthLayout";
 import Input from "../components/common/Input";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { formSettings } from "../components/auth";
-import { IError, IForgetMyPassword } from "../interfaces/Auth.interfaces";
+import { IForgetMyPassword } from "../interfaces/Auth.interfaces";
 import { useForgetMyPasswordMutation } from "../services/authApi";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/common/Loader";
 import InputField from "../components/common/InputField";
 import Button from "../components/common/Button";
+import { IError } from "../interfaces/Common.interface";
 
 function ForgetPassword() {
   const [forgetMyPassword, { isLoading }] = useForgetMyPasswordMutation();
@@ -33,7 +34,7 @@ function ForgetPassword() {
       navigate("/emailVerfiy");
     } catch (err) {
       const error = err as IError;
-      toast.error(error.data.message);
+      toast.error(error.message);
     }
   };
   return (
