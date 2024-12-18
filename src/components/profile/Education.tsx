@@ -1,16 +1,13 @@
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import Input from "../common/Input";
-import Loader from "../common/Loader";
-import { useUpdateProfileMutation } from "../../services/profileApi";
-import { IEducation, IError } from "../../interfaces/Auth.interfaces";
-import { createFormData } from "../../utils/helpers";
-import toast from "react-hot-toast";
+import { IEducation } from "../../interfaces/Auth.interfaces";
 import InputField from "../common/InputField";
 import StartToEndDate from "../common/StartToEndDate";
 import Button from "../common/Button";
 
 function Education() {
-  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+  // this api is no longer work
+  // const [updateProfile, { isLoading }] = useUpdateProfileMutation();
 
   type TEducation = {
     education: IEducation;
@@ -21,7 +18,7 @@ function Education() {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
+    // reset,
   } = methods;
 
   const submitForm: SubmitHandler<TEducation> = async (data) => {
@@ -31,21 +28,21 @@ function Education() {
         Object.entries(filteredData).filter(([key]) => key !== "education"),
       );
     console.log(filteredData);
-    const formData = createFormData(filteredData);
-    if (Object.entries(filteredData).length)
-      try {
-        const res = await updateProfile(formData).unwrap();
-        console.log(res);
-        toast.success("Profile Updated");
-        reset();
-      } catch (err) {
-        const error = err as IError;
-        toast.error(error.data.message);
-      }
+    // const formData = createFormData(filteredData);
+    // if (Object.entries(filteredData).length)
+    //   try {
+    //     const res = await updateProfile(formData).unwrap();
+    //     console.log(res);
+    //     toast.success("Profile Updated");
+    //     reset();
+    //   } catch (err) {
+    //     const error = err as IError;
+    //     toast.error(error.data.message);
+    //   }
   };
   return (
     <FormProvider {...methods}>
-      {isLoading && <Loader />}
+      {/* {isLoading && <Loader />} */}
       <form
         className="mt-10 w-[40rem] space-y-3 px-10"
         onSubmit={handleSubmit(submitForm)}
@@ -65,7 +62,7 @@ function Education() {
         <InputField id="Field of study" errors={errors} label="Field of study">
           <Input
             register={register}
-            name="education.fieldOfStudy"
+            name="education.field_of_study"
             props={{
               placeholder: "Ex. Engineering",
               type: "text",
@@ -92,8 +89,8 @@ function Education() {
 
         <div>
           <StartToEndDate
-            startDate="education.startDate"
-            endDate="education.endDate"
+            startDate="education.start_date"
+            endDate="education.end_date"
             register={register}
           />
         </div>

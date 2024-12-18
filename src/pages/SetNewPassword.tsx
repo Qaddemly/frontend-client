@@ -5,13 +5,14 @@ import Input from "../components/common/Input";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { formSettings } from "../components/auth";
-import { IError, ISetNewPassword } from "../interfaces/Auth.interfaces";
+import { ISetNewPassword } from "../interfaces/Auth.interfaces";
 import { useSetNewPasswordMutation } from "../services/authApi";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/common/Loader";
 import InputField from "../components/common/InputField";
 import Button from "../components/common/Button";
+import { IError } from "../interfaces/Common.interface";
 
 function SetNewPassword() {
   const [showPassword, setShowPassword] = useState(false);
@@ -42,7 +43,7 @@ function SetNewPassword() {
         localStorage.removeItem("passwordResetToken");
       } catch (err) {
         const error = err as IError;
-        toast.error(error.data.message);
+        toast.error(error.message);
       }
   };
 

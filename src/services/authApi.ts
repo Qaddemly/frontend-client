@@ -5,17 +5,14 @@ import {
   IForgetMyPasswordResponse,
   ILoginInputs,
   ILoginResponse,
-  ILogoutResponse,
-  IResendActivateCodeResponse,
-  IResendForgetPasswordCodeResponse,
   ISetNewPasswordInputs,
-  ISetNewPasswordResponse,
   ISignupInputs,
   ISignupResponse,
   IUserInfoResponse,
   IVerifyForgetPasswordInputs,
   IVerifyForgetPasswordResponse,
 } from "../interfaces/Auth.interfaces";
+import { IResponse } from "../interfaces/Common.interface";
 import { apiSlice } from "./apiSlice";
 
 const BASE_AUTH_URL = "/auth";
@@ -29,13 +26,6 @@ export const authApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
-    // signUpWithGoogle: builder.mutation<void, void>({
-    //   query: () => ({
-    //     url: `${BASE_AUTH_URL}/googleAuth`,
-    //     method: "GET",
-    //     credentials: "include",
-    //   }),
-    // }),
     signUp: builder.mutation<ISignupResponse, ISignupInputs>({
       query: (data) => ({
         url: `${BASE_AUTH_URL}/signUp`,
@@ -79,10 +69,7 @@ export const authApi = apiSlice.injectEndpoints({
         body: { code },
       }),
     }),
-    setNewPassword: builder.mutation<
-      ISetNewPasswordResponse,
-      ISetNewPasswordInputs
-    >({
+    setNewPassword: builder.mutation<IResponse, ISetNewPasswordInputs>({
       query: ({ passwordResetToken, newPassword, newPasswordConfirm }) => ({
         url: `${BASE_AUTH_URL}/resetMyPassword/${passwordResetToken}`,
         method: "POST",
@@ -90,7 +77,7 @@ export const authApi = apiSlice.injectEndpoints({
       }),
     }),
     resendActivateCode: builder.mutation<
-      IResendActivateCodeResponse,
+      IResponse,
       { activationToken: string }
     >({
       query: ({ activationToken }) => ({
@@ -99,7 +86,7 @@ export const authApi = apiSlice.injectEndpoints({
       }),
     }),
     resendForgetPasswordCode: builder.mutation<
-      IResendForgetPasswordCodeResponse,
+      IResponse,
       { resetVerificationToken: string }
     >({
       query: ({ resetVerificationToken }) => ({
@@ -107,7 +94,7 @@ export const authApi = apiSlice.injectEndpoints({
         method: "PUT",
       }),
     }),
-    logout: builder.mutation<ILogoutResponse, void>({
+    logout: builder.mutation<IResponse, void>({
       query: () => ({
         url: `${BASE_AUTH_URL}/logout`,
         method: "POST",

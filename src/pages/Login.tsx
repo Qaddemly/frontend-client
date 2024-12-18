@@ -9,13 +9,14 @@ import { useState } from "react";
 import Input from "../components/common/Input";
 import { useLoginMutation } from "../services/authApi";
 import toast from "react-hot-toast";
-import { IError, ILoginInputs } from "../interfaces/Auth.interfaces";
+import { ILoginInputs } from "../interfaces/Auth.interfaces";
 import Loader from "../components/common/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../components/auth/UserSlice";
 import { RootState } from "../store/store";
 import InputField from "../components/common/InputField";
 import Button from "../components/common/Button";
+import { IError } from "../interfaces/Common.interface";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -23,7 +24,7 @@ function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.user);
-  const createAtMin = new Date(user.createdAt)
+  const createAtMin = new Date(user.created_at)
     .toTimeString()
     .split(" ")[0]
     .split(":")[1];
@@ -39,13 +40,13 @@ function Login() {
   const onSubmit: SubmitHandler<ILoginInputs> = async (data) => {
     try {
       const res = await login(data).unwrap();
-      toast.success(`Welcome ${res.user.firstName}`);
+      toast.success(`Welcome ${res.user.first_name}`);
       if (currentMin - Number(createAtMin) < 10) navigate("/userInfo");
       else navigate("/");
       dispatch(setUser(res.user));
     } catch (err) {
       const error = err as IError;
-      toast.error(error.data.message);
+      toast.error(error.message);
     }
   };
 

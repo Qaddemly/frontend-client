@@ -12,9 +12,9 @@ import Button from "../common/Button";
 import { useClickOutside } from "../../hooks/useOutsideClick";
 import { useLogoutMutation } from "../../services/authApi";
 import toast from "react-hot-toast";
-import { IError } from "../../interfaces/Auth.interfaces";
 import Loader from "../common/Loader";
 import { ReactNode, useRef, useState } from "react";
+import { IError } from "../../interfaces/Common.interface";
 
 type UserMenuProps = {
   children: ReactNode;
@@ -39,7 +39,7 @@ function UserMenu({ children, type }: UserMenuProps) {
       navigate("/login");
     } catch (err) {
       const error = err as IError;
-      toast.error(error.data.message);
+      toast.error(error.message);
     }
   }
   return (
@@ -53,16 +53,16 @@ function UserMenu({ children, type }: UserMenuProps) {
         {type === "NormalAccount" && (
           <FontAwesomeIcon icon={faBell} className="text-2xl" />
         )}
-        {!user.profilePicture ? (
+        {!user.profile_picture ? (
           <FontAwesomeIcon
             icon={faUser}
             className="rounded-full border-2 border-gray-200 bg-gray-200 px-2 py-2 text-2xl"
           />
         ) : (
-          <img src={user.profilePicture} className="h-12 w-12 rounded-full" />
+          <img src={user.profile_picture} className="h-12 w-12 rounded-full" />
         )}
         <div className="cursor-pointer text-xl font-semibold">
-          {user.firstName} {user.lastName}
+          {user.first_name} {user.last_name}
         </div>
         {!showMenu ? (
           <FontAwesomeIcon icon={faChevronDown} />

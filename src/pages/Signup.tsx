@@ -14,7 +14,6 @@ import { useForm } from "react-hook-form";
 import { formSettings } from "../components/auth";
 import { useSignUpMutation } from "../services/authApi";
 import {
-  IError,
   ISignupInputs,
   ISignupInputsStep1,
   ISignupInputsStep2,
@@ -24,6 +23,7 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../components/common/Loader";
 import Button from "../components/common/Button";
 import InputField from "../components/common/InputField";
+import { IError } from "../interfaces/Common.interface";
 
 function Signup() {
   const [step, setStep] = useState(1);
@@ -60,7 +60,7 @@ function Signup() {
       localStorage.setItem("activationToken", res.activationToken);
     } catch (err) {
       const error = err as IError;
-      toast.error(error.data.message);
+      toast.error(error.message);
     }
   };
 
