@@ -5,13 +5,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import InputField from "../common/InputField";
-import Input from "../common/Input";
-import Select from "../common/Select";
-import Button from "../common/Button";
+import InputField from "../../common/InputField";
+import Input from "../../common/Input";
+import Select from "../../common/Select";
+import Button from "../../common/Button";
 // import NavProfile from "../profile/NavProfile";
 
-function Apply() {
+function ApplyJob() {
   return (
     <>
       {/* <NavProfile /> */}
@@ -103,4 +103,4 @@ function Apply() {
   );
 }
 
-export default Apply;
+export default ApplyJob;

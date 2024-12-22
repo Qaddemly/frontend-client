@@ -1,26 +1,26 @@
 import React from "react";
 import Footer from "../components/home/Footer";
 import Navbar from "../components/home/Navbar";
-import JobDescriptionItem from "../components/job profile/JobDescriptionItem";
-import JobDescriptionSection from "../components/job profile/JobDescriptionSection";
-import JobProfileBody from "../components/job profile/JobProfileBody";
-import JobProfileHeader from "../components/job profile/JobProfileHeader";
-import SimilarJobs from "../components/job profile/SimilarJobs";
+import JobDescriptionItem from "../components/job/job profile/JobDescriptionItem";
+import JobDescriptionSection from "../components/job/job profile/JobDescriptionSection";
+import JobProfileBody from "../components/job/job profile/JobProfileBody";
+import JobProfileHeader from "../components/job/job profile/JobProfileHeader";
+import SimilarJobs from "../components/job/job profile/SimilarJobs";
 
 type JobProfileProps = {
-  name: string;
-  rating: number;
-  updateDate: string;
+  name?: string;
+  rating?: number;
+  updateDate?: string;
   // المفروض استلم ال تاريخ ازاي؟
-  companyName: string;
-  companyWebsite: string;
-  location: string;
-  decsription: string;
-  employmentType: string;
-  skills: string[];
-  salary: string;
-  position: string;
-  experience: string;
+  companyName?: string;
+  companyWebsite?: string;
+  location?: string;
+  decsription?: string;
+  employmentType?: string;
+  skills?: string[];
+  salary?: string;
+  position?: string;
+  experience?: string;
 };
 
 function JobProfile({

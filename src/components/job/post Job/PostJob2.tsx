@@ -1,10 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import NavbarBusiness from "../business account/NavbarBusiness";
-import SideNavBusiness from "../business account/SideNavBusiness";
-import Button from "../common/Button";
-
-import Select from "../common/Select";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import SideNavBusiness from "../../business account/SideNavBusiness";
+import NavbarBusiness from "../../business account/NavbarBusiness";
+import Select from "../../common/Select";
+import Button from "../../common/Button";
 
 function PostJob2() {
   return (

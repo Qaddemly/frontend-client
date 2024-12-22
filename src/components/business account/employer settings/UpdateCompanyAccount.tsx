@@ -6,9 +6,9 @@ import CreateBusinessAccountStep2 from "../create business account/CreateBusines
 import { createFormData } from "../../../utils/helpers";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
-import { IError } from "../../../interfaces/Auth.interfaces";
 import { useUpdateBusinessAccountMutation } from "../../../services/businessAccountApi";
 import Loader from "../../common/Loader";
+import { IError } from "../../../interfaces/Common.interface";
 
 function UpdateCompanyAccount() {
   const { id } = useParams();
@@ -45,7 +45,7 @@ function UpdateCompanyAccount() {
       toast.success(res.message);
     } catch (err) {
       const error = err as IError;
-      toast.error(error.data.message);
+      toast.error(error.message);
     }
     console.log(filteredData);
   };

@@ -1,6 +1,6 @@
 import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import JobCard from "../common/JobCard";
+import JobCard from "../../common/JobCard";
 
 function SimilarJobs() {
   return (
