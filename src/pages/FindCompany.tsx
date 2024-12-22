@@ -36,7 +36,7 @@ function FindCompany() {
             ))} */}
           <option value="">Select industy</option>
         </Select>
-        <Slider />
+        <Slider label="Rating" min={0} max={10} />
         <Button className="my-5">Filter Companies</Button>
       </SidebarFilter>
 

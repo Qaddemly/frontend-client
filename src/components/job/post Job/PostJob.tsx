@@ -1,11 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import SideNavBusiness from "../business account/SideNavBusiness";
-import Button from "../common/Button";
-import Input from "../common/Input";
-import InputField from "../common/InputField";
-import { faRightLong } from "@fortawesome/free-solid-svg-icons";
-import NavbarBusiness from "../business account/NavbarBusiness";
+
 import { NavLink } from "react-router-dom";
+import SideNavBusiness from "../../business account/SideNavBusiness";
+import InputField from "../../common/InputField";
+import Input from "../../common/Input";
+import Button from "../../common/Button";
+import { faRightLong } from "@fortawesome/free-solid-svg-icons";
+import NavbarBusiness from "../../business account/NavbarBusiness";
 
 function PostJob1() {
   return (

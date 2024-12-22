@@ -6,7 +6,7 @@ function NavbarLink({ to, content }: { to: string; content: string }) {
       to={to}
       end
       className={({ isActive }: { isActive: boolean }) =>
-        `cursor-pointer border-b-2 text-main hover:border-main ${
+        `cursor-pointer border-b-2 pb-1 text-main hover:border-main ${
           isActive ? "border-b-main" : "border-b-white"
         }`
       }

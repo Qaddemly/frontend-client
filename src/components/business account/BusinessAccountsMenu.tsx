@@ -17,7 +17,7 @@ function BusinessAccountsMenu({
     >
       {/* {data?.businesses.map((b) => <li>{b.name}</li>)} */}
       <li className="flex cursor-pointer flex-col rounded-tl-md rounded-tr-md border-b border-gray-100 px-4 py-2 font-medium hover:bg-[#eee]">
-        Company name <span>Role</span>
+        Company name <span className="italic text-gray-300">Role</span>
       </li>
       <Button
         onClick={() => navigate("/createBusinessAccount")}

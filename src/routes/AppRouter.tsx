@@ -13,17 +13,18 @@ import SetNewPassword from "../pages/SetNewPassword";
 import MySkills from "../components/profile/MySkills";
 import { Toaster } from "react-hot-toast";
 import ProtectedRoute from "./ProtectedRoute";
-import Apply from "../components/apply/Apply";
+import Apply from "../components/job/apply job/ApplyJob";
 import Message from "../components/messages/Message";
-import PostJob1 from "../components/post_Job/PostJob";
 import FindCompany from "../pages/FindCompany";
 import CompanyProfile from "../pages/CompanyProfile";
 import EmployerSettings from "../components/business account/employer settings/EmployerSettings";
 import CompanyAccount from "../components/business account/employer settings/CompanyAccount";
 import AccessAndPermissions from "../components/business account/employer settings/AccessAndPermissions";
 import CreateBusinessAccountForm from "../components/business account/create business account/CreateBusinessAccountForm";
-import PostJob2 from "../components/post_Job/PostJob2";
 import JobProfile from "../pages/JobProfile";
+import FindJob from "../pages/FindJob";
+import PostJob1 from "../components/job/post Job/PostJob";
+import PostJob2 from "../components/job/post Job/PostJob2";
 
 const router = createBrowserRouter([
   {
@@ -60,8 +61,9 @@ const router = createBrowserRouter([
   { path: "/postjob", element: <PostJob1 /> },
   { path: "/postjob2", element: <PostJob2 /> },
   { path: "/findCompany", element: <FindCompany /> },
+  { path: "/findJob", element: <FindJob /> },
   { path: "/companyProfile/:companyId", element: <CompanyProfile /> },
-  // { path: "/jobProfile", element: <JobProfile /> },
+  { path: "/jobProfile", element: <JobProfile /> },
   {
     path: "/createBusinessAccount",
     element: (
@@ -75,7 +77,6 @@ const router = createBrowserRouter([
     element: <EmployerSettings />,
     children: [
       { index: true, element: <CompanyAccount /> },
-      // { path: "yourAccount", element: <EmployerAccount /> },
       { path: "companyAccount/:companyId", element: <CompanyAccount /> },
       { path: "accessAndPermissions", element: <AccessAndPermissions /> },
     ],

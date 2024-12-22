@@ -43,21 +43,12 @@ function Navbar() {
             <li>
               <NavbarLink to="/" content="Home" />
             </li>
-            {/* <li className="cursor-pointer border-b-2 text-main hover:border-main">
-              Find Job
-            </li> */}
+            <li>
+              <NavbarLink to="/findJob" content="Find job" />
+            </li>
             <li>
               <NavbarLink to="/findCompany" content="Find company" />
             </li>
-            {/* <li className="cursor-pointer border-b-2 text-main hover:border-main">
-              Build Resume
-            </li>
-            <li className="cursor-pointer border-b-2 text-main hover:border-main">
-              ATS Scan
-            </li>
-            <li className="cursor-pointer border-b-2 text-main hover:border-main">
-              Post Job
-            </li> */}
           </ul>
         </div>
         {!user.is_activated ? (

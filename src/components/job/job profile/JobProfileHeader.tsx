@@ -4,7 +4,7 @@ import {
   faStar,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Button from "../common/Button";
+import Button from "../../common/Button";
 import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 
 type JobProfileHeaderProps = {
