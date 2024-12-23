@@ -25,6 +25,7 @@ import JobProfile from "../pages/JobProfile";
 import FindJob from "../pages/FindJob";
 import PostJob1 from "../components/job/post Job/PostJob";
 import PostJob2 from "../components/job/post Job/PostJob2";
+import CompanyJobs from "../components/job/CompanyJobs";
 
 const router = createBrowserRouter([
   {
@@ -79,6 +80,7 @@ const router = createBrowserRouter([
       { index: true, element: <CompanyAccount /> },
       { path: "companyAccount/:companyId", element: <CompanyAccount /> },
       { path: "accessAndPermissions", element: <AccessAndPermissions /> },
+      { path: "companyJobs", element: <CompanyJobs /> },
     ],
   },
 ]);

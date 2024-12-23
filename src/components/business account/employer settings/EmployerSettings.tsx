@@ -4,7 +4,7 @@ import BusinessLayout from "../../../layout/BusinessLayout";
 function EmployerSettings() {
   return (
     <BusinessLayout>
-      <div className="mt-10 flex items-center">
+      <div className="flex items-center bg-[#eee] p-2">
         <div className="border-r border-r-gray-100 px-10 py-3">
           <p className="text-xl font-semibold">Employer settings</p>
         </div>
@@ -27,7 +27,7 @@ function EmployerSettings() {
           </NavLink>
         </div>
       </div>
-      <div className="m-10 rounded-lg bg-[#eee] p-10">
+      <div className="m-5">
         <Outlet />
       </div>
     </BusinessLayout>

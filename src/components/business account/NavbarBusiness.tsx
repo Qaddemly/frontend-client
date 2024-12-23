@@ -24,6 +24,7 @@ function NavbarBusiness() {
             <FontAwesomeIcon icon={faEnvelope} className="text-2xl" />
             <p>Messages</p>
           </Link>
+          {/* TODO for GAD : put "Switch to your account" button  */}
         </div>
         <UserMenu type="BusinessAccount">
           <div className="px-3">
