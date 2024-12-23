@@ -21,7 +21,7 @@ function CreateBusinessAccountStep2({
   } = useFormContext();
   return (
     <div className="mt-10 flex flex-col gap-5">
-      <div className="flex gap-10">
+      <div className="flex gap-5">
         <InputField
           errors={!updateAccount ? errors : {}}
           label="CEO"
@@ -41,6 +41,37 @@ function CreateBusinessAccountStep2({
             }}
           />
         </InputField>
+        <InputField id="phone" label="Phone number">
+          <Input
+            name={"phone"}
+            props={{
+              placeholder: "123-456-789",
+              id: "phone",
+              type: "number",
+            }}
+          />
+        </InputField>
+      </div>
+
+      {/* phone number will be array  */}
+      <div className="flex items-end justify-between">
+        {/* handle with backend */}
+        {/* <Select
+          register={register}
+          name="phone"
+          label="Phone number"
+          id="phone"
+        >
+          {prefixValues.map((value) => (
+            <option
+              key={value}
+              value={Prefixes[value as keyof typeof Prefixes]}
+            >
+              {value} +({Prefixes[value as keyof typeof Prefixes]})
+            </option>
+          ))}
+        </Select> */}
+
         <InputField
           errors={!updateAccount ? errors : {}}
           label="Founder"
@@ -60,56 +91,25 @@ function CreateBusinessAccountStep2({
             }}
           />
         </InputField>
-      </div>
 
-      {/* phone number will be array  */}
-      <div className="flex items-end gap-2">
-        {/* handle with backend */}
-        {/* <Select
-          register={register}
-          name="phone"
-          label="Phone number"
-          id="phone"
-        >
-          {prefixValues.map((value) => (
-            <option
-              key={value}
-              value={Prefixes[value as keyof typeof Prefixes]}
-            >
-              {value} +({Prefixes[value as keyof typeof Prefixes]})
-            </option>
-          ))}
-        </Select> */}
-
-        <InputField id="phone" label="Phone number">
-          <Input
-            name={"phone"}
-            props={{
-              placeholder: "123-456-789",
-              id: "phone",
-              type: "number",
-            }}
+        <div className="flex flex-col gap-2 text-left">
+          <label htmlFor="dateOfBirth" className="font-medium">
+            Founded Year{" "}
+            {!updateAccount && <span className="text-danger-300">*</span>}
+          </label>
+          <DatePicker
+            register={register}
+            name="founded"
+            options={
+              !updateAccount
+                ? {
+                    validate: (value) => validateDateOfBirth(value),
+                    required: "this field is required",
+                  }
+                : {}
+            }
           />
-        </InputField>
-      </div>
-
-      <div className="flex flex-col gap-2 text-left">
-        <label htmlFor="dateOfBirth" className="font-medium">
-          Founded Year{" "}
-          {!updateAccount && <span className="text-danger-300">*</span>}
-        </label>
-        <DatePicker
-          register={register}
-          name="founded"
-          options={
-            !updateAccount
-              ? {
-                  validate: (value) => validateDateOfBirth(value),
-                  required: "this field is required",
-                }
-              : {}
-          }
-        />
+        </div>
       </div>
 
       <InputField

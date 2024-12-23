@@ -137,7 +137,7 @@ function CreateBusinessAccountStep1({
 
         <textarea
           {...register("description")}
-          className="min-h-28 rounded-md p-5 outline-none"
+          className="min-h-[20rem] rounded-md bg-[#eee] p-5 outline-none"
           placeholder="Enter company description"
         />
       </div>

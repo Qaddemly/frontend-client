@@ -23,7 +23,7 @@ function CompanyAccount() {
 
   if (showUpdateAccount) return <UpdateCompanyAccount />;
   return (
-    <div>
+    <div className="w-[50rem]">
       {isLoading && <Loader />}
       <div className="font-medium">
         <p className="text-3xl">About company</p>
