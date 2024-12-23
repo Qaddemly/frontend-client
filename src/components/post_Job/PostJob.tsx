@@ -6,8 +6,32 @@ import InputField from "../common/InputField";
 import { faRightLong } from "@fortawesome/free-solid-svg-icons";
 import NavbarBusiness from "../business account/NavbarBusiness";
 import { NavLink } from "react-router-dom";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 function PostJob1() {
+  type TPost = {
+    jobtitle: string;
+    Number_Of_people_who_can_apply: number;
+    company: string;
+    Job_Location: string;
+    Job_Type: string;
+    Discription: string;
+  };
+  const submitForm: SubmitHandler<TPost> = async (data) => {
+    let filteredData: Partial<TPost> = data;
+    if (data.Job_Location?.length === 0)
+      filteredData = Object.fromEntries(
+        Object.entries(filteredData).filter(([key]) => key !== "post"),
+      );
+    console.log(filteredData);
+  };
+  const methods = useForm<TPost>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = methods;
   return (
     <>
       <div className="flex min-h-screen">
@@ -21,9 +45,10 @@ function PostJob1() {
               A few steps give you the power to your Job
             </p>
             <div className="mt-10 flex flex-col gap-5">
-              <div className="">
+              <div className="" onSubmit={handleSubmit(submitForm)}>
                 <InputField id="jobtitle" label="Job Title">
                   <Input
+                    register={register}
                     props={{
                       placeholder: "job title",
                       type: "text",
@@ -38,6 +63,7 @@ function PostJob1() {
                 label="Number Of people who can apply"
               >
                 <Input
+                  register={register}
                   props={{
                     placeholder: "Number Of people who can apply",
                     type: "text",
@@ -48,6 +74,7 @@ function PostJob1() {
 
               <InputField id="company" label="Company">
                 <Input
+                  register={register}
                   props={{
                     placeholder: "company",
                     type: "text",
@@ -58,6 +85,7 @@ function PostJob1() {
 
               <InputField id="Job Location" label="Job Location">
                 <Input
+                  register={register}
                   props={{
                     placeholder: "Job Location",
                     type: "text",
@@ -68,6 +96,7 @@ function PostJob1() {
 
               <InputField id="Job Type" label="Job Type">
                 <Input
+                  register={register}
                   props={{
                     placeholder: "Job Type",
                     type: "text",
@@ -78,6 +107,7 @@ function PostJob1() {
 
               <InputField id="Discription" label="Discription">
                 <Input
+                  register={register}
                   props={{
                     placeholder: "Discription",
                     type: "text",
