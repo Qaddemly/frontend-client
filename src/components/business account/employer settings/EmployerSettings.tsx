@@ -18,6 +18,14 @@ function EmployerSettings() {
             Company
           </NavLink>
           <NavLink
+            to="/employerSettings/companyJobs"
+            className={({ isActive }) =>
+              `px-2 py-1 ${isActive ? "rounded-md bg-main text-white" : ""}`
+            }
+          >
+            Posted Jobs
+          </NavLink>
+          <NavLink
             to="/employerSettings/accessAndPermissions"
             className={({ isActive }) =>
               `px-2 py-1 ${isActive ? "rounded-md bg-main text-white" : ""}`
@@ -27,7 +35,7 @@ function EmployerSettings() {
           </NavLink>
         </div>
       </div>
-      <div className="m-5">
+      <div className="m-5 flex items-center justify-center py-10">
         <Outlet />
       </div>
     </BusinessLayout>

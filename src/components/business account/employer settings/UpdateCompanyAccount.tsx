@@ -11,7 +11,7 @@ import Loader from "../../common/Loader";
 import { IError } from "../../../interfaces/Common.interface";
 
 function UpdateCompanyAccount() {
-  const { id } = useParams();
+  const { companyId } = useParams();
   const [updateBusinessAccount, { isLoading }] =
     useUpdateBusinessAccountMutation();
   const methods = useForm<IBusinessAccount>(formSettings);
@@ -39,7 +39,7 @@ function UpdateCompanyAccount() {
     const formData = createFormData(filteredData);
     try {
       const res = await updateBusinessAccount({
-        id: Number(id),
+        id: Number(companyId),
         data: formData,
       }).unwrap();
       toast.success(res.message);
@@ -52,12 +52,14 @@ function UpdateCompanyAccount() {
 
   return (
     <FormProvider {...methods}>
-      {isLoading && <Loader />}
-      <p className="text-3xl font-medium">Update company</p>
-      <form onSubmit={methods.handleSubmit(onSubmit)} className="flex gap-5">
-        <CreateBusinessAccountStep1 updateAccount={true} />
-        <CreateBusinessAccountStep2 updateAccount={true} />
-      </form>
+      <div>
+        {isLoading && <Loader />}
+        <p className="text-3xl font-medium">Update company</p>
+        <form onSubmit={methods.handleSubmit(onSubmit)} className="flex gap-5">
+          <CreateBusinessAccountStep1 updateAccount={true} />
+          <CreateBusinessAccountStep2 updateAccount={true} />
+        </form>
+      </div>
     </FormProvider>
   );
 }

@@ -35,7 +35,7 @@ function DatePicker<T extends FieldValues>({
         {...(register && name ? register(name, options) : {})}
         onChange={onChange}
         type="date"
-        className="block rounded-md border-2 border-gray-100 p-2.5 ps-10 text-sm"
+        className="block w-[13rem] rounded-md border-2 border-gray-100 p-2.5 ps-10 text-sm"
       />
     </div>
   );
