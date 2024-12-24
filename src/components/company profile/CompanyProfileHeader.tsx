@@ -1,4 +1,4 @@
-import { IBusinessAccount } from "../../interfaces/BusinessAccount.interface";
+import { IBusinessAccount } from "../../interfaces/BusinessAccount.interfaces";
 import Button from "../common/Button";
 
 function CompanyProfileHeader({

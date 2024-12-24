@@ -23,7 +23,7 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../components/common/Loader";
 import Button from "../components/common/Button";
 import InputField from "../components/common/InputField";
-import { IError } from "../interfaces/Common.interface";
+import { IError } from "../interfaces/Common.interfaces";
 
 function Signup() {
   const [step, setStep] = useState(1);

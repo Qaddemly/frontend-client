@@ -1,6 +1,6 @@
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import CreateBusinessAccountStep1 from "../create business account/CreateBusinessAccountStep1";
-import { IBusinessAccount } from "../../../interfaces/BusinessAccount.interface";
+import { IBusinessAccount } from "../../../interfaces/BusinessAccount.interfaces";
 import { formSettings } from "../../auth";
 import CreateBusinessAccountStep2 from "../create business account/CreateBusinessAccountStep2";
 import { createFormData } from "../../../utils/helpers";
@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import { useUpdateBusinessAccountMutation } from "../../../services/businessAccountApi";
 import Loader from "../../common/Loader";
-import { IError } from "../../../interfaces/Common.interface";
+import { IError } from "../../../interfaces/Common.interfaces";
 
 function UpdateCompanyAccount() {
   const { companyId } = useParams();

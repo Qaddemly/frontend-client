@@ -7,8 +7,19 @@ import Input from "../../common/Input";
 import Button from "../../common/Button";
 import { faRightLong } from "@fortawesome/free-solid-svg-icons";
 import NavbarBusiness from "../../business account/NavbarBusiness";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { IPostData } from "../../../interfaces/Job.interfaces";
 
 function PostJob1() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IPostData>();
+  const submitForm: SubmitHandler<IPostData> = async (data) => {
+    console.log(data);
+  };
+
   return (
     <>
       <div className="flex min-h-screen">
@@ -21,10 +32,14 @@ function PostJob1() {
             <p className="text-gray-300">
               A few steps give you the power to your Job
             </p>
-            <div className="mt-10 flex flex-col gap-5">
+            <form
+              onSubmit={handleSubmit(submitForm)}
+              className="mt-10 flex flex-col gap-5"
+            >
               <div className="">
-                <InputField id="jobtitle" label="Job Title">
+                <InputField errors={errors} id="jobtitle" label="Job Title">
                   <Input
+                    register={register}
                     props={{
                       placeholder: "job title",
                       type: "text",
@@ -35,10 +50,12 @@ function PostJob1() {
               </div>
 
               <InputField
+                errors={errors}
                 id="Number Of people who can apply"
                 label="Number Of people who can apply"
               >
                 <Input
+                  register={register}
                   props={{
                     placeholder: "Number Of people who can apply",
                     type: "text",
@@ -47,8 +64,9 @@ function PostJob1() {
                 />
               </InputField>
 
-              <InputField id="company" label="Company">
+              <InputField errors={errors} id="company" label="Company">
                 <Input
+                  register={register}
                   props={{
                     placeholder: "company",
                     type: "text",
@@ -57,8 +75,13 @@ function PostJob1() {
                 />
               </InputField>
 
-              <InputField id="Job Location" label="Job Location">
+              <InputField
+                errors={errors}
+                id="Job Location"
+                label="Job Location"
+              >
                 <Input
+                  register={register}
                   props={{
                     placeholder: "Job Location",
                     type: "text",
@@ -67,8 +90,9 @@ function PostJob1() {
                 />
               </InputField>
 
-              <InputField id="Job Type" label="Job Type">
+              <InputField errors={errors} id="Job Type" label="Job Type">
                 <Input
+                  register={register}
                   props={{
                     placeholder: "Job Type",
                     type: "text",
@@ -77,8 +101,9 @@ function PostJob1() {
                 />
               </InputField>
 
-              <InputField id="Discription" label="Discription">
+              <InputField errors={errors} id="Discription" label="Discription">
                 <Input
+                  register={register}
                   props={{
                     placeholder: "Discription",
                     type: "text",
@@ -91,7 +116,7 @@ function PostJob1() {
                   Next <FontAwesomeIcon icon={faRightLong} className="pl-2" />
                 </Button>
               </NavLink>
-            </div>
+            </form>
           </div>
         </div>
       </div>

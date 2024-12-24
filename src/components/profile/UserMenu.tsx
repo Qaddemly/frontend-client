@@ -14,7 +14,7 @@ import { useLogoutMutation } from "../../services/authApi";
 import toast from "react-hot-toast";
 import Loader from "../common/Loader";
 import { ReactNode, useRef, useState } from "react";
-import { IError } from "../../interfaces/Common.interface";
+import { IError } from "../../interfaces/Common.interfaces";
 
 type UserMenuProps = {
   children: ReactNode;

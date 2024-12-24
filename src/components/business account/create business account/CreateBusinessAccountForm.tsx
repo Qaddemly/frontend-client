@@ -4,7 +4,7 @@ import CreateBusinessAccountStep1 from "./CreateBusinessAccountStep1";
 import CreateBusinessAccountStep2 from "./CreateBusinessAccountStep2";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { formSettings } from "../../auth";
-import { IBusinessAccount } from "../../../interfaces/BusinessAccount.interface";
+import { IBusinessAccount } from "../../../interfaces/BusinessAccount.interfaces";
 import { useCreateBusinessAccountMutation } from "../../../services/businessAccountApi";
 import Loader from "../../common/Loader";
 import { IError } from "../../../interfaces/Auth.interfaces";

@@ -12,7 +12,7 @@ import {
   IVerifyForgetPasswordInputs,
   IVerifyForgetPasswordResponse,
 } from "../interfaces/Auth.interfaces";
-import { IResponse } from "../interfaces/Common.interface";
+import { IResponse } from "../interfaces/Common.interfaces";
 import { apiSlice } from "./apiSlice";
 
 const BASE_AUTH_URL = "/auth";

@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../components/common/Loader";
 import InputField from "../components/common/InputField";
 import Button from "../components/common/Button";
-import { IError } from "../interfaces/Common.interface";
+import { IError } from "../interfaces/Common.interfaces";
 
 function SetNewPassword() {
   const [showPassword, setShowPassword] = useState(false);

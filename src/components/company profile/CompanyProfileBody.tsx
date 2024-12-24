@@ -3,7 +3,7 @@ import JobCard from "../common/JobCard";
 import ReviewCard from "../common/ReviewCard";
 import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { IBusinessAccount } from "../../interfaces/BusinessAccount.interface";
+import { IBusinessAccount } from "../../interfaces/BusinessAccount.interfaces";
 import {
   useGetFiveReviewsQuery,
   useGetSixJobsQuery,

@@ -23,7 +23,7 @@ import AccessAndPermissions from "../components/business account/employer settin
 import CreateBusinessAccountForm from "../components/business account/create business account/CreateBusinessAccountForm";
 import JobProfile from "../pages/JobProfile";
 import FindJob from "../pages/FindJob";
-import PostJob1 from "../components/job/post Job/PostJob";
+import PostJob1 from "../components/job/post Job/PostJob1";
 import PostJob2 from "../components/job/post Job/PostJob2";
 import CompanyJobs from "../components/job/CompanyJobs";
 import UpdateJob from "../components/job/update job/UpdateJob";

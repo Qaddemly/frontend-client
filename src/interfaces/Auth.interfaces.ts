@@ -5,8 +5,8 @@ import {
   LocationType,
   Prefixes,
 } from "../components/auth";
-import { IReview } from "./BusinessAccount.interface";
-import { IResponse } from "./Common.interface";
+import { IReview } from "./BusinessAccount.interfaces";
+import { IResponse } from "./Common.interfaces";
 
 export interface IUserInfo {
   // Personal
