@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   IBusinessAccount,
   IBusinesses,
-} from "../../interfaces/BusinessAccount.interface";
+} from "../../interfaces/BusinessAccount.interfaces";
 import { businessAccountApi } from "../../services/businessAccountApi";
 
 const initialState = {

@@ -5,7 +5,7 @@ import {
   IGetReviewsResponse,
   IGetUserBusinessesResponse,
   IUpdateBusinessAccountResponse,
-} from "../interfaces/BusinessAccount.interface";
+} from "../interfaces/BusinessAccount.interfaces";
 import { apiSlice } from "./apiSlice";
 
 const BASE_BUSINESS_URL = "/business";

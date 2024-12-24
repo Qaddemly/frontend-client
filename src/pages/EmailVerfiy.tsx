@@ -12,7 +12,7 @@ import {
   useResendForgetPasswordCodeMutation,
   useVerifyForgetPasswordMutation,
 } from "../services/authApi";
-import { IError } from "../interfaces/Common.interface";
+import { IError } from "../interfaces/Common.interfaces";
 
 function EmailVerfiy() {
   const [activateEmail, { isLoading: isLoading1 }] = useActivateEmailMutation();

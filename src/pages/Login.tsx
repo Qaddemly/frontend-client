@@ -16,7 +16,7 @@ import { setUser } from "../components/auth/UserSlice";
 import { RootState } from "../store/store";
 import InputField from "../components/common/InputField";
 import Button from "../components/common/Button";
-import { IError } from "../interfaces/Common.interface";
+import { IError } from "../interfaces/Common.interfaces";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);

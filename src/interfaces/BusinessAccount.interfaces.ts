@@ -1,5 +1,5 @@
 import { Country, LocationType } from "../components/auth";
-import { IResponse } from "./Common.interface";
+import { IResponse } from "./Common.interfaces";
 
 export interface IBusinessAccount {
   name: string;
