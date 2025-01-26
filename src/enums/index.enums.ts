@@ -1,17 +1,3 @@
-interface FormSettings {
-  mode: "onBlur";
-  reValidateMode: "onChange";
-  criteriaMode: "all";
-  shouldFocusError: boolean;
-}
-
-export const formSettings: FormSettings = {
-  mode: "onBlur",
-  reValidateMode: "onChange",
-  criteriaMode: "all",
-  shouldFocusError: true,
-};
-
 export enum Prefixes {
   UK = 44,
   USA = 1,

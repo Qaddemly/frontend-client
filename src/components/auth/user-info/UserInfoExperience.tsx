@@ -4,7 +4,11 @@ import Input from "../../common/Input";
 import InputField from "../../common/InputField";
 import StartToEndDate from "../../common/StartToEndDate";
 import { useFormContext } from "react-hook-form";
-import { Country, EmploymentType, LocationType } from "..";
+import {
+  Country,
+  EmploymentType,
+  LocationType,
+} from "../../../enums/index.enums";
 import { useUserInfo } from "../../../context/UserInfoContext";
 import Select from "../../common/Select";
 import Button from "../../common/Button";

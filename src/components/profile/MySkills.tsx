@@ -1,5 +1,5 @@
 import Input from "../common/Input";
-import { Languages } from "../auth";
+import { Languages } from "../../enums/index.enums";
 import { useState } from "react";
 import InputField from "../common/InputField";
 import Button from "../common/Button";

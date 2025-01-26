@@ -3,7 +3,7 @@ import Logo from "../components/common/Logo";
 import AuthLayout from "../layout/AuthLayout";
 import Input from "../components/common/Input";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { formSettings } from "../components/auth";
+import { formSettings } from "../enums/index.enums";
 import { IForgetMyPassword } from "../interfaces/Auth.interfaces";
 import { useForgetMyPasswordMutation } from "../services/authApi";
 import toast from "react-hot-toast";

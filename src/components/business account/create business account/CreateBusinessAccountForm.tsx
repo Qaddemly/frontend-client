@@ -3,13 +3,12 @@ import BusinessLayout from "../../../layout/BusinessLayout";
 import CreateBusinessAccountStep1 from "./CreateBusinessAccountStep1";
 import CreateBusinessAccountStep2 from "./CreateBusinessAccountStep2";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import { formSettings } from "../../auth";
 import { IBusinessAccount } from "../../../interfaces/BusinessAccount.interfaces";
 import { useCreateBusinessAccountMutation } from "../../../services/businessAccountApi";
 import Loader from "../../common/Loader";
-import { IError } from "../../../interfaces/Auth.interfaces";
 import toast from "react-hot-toast";
 import { createFormData } from "../../../utils/helpers";
+import { formSettings, IError } from "../../../interfaces/Common.interfaces";
 
 function CreateBusinessAccountForm() {
   const [next, setNext] = useState(false);
@@ -24,7 +23,7 @@ function CreateBusinessAccountForm() {
       toast.success(res.message);
     } catch (err) {
       const error = err as IError;
-      toast.error(error.data.message);
+      toast.error(error.message);
     }
 
     console.log(data);

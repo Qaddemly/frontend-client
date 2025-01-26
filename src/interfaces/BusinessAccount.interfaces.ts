@@ -1,4 +1,4 @@
-import { Country, LocationType } from "../components/auth";
+import { Country, LocationType } from "../enums/index.enums";
 import { IResponse } from "./Common.interfaces";
 
 export interface IBusinessAccount {

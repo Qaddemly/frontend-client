@@ -8,7 +8,7 @@ import Input from "../common/Input";
 import InputField from "../common/InputField";
 import Button from "../common/Button";
 import Select from "../common/Select";
-import { Country, Prefixes } from "../auth";
+import { Country, Prefixes } from "../../enums/index.enums";
 import DatePicker from "../common/DatePicker";
 import FileUpload from "../common/FileUpload";
 

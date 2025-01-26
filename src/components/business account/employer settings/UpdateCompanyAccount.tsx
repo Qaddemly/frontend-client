@@ -1,7 +1,7 @@
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import CreateBusinessAccountStep1 from "../create business account/CreateBusinessAccountStep1";
 import { IBusinessAccount } from "../../../interfaces/BusinessAccount.interfaces";
-import { formSettings } from "../../auth";
+import { formSettings } from "../../../enums/index.enums";
 import CreateBusinessAccountStep2 from "../create business account/CreateBusinessAccountStep2";
 import { createFormData } from "../../../utils/helpers";
 import toast from "react-hot-toast";

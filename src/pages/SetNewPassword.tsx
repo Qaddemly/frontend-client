@@ -4,7 +4,7 @@ import AuthLayout from "../layout/AuthLayout";
 import Input from "../components/common/Input";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { formSettings } from "../components/auth";
+import { formSettings } from "../enums/index.enums";
 import { ISetNewPassword } from "../interfaces/Auth.interfaces";
 import { useSetNewPasswordMutation } from "../services/authApi";
 import toast from "react-hot-toast";

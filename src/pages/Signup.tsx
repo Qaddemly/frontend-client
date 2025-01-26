@@ -11,7 +11,7 @@ import { useState } from "react";
 import { SubmitHandler } from "react-hook-form";
 import Input from "../components/common/Input";
 import { useForm } from "react-hook-form";
-import { formSettings } from "../components/auth";
+import { formSettings } from "../enums/index.enums";
 import { useSignUpMutation } from "../services/authApi";
 import {
   ISignupInputs,

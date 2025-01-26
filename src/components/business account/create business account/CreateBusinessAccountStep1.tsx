@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form";
-import { Country, LocationType } from "../../auth";
+import { Country, LocationType } from "../../../enums/index.enums";
 import Button from "../../common/Button";
 import Input from "../../common/Input";
 import InputField from "../../common/InputField";

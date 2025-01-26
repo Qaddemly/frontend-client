@@ -4,7 +4,7 @@ import {
   EmploymentType,
   formSettings,
   LocationType,
-} from "../../auth";
+} from "../../../enums/index.enums";
 import Input from "../../common/Input";
 import InputField from "../../common/InputField";
 import Select from "../../common/Select";

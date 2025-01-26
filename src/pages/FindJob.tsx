@@ -10,7 +10,7 @@ import { faSliders } from "@fortawesome/free-solid-svg-icons";
 import { useClickOutside } from "../hooks/useOutsideClick";
 import { useRef, useState } from "react";
 import JobCard from "../components/common/JobCard";
-import { EmploymentType } from "../components/auth";
+import { EmploymentType } from "../enums/index.enums";
 
 function FindJob() {
   const employmentTypeValues = Object.values(EmploymentType);
