@@ -2,7 +2,7 @@ import { useState } from "react";
 import UserInfoLayout from "../../../layout/UserInfoLayout";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Languages } from "..";
+import { Languages } from "../../../enums/index.enums";
 import Input from "../../common/Input";
 import InputField from "../../common/InputField";
 import { useUserInfo } from "../../../context/UserInfoContext";

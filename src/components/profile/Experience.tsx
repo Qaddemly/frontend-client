@@ -5,7 +5,7 @@ import StartToEndDate from "../common/StartToEndDate";
 import Button from "../common/Button";
 import Select from "../common/Select";
 import { IExperience } from "../../interfaces/Auth.interfaces";
-import { Country, EmploymentType, LocationType } from "../auth";
+import { Country, EmploymentType, LocationType } from "../../enums/index.enums";
 
 function Experience() {
   // this api is no longer work

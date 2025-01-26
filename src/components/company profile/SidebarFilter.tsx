@@ -3,7 +3,7 @@ import Button from "../common/Button";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { ReactNode } from "react";
 import Select from "../common/Select";
-import { Country, LocationType } from "../auth";
+import { Country, LocationType } from "../../enums/index.enums";
 
 type SidebarFilterProps = {
   isOpen: boolean;

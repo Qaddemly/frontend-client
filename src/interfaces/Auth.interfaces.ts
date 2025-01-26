@@ -4,7 +4,7 @@ import {
   Languages,
   LocationType,
   Prefixes,
-} from "../components/auth";
+} from "../enums/index.enums";
 import { IReview } from "./BusinessAccount.interfaces";
 import { IResponse } from "./Common.interfaces";
 

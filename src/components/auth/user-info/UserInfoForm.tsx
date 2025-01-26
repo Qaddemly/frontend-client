@@ -1,5 +1,5 @@
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import { IError, IUserInfo } from "../../../interfaces/Auth.interfaces";
+import { IUserInfo } from "../../../interfaces/Auth.interfaces";
 import { useUserInfo } from "../../../context/UserInfoContext";
 import SliderControllres from "./SliderControllres";
 import UserInfoPersonal from "./UserInfoPersonal";
@@ -7,12 +7,17 @@ import UserInfoEducation from "./UserInfoEducation";
 import UserInfoExperience from "./UserInfoExperience";
 import UserInfoSoftSkills from "./UserInfoSoftSkills";
 import UserInfoResume from "./UserInfoResume";
-import { Country, EmploymentType, formSettings, LocationType } from "..";
+import {
+  Country,
+  EmploymentType,
+  LocationType,
+} from "../../../enums/index.enums";
 import { createFormData } from "../../../utils/helpers";
 import Loader from "../../common/Loader";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useUserInfoMutation } from "../../../services/authApi";
+import { formSettings, IError } from "../../../interfaces/Common.interfaces";
 
 function UserInfoForm() {
   const [userInfo, { isLoading }] = useUserInfoMutation();
@@ -21,14 +26,14 @@ function UserInfoForm() {
     ...formSettings,
     defaultValues: {
       experience: {
-        jobTitle: "",
-        employmentType: EmploymentType.FullTime,
-        companyName: "",
+        job_title: "",
+        employment_type: EmploymentType.FullTime,
+        company_name: "",
         location: Country.USA,
-        locationType: LocationType.OnSite,
-        stillWorking: false,
-        startDate: "",
-        endDate: "",
+        location_type: LocationType.OnSite,
+        still_working: false,
+        start_date: "",
+        end_date: "",
       },
     },
   });
@@ -56,26 +61,27 @@ function UserInfoForm() {
         Object.entries(filteredData).filter(([key]) => key !== "address"),
       );
     }
-    if (data.phone.number === "") {
+    if (data.phone.number.toString() === "") {
       filteredData = Object.fromEntries(
         Object.entries(filteredData).filter(([key]) => key !== "phone"),
       );
     }
-    if (data.experience.jobTitle.length) {
+    if (data.experience.job_title.length) {
       filteredData = Object.fromEntries(
         Object.entries(filteredData).filter(([key]) => key !== "jobTitle"),
       );
       const newExperience = [
         ...experience,
         {
-          jobTitle: data.experience.jobTitle,
-          employmentType: data.experience.employmentType,
-          companyName: data.experience.companyName,
+          id: experience.length + 1,
+          job_title: data.experience.job_title,
+          employment_type: data.experience.employment_type,
+          company_name: data.experience.company_name,
           location: data.experience.location,
-          locationType: data.experience.locationType,
-          stillWorking: data.experience.stillWorking,
-          startDate: data.experience.startDate,
-          endDate: data.experience.endDate,
+          location_type: data.experience.location_type,
+          still_working: data.experience.still_working,
+          start_date: data.experience.start_date,
+          end_date: data.experience.end_date,
         },
       ];
       setExperience(newExperience);
@@ -104,7 +110,7 @@ function UserInfoForm() {
         navigate("/");
       } catch (err) {
         const error = err as IError;
-        toast.error(error.data.message);
+        toast.error(error.message);
       }
   };
 

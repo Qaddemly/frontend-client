@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, ReactNode } from "react";
-import { Languages } from "../components/auth";
+import { Languages } from "../enums/index.enums";
 import { IExperience } from "../interfaces/Auth.interfaces";
 
 interface UserInfoContextProps {

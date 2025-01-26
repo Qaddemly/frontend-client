@@ -2,7 +2,7 @@ import { faImage, faPhone } from "@fortawesome/free-solid-svg-icons";
 import DatePicker from "../../common/DatePicker";
 import FileUpload from "../../common/FileUpload";
 import UserInfoLayout from "../../../layout/UserInfoLayout";
-import { Country, Prefixes } from "..";
+import { Country, Prefixes } from "../../../enums/index.enums";
 import InputField from "../../common/InputField";
 import { useFormContext } from "react-hook-form";
 import { validateDateOfBirth } from "../../../utils/helpers";
@@ -102,7 +102,7 @@ function UserInfoPersonal() {
           />
           {errors.dateOfBirth &&
             typeof errors.dateOfBirth?.message === "string" && (
-              <p className="text-sm text-danger">
+              <p className="text-danger text-sm">
                 {errors.dateOfBirth.message}
               </p>
             )}
