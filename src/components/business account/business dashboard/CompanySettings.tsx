@@ -1,45 +1,36 @@
 import { NavLink, Outlet } from "react-router-dom";
-import BusinessLayout from "../../../layout/BusinessLayout";
 
-function EmployerSettings() {
+function CompanySettings() {
   return (
-    <BusinessLayout>
+    <>
       <div className="flex items-center bg-[#eee] p-2">
         <div className="border-r border-r-gray-100 px-10 py-3">
           <p className="text-xl font-semibold">Employer settings</p>
         </div>
         <div className="flex gap-5 pl-5 text-lg font-medium">
           <NavLink
-            to="/employerSettings/companyAccount/1" // id will change
+            to="/businessDashboard/companySettings/companyAccount/1" // id will change
             className={({ isActive }) =>
               `px-2 py-1 ${isActive ? "rounded-md bg-main text-white" : ""}`
             }
           >
-            Company
+            Company Info
           </NavLink>
           <NavLink
-            to="/employerSettings/companyJobs"
+            to="/businessDashboard/companySettings/updateCompanyAccount/1"
             className={({ isActive }) =>
               `px-2 py-1 ${isActive ? "rounded-md bg-main text-white" : ""}`
             }
           >
-            Posted Jobs
-          </NavLink>
-          <NavLink
-            to="/employerSettings/accessAndPermissions"
-            className={({ isActive }) =>
-              `px-2 py-1 ${isActive ? "rounded-md bg-main text-white" : ""}`
-            }
-          >
-            Access & Permissions
+            Edit Company Info
           </NavLink>
         </div>
       </div>
-      <div className="m-5 flex items-center justify-center py-10">
+      <div className="my-10 flex items-center justify-center">
         <Outlet />
       </div>
-    </BusinessLayout>
+    </>
   );
 }
 
-export default EmployerSettings;
+export default CompanySettings;

@@ -5,9 +5,6 @@ import {
   faLocationDot,
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
-import Button from "../../common/Button";
-import { useState } from "react";
-import UpdateCompanyAccount from "./UpdateCompanyAccount";
 import { useGetBusinessAccountInfoQuery } from "../../../services/businessAccountApi";
 import { useParams } from "react-router-dom";
 import Loader from "../../common/Loader";
@@ -19,9 +16,7 @@ function CompanyAccount() {
     id: Number(companyId),
   });
   const companyInfo = data?.business;
-  const [showUpdateAccount, setShowUpdateAccount] = useState(false);
 
-  if (showUpdateAccount) return <UpdateCompanyAccount />;
   return (
     <div className="w-[50rem]">
       {isLoading && <Loader />}
@@ -55,9 +50,6 @@ function CompanyAccount() {
               </p>
             </div>
           </CardEmployerSettings>
-          <Button onClick={() => setShowUpdateAccount((s) => !s)}>
-            Edit company profile
-          </Button>
         </div>
         <div className="flex w-full flex-col gap-5">
           <CardEmployerSettings>

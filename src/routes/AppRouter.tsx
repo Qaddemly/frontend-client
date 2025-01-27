@@ -17,16 +17,16 @@ import Apply from "../components/job/apply job/ApplyJob";
 import Message from "../components/messages/Message";
 import FindCompany from "../pages/FindCompany";
 import CompanyProfile from "../pages/CompanyProfile";
-import EmployerSettings from "../components/business account/employer settings/EmployerSettings";
-import CompanyAccount from "../components/business account/employer settings/CompanyAccount";
-import AccessAndPermissions from "../components/business account/employer settings/AccessAndPermissions";
+import CompanyAccount from "../components/business account/business dashboard/CompanyAccount";
 import CreateBusinessAccountForm from "../components/business account/create business account/CreateBusinessAccountForm";
 import JobProfile from "../pages/JobProfile";
 import FindJob from "../pages/FindJob";
 import PostJob1 from "../components/job/post Job/PostJob1";
 import PostJob2 from "../components/job/post Job/PostJob2";
+import UpdateCompanyAccount from "../components/business account/business dashboard/UpdateCompanyAccount";
 import CompanyJobs from "../components/job/CompanyJobs";
-import UpdateJob from "../components/job/update job/UpdateJob";
+import BusinessDashboard from "../components/business account/business dashboard/BusinessDashboard";
+import CompanySettings from "../components/business account/business dashboard/CompanySettings";
 
 const router = createBrowserRouter([
   {
@@ -75,14 +75,22 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/employerSettings",
-    element: <EmployerSettings />,
+    path: "/businessDashboard",
+    element: <BusinessDashboard />,
     children: [
       { index: true, element: <CompanyAccount /> },
-      { path: "companyAccount/:companyId", element: <CompanyAccount /> },
-      { path: "accessAndPermissions", element: <AccessAndPermissions /> },
+      {
+        path: "companySettings",
+        element: <CompanySettings />,
+        children: [
+          { path: "companyAccount/:companyId", element: <CompanyAccount /> },
+          {
+            path: "updateCompanyAccount/:companyId",
+            element: <UpdateCompanyAccount />,
+          },
+        ],
+      },
       { path: "companyJobs", element: <CompanyJobs /> },
-      { path: "updateJob/:jobId", element: <UpdateJob /> },
     ],
   },
 ]);

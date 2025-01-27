@@ -1,6 +1,7 @@
 // CompanyJobs should take jobs from Backend and pass each one to EditJobCard
 import { useState } from "react";
 import EditJobCard from "./EditJobCard";
+import { NavLink } from "react-router-dom";
 
 function CompanyJobs() {
   // GAD {jobsApiArrayOfObjects}: CompanyJobsProps
@@ -106,34 +107,52 @@ function CompanyJobs() {
   });
 
   return (
-    <div className="flex flex-col-reverse gap-8 px-7 lg:flex-row">
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-        {filteredJobCards.map((job, index) => (
-          <EditJobCard key={index} {...job} />
-        ))}
+    <>
+      <div className="flex items-center bg-[#eee] p-2">
+        <div className="border-r border-r-gray-100 px-10 py-3">
+          <p className="text-xl font-semibold">Employer Jobs</p>
+        </div>
+        <div className="flex gap-5 pl-5 text-lg font-medium">
+          <NavLink
+            to="/businessDashboard/companyJobs"
+            className={({ isActive }) =>
+              `px-2 py-1 ${isActive ? "rounded-md bg-main text-white" : ""}`
+            }
+          >
+            Jobs
+          </NavLink>
+        </div>
       </div>
-      <div className="h-fit">
-        <select
-          name="Show All"
-          // GAD value={value} // useState done
-          value={selectedValue}
-          className={`rounded-md border-2 p-2 shadow-md outline-none ${selectedValue === "available" ? "border-green-100 text-green-100" : selectedValue === "unavailable" ? "border-danger-300 text-danger-300" : "border-main text-main"}`}
-          // GAD ${value === "available" ? "border-green-100" : "border-danger-300"} done
-          // GAD when I select an option border disappears!!! (outline-none) done
-          onChange={(e) => setSelectedValue(e.target.value)}
-        >
-          <option value="all" className="text-main">
-            Show All
-          </option>
-          <option value="available" className="text-green-100">
-            Show Available
-          </option>
-          <option value="unavailable" className="text-danger-300">
-            Show Unavailable
-          </option>
-        </select>
+
+      <div className="flex flex-col-reverse gap-8 p-20 lg:flex-row">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+          {filteredJobCards.map((job, index) => (
+            <EditJobCard key={index} {...job} />
+          ))}
+        </div>
+        <div className="h-fit">
+          <select
+            name="Show All"
+            // GAD value={value} // useState done
+            value={selectedValue}
+            className={`rounded-md border-2 p-2 shadow-md outline-none ${selectedValue === "available" ? "border-green-100 text-green-100" : selectedValue === "unavailable" ? "border-danger-300 text-danger-300" : "border-main text-main"}`}
+            // GAD ${value === "available" ? "border-green-100" : "border-danger-300"} done
+            // GAD when I select an option border disappears!!! (outline-none) done
+            onChange={(e) => setSelectedValue(e.target.value)}
+          >
+            <option value="all" className="text-main">
+              Show All
+            </option>
+            <option value="available" className="text-green-100">
+              Show Available
+            </option>
+            <option value="unavailable" className="text-danger-300">
+              Show Unavailable
+            </option>
+          </select>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

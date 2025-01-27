@@ -5,7 +5,7 @@ function Logo({
   textColor = "text-main",
 }: {
   fontSize?: string;
-  textColor: string;
+  textColor?: string;
 }) {
   return (
     <Link to="/" className={`${fontSize} font-semibold ${textColor}`}>
