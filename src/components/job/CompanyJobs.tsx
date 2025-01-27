@@ -117,7 +117,7 @@ function CompanyJobs() {
           name="Show All"
           // GAD value={value} // useState done
           value={selectedValue}
-          className={`rounded-md border-2 p-2 shadow-md outline-none ${selectedValue === "available" ? "border-green-100 text-green-100" : selectedValue === "unavailable" ? "border-danger-300 text-danger-300" : "border-main text-main"}`}
+          className={`rounded-md border-2 p-2 shadow-md outline-none ${selectedValue === "available" ? "border-green-100 text-green-100" : selectedValue === "unavailable" ? "border-danger-300 text-danger-300" : "border-main text-main"} cursor-pointer`}
           // GAD ${value === "available" ? "border-green-100" : "border-danger-300"} done
           // GAD when I select an option border disappears!!! (outline-none) done
           onChange={(e) => setSelectedValue(e.target.value)}
