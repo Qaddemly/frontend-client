@@ -35,8 +35,8 @@ const applicants = [
 
 function JobApplications() {
   return (
-    <div className="-mt-8 flex flex-col items-center gap-3">
-      <h2 className="text-center text-5xl font-bold">
+    <div className="my-8 flex flex-col items-center gap-3">
+      <h2 className="text-center text-4xl font-bold">
         Senior UX designer - Full time
       </h2>
       <div className="flex w-fit flex-row rounded-lg bg-white p-5 shadow-md">

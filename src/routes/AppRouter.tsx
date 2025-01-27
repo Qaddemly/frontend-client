@@ -27,6 +27,7 @@ import UpdateCompanyAccount from "../components/business account/business dashbo
 import CompanyJobs from "../components/job/CompanyJobs";
 import BusinessDashboard from "../components/business account/business dashboard/BusinessDashboard";
 import CompanySettings from "../components/business account/business dashboard/CompanySettings";
+import JobApplications from "../components/job/job applications/JobApplications";
 
 const router = createBrowserRouter([
   {
@@ -91,6 +92,7 @@ const router = createBrowserRouter([
         ],
       },
       { path: "companyJobs", element: <CompanyJobs /> },
+      { path: "companyJobs/1", element: <JobApplications /> },
     ],
   },
 ]);

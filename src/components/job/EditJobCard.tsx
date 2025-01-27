@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Button from "../common/Button";
 import EditJobCardItem from "./EditJobCardItem";
 
@@ -28,9 +29,12 @@ function EditJobCard({
   position,
   decsription,
 }: EditJobCardProps) {
+  const navigate = useNavigate();
+
   return (
     <div
-      className={`${active ? "border-green-100" : "border-danger-300"} max-w-md cursor-pointer rounded-xl border-2 bg-offWhite p-4 shadow-lg hover:translate-x-1 hover:shadow-light-main`}
+      className={`${active ? "border-green-100" : "border-danger-300"} max-w-md cursor-pointer rounded-xl border-2 bg-offWhite p-4 shadow-lg transition-all duration-100 hover:translate-x-1 hover:shadow-gray-400`}
+      onClick={() => navigate("/businessDashboard/companyJobs/1")} // id will change
     >
       <h3 className="text-lg font-medium text-gray-800">
         Job title: {jobTitle}
