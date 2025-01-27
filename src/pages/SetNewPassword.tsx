@@ -4,7 +4,6 @@ import AuthLayout from "../layout/AuthLayout";
 import Input from "../components/common/Input";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { formSettings } from "../enums/index.enums";
 import { ISetNewPassword } from "../interfaces/Auth.interfaces";
 import { useSetNewPasswordMutation } from "../services/authApi";
 import toast from "react-hot-toast";
@@ -12,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../components/common/Loader";
 import InputField from "../components/common/InputField";
 import Button from "../components/common/Button";
-import { IError } from "../interfaces/Common.interfaces";
+import { formSettings, IError } from "../interfaces/Common.interfaces";
 
 function SetNewPassword() {
   const [showPassword, setShowPassword] = useState(false);

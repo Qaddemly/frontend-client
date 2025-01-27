@@ -8,6 +8,7 @@ export default {
       secondary: "#608BC1",
       "light-secondary": "#CBDCEB",
       "light-secondary-200": "#98A0B4",
+      "light-secondary-300": "#BACAE4",
       "danger-300": "#D93A40",
       "danger-200": "#e16166",
       white: "#FFFFFF",

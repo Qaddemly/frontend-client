@@ -11,7 +11,6 @@ import { useState } from "react";
 import { SubmitHandler } from "react-hook-form";
 import Input from "../components/common/Input";
 import { useForm } from "react-hook-form";
-import { formSettings } from "../enums/index.enums";
 import { useSignUpMutation } from "../services/authApi";
 import {
   ISignupInputs,
@@ -23,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../components/common/Loader";
 import Button from "../components/common/Button";
 import InputField from "../components/common/InputField";
-import { IError } from "../interfaces/Common.interfaces";
+import { formSettings, IError } from "../interfaces/Common.interfaces";
 
 function Signup() {
   const [step, setStep] = useState(1);

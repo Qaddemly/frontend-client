@@ -2,13 +2,13 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import {
   Country,
   EmploymentType,
-  formSettings,
   LocationType,
 } from "../../../enums/index.enums";
 import Input from "../../common/Input";
 import InputField from "../../common/InputField";
 import Select from "../../common/Select";
 import Button from "../../common/Button";
+import { formSettings } from "../../../interfaces/Common.interfaces";
 
 interface IUpdateJob {
   title: string;
