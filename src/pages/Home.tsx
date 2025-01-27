@@ -1,5 +1,6 @@
 import Navbar from "../components/home/Navbar";
 import Main from "../components/home/Main";
+import Footer from "../components/home/Footer";
 
 function Home() {
   // const dispatch = useDispatch();
@@ -24,7 +25,7 @@ function Home() {
       <div className="bg-background">
         <Navbar />
         <Main />
-        {/* <Footer /> */}
+        <Footer />
       </div>
     </>
   );
