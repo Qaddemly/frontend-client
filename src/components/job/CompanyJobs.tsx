@@ -1,6 +1,7 @@
 // CompanyJobs should take jobs from Backend and pass each one to EditJobCard
 import { useState } from "react";
 import EditJobCard from "./EditJobCard";
+import { NavLink } from "react-router-dom";
 
 function CompanyJobs() {
   // GAD {jobsApiArrayOfObjects}: CompanyJobsProps
@@ -106,11 +107,21 @@ function CompanyJobs() {
   });
 
   return (
-    <div className="flex flex-col-reverse gap-8 px-7 lg:flex-row">
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-        {filteredJobCards.map((job, index) => (
-          <EditJobCard key={index} {...job} />
-        ))}
+    <>
+      <div className="flex items-center bg-[#eee] p-2">
+        <div className="border-r border-r-gray-100 px-10 py-3">
+          <p className="text-xl font-semibold">Employer Jobs</p>
+        </div>
+        <div className="flex gap-5 pl-5 text-lg font-medium">
+          <NavLink
+            to="/businessDashboard/companyJobs"
+            className={({ isActive }) =>
+              `px-2 py-1 ${isActive ? "rounded-md bg-main text-white" : ""}`
+            }
+          >
+            Jobs
+          </NavLink>
+        </div>
       </div>
       <div className="h-fit">
         <select
@@ -133,7 +144,7 @@ function CompanyJobs() {
           </option>
         </select>
       </div>
-    </div>
+    </>
   );
 }
 
