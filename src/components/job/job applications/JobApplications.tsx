@@ -1,6 +1,6 @@
 import { faUsers } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import ApplicationsTable from "../ApplicationsTable";
+import ApplicationsTable from "./ApplicationsTable";
 
 const applicants = [
   {
