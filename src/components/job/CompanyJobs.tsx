@@ -123,34 +123,26 @@ function CompanyJobs() {
           </NavLink>
         </div>
       </div>
-
-      <div className="flex flex-col-reverse gap-8 p-20 lg:flex-row">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-          {filteredJobCards.map((job, index) => (
-            <EditJobCard key={index} {...job} />
-          ))}
-        </div>
-        <div className="h-fit">
-          <select
-            name="Show All"
-            // GAD value={value} // useState done
-            value={selectedValue}
-            className={`rounded-md border-2 p-2 shadow-md outline-none ${selectedValue === "available" ? "border-green-100 text-green-100" : selectedValue === "unavailable" ? "border-danger-300 text-danger-300" : "border-main text-main"}`}
-            // GAD ${value === "available" ? "border-green-100" : "border-danger-300"} done
-            // GAD when I select an option border disappears!!! (outline-none) done
-            onChange={(e) => setSelectedValue(e.target.value)}
-          >
-            <option value="all" className="text-main">
-              Show All
-            </option>
-            <option value="available" className="text-green-100">
-              Show Available
-            </option>
-            <option value="unavailable" className="text-danger-300">
-              Show Unavailable
-            </option>
-          </select>
-        </div>
+      <div className="h-fit">
+        <select
+          name="Show All"
+          // GAD value={value} // useState done
+          value={selectedValue}
+          className={`rounded-md border-2 p-2 shadow-md outline-none ${selectedValue === "available" ? "border-green-100 text-green-100" : selectedValue === "unavailable" ? "border-danger-300 text-danger-300" : "border-main text-main"} cursor-pointer`}
+          // GAD ${value === "available" ? "border-green-100" : "border-danger-300"} done
+          // GAD when I select an option border disappears!!! (outline-none) done
+          onChange={(e) => setSelectedValue(e.target.value)}
+        >
+          <option value="all" className="text-main">
+            Show All
+          </option>
+          <option value="available" className="text-green-100">
+            Show Available
+          </option>
+          <option value="unavailable" className="text-danger-300">
+            Show Unavailable
+          </option>
+        </select>
       </div>
     </>
   );
