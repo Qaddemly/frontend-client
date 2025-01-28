@@ -8,8 +8,6 @@ import { Country, LocationType } from "../../enums/index.enums";
 type SidebarFilterProps = {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  ref: React.RefObject<HTMLDivElement>;
-  divRef: React.RefObject<HTMLDivElement>;
   title: string;
   children: ReactNode;
 };
@@ -17,20 +15,17 @@ type SidebarFilterProps = {
 function SidebarFilter({
   isOpen,
   setIsOpen,
-  ref,
-  divRef,
   title,
   children,
 }: SidebarFilterProps) {
   const locationTypeValues = Object.values(LocationType);
   const countryValues = Object.values(Country);
   return (
-    <div ref={ref}>
+    <div>
       <div
-        ref={divRef}
-        className={`scrollbar-hide fixed right-0 top-0 h-full w-[25rem] transform overflow-y-scroll bg-white p-5 text-right shadow-lg ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        } transition-transform duration-300 ease-in-out`}
+        className={`scrollbar-hide h-full w-[25rem] transform overflow-y-scroll bg-white p-5 text-right shadow-lg ${
+          isOpen ? "block" : "hidden"
+        } transition-all duration-300 ease-in-out`}
       >
         <Button
           className="bg-none hover:bg-none"

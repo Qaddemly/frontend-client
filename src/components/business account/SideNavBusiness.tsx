@@ -2,6 +2,7 @@ import {
   faBars,
   faBriefcase,
   faGear,
+  faUserGroup,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,7 +14,7 @@ function SideNavBusiness() {
 
   return (
     <div
-      className={`flex bg-main-dark ${showSideNav ? "w-[18rem]" : "w-[5rem]"} flex-col gap-5 p-5 text-xl font-medium text-white`}
+      className={`flex bg-main-dark ${showSideNav ? "w-[18rem]" : "w-[5rem]"} flex-col gap-5 p-5 text-xl font-medium text-white transition-all duration-300 ease-in-out`}
     >
       <div
         onClick={() => setShowSideNav((s) => !s)}
@@ -33,12 +34,12 @@ function SideNavBusiness() {
         content="Jobs"
         showSideNav={showSideNav}
       />
-      {/* <SideNavBusinessLink
-        to=""
+      <SideNavBusinessLink
+        to="/businessDashboard/companyCandidates"
         icon={faUserGroup}
         content="Candidates"
         showSideNav={showSideNav}
-      /> */}
+      />
       {/* <SideNavBusinessLink
         to=""
         icon={faChartSimple}
