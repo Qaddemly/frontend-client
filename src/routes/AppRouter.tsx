@@ -24,10 +24,11 @@ import FindJob from "../pages/FindJob";
 import PostJob1 from "../components/job/post Job/PostJob1";
 import PostJob2 from "../components/job/post Job/PostJob2";
 import UpdateCompanyAccount from "../components/business account/business dashboard/UpdateCompanyAccount";
-import CompanyJobs from "../components/job/CompanyJobs";
 import BusinessDashboard from "../components/business account/business dashboard/BusinessDashboard";
 import CompanySettings from "../components/business account/business dashboard/CompanySettings";
 import JobApplications from "../components/job/job applications/JobApplications";
+import CompanyJobs from "../components/business account/business dashboard/CompanyJobs";
+import CompanyCandidates from "../components/business account/business dashboard/CompanyCandidates";
 
 const router = createBrowserRouter([
   {
@@ -80,6 +81,9 @@ const router = createBrowserRouter([
     element: <BusinessDashboard />,
     children: [
       { index: true, element: <CompanyAccount /> },
+      { path: "companyJobs", element: <CompanyJobs /> },
+      { path: "companyJobs/1", element: <JobApplications /> },
+      { path: "companyCandidates", element: <CompanyCandidates /> },
       {
         path: "companySettings",
         element: <CompanySettings />,
@@ -91,8 +95,6 @@ const router = createBrowserRouter([
           },
         ],
       },
-      { path: "companyJobs", element: <CompanyJobs /> },
-      { path: "companyJobs/1", element: <JobApplications /> },
     ],
   },
 ]);

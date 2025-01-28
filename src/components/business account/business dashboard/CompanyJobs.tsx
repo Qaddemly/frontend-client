@@ -1,7 +1,7 @@
 // CompanyJobs should take jobs from Backend and pass each one to EditJobCard
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import EditJobCard from "./EditJobCard";
+import EditJobCard from "../../job/EditJobCard";
 
 function CompanyJobs() {
   // GAD {jobsApiArrayOfObjects}: CompanyJobsProps
