@@ -5,9 +5,9 @@ import CreateBusinessAccountStep2 from "../create business account/CreateBusines
 import { createFormData } from "../../../utils/helpers";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
-import { useUpdateBusinessAccountMutation } from "../../../services/businessAccountApi";
 import Loader from "../../common/Loader";
 import { formSettings, IError } from "../../../interfaces/Common.interfaces";
+import { useUpdateBusinessAccountMutation } from "../../../services/businessDashboardApi";
 
 function UpdateCompanyAccount() {
   const { companyId } = useParams();
@@ -38,7 +38,7 @@ function UpdateCompanyAccount() {
     const formData = createFormData(filteredData);
     try {
       const res = await updateBusinessAccount({
-        id: Number(companyId),
+        id: companyId || "",
         data: formData,
       }).unwrap();
       toast.success(res.message);

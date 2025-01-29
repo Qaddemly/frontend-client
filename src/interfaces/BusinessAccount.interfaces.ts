@@ -78,10 +78,6 @@ export interface IGetBusinessAccountInfoResponse {
   business: IBusinessAccount;
 }
 
-export interface IUpdateBusinessAccountResponse extends IResponse {
-  business: IBusinessAccount;
-}
-
 export interface IGetReviewsResponse {
   status: string;
   reviews: IReview[];
