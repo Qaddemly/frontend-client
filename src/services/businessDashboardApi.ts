@@ -33,6 +33,26 @@ export const businessDashboardApi = apiSlice.injectEndpoints({
         body: newRole,
       }),
     }),
+    deleteRole: builder.mutation<
+      IResponse,
+      { id: string; account_email: string }
+    >({
+      query: ({ account_email, id }) => ({
+        url: `${BASE_BUSINESS_URL}/myBusiness/dashboard/hr/${id}`,
+        method: "DELETE",
+        body: account_email,
+      }),
+    }),
+    updateRole: builder.mutation<
+      IResponse,
+      { id: string; account_email: string; role: string }
+    >({
+      query: ({ account_email, role, id }) => ({
+        url: `${BASE_BUSINESS_URL}/myBusiness/dashboard/hr/${id}`,
+        method: "PUT",
+        body: { account_email, role },
+      }),
+    }),
   }),
 });
 
@@ -40,4 +60,6 @@ export const {
   useGetListOfHrRolesQuery,
   useUpdateBusinessAccountMutation,
   useAddNewRoleMutation,
+  useDeleteRoleMutation,
+  useUpdateRoleMutation,
 } = businessDashboardApi;
