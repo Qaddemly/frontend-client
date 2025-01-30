@@ -4,7 +4,6 @@ import {
   IGetJobsResponse,
   IGetReviewsResponse,
   IGetUserBusinessesResponse,
-  IUpdateBusinessAccountResponse,
 } from "../interfaces/BusinessAccount.interfaces";
 import { apiSlice } from "./apiSlice";
 
@@ -35,16 +34,6 @@ export const businessAccountApi = apiSlice.injectEndpoints({
       query: ({ id }) => ({
         url: `${BASE_BUSINESS_URL}/profile/${id}`,
         method: "GET",
-      }),
-    }),
-    updateBusinessAccount: builder.mutation<
-      IUpdateBusinessAccountResponse,
-      { id: number; data: FormData }
-    >({
-      query: ({ id, data }) => ({
-        url: `${BASE_BUSINESS_URL}/myBusiness/dashboard/edit/${id}`,
-        method: "PUT",
-        body: data,
       }),
     }),
     getFiveReviews: builder.query<IGetReviewsResponse, { id: number }>({
@@ -78,7 +67,6 @@ export const {
   useCreateBusinessAccountMutation,
   useGetUserBusinessesQuery,
   useGetBusinessAccountInfoQuery,
-  useUpdateBusinessAccountMutation,
   useGetFiveReviewsQuery,
   useGetSixJobsQuery,
   useLazyGetAllReviewsQuery,

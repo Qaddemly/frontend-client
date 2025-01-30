@@ -6,6 +6,19 @@ export const getCurrentDate = () => {
   return `${year}-${month}-${day}`;
 };
 
+export function formatDate(isoDateString: string): string {
+  const date = new Date(isoDateString);
+  if (isNaN(date.getTime())) {
+    throw new Error("Invalid date string");
+  }
+  const options: Intl.DateTimeFormatOptions = {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  };
+  return date.toLocaleDateString("en-US", options).replace(",", "");
+}
+
 export const validateDateOfBirth = (value: string) => {
   const inputYear = value.split("-")[0];
   const inputMonth = value.split("-")[1];

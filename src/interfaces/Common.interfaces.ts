@@ -2,9 +2,16 @@ export interface IError {
   status: string;
   name: string;
   message: string;
-  details: string;
+  details: string | IDetails;
 }
 
+export interface IDetails {
+  type: string;
+  value: string;
+  msg: string;
+  path: string;
+  location: string;
+}
 export interface IResponse {
   success: boolean;
   message: string;
