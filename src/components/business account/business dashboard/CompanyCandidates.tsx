@@ -39,8 +39,8 @@ function CompanyCandidates() {
       } catch (err) {
         const error = err as IError;
         toast.error(error.message);
-        if (typeof error.details !== "string" && error.details.msg) {
-          toast.error(error.details.msg);
+        if (typeof error.details !== "string" && error.details.length > 0) {
+          error.details.map((detail) => toast.error(detail.msg));
         }
       }
     }

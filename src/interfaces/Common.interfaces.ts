@@ -2,7 +2,7 @@ export interface IError {
   status: string;
   name: string;
   message: string;
-  details: string | IDetails;
+  details: string | IDetails[];
 }
 
 export interface IDetails {

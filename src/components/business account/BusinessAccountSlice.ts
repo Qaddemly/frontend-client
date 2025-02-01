@@ -1,12 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {
-  IBusinessAccount,
-  IBusinesses,
-} from "../../interfaces/BusinessAccount.interfaces";
-import { businessAccountApi } from "../../services/businessAccountApi";
+import { IBusinesses } from "../../interfaces/BusinessAccount.interfaces";
 
 const initialState = {
-  businessAccount: {} as IBusinessAccount,
+  businessAccount: {} as IBusinesses,
   userBusinessesAccounts: [] as IBusinesses[],
 };
 
@@ -20,16 +16,21 @@ const businessAccountSlice = createSlice({
     ) => {
       state.userBusinessesAccounts = action.payload;
     },
+    setUserBusinessAccount: (state, action: PayloadAction<IBusinesses>) => {
+      state.businessAccount = action.payload;
+    },
   },
-  extraReducers: (builder) => {
-    builder.addMatcher(
-      businessAccountApi.endpoints.createBusinessAccount.matchFulfilled,
-      (state, { payload }) => {
-        state.businessAccount = payload.business;
-      },
-    );
-  },
+  // there is error on create business account user
+  // extraReducers: (builder) => {
+  //   builder.addMatcher(
+  //     businessAccountApi.endpoints.createBusinessAccount.matchFulfilled,
+  //     (state, { payload }) => {
+  //       state.businessAccount = payload.business;
+  //     },
+  //   );
+  // },
 });
 
-export const { setUserBusinessesAccounts } = businessAccountSlice.actions;
+export const { setUserBusinessesAccounts, setUserBusinessAccount } =
+  businessAccountSlice.actions;
 export default businessAccountSlice.reducer;

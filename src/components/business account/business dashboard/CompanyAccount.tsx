@@ -6,11 +6,14 @@ import {
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
 import { useGetBusinessAccountInfoQuery } from "../../../services/businessAccountApi";
-import { useParams } from "react-router-dom";
 import Loader from "../../common/Loader";
+import { useParams } from "react-router-dom";
 
 // this page need more handling for ui
 function CompanyAccount() {
+  // const { businessAccount } = useSelector(
+  //   (state: RootState) => state.businessAccount,
+  // );
   const { companyId } = useParams();
   const { data, isLoading } = useGetBusinessAccountInfoQuery({
     id: Number(companyId),
@@ -31,6 +34,7 @@ function CompanyAccount() {
         <div className="flex w-1/2 flex-col gap-5">
           <CardEmployerSettings className="items-center justify-center">
             <p>{companyInfo?.name}</p>
+            <img src={companyInfo?.logo} alt="company logo" />
           </CardEmployerSettings>
           <CardEmployerSettings>
             <p>Contact</p>

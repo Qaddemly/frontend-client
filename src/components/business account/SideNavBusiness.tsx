@@ -8,9 +8,14 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import SideNavBusinessLink from "../common/SideNavBusinessLink";
+import { useParams } from "react-router-dom";
 
 function SideNavBusiness() {
   const [showSideNav, setShowSideNav] = useState(false);
+  // const { businessAccount } = useSelector(
+  //   (state: RootState) => state.businessAccount,
+  // );
+  const { companyId } = useParams();
 
   return (
     <div
@@ -29,13 +34,13 @@ function SideNavBusiness() {
       </div>
 
       <SideNavBusinessLink
-        to="/businessDashboard/companyJobs"
+        to={`/businessDashboard/companyJobs/${companyId}`}
         icon={faBriefcase}
         content="Jobs"
         showSideNav={showSideNav}
       />
       <SideNavBusinessLink
-        to="/businessDashboard/companyCandidates"
+        to={`/businessDashboard/companyCandidates/${companyId}`}
         icon={faUserGroup}
         content="Candidates"
         showSideNav={showSideNav}
@@ -48,8 +53,8 @@ function SideNavBusiness() {
       /> */}
       <SideNavBusinessLink
         to={[
-          "/businessDashboard/companySettings/companyAccount/1",
-          "/businessDashboard/companySettings/updateCompanyAccount/1",
+          `/businessDashboard/companySettings/companyAccount/${companyId}`,
+          `/businessDashboard/companySettings/updateCompanyAccount/${companyId}`,
         ]}
         icon={faGear}
         content="Settings"

@@ -79,19 +79,25 @@ const router = createBrowserRouter([
   },
   {
     path: "/businessDashboard",
-    element: <BusinessDashboard />,
+    element: (
+      <ProtectedRoute>
+        <BusinessDashboard />,
+      </ProtectedRoute>
+    ),
     children: [
       { index: true, element: <CompanyJobs /> },
       {
-        path: "companyJobs",
+        path: "companyJobs/:companyId",
         element: <CompanyJobs />,
-      },
-      {
-        path: "companyJobs/1",
-        element: <JobApplications />,
+        children: [
+          {
+            path: "jobApplications/:jobId",
+            element: <JobApplications />,
+          },
+        ],
       },
       { path: "updateJob/1", element: <UpdateJob /> },
-      { path: "companyCandidates", element: <CompanyCandidates /> },
+      { path: "companyCandidates/:companyId", element: <CompanyCandidates /> },
       {
         path: "companySettings",
         element: <CompanySettings />,

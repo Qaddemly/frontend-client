@@ -17,6 +17,7 @@ function CreateBusinessAccountForm() {
   const methods = useForm<IBusinessAccount>(formSettings);
 
   const onSubmit: SubmitHandler<IBusinessAccount> = async (data) => {
+    console.log(data);
     try {
       const formData = createFormData({ ...data } as Record<string, unknown>);
       const res = await createBusinessAccount(formData).unwrap();
