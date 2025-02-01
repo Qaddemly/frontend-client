@@ -11,7 +11,8 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../components/common/Loader";
 import InputField from "../components/common/InputField";
 import Button from "../components/common/Button";
-import { formSettings, IError } from "../interfaces/Common.interfaces";
+import { formSettings } from "../interfaces/Common.interfaces";
+import { handleApiError } from "../utils/helpers";
 
 function SetNewPassword() {
   const [showPassword, setShowPassword] = useState(false);
@@ -41,8 +42,7 @@ function SetNewPassword() {
         naviagate("/login");
         localStorage.removeItem("passwordResetToken");
       } catch (err) {
-        const error = err as IError;
-        toast.error(error.message);
+        handleApiError(err);
       }
   };
 

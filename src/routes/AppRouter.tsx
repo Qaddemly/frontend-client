@@ -46,7 +46,7 @@ const router = createBrowserRouter([
     path: "/profile",
     element: (
       <ProtectedRoute>
-        <Profile />,
+        <Profile />
       </ProtectedRoute>
     ),
     children: [
@@ -81,7 +81,7 @@ const router = createBrowserRouter([
     path: "/businessDashboard",
     element: (
       <ProtectedRoute>
-        <BusinessDashboard />,
+        <BusinessDashboard />
       </ProtectedRoute>
     ),
     children: [

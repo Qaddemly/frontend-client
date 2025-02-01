@@ -8,12 +8,13 @@ import Input from "../../common/Input";
 import InputField from "../../common/InputField";
 import Select from "../../common/Select";
 import Button from "../../common/Button";
-import { formSettings, IError } from "../../../interfaces/Common.interfaces";
+import { formSettings } from "../../../interfaces/Common.interfaces";
 import { IUpdateJobInputs } from "../../../interfaces/BusinessDashboard.interfaces";
 import { useUpdateJobMutation } from "../../../services/businessDashboardApi";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import Loader from "../../common/Loader";
+import { handleApiError } from "../../../utils/helpers";
 
 function UpdateJob() {
   const locationValues = Object.values(Country);
@@ -33,8 +34,7 @@ function UpdateJob() {
       console.log(res);
       toast.success("Job updated successfully");
     } catch (err) {
-      const error = err as IError;
-      toast.error(error.message);
+      handleApiError(err);
     }
   };
 
