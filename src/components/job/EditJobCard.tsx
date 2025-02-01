@@ -50,7 +50,13 @@ function EditJobCard({
       <EditJobCardItem title="Description:" content={decsription} />
 
       <div className="mt-4 flex justify-between pl-1">
-        <Button className="border border-main bg-white px-1 text-base text-main hover:bg-main hover:text-white md:text-sm lg:text-base">
+        <Button
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate("/businessDashboard/updatejob/1");
+          }}
+          className="border border-main bg-white px-3 text-base text-main hover:bg-main hover:text-white md:text-sm lg:text-base"
+        >
           Edit
         </Button>
         <Button className="border border-main bg-white px-1 text-base text-main hover:bg-main hover:text-white md:text-sm lg:text-base">

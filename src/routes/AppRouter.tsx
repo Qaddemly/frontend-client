@@ -29,6 +29,7 @@ import CompanySettings from "../components/business account/business dashboard/C
 import JobApplications from "../components/job/job applications/JobApplications";
 import CompanyJobs from "../components/business account/business dashboard/CompanyJobs";
 import CompanyCandidates from "../components/business account/business dashboard/CompanyCandidates";
+import UpdateJob from "../components/job/update job/UpdateJob";
 
 const router = createBrowserRouter([
   {
@@ -80,9 +81,16 @@ const router = createBrowserRouter([
     path: "/businessDashboard",
     element: <BusinessDashboard />,
     children: [
-      { index: true, element: <CompanyAccount /> },
-      { path: "companyJobs", element: <CompanyJobs /> },
-      { path: "companyJobs/1", element: <JobApplications /> },
+      { index: true, element: <CompanyJobs /> },
+      {
+        path: "companyJobs",
+        element: <CompanyJobs />,
+      },
+      {
+        path: "companyJobs/1",
+        element: <JobApplications />,
+      },
+      { path: "updateJob/1", element: <UpdateJob /> },
       { path: "companyCandidates", element: <CompanyCandidates /> },
       {
         path: "companySettings",

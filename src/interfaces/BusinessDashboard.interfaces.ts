@@ -1,3 +1,4 @@
+import { Country, EmploymentType, LocationType } from "../enums/index.enums";
 import { IBusinessAccount } from "./BusinessAccount.interfaces";
 import { IResponse } from "./Common.interfaces";
 
@@ -17,6 +18,18 @@ export interface INewRole {
   role: string;
 }
 
+export interface IUpdateJobInputs {
+  title: string;
+  description: string;
+  location: Country;
+  locationType: LocationType;
+  salary: number;
+  employmentType: EmploymentType;
+  keywords: string[];
+  skills: string[];
+  experience: string;
+}
+
 //////////////////////////////////////////////////////////////////////////////
 // Api Response Interfaces
 
@@ -27,4 +40,21 @@ export interface IGetListOfHrRolesResponse {
 
 export interface IUpdateBusinessAccountResponse extends IResponse {
   business: IBusinessAccount;
+}
+
+export interface IUpdateJobResponse {
+  success: boolean;
+  id: number;
+  title: string;
+  description: string;
+  location: Country;
+  location_type: LocationType;
+  skills: string[];
+  salary: number;
+  employee_type: EmploymentType;
+  keywords: string[];
+  experience: number;
+  created_at: string;
+  updated_at: string;
+  business_id: number;
 }
