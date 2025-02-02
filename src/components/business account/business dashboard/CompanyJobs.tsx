@@ -2,103 +2,103 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import EditJobCard from "../../job/EditJobCard";
+import Button from "../../common/Button";
 
+const jobCards = [
+  {
+    active: false,
+    jobTitle: "Senior UX Designer",
+    locationType: "In-place",
+    location: "Gaza, Palastine",
+    salary: "$2,000 - $5,000",
+    skills: [
+      "Networking Basics",
+      "System Diagnostics",
+      "Customer Service Orientation",
+      "Experience with Remote Support Tools",
+      "Team collaboration",
+      "Strong time management",
+      "Analytical thinking",
+      "Empathy",
+    ],
+    employmentType: "Part-time",
+    experience: "2+ Years",
+    keyWords: ["UX", "UI", "Design", "Frontend", "Canva"],
+    position: "Team member",
+    decsription:
+      "We are seeking a highly motivated and customer-focused Technical Support Specialist to join our team. As a key member of the support team, you will be responsible for providing exceptional technical assistance to clients, resolving their issues, and ensuring seamless operation of our products and services. If you thrive in a fast-paced environment and enjoy solving technical problems, we'd love to hear from you!",
+  },
+  {
+    active: true,
+    jobTitle: "Senior UX Designer",
+    locationType: "In-place",
+    location: "Gaza, Palastine",
+    salary: "$52,000 - $55,000",
+    skills: [
+      "Networking Basics",
+      "System Diagnostics",
+      "Customer Service Orientation",
+      "Experience with Remote Support Tools",
+      "Team collaboration",
+      "Analytical thinking",
+      "Empathy",
+    ],
+    employmentType: "Full-time",
+    experience: "10+ Years",
+    keyWords: ["UX", "UI", "Design", "Frontend", "Canva"],
+    position: "Team leader",
+    decsription:
+      "As a key member of the support team, you will be responsible for providing exceptional technical assistance to clients, resolving their issues, and ensuring seamless operation of our products and services. If you thrive in a fast-paced environment and enjoy solving technical problems, we'd love to hear from you!",
+  },
+  {
+    active: true,
+    jobTitle: "Senior UX Designer",
+    locationType: "In-place",
+    location: "Gaza, Palastine",
+    salary: "$52,000 - $55,000",
+    skills: [
+      "Networking Basics",
+      "System Diagnostics",
+      "Customer Service Orientation",
+      "Experience with Remote Support Tools",
+      "Team collaboration",
+      "Analytical thinking",
+      "Empathy",
+    ],
+    employmentType: "Full-time",
+    experience: "10+ Years",
+    keyWords: ["UX", "UI", "Design", "Frontend", "Canva"],
+    position: "Team leader",
+    decsription:
+      "As a key member of the support team, you will be responsible for providing exceptional technical assistance to clients, resolving their issues, and ensuring seamless operation of our products and services. If you thrive in a fast-paced environment and enjoy solving technical problems, we'd love to hear from you!",
+  },
+  {
+    active: false,
+    jobTitle: "Senior UX Designer",
+    locationType: "In-place",
+    location: "Gaza, Palastine",
+    salary: "$52,000 - $55,000",
+    skills: [
+      "Networking Basics",
+      "System Diagnostics",
+      "Customer Service Orientation",
+      "Experience with Remote Support Tools",
+      "Team collaboration",
+      "Analytical thinking",
+      "Empathy",
+    ],
+    employmentType: "Full-time",
+    experience: "No experience",
+    keyWords: ["UX", "UI", "Design", "Frontend", "Canva"],
+    position: "Team leader",
+    decsription:
+      "As a key member of the support team, you will be responsible for providing exceptional technical assistance to clients, resolving their issues, and ensuring seamless operation of our products and services. If you thrive in a fast-paced environment and enjoy solving technical problems, we'd love to hear from you!",
+  },
+];
 function CompanyJobs() {
   // GAD {jobsApiArrayOfObjects}: CompanyJobsProps
 
   const [selectedValue, setSelectedValue] = useState("all");
-
-  const jobCards = [
-    {
-      active: false,
-      jobTitle: "Senior UX Designer",
-      locationType: "In-place",
-      location: "Gaza, Palastine",
-      salary: "$2,000 - $5,000",
-      skills: [
-        "Networking Basics",
-        "System Diagnostics",
-        "Customer Service Orientation",
-        "Experience with Remote Support Tools",
-        "Team collaboration",
-        "Strong time management",
-        "Analytical thinking",
-        "Empathy",
-      ],
-      employmentType: "Part-time",
-      experience: "2+ Years",
-      keyWords: ["UX", "UI", "Design", "Frontend", "Canva"],
-      position: "Team member",
-      decsription:
-        "We are seeking a highly motivated and customer-focused Technical Support Specialist to join our team. As a key member of the support team, you will be responsible for providing exceptional technical assistance to clients, resolving their issues, and ensuring seamless operation of our products and services. If you thrive in a fast-paced environment and enjoy solving technical problems, we'd love to hear from you!",
-    },
-    {
-      active: true,
-      jobTitle: "Senior UX Designer",
-      locationType: "In-place",
-      location: "Gaza, Palastine",
-      salary: "$52,000 - $55,000",
-      skills: [
-        "Networking Basics",
-        "System Diagnostics",
-        "Customer Service Orientation",
-        "Experience with Remote Support Tools",
-        "Team collaboration",
-        "Analytical thinking",
-        "Empathy",
-      ],
-      employmentType: "Full-time",
-      experience: "10+ Years",
-      keyWords: ["UX", "UI", "Design", "Frontend", "Canva"],
-      position: "Team leader",
-      decsription:
-        "As a key member of the support team, you will be responsible for providing exceptional technical assistance to clients, resolving their issues, and ensuring seamless operation of our products and services. If you thrive in a fast-paced environment and enjoy solving technical problems, we'd love to hear from you!",
-    },
-    {
-      active: true,
-      jobTitle: "Senior UX Designer",
-      locationType: "In-place",
-      location: "Gaza, Palastine",
-      salary: "$52,000 - $55,000",
-      skills: [
-        "Networking Basics",
-        "System Diagnostics",
-        "Customer Service Orientation",
-        "Experience with Remote Support Tools",
-        "Team collaboration",
-        "Analytical thinking",
-        "Empathy",
-      ],
-      employmentType: "Full-time",
-      experience: "10+ Years",
-      keyWords: ["UX", "UI", "Design", "Frontend", "Canva"],
-      position: "Team leader",
-      decsription:
-        "As a key member of the support team, you will be responsible for providing exceptional technical assistance to clients, resolving their issues, and ensuring seamless operation of our products and services. If you thrive in a fast-paced environment and enjoy solving technical problems, we'd love to hear from you!",
-    },
-    {
-      active: false,
-      jobTitle: "Senior UX Designer",
-      locationType: "In-place",
-      location: "Gaza, Palastine",
-      salary: "$52,000 - $55,000",
-      skills: [
-        "Networking Basics",
-        "System Diagnostics",
-        "Customer Service Orientation",
-        "Experience with Remote Support Tools",
-        "Team collaboration",
-        "Analytical thinking",
-        "Empathy",
-      ],
-      employmentType: "Full-time",
-      experience: "No experience",
-      keyWords: ["UX", "UI", "Design", "Frontend", "Canva"],
-      position: "Team leader",
-      decsription:
-        "As a key member of the support team, you will be responsible for providing exceptional technical assistance to clients, resolving their issues, and ensuring seamless operation of our products and services. If you thrive in a fast-paced environment and enjoy solving technical problems, we'd love to hear from you!",
-    },
-  ];
 
   const filteredJobCards = jobCards.filter((job) => {
     if (selectedValue === "available") return job.active === true;
@@ -130,14 +130,12 @@ function CompanyJobs() {
             <EditJobCard key={index} {...job} />
           ))}
         </div>
-        <div className="h-fit">
+        <div className="flex h-full flex-col-reverse content-between gap-2 lg:flex-col lg:gap-4">
+          {/* GAD TODO : is selected : button gap-32 */}
           <select
             name="Show All"
-            // GAD value={value} // useState done
             value={selectedValue}
             className={`rounded-md border-2 p-2 shadow-md outline-none ${selectedValue === "available" ? "border-green-100 text-green-100" : selectedValue === "unavailable" ? "border-danger-300 text-danger-300" : "border-main text-main"} cursor-pointer`}
-            // GAD ${value === "available" ? "border-green-100" : "border-danger-300"} done
-            // GAD when I select an option border disappears!!! (outline-none) done
             onChange={(e) => setSelectedValue(e.target.value)}
           >
             <option value="all" className="text-main">
@@ -149,7 +147,13 @@ function CompanyJobs() {
             <option value="unavailable" className="text-danger-300">
               Show Unavailable
             </option>
+            <option value="archived" className="text-main">
+              {/* GAD TODO : connect with backend */}
+              Show Archived
+            </option>
           </select>
+          <Button onClick={() => {}}>Post New Job</Button>
+          {/* GAD TODO : onClick => change route to post job */}
         </div>
       </div>
     </>
