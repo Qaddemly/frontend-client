@@ -29,6 +29,7 @@ import CompanySettings from "../components/business account/business dashboard/C
 import JobApplications from "../components/job/job applications/JobApplications";
 import CompanyJobs from "../components/business account/business dashboard/CompanyJobs";
 import CompanyCandidates from "../components/business account/business dashboard/CompanyCandidates";
+import PostJobbbb from "../components/job/Ammar post job/PostJobbbb";
 
 const router = createBrowserRouter([
   {
@@ -82,6 +83,8 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <CompanyAccount /> },
       { path: "companyJobs", element: <CompanyJobs /> },
+      { path: "companyJobs/postjobbb", element: <PostJobbbb /> },
+      // GAD TODO : make route for posting a job
       { path: "companyJobs/1", element: <JobApplications /> },
       { path: "companyCandidates", element: <CompanyCandidates /> },
       {
