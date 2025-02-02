@@ -30,7 +30,7 @@ function PostJob1() {
           <div className="m-10 rounded-lg bg-[#eee] p-10">
             <p className="text-3xl font-medium">Post Job</p>
             <p className="text-gray-300">
-              A few steps give you the power to your Job
+              Few steps give the power to your Job
             </p>
             <form
               onSubmit={handleSubmit(submitForm)}
