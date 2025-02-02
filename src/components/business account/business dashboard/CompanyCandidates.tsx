@@ -32,7 +32,9 @@ function CompanyCandidates() {
           id: companyId?.toString() || "",
           newRole: { account_email: email, role },
         }).unwrap();
+        setIsOpen(false);
         toast.success(res.message);
+        refetch();
       } catch (err) {
         handleApiError(err);
       }
@@ -40,7 +42,11 @@ function CompanyCandidates() {
   }
 
   // handle get list of HRs
-  const { isLoading: isLoading2, data } = useGetListOfHrRolesQuery({
+  const {
+    isLoading: isLoading2,
+    data,
+    refetch,
+  } = useGetListOfHrRolesQuery({
     id: companyId || "",
   });
   const listOfHRs = data?.HRs;
@@ -131,7 +137,6 @@ function CompanyCandidates() {
                 {listOfHRs?.map((candidate) => (
                   <CompanyCadidatesItem
                     key={candidate.account_id}
-                    setRole={setRole}
                     candidate={candidate}
                   />
                 ))}

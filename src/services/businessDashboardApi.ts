@@ -45,7 +45,7 @@ export const businessDashboardApi = apiSlice.injectEndpoints({
       query: ({ account_email, id }) => ({
         url: `${BASE_BUSINESS_URL}/myBusiness/dashboard/hr/${id}`,
         method: "DELETE",
-        body: account_email,
+        body: { account_email },
       }),
     }),
     updateRole: builder.mutation<

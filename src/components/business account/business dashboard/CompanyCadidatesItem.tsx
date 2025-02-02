@@ -4,6 +4,7 @@ import { useState } from "react";
 import Modal from "../../common/Modal";
 import {
   useDeleteRoleMutation,
+  useGetListOfHrRolesQuery,
   useUpdateRoleMutation,
 } from "../../../services/businessDashboardApi";
 import toast from "react-hot-toast";
@@ -14,17 +15,15 @@ import { IHRs } from "../../../interfaces/BusinessDashboard.interfaces";
 import { useParams } from "react-router-dom";
 import { formatDate, handleApiError } from "../../../utils/helpers";
 
-function CompanyCadidatesItem({
-  setRole,
-  candidate,
-}: {
-  setRole: React.Dispatch<React.SetStateAction<"" | HrRole>>;
-  candidate: IHRs;
-}) {
+function CompanyCadidatesItem({ candidate }: { candidate: IHRs }) {
   const [showDeleteModal, setDeleteShowModal] = useState(false);
   const [showUpdateModal, setUpdateShowModal] = useState(false);
   const { companyId } = useParams();
   const rolesValues = Object.values(HrRole);
+  const [role, setRole] = useState<HrRole | "">("");
+  const { refetch } = useGetListOfHrRolesQuery({
+    id: companyId || "",
+  });
 
   // handle deleting role
   const [deleteRole, { isLoading: isLoading1 }] = useDeleteRoleMutation();
@@ -34,8 +33,11 @@ function CompanyCadidatesItem({
         id: companyId?.toString() || "",
         account_email,
       }).unwrap();
+      setDeleteShowModal(false);
       toast.success(res.message);
+      refetch();
     } catch (err) {
+      setDeleteShowModal(false);
       handleApiError(err);
     }
   }
@@ -49,8 +51,11 @@ function CompanyCadidatesItem({
         account_email,
         role,
       }).unwrap();
+      setUpdateShowModal(false);
       toast.success(res.message);
+      refetch();
     } catch (err) {
+      setUpdateShowModal(false);
       handleApiError(err);
     }
   }
@@ -102,9 +107,7 @@ function CompanyCadidatesItem({
               </select>
               <Button
                 className="px-3"
-                onClick={() =>
-                  handleUpdateRole(candidate.account_email, candidate.role)
-                }
+                onClick={() => handleUpdateRole(candidate.account_email, role)}
               >
                 Update
               </Button>
