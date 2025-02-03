@@ -9,7 +9,6 @@ import {
   EmploymentType,
   LocationType,
 } from "../../../enums/index.enums";
-import { useUserInfo } from "../../../context/UserInfoContext";
 import Select from "../../common/Select";
 import Button from "../../common/Button";
 
@@ -17,38 +16,36 @@ function UserInfoExperience() {
   const {
     register,
     formState: { errors },
-    resetField,
-    getValues,
   } = useFormContext();
 
-  const { setExperience } = useUserInfo();
+  // const { setExperience } = useUserInfo();
   const employmentTypeValues = Object.values(EmploymentType);
   const locationTypeValues = Object.values(LocationType);
   const countryValues = Object.values(Country);
 
-  function handleAddNewExperience() {
-    setExperience((experience) => [
-      ...experience,
-      {
-        jobTitle: getValues("experience.jobTitle"),
-        employmentType: getValues("experience.employmentType"),
-        companyName: getValues("experience.companyName"),
-        location: getValues("experience.location"),
-        locationType: getValues("experience.locationType"),
-        stillWorking: getValues("experience.stillWorking"),
-        startDate: getValues("experience.startDate"),
-        endDate: getValues("experience.endDate"),
-      },
-    ]);
-    resetField("experience.jobTitle");
-    resetField("experience.employmentType");
-    resetField("experience.companyName");
-    resetField("experience.location");
-    resetField("experience.locationType");
-    resetField("experience.stillWorking");
-    resetField("experience.startJobDate");
-    resetField("experience.endJobDate");
-  }
+  // function handleAddNewExperience() {
+  //   setExperience((experience) => [
+  //     ...experience,
+  //     {
+  //       jobTitle: getValues("experience.jobTitle"),
+  //       employmentType: getValues("experience.employmentType"),
+  //       companyName: getValues("experience.companyName"),
+  //       location: getValues("experience.location"),
+  //       locationType: getValues("experience.locationType"),
+  //       stillWorking: getValues("experience.stillWorking"),
+  //       startDate: getValues("experience.startDate"),
+  //       endDate: getValues("experience.endDate"),
+  //     },
+  //   ]);
+  //   resetField("experience.jobTitle");
+  //   resetField("experience.employmentType");
+  //   resetField("experience.companyName");
+  //   resetField("experience.location");
+  //   resetField("experience.locationType");
+  //   resetField("experience.stillWorking");
+  //   resetField("experience.startJobDate");
+  //   resetField("experience.endJobDate");
+  // }
 
   return (
     <UserInfoLayout title="Experience">
@@ -138,7 +135,7 @@ function UserInfoExperience() {
         />
 
         <Button
-          onClick={handleAddNewExperience}
+          // onClick={handleAddNewExperience}
           type="button"
           className="w-full px-4 py-2"
         >

@@ -5,6 +5,13 @@ import {
   EmploymentType,
   LocationType,
 } from "../../../enums/index.enums";
+import { useNavigate, useParams } from "react-router-dom";
+import { usePostNewJobMutation } from "../../../services/businessDashboardApi";
+import { handleApiError } from "../../../utils/helpers";
+import toast from "react-hot-toast";
+import { IPostNewJobInputs } from "../../../interfaces/BusinessDashboard.interfaces";
+import Loader from "../../common/Loader";
+import { useGetAllJobsQuery } from "../../../services/jobApi";
 
 function PostJobForm() {
   const [title, setTitle] = useState("");
@@ -23,7 +30,7 @@ function PostJobForm() {
   const [skills, setSkills] = useState<string[]>([]);
   const [position, setPosition] = useState("");
 
-  // GAD TODO : add business_id
+  const { companyId } = useParams();
 
   const [inputValue, setInputValue] = useState("");
   const [skillInputValue, setSkillInputValue] = useState("");
@@ -31,12 +38,18 @@ function PostJobForm() {
   const locationTypes = Object.values(LocationType);
   const countryLocation = Object.values(Country);
   const employmentType = Object.values(EmploymentType);
-  // React.KeyboardEvent<HTMLInputElement>
+
+  const [postNewJob, { isLoading }] = usePostNewJobMutation();
+  const { refetch } = useGetAllJobsQuery({});
+  const navigate = useNavigate();
+
   const addKeyword = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter" && inputValue.trim()) {
+    if (event.key === "Enter") {
       event.preventDefault();
-      setKeywords([...keywords, inputValue.trim()]);
-      setInputValue("");
+      if (inputValue.trim()) {
+        setKeywords([...keywords, inputValue.trim()]);
+        setInputValue("");
+      }
     }
   };
 
@@ -45,34 +58,64 @@ function PostJobForm() {
   };
 
   const addSkill = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter" && skillInputValue.trim()) {
+    if (event.key === "Enter") {
       event.preventDefault();
-      setSkills([...skills, skillInputValue.trim()]);
-      setSkillInputValue("");
+      if (skillInputValue.trim()) {
+        setSkills([...skills, skillInputValue.trim()]);
+        setSkillInputValue("");
+      }
     }
   };
-
-  function handleOnSumbit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const data = {
-      title,
-      description,
-      location: country,
-      location_type: locationType,
-      salary, // GAD TODO : min, max, currency, other currency
-      employee_type: employeeType,
-      keywords,
-      experience, // GAD TODO : talk with BackEnd
-      // business_id,  GAD TODO : From API
-      skills,
-      position, // GAD TODO : talk with BackEnd
-    };
-    console.log(data);
-  }
 
   const removeSkill = (index: number) => {
     setSkills(skills.filter((_, i) => i !== index));
   };
+
+  async function handleOnSumbit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (
+      !title ||
+      !description ||
+      !country ||
+      !locationType ||
+      !salary.min ||
+      !salary.max ||
+      !salary.currency ||
+      !employeeType ||
+      !experience ||
+      !position ||
+      !skills.length ||
+      !keywords.length
+    ) {
+      return;
+    }
+
+    const data = {
+      title,
+      description,
+      location: country,
+      location_type: "Onsite", // handle with backend
+      salary: 5000, // GAD TODO : min, max, currency, other currency
+      employee_type: "FullTime", // handle with backend
+      keywords,
+      experience: "2", // GAD TODO : talk with BackEnd
+      business_id: companyId ? parseInt(companyId) : undefined,
+      skills,
+      // position, // GAD TODO : talk with BackEnd
+    };
+    console.log(data);
+    try {
+      const res = await postNewJob(data as IPostNewJobInputs).unwrap();
+      toast.success(res.message);
+      refetch();
+      navigate(`/businessDashboard/companyJobs/${companyId}`);
+    } catch (error) {
+      handleApiError(error);
+    }
+  }
+
+  if (isLoading) return <Loader />;
+
   return (
     <div className="mx-auto max-w-5xl p-8">
       <form

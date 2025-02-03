@@ -20,6 +20,19 @@ export interface INewRole {
   role: string;
 }
 
+export interface IPostNewJobInputs {
+  business_id: number;
+  title: string;
+  description: string;
+  location: string;
+  location_type: string;
+  salary: number;
+  employee_type: string;
+  keywords: string[];
+  experience: string;
+  skills: string[];
+}
+
 export interface IUpdateJobInputs {
   title: string;
   description: string;
@@ -63,6 +76,10 @@ export interface IJobApplication {
 export interface IGetListOfHrRolesResponse {
   status: string;
   HRs: IHRs[];
+}
+
+export interface IPostNewJobResponse extends IResponse {
+  job: IJob;
 }
 
 export interface IUpdateBusinessAccountResponse extends IResponse {
