@@ -7,8 +7,8 @@ import { IBusinessAccount } from "../../../interfaces/BusinessAccount.interfaces
 import { useCreateBusinessAccountMutation } from "../../../services/businessAccountApi";
 import Loader from "../../common/Loader";
 import toast from "react-hot-toast";
-import { createFormData } from "../../../utils/helpers";
-import { formSettings, IError } from "../../../interfaces/Common.interfaces";
+import { createFormData, handleApiError } from "../../../utils/helpers";
+import { formSettings } from "../../../interfaces/Common.interfaces";
 
 function CreateBusinessAccountForm() {
   const [next, setNext] = useState(false);
@@ -17,13 +17,13 @@ function CreateBusinessAccountForm() {
   const methods = useForm<IBusinessAccount>(formSettings);
 
   const onSubmit: SubmitHandler<IBusinessAccount> = async (data) => {
+    console.log(data);
     try {
       const formData = createFormData({ ...data } as Record<string, unknown>);
       const res = await createBusinessAccount(formData).unwrap();
       toast.success(res.message);
     } catch (err) {
-      const error = err as IError;
-      toast.error(error.message);
+      handleApiError(err);
     }
 
     console.log(data);

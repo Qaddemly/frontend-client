@@ -24,7 +24,7 @@ export interface IUserInfo {
   // Resume
   resume: string; // need interface
 }
-export interface User {
+export interface IUser {
   id: string;
   first_name: string;
   last_name: string;
@@ -131,7 +131,7 @@ export interface ISetNewPasswordInputs extends ISetNewPassword {
 // Api Response Interfaces
 export interface ILoginResponse {
   success: boolean;
-  user: User;
+  user: IUser;
   accessToken: string;
   refreshToken: string;
 }
@@ -140,7 +140,7 @@ export interface ISignupResponse extends IResponse {
   activationToken: string;
 }
 export interface IUserInfoResponse extends IResponse {
-  user: User;
+  user: IUser;
 }
 export type IActivateEmailResponse = IResponse;
 

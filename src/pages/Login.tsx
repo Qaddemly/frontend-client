@@ -16,7 +16,7 @@ import { setUser } from "../components/auth/UserSlice";
 import { RootState } from "../store/store";
 import InputField from "../components/common/InputField";
 import Button from "../components/common/Button";
-import { IError } from "../interfaces/Common.interfaces";
+import { handleApiError } from "../utils/helpers";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -45,8 +45,7 @@ function Login() {
       else navigate("/");
       dispatch(setUser(res.user));
     } catch (err) {
-      const error = err as IError;
-      toast.error(error.message);
+      handleApiError(err);
     }
   };
 

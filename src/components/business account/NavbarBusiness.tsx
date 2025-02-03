@@ -8,14 +8,18 @@ import {
 import Logo from "../common/Logo";
 import UserMenu from "../profile/UserMenu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import Button from "../common/Button";
 
 function NavbarBusiness() {
+  const { companyId } = useParams();
+  const navigate = useNavigate();
+
   return (
     <nav className="flex justify-between border-b border-b-gray-100 px-6 py-3">
       <Logo fontSize="text-4xl" />
       <div className="flex items-center gap-2">
-        <div className="flex gap-5 pr-10">
+        <div className="flex items-center gap-5 pr-10">
           <Link to="" className="flex gap-2">
             <FontAwesomeIcon icon={faBell} className="text-2xl" />
             <p>Notifications</p>
@@ -24,7 +28,14 @@ function NavbarBusiness() {
             <FontAwesomeIcon icon={faEnvelope} className="text-2xl" />
             <p>Messages</p>
           </Link>
-          {/* TODO for GAD : put "Switch to your account" button  */}
+          <div>
+            <Button
+              onClick={() => navigate("/")}
+              className="border border-main bg-white px-5 text-main hover:bg-main hover:text-white"
+            >
+              Switch to your account
+            </Button>
+          </div>
         </div>
         <UserMenu type="BusinessAccount">
           <div className="px-3">
@@ -75,7 +86,7 @@ function NavbarBusiness() {
               </Link>
               <Link
                 className="flex items-center gap-2 rounded-md px-2 py-2 hover:bg-[#eee]"
-                to=""
+                to={`/businessDashboard/companySettings/companyAccount/${companyId}`}
               >
                 <FontAwesomeIcon icon={faGear} className="text-2xl" />
                 <p className="text-lg font-medium">Account settings</p>

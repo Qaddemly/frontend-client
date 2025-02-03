@@ -9,38 +9,40 @@ import InputField from "../../common/InputField";
 import Select from "../../common/Select";
 import Button from "../../common/Button";
 import { formSettings } from "../../../interfaces/Common.interfaces";
-
-interface IUpdateJob {
-  title: string;
-  locationType: LocationType;
-  salary: number;
-  employmentType: EmploymentType;
-  location: Country;
-  description: string;
-  keywords: string[];
-  skills: string[];
-  business_id: number;
-  experience: string;
-}
+import { IUpdateJobInputs } from "../../../interfaces/BusinessDashboard.interfaces";
+import { useUpdateJobMutation } from "../../../services/businessDashboardApi";
+import toast from "react-hot-toast";
+import { useParams } from "react-router-dom";
+import Loader from "../../common/Loader";
+import { handleApiError } from "../../../utils/helpers";
 
 function UpdateJob() {
   const locationValues = Object.values(Country);
   const locationTypeValues = Object.values(LocationType);
   const employmentTypeValues = Object.values(EmploymentType);
-  //   const { jobId } = useParams();
+  const [updateJob, { isLoading }] = useUpdateJobMutation();
+  const { jobId } = useParams();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IUpdateJob>(formSettings);
+  } = useForm<IUpdateJobInputs>(formSettings);
 
-  const onSubmit: SubmitHandler<IUpdateJob> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<IUpdateJobInputs> = async (data) => {
+    try {
+      const res = await updateJob({ data, id: jobId || "" }).unwrap();
+      console.log(res);
+      toast.success("Job updated successfully");
+    } catch (err) {
+      handleApiError(err);
+    }
   };
 
+  if (isLoading) return <Loader />;
+
   return (
-    <div>
-      <p className="text-3xl font-medium">Update job</p>
+    <div className="my-20 flex flex-col items-center justify-center">
+      <p className="my-10 text-3xl font-medium">Update job</p>
       <form onSubmit={handleSubmit(onSubmit)} className="mt-5 flex gap-5">
         {/* left side */}
         <div className="flex w-[25rem] flex-col gap-3 border-r border-r-gray-100 pr-8">

@@ -1,6 +1,10 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useParams } from "react-router-dom";
 
 function CompanySettings() {
+  // const { businessAccount } = useSelector(
+  //   (state: RootState) => state.businessAccount,
+  // );
+  const { companyId } = useParams();
   return (
     <>
       <div className="flex items-center bg-[#eee] p-2">
@@ -9,7 +13,7 @@ function CompanySettings() {
         </div>
         <div className="flex gap-5 pl-5 text-lg font-medium">
           <NavLink
-            to="/businessDashboard/companySettings/companyAccount/1" // id will change
+            to={`/businessDashboard/companySettings/companyAccount/${companyId}`}
             className={({ isActive }) =>
               `px-2 py-1 ${isActive ? "rounded-md bg-main text-white" : ""}`
             }
@@ -17,7 +21,7 @@ function CompanySettings() {
             Company Info
           </NavLink>
           <NavLink
-            to="/businessDashboard/companySettings/updateCompanyAccount/1"
+            to={`/businessDashboard/companySettings/updateCompanyAccount/${companyId}`}
             className={({ isActive }) =>
               `px-2 py-1 ${isActive ? "rounded-md bg-main text-white" : ""}`
             }

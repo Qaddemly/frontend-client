@@ -51,6 +51,7 @@ function CreateBusinessAccountStep1({
             id: "name",
             placeholder: "Enter company name",
           }}
+          // value={}
         />
       </InputField>
       <InputField

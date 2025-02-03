@@ -1,6 +1,6 @@
 // CompanyJobs should take jobs from Backend and pass each one to EditJobCard
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useNavigate, useParams } from "react-router-dom";
 import EditJobCard from "../../job/EditJobCard";
 import Button from "../../common/Button";
 
@@ -99,6 +99,10 @@ function CompanyJobs() {
   // GAD TODO : {jobsApiArrayOfObjects}: CompanyJobsProps
   const navigate = useNavigate();
   const [selectedValue, setSelectedValue] = useState("all");
+  const { companyId } = useParams();
+  const isJobApplicationsRoute = location.pathname.includes(
+    `/businessDashboard/companyJobs/${companyId}/jobApplications`,
+  );
 
   const filteredJobCards = jobCards.filter((job) => {
     if (selectedValue === "available") return job.active === true;
@@ -108,21 +112,25 @@ function CompanyJobs() {
 
   return (
     <>
-      <div className="flex items-center bg-[#eee] p-2">
-        <div className="border-r border-r-gray-100 px-10 py-3">
-          <p className="text-xl font-semibold">Employer Jobs</p>
-        </div>
-        <div className="flex gap-5 pl-5 text-lg font-medium">
-          <NavLink
-            to="/businessDashboard/companyJobs"
-            className={({ isActive }) =>
-              `px-2 py-1 ${isActive ? "rounded-md bg-main text-white" : ""}`
-            }
-          >
-            Jobs
-          </NavLink>
-        </div>
-      </div>
+      {isJobApplicationsRoute ? (
+        <Outlet />
+      ) : (
+        <>
+          <div className="flex items-center bg-[#eee] p-2">
+            <div className="border-r border-r-gray-100 px-10 py-3">
+              <p className="text-xl font-semibold">Employer Jobs</p>
+            </div>
+            <div className="flex gap-5 pl-5 text-lg font-medium">
+              <NavLink
+                to="/businessDashboard/companyJobs"
+                className={({ isActive }) =>
+                  `px-2 py-1 ${isActive ? "rounded-md bg-main text-white" : ""}`
+                }
+              >
+                Jobs
+              </NavLink>
+            </div>
+          </div>
 
       <div className="my-10 flex flex-col-reverse justify-center gap-8 px-7 lg:flex-row">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">

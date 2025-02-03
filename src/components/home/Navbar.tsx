@@ -27,11 +27,9 @@ function Navbar() {
   );
 
   useEffect(() => {
-    if (isError && data) {
-      console.log(isError);
+    if (isError) console.log(isError);
 
-      dispatch(setUserBusinessesAccounts(data.businesses));
-    }
+    dispatch(setUserBusinessesAccounts(data?.businesses ?? []));
   }, [data, dispatch, isError]);
 
   return (
@@ -75,7 +73,12 @@ function Navbar() {
               >
                 Business
               </Button>
-              {showMenu && <BusinessAccountsMenu menuRef={menuRef} />}
+              {showMenu && (
+                <BusinessAccountsMenu
+                  menuRef={menuRef}
+                  data={data?.businesses ?? []}
+                />
+              )}
             </div>
             <UserMenu type="NormalAccount">
               <div className="mt-2 flex flex-col gap-3">
