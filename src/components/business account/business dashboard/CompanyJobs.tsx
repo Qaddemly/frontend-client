@@ -132,43 +132,45 @@ function CompanyJobs() {
             </div>
           </div>
 
-      <div className="my-10 flex flex-col-reverse justify-center gap-8 px-7 lg:flex-row">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-          {filteredJobCards.map((job, index) => (
-            <EditJobCard key={index} {...job} />
-          ))}
-        </div>
-        <div className="flex h-full flex-col-reverse content-between gap-2 lg:flex-col lg:gap-4">
-          {/* GAD TODO : is selected : button gap-32 */}
-          <select
-            name="Show All"
-            value={selectedValue}
-            className={`rounded-md border-2 p-2 shadow-md outline-none ${selectedValue === "available" ? "border-green-100 text-green-100" : selectedValue === "unavailable" ? "border-danger-300 text-danger-300" : "border-main text-main"} cursor-pointer`}
-            onChange={(e) => setSelectedValue(e.target.value)}
-          >
-            <option value="all" className="text-main">
-              Show All
-            </option>
-            <option value="available" className="text-green-100">
-              Show Available
-            </option>
-            <option value="unavailable" className="text-danger-300">
-              Show Unavailable
-            </option>
-            <option value="archived" className="text-main">
-              {/* GAD TODO : connect with backend */}
-              Show Archived
-            </option>
-          </select>
-          <Button
-            onClick={() => {
-              navigate("/businessDashboard/companyJobs/postjob");
-            }}
-          >
-            Post New Job
-          </Button>
-        </div>
-      </div>
+          <div className="my-10 flex flex-col-reverse justify-center gap-8 px-7 lg:flex-row">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+              {filteredJobCards.map((job, index) => (
+                <EditJobCard key={index} {...job} />
+              ))}
+            </div>
+            <div className="flex h-full flex-col-reverse content-between gap-2 lg:flex-col lg:gap-4">
+              {/* GAD TODO : is selected : button gap-32 */}
+              <select
+                name="Show All"
+                value={selectedValue}
+                className={`rounded-md border-2 p-2 shadow-md outline-none ${selectedValue === "available" ? "border-green-100 text-green-100" : selectedValue === "unavailable" ? "border-danger-300 text-danger-300" : "border-main text-main"} cursor-pointer`}
+                onChange={(e) => setSelectedValue(e.target.value)}
+              >
+                <option value="all" className="text-main">
+                  Show All
+                </option>
+                <option value="available" className="text-green-100">
+                  Show Available
+                </option>
+                <option value="unavailable" className="text-danger-300">
+                  Show Unavailable
+                </option>
+                <option value="archived" className="text-main">
+                  {/* GAD TODO : connect with backend */}
+                  Show Archived
+                </option>
+              </select>
+              <Button
+                onClick={() => {
+                  navigate("/businessDashboard/companyJobs/postjob");
+                }}
+              >
+                Post New Job
+              </Button>
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 }

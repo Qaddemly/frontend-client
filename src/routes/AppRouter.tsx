@@ -25,10 +25,10 @@ import UpdateCompanyAccount from "../components/business account/business dashbo
 import BusinessDashboard from "../components/business account/business dashboard/BusinessDashboard";
 import CompanySettings from "../components/business account/business dashboard/CompanySettings";
 import JobApplications from "../components/job/job applications/JobApplications";
-import CompanyJobs from "../components/business account/business dashboard/CompanyJobs";
 import CompanyCandidates from "../components/business account/business dashboard/CompanyCandidates";
 import PostJob from "../components/job/post Job/PostJob";
 import UpdateJob from "../components/job/update job/UpdateJob";
+import CompanyJobs from "../components/business account/business dashboard/CompanyJobs";
 
 const router = createBrowserRouter([
   {
