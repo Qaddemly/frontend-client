@@ -21,15 +21,13 @@ import CompanyAccount from "../components/business account/business dashboard/Co
 import CreateBusinessAccountForm from "../components/business account/create business account/CreateBusinessAccountForm";
 import JobProfile from "../pages/JobProfile";
 import FindJob from "../pages/FindJob";
-import PostJob1 from "../components/job/post Job/PostJob1";
-import PostJob2 from "../components/job/post Job/PostJob2";
 import UpdateCompanyAccount from "../components/business account/business dashboard/UpdateCompanyAccount";
 import BusinessDashboard from "../components/business account/business dashboard/BusinessDashboard";
 import CompanySettings from "../components/business account/business dashboard/CompanySettings";
 import JobApplications from "../components/job/job applications/JobApplications";
 import CompanyJobs from "../components/business account/business dashboard/CompanyJobs";
 import CompanyCandidates from "../components/business account/business dashboard/CompanyCandidates";
-import PostJobbbb from "../components/job/Ammar post job/PostJobbbb";
+import PostJob from "../components/job/post Job/PostJob";
 
 const router = createBrowserRouter([
   {
@@ -63,8 +61,6 @@ const router = createBrowserRouter([
   { path: "/setNewPassword", element: <SetNewPassword /> },
   { path: "/apply-job", element: <Apply /> },
   { path: "/message", element: <Message /> },
-  { path: "/postjob", element: <PostJob1 /> },
-  { path: "/postjob2", element: <PostJob2 /> },
   { path: "/findCompany", element: <FindCompany /> },
   { path: "/findJob", element: <FindJob /> },
   { path: "/companyProfile/:companyId", element: <CompanyProfile /> },
@@ -83,7 +79,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <CompanyAccount /> },
       { path: "companyJobs", element: <CompanyJobs /> },
-      { path: "companyJobs/postjobbb", element: <PostJobbbb /> },
+      { path: "companyJobs/postjob", element: <PostJob /> },
       // GAD TODO : make route for posting a job
       { path: "companyJobs/1", element: <JobApplications /> },
       { path: "companyCandidates", element: <CompanyCandidates /> },

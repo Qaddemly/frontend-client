@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import PostJobForm from "./PostJobForm";
 
-function PostJobbbb() {
+function PostJob() {
   return (
     <>
       <div className="flex items-center bg-[#eee] p-2">
@@ -30,4 +30,4 @@ function PostJobbbb() {
   );
 }
 
-export default PostJobbbb;
+export default PostJob;

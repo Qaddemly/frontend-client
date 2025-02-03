@@ -1,6 +1,6 @@
 // CompanyJobs should take jobs from Backend and pass each one to EditJobCard
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import EditJobCard from "../../job/EditJobCard";
 import Button from "../../common/Button";
 
@@ -96,8 +96,8 @@ const jobCards = [
   },
 ];
 function CompanyJobs() {
-  // GAD {jobsApiArrayOfObjects}: CompanyJobsProps
-
+  // GAD TODO : {jobsApiArrayOfObjects}: CompanyJobsProps
+  const navigate = useNavigate();
   const [selectedValue, setSelectedValue] = useState("all");
 
   const filteredJobCards = jobCards.filter((job) => {
@@ -152,8 +152,13 @@ function CompanyJobs() {
               Show Archived
             </option>
           </select>
-          <Button onClick={() => {}}>Post New Job</Button>
-          {/* GAD TODO : onClick => change route to post job */}
+          <Button
+            onClick={() => {
+              navigate("/businessDashboard/companyJobs/postjob");
+            }}
+          >
+            Post New Job
+          </Button>
         </div>
       </div>
     </>

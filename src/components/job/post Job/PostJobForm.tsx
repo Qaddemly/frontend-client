@@ -1,11 +1,15 @@
 import { useState } from "react";
 import Button from "../../common/Button";
+import {
+  Country,
+  EmploymentType,
+  LocationType,
+} from "../../../enums/index.enums";
 
 function PostJobForm() {
-  const [keywords, setKeywords] = useState<string[]>([]);
-  const [skills, setSkills] = useState<string[]>([]);
-  const [inputValue, setInputValue] = useState("");
-  const [skillInputValue, setSkillInputValue] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [country, setCountry] = useState("Location");
   const [locationType, setLocationType] = useState("Location type");
   const [salary, setSalary] = useState({
     currency: "Currency",
@@ -13,7 +17,21 @@ function PostJobForm() {
     max: "",
     otherCurrency: "",
   });
+  const [employeeType, setEmployeeType] = useState("Employee type");
+  const [keywords, setKeywords] = useState<string[]>([]);
+  const [experience, setExperience] = useState("");
+  const [skills, setSkills] = useState<string[]>([]);
+  const [position, setPosition] = useState("");
 
+  // GAD TODO : add business_id
+
+  const [inputValue, setInputValue] = useState("");
+  const [skillInputValue, setSkillInputValue] = useState("");
+
+  const locationTypes = Object.values(LocationType);
+  const countryLocation = Object.values(Country);
+  const employmentType = Object.values(EmploymentType);
+  // React.KeyboardEvent<HTMLInputElement>
   const addKeyword = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter" && inputValue.trim()) {
       event.preventDefault();
@@ -34,18 +52,34 @@ function PostJobForm() {
     }
   };
 
+  function handleOnSumbit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const data = {
+      title,
+      description,
+      location: country,
+      location_type: locationType,
+      salary, // GAD TODO : min, max, currency, other currency
+      employee_type: employeeType,
+      keywords,
+      experience, // GAD TODO : talk with BackEnd
+      // business_id,  GAD TODO : From API
+      skills,
+      position, // GAD TODO : talk with BackEnd
+    };
+    console.log(data);
+  }
+
   const removeSkill = (index: number) => {
     setSkills(skills.filter((_, i) => i !== index));
   };
   return (
     <div className="mx-auto max-w-5xl p-8">
-      <form className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {/* <input
-          type="number"
-          placeholder="Maximum number Of people who can apply"
-          className="w-1/2 rounded-md border border-gray-300 p-2 focus:border-none focus:ring-main"
-        /> */}
-
+      <form
+        className="grid grid-cols-1 gap-4 md:grid-cols-2"
+        onSubmit={handleOnSumbit}
+        // GAD TODO : remove onSubmit
+      >
         {/* Left Column */}
         <div className="flex flex-col space-y-3">
           {/* Job Title */}
@@ -53,6 +87,8 @@ function PostJobForm() {
             type="text"
             placeholder="Job Title"
             className="w-full rounded-md border border-gray-300 p-2 focus:border-none focus:ring-main"
+            onChange={(e) => setTitle(e.target.value)}
+            value={title}
           />
 
           {/* Location Type */}
@@ -61,22 +97,32 @@ function PostJobForm() {
             value={locationType}
             onChange={(e) => setLocationType(e.target.value)}
           >
-            <option>Location type</option>
-            <option>On-site</option>
-            <option>Remote</option>
-            <option>Hybrid</option>
+            <option disabled>Location type</option>
+            {locationTypes.map((locationType) => (
+              <option key={locationType} value={locationType}>
+                {locationType}
+              </option>
+            ))}
           </select>
 
           {/* Location & City */}
           {locationType !== "Location type" && locationType !== "Remote" && (
             <div className="grid grid-cols-2 gap-2">
-              <select className="w-full rounded-md border border-gray-300 p-2 focus:border-main">
-                <option>Location</option>
-                {/* GAD TODO : API for countries */}
+              <select
+                className="w-full rounded-md border border-gray-300 p-2 focus:border-main"
+                onChange={(e) => setCountry(e.target.value)}
+                value={country}
+              >
+                <option disabled>Location</option>
+                {countryLocation.map((country) => (
+                  <option key={country} value={country}>
+                    {country}
+                  </option>
+                ))}
               </select>
               <select className="w-full rounded-md border border-gray-300 p-2 focus:border-main">
                 <option>City</option>
-                {/* GAD TODO : API for cities */}
+                {/* GAD TODO : input text ... talk with BackEnd */}
               </select>
             </div>
           )}
@@ -98,7 +144,11 @@ function PostJobForm() {
                   className="flex items-center rounded-full bg-green-200 px-3 py-1 text-white hover:bg-green-100"
                 >
                   {skill}{" "}
-                  <button onClick={() => removeSkill(index)} className="ml-2">
+                  <button
+                    type="button"
+                    onClick={() => removeSkill(index)}
+                    className="ml-2"
+                  >
                     x
                   </button>
                 </div>
@@ -149,19 +199,28 @@ function PostJobForm() {
           </div>
 
           {/* Employment type */}
-          <select className="w-full rounded-md border border-gray-300 p-2 focus:border-main">
-            <option>Employee type</option>
-            <option>Full-time</option>
-            <option>Part-time</option>
-            <option>Intern</option>
-            <option>Seasonal</option>
+          <select
+            className="w-full rounded-md border border-gray-300 p-2 focus:border-main"
+            value={employeeType}
+            onChange={(e) => setEmployeeType(e.target.value)}
+          >
+            <option disabled>Employee type</option>
+            {employmentType.map((employmentType) => (
+              <option key={employmentType} value={employmentType}>
+                {employmentType}
+              </option>
+            ))}
           </select>
         </div>
 
         {/* Right Column */}
         <div className="flex flex-col space-y-3">
           {/* Job Experience */}
-          <select className="w-full rounded-md border border-gray-300 p-2 focus:border-main">
+          <select
+            className="w-full rounded-md border border-gray-300 p-2 focus:border-main"
+            value={experience}
+            onChange={(e) => setExperience(e.target.value)}
+          >
             <option>Job Experience</option>
             <option>Student</option>
             <option>Fresh Graduate (Junior)</option>
@@ -187,7 +246,11 @@ function PostJobForm() {
                   className="flex items-center rounded-full bg-green-200 px-3 py-1 text-white hover:bg-green-100"
                 >
                   {keyword}{" "}
-                  <button onClick={() => removeKeyword(index)} className="ml-2">
+                  <button
+                    type="button"
+                    onClick={() => removeKeyword(index)}
+                    className="ml-2"
+                  >
                     x
                   </button>
                 </div>
@@ -200,14 +263,20 @@ function PostJobForm() {
             type="text"
             placeholder="Position"
             className="w-full rounded-md border border-gray-300 p-2 focus:border-none focus:ring-main"
+            value={position}
+            onChange={(e) => setPosition(e.target.value)}
           />
 
           {/* Description */}
           <textarea
             placeholder="Description"
             className="h-24 w-full rounded-md border border-gray-300 p-2 focus:border-2 focus:border-main focus:outline-none"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           />
-          <Button className="shadow-lg" onClick={() => {}}>
+          <Button className="shadow-lg">
+            {/* GAD TODO : handleOnSumbit 
+            onClick={(e) => handleOnSumbit(e)} */}
             Confirm
           </Button>
         </div>
