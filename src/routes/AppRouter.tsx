@@ -65,7 +65,7 @@ const router = createBrowserRouter([
   { path: "/findCompany", element: <FindCompany /> },
   { path: "/findJob", element: <FindJob /> },
   { path: "/companyProfile/:companyId", element: <CompanyProfile /> },
-  { path: "/jobProfile", element: <JobProfile /> },
+  { path: "/jobProfile/:jobId", element: <JobProfile /> },
   {
     path: "/createBusinessAccount",
     element: (
@@ -83,8 +83,6 @@ const router = createBrowserRouter([
     ),
     children: [
       { index: true, element: <CompanyAccount /> },
-      { path: "companyJobs/postjob", element: <PostJob /> },
-      { index: true, element: <CompanyJobs /> },
       {
         path: "companyJobs/:companyId",
         element: <CompanyJobs />,
@@ -93,6 +91,7 @@ const router = createBrowserRouter([
             path: "jobApplications/:jobId",
             element: <JobApplications />,
           },
+          { path: "postjob", element: <PostJob /> },
         ],
       },
       { path: "updateJob/1", element: <UpdateJob /> },

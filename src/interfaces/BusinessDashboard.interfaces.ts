@@ -2,6 +2,7 @@ import { Country, EmploymentType, LocationType } from "../enums/index.enums";
 import { IUser } from "./Auth.interfaces";
 import { IBusinessAccount } from "./BusinessAccount.interfaces";
 import { IResponse } from "./Common.interfaces";
+import { IJob } from "./Job.interfaces";
 
 export interface IHRs {
   account_id: string;
@@ -19,6 +20,19 @@ export interface INewRole {
   role: string;
 }
 
+export interface IPostNewJobInputs {
+  business_id: number;
+  title: string;
+  description: string;
+  location: string;
+  location_type: string;
+  salary: number;
+  employee_type: string;
+  keywords: string[];
+  experience: string;
+  skills: string[];
+}
+
 export interface IUpdateJobInputs {
   title: string;
   description: string;
@@ -31,7 +45,7 @@ export interface IUpdateJobInputs {
   experience: string;
 }
 
-export interface IMetaJobApplication {
+export interface IMeta {
   itemsPerPage: number;
   totalItems: number;
   perviousPage: number;
@@ -52,7 +66,7 @@ export interface IJobApplication {
   id: number;
   created_at: string;
   updated_at: string;
-  // job:{};
+  job: IJob;
   resume: IResume;
 }
 
@@ -62,6 +76,10 @@ export interface IJobApplication {
 export interface IGetListOfHrRolesResponse {
   status: string;
   HRs: IHRs[];
+}
+
+export interface IPostNewJobResponse extends IResponse {
+  job: IJob;
 }
 
 export interface IUpdateBusinessAccountResponse extends IResponse {
@@ -89,6 +107,6 @@ export interface IGetJobApplicationsResponse {
   success: boolean;
   jobApplications: {
     data: IJobApplication[];
-    meta: IMetaJobApplication;
+    meta: IMeta;
   };
 }

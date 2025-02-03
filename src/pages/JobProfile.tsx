@@ -6,77 +6,40 @@ import JobDescriptionSection from "../components/job/job profile/JobDescriptionS
 import JobProfileBody from "../components/job/job profile/JobProfileBody";
 import JobProfileHeader from "../components/job/job profile/JobProfileHeader";
 import SimilarJobs from "../components/job/job profile/SimilarJobs";
+import { useParams } from "react-router-dom";
+import { useGetJobDetailsQuery } from "../services/jobApi";
+import Loader from "../components/common/Loader";
 
-type JobProfileProps = {
-  name?: string;
-  rating?: number;
-  updateDate?: string;
-  // المفروض استلم ال تاريخ ازاي؟
-  companyName?: string;
-  companyWebsite?: string;
-  location?: string;
-  decsription?: string;
-  employmentType?: string;
-  skills?: string[];
-  salary?: string;
-  position?: string;
-  experience?: string;
-};
+function JobProfile() {
+  const { jobId } = useParams();
 
-function JobProfile({
-  // logo,
-  name = "Technical Support Specialist",
-  rating = 4.2,
-  updateDate = "2 days ago",
-  companyName = "Google",
-  companyWebsite = "www.google.com",
-  location = "Gaza, Palastine",
-  decsription = "We are seeking a highly motivated and customer-focused Technical Support Specialist to join our team. As a key member of the support team, you will be responsible for providing exceptional technical assistance to clients, resolving their issues, and ensuring seamless operation of our products and services. If you thrive in a fast-paced environment and enjoy solving technical problems, we'd love to hear from you!",
-  employmentType = "Part-time",
-  skills = [
-    "Networking Basics",
-    "System Diagnostics",
-    "Customer Service Orientation",
-    "Experience with Remote Support Tools",
-    "Team collaboration",
-    "Strong time management",
-    "Analytical thinking",
-    "Empathy",
-  ],
-  salary = "$20,000 - $25,000",
-  position = "Team leader",
-  experience = "10+ Years",
-}: JobProfileProps) {
+  const { data, isLoading } = useGetJobDetailsQuery({ id: jobId || "" });
+  const job = data?.job;
+
+  if (isLoading) return <Loader />;
+
   return (
     <>
       <Navbar />
-
-      <JobProfileHeader
-        // logo={logo}
-        name={name}
-        rating={rating}
-        updateDate={updateDate}
-        companyName={companyName}
-        companyWebsite={companyWebsite}
-      />
+      {job && <JobProfileHeader job={job} />}
 
       <JobProfileBody>
         <JobDescriptionSection>
-          <JobDescriptionItem title="Location" content={location} />
+          <JobDescriptionItem title="Location" content={job?.location} />
           <JobDescriptionItem
             title="Full Job Description"
-            content={decsription}
+            content={job?.description}
           />
           <JobDescriptionItem
             title="Employment Type"
-            content={employmentType}
+            content={job?.employee_type}
           />
           <JobDescriptionItem
             title="Skills"
             // عايزين نخليهم ليستتين جنب بعض
             content={
               <>
-                {skills.map((skill, index) => (
+                {job?.skills.map((skill, index) => (
                   <React.Fragment key={index}>
                     <span>{skill}</span>
                     <br />
@@ -86,9 +49,10 @@ function JobProfile({
             }
           />
 
-          <JobDescriptionItem title="Expected Salary" content={salary} />
-          <JobDescriptionItem title="Position" content={position} />
-          <JobDescriptionItem title="Experience" content={experience} />
+          <JobDescriptionItem title="Expected Salary" content={job?.salary} />
+          {/* ask backend about position */}
+          {/* <JobDescriptionItem title="Position" content={job.position} /> */}
+          <JobDescriptionItem title="Experience" content={job?.experience} />
         </JobDescriptionSection>
 
         <SimilarJobs />

@@ -1,10 +1,31 @@
-import { IapiFounded } from "../interfaces/Job.interfaces";
+import {
+  IGetAllJobsResponse,
+  IGetJobDetailsResponse,
+} from "../interfaces/Job.interfaces";
 import { apiSlice } from "./apiSlice";
+
 const BASE_JOB_URL = "/job";
 
 export const jobApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    jobWithFound: builder.query<IapiFounded, { id: number }>({
+    getAllJobs: builder.query<
+      IGetAllJobsResponse,
+      { search?: string; page?: number; limit?: number }
+    >({
+      query: ({ search, page, limit }) => {
+        const params = new URLSearchParams();
+
+        if (search) params.append("search", search);
+        if (page) params.append("page", page.toString());
+        if (limit) params.append("limit", limit.toString());
+
+        return {
+          url: `${BASE_JOB_URL}/getAllJobs${params.toString() ? `?${params.toString()}` : ""}`,
+          method: "GET",
+        };
+      },
+    }),
+    getJobDetails: builder.query<IGetJobDetailsResponse, { id: string }>({
       query: ({ id }) => ({
         url: `${BASE_JOB_URL}/oneJob/${id}`,
         method: "GET",
@@ -13,10 +34,7 @@ export const jobApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useJobWithFoundQuery } = jobApi;
-
-// import { IPostData } from "../interfaces/Job.interfaces";
-// import { apiSlice } from "./apiSlice";
+export const { useGetJobDetailsQuery, useGetAllJobsQuery } = jobApi;
 
 // const BASE_JOB_URL = "job";
 // export const postApi = apiSlice.injectEndpoints({

@@ -1,6 +1,9 @@
 import {
+  IGetJobApplicationsResponse,
   IGetListOfHrRolesResponse,
   INewRole,
+  IPostNewJobInputs,
+  IPostNewJobResponse,
   IUpdateBusinessAccountResponse,
   IUpdateJobInputs,
   IUpdateJobResponse,
@@ -59,6 +62,13 @@ export const businessDashboardApi = apiSlice.injectEndpoints({
       }),
     }),
     //////////////////////////// Dashboard Jobs ////////////////////////////////////
+    postNewJob: builder.mutation<IPostNewJobResponse, IPostNewJobInputs>({
+      query: (data) => ({
+        url: `${BASE_JOB_URL}/postJob`,
+        method: "POST",
+        body: data,
+      }),
+    }),
     makeJobClosed: builder.mutation<IResponse, { id: string }>({
       query: ({ id }) => ({
         url: `${BASE_JOB_URL}/makeJobClosed/${id}`,
@@ -87,14 +97,13 @@ export const businessDashboardApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
-    getJobApplications: builder.mutation<
-      IUpdateJobResponse,
-      { id: string; data: IUpdateJobInputs }
+    getJobApplications: builder.query<
+      IGetJobApplicationsResponse,
+      { id: string }
     >({
-      query: ({ id, data }) => ({
+      query: ({ id }) => ({
         url: `${BASE_JOB_URL}/allJobApplicationsToOneJob/${id}`,
-        method: "PUT",
-        body: data,
+        method: "GET",
       }),
     }),
   }),
@@ -106,8 +115,10 @@ export const {
   useAddNewRoleMutation,
   useDeleteRoleMutation,
   useUpdateRoleMutation,
+  usePostNewJobMutation,
   useMakeJobArchivedMutation,
   useMakeJobClosedMutation,
   useMakeJobOpenedMutation,
   useUpdateJobMutation,
+  useGetJobApplicationsQuery,
 } = businessDashboardApi;

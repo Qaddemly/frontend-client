@@ -10,45 +10,21 @@ import { faSliders } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import JobCard from "../components/common/JobCard";
 import { EmploymentType } from "../enums/index.enums";
-import { IError } from "../interfaces/Common.interfaces";
-import toast from "react-hot-toast";
-
+import { useGetAllJobsQuery } from "../services/jobApi";
 import Loader from "../components/common/Loader";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useJobWithFoundQuery } from "../services/jobApi";
-import { IJob } from "../interfaces/BusinessAccount.interfaces";
-import { createFormData } from "../utils/helpers";
-import { useParams } from "react-router-dom";
 
 function FindJob() {
   const employmentTypeValues = Object.values(EmploymentType);
   const [isOpen, setIsOpen] = useState(false);
 
-  const { id } = useParams<{ id: string }>();
-  const [jobWithFound, { isLoading }] = useJobWithFoundQuery({
-    id: Number(id),
-  });
-  const methods = useForm<IJob>();
+  const { data, isLoading } = useGetAllJobsQuery({});
 
-  const onSubmit: SubmitHandler<IJob> = async (data) => {
-    try {
-      const formData = createFormData({ ...data } as Record<string, unknown>);
-      const res = await jobWithFound(formData).unwrap();
-      toast.success(res.message);
-    } catch (err) {
-      const error = err as IError;
-      toast.error(error.message);
-    }
-
-    console.log(data);
-  };
-
+  if (isLoading) return <Loader />;
   return (
     <>
       <Navbar />
-      {isLoading && <Loader />}
-      <div className="flex" onSubmit={methods.handleSubmit(onSubmit)}>
-        <div className="w-full bg-background pb-10">
+      <div>
+        <div className="w-full bg-background pb-20">
           {/* Heading and search bar */}
           <div className="mx-6 max-w-5xl px-7 py-10 md:mx-4">
             <h2 className="text-4xl text-gray-800 md:text-3xl">
@@ -83,48 +59,7 @@ function FindJob() {
             <div
               className={`mt-8 grid gap-6 ${isOpen ? "grid-cols-1 sm:grid-cols-2 md:grid-cols-2" : "grid-cols-1 sm:grid-cols-2 md:grid-cols-3"}`}
             >
-              <JobCard
-                jobTitle="Technical Support Specialist"
-                employmentType="PART-TIME"
-                salaryRange="$20,000 - $25,000"
-                companyName="Google Inc."
-                companyLocation="Dhaka, Bangladesh"
-              />
-              <JobCard
-                jobTitle="Senior UX Designer"
-                employmentType="FULL-TIME"
-                salaryRange="$20,000 - $25,000"
-                companyName="Google Inc."
-                companyLocation="Dhaka, Bangladesh"
-              />
-              <JobCard
-                jobTitle="Technical Support Specialist"
-                employmentType="PART-TIME"
-                salaryRange="$20,000 - $25,000"
-                companyName="Google Inc."
-                companyLocation="Dhaka, Bangladesh"
-              />
-              <JobCard
-                jobTitle="Technical Support Specialist"
-                employmentType="PART-TIME"
-                salaryRange="$20,000 - $25,000"
-                companyName="Google Inc."
-                companyLocation="Dhaka, Bangladesh"
-              />
-              <JobCard
-                jobTitle="Senior UX Designer"
-                employmentType="FULL-TIME"
-                salaryRange="$20,000 - $25,000"
-                companyName="Google Inc."
-                companyLocation="Dhaka, Bangladesh"
-              />
-              <JobCard
-                jobTitle="Technical Support Specialist"
-                employmentType="PART-TIME"
-                salaryRange="$20,000 - $25,000"
-                companyName="Google Inc."
-                companyLocation="Dhaka, Bangladesh"
-              />
+              {data?.jobs.data.map((job) => <JobCard key={job.id} job={job} />)}
             </div>
           </div>
           {/* End of popular companies */}
