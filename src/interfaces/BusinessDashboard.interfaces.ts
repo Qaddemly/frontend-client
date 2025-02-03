@@ -1,4 +1,5 @@
 import { Country, EmploymentType, LocationType } from "../enums/index.enums";
+import { IUser } from "./Auth.interfaces";
 import { IBusinessAccount } from "./BusinessAccount.interfaces";
 import { IResponse } from "./Common.interfaces";
 
@@ -30,6 +31,31 @@ export interface IUpdateJobInputs {
   experience: string;
 }
 
+export interface IMetaJobApplication {
+  itemsPerPage: number;
+  totalItems: number;
+  perviousPage: number;
+  currentPage: number;
+  totalPages: number;
+  sortBy: string[];
+  search: string;
+  searchBy: string[];
+}
+
+export interface IResume {
+  id: number;
+  url: string;
+  account: IUser;
+}
+
+export interface IJobApplication {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  // job:{};
+  resume: IResume;
+}
+
 //////////////////////////////////////////////////////////////////////////////
 // Api Response Interfaces
 
@@ -57,4 +83,12 @@ export interface IUpdateJobResponse {
   created_at: string;
   updated_at: string;
   business_id: number;
+}
+
+export interface IGetJobApplicationsResponse {
+  success: boolean;
+  jobApplications: {
+    data: IJobApplication[];
+    meta: IMetaJobApplication;
+  };
 }

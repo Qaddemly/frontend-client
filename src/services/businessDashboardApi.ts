@@ -87,6 +87,16 @@ export const businessDashboardApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    getJobApplications: builder.mutation<
+      IUpdateJobResponse,
+      { id: string; data: IUpdateJobInputs }
+    >({
+      query: ({ id, data }) => ({
+        url: `${BASE_JOB_URL}/allJobApplicationsToOneJob/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
   }),
 });
 
