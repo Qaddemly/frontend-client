@@ -4,46 +4,41 @@ import { useState } from "react";
 import Modal from "../../common/Modal";
 import {
   useDeleteRoleMutation,
+  useGetListOfHrRolesQuery,
   useUpdateRoleMutation,
 } from "../../../services/businessDashboardApi";
-import { IError } from "../../../interfaces/Common.interfaces";
 import toast from "react-hot-toast";
 import Loader from "../../common/Loader";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../store/store";
 import Button from "../../common/Button";
 import { HrRole } from "../../../enums/index.enums";
 import { IHRs } from "../../../interfaces/BusinessDashboard.interfaces";
+import { useParams } from "react-router-dom";
+import { formatDate, handleApiError } from "../../../utils/helpers";
 
-function CompanyCadidatesItem({
-  setRole,
-  candidate,
-}: {
-  setRole: React.Dispatch<React.SetStateAction<"" | HrRole>>;
-  candidate: IHRs;
-}) {
+function CompanyCadidatesItem({ candidate }: { candidate: IHRs }) {
   const [showDeleteModal, setDeleteShowModal] = useState(false);
   const [showUpdateModal, setUpdateShowModal] = useState(false);
-  const { businessAccount } = useSelector(
-    (state: RootState) => state.businessAccount,
-  );
+  const { companyId } = useParams();
   const rolesValues = Object.values(HrRole);
+  const [role, setRole] = useState<HrRole | "">("");
+  const { refetch } = useGetListOfHrRolesQuery({
+    id: companyId || "",
+  });
 
   // handle deleting role
   const [deleteRole, { isLoading: isLoading1 }] = useDeleteRoleMutation();
   async function handleDeleteRole(account_email: string) {
     try {
       const res = await deleteRole({
-        id: businessAccount.id?.toString(),
+        id: companyId?.toString() || "",
         account_email,
       }).unwrap();
+      setDeleteShowModal(false);
       toast.success(res.message);
+      refetch();
     } catch (err) {
-      const error = err as IError;
-      toast.error(error.message);
-      if (typeof error.details !== "string" && error.details.msg) {
-        toast.error(error.details.msg);
-      }
+      setDeleteShowModal(false);
+      handleApiError(err);
     }
   }
 
@@ -52,17 +47,16 @@ function CompanyCadidatesItem({
   async function handleUpdateRole(account_email: string, role: string) {
     try {
       const res = await updateRole({
-        id: businessAccount.id?.toString(),
+        id: companyId?.toString() || "",
         account_email,
         role,
       }).unwrap();
+      setUpdateShowModal(false);
       toast.success(res.message);
+      refetch();
     } catch (err) {
-      const error = err as IError;
-      toast.error(error.message);
-      if (typeof error.details !== "string" && error.details.msg) {
-        toast.error(error.details.msg);
-      }
+      setUpdateShowModal(false);
+      handleApiError(err);
     }
   }
 
@@ -70,15 +64,6 @@ function CompanyCadidatesItem({
 
   return (
     <tr className="border-b border-b-[#eee] hover:bg-[#eee]">
-      <td className="w-4 p-4">
-        <div className="flex items-center">
-          <input
-            id="checkbox-table-search-1"
-            type="checkbox"
-            className="focus:ring-blue-500 h-4 w-4 rounded-sm border-gray-300 bg-gray-100 focus:ring-2"
-          />
-        </div>
-      </td>
       <th className="flex items-center gap-2 px-6 py-4">
         <FontAwesomeIcon
           icon={faUser}
@@ -93,8 +78,12 @@ function CompanyCadidatesItem({
           {candidate.role}
         </span>
       </td>
-      <td className="px-6 py-4 text-gray-300">{candidate.created_at}</td>
-      <td className="px-6 py-4 text-gray-300">{candidate.updated_at}</td>
+      <td className="px-6 py-4 text-gray-300">
+        {formatDate(candidate.created_at)}
+      </td>
+      <td className="px-6 py-4 text-gray-300">
+        {formatDate(candidate.updated_at)}
+      </td>
       <td className="space-x-5 px-6 py-4">
         <button
           className="rounded-full bg-gray-600 px-2 py-1 font-medium text-white"
@@ -118,9 +107,7 @@ function CompanyCadidatesItem({
               </select>
               <Button
                 className="px-3"
-                onClick={() =>
-                  handleUpdateRole(candidate.account_email, candidate.role)
-                }
+                onClick={() => handleUpdateRole(candidate.account_email, role)}
               >
                 Update
               </Button>
@@ -145,9 +132,9 @@ function CompanyCadidatesItem({
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                 />
               </svg>

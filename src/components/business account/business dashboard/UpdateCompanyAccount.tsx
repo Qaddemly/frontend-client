@@ -2,11 +2,11 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import CreateBusinessAccountStep1 from "../create business account/CreateBusinessAccountStep1";
 import { IBusinessAccount } from "../../../interfaces/BusinessAccount.interfaces";
 import CreateBusinessAccountStep2 from "../create business account/CreateBusinessAccountStep2";
-import { createFormData } from "../../../utils/helpers";
+import { createFormData, handleApiError } from "../../../utils/helpers";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import Loader from "../../common/Loader";
-import { formSettings, IError } from "../../../interfaces/Common.interfaces";
+import { formSettings } from "../../../interfaces/Common.interfaces";
 import { useUpdateBusinessAccountMutation } from "../../../services/businessDashboardApi";
 
 function UpdateCompanyAccount() {
@@ -43,8 +43,7 @@ function UpdateCompanyAccount() {
       }).unwrap();
       toast.success(res.message);
     } catch (err) {
-      const error = err as IError;
-      toast.error(error.message);
+      handleApiError(err);
     }
     console.log(filteredData);
   };

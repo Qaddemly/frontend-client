@@ -12,7 +12,7 @@ import {
   useResendForgetPasswordCodeMutation,
   useVerifyForgetPasswordMutation,
 } from "../services/authApi";
-import { IError } from "../interfaces/Common.interfaces";
+import { handleApiError } from "../utils/helpers";
 
 function EmailVerfiy() {
   const [activateEmail, { isLoading: isLoading1 }] = useActivateEmailMutation();
@@ -34,8 +34,7 @@ function EmailVerfiy() {
         navigate("/login");
         localStorage.removeItem("activationToken");
       } catch (err) {
-        const error = err as IError;
-        toast.error(error.message);
+        handleApiError(err);
       }
     } else if (resetVerificationToken?.length) {
       try {
@@ -48,8 +47,7 @@ function EmailVerfiy() {
         localStorage.removeItem("resetVerificationToken");
         localStorage.setItem("passwordResetToken", res.passwordResetToken);
       } catch (err) {
-        const error = err as IError;
-        toast.error(error.message);
+        handleApiError(err);
       }
     }
   }
@@ -60,8 +58,7 @@ function EmailVerfiy() {
         const res = await resendActivateCode({ activationToken }).unwrap();
         toast.success(res.message);
       } catch (err) {
-        const error = err as IError;
-        toast.error(error.message);
+        handleApiError(err);
       }
     } else if (resetVerificationToken?.length) {
       try {
@@ -70,8 +67,7 @@ function EmailVerfiy() {
         }).unwrap();
         toast.success(res.message);
       } catch (err) {
-        const error = err as IError;
-        toast.error(error.message);
+        handleApiError(err);
       }
     }
   }

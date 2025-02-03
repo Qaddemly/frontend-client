@@ -2,20 +2,18 @@ import {
   IGetListOfHrRolesResponse,
   INewRole,
   IUpdateBusinessAccountResponse,
+  IUpdateJobInputs,
+  IUpdateJobResponse,
 } from "../interfaces/BusinessDashboard.interfaces";
 import { IResponse } from "../interfaces/Common.interfaces";
 import { apiSlice } from "./apiSlice";
 
 const BASE_BUSINESS_URL = "/business";
+const BASE_JOB_URL = "/job";
 
 export const businessDashboardApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getListOfHrRoles: builder.query<IGetListOfHrRolesResponse, { id: string }>({
-      query: ({ id }) => ({
-        url: `${BASE_BUSINESS_URL}/myBusiness/dashboard/hr/all/${id}`,
-        method: "GET",
-      }),
-    }),
+    //////////////////////////// Dashboard Settings ////////////////////////////////////
     updateBusinessAccount: builder.mutation<
       IUpdateBusinessAccountResponse,
       { id: string; data: FormData }
@@ -24,6 +22,13 @@ export const businessDashboardApi = apiSlice.injectEndpoints({
         url: `${BASE_BUSINESS_URL}/myBusiness/dashboard/edit/${id}`,
         method: "PUT",
         body: data,
+      }),
+    }),
+    //////////////////////////// Dashboard Candidates ////////////////////////////////////
+    getListOfHrRoles: builder.query<IGetListOfHrRolesResponse, { id: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_BUSINESS_URL}/myBusiness/dashboard/hr/all/${id}`,
+        method: "GET",
       }),
     }),
     addNewRole: builder.mutation<IResponse, { id: string; newRole: INewRole }>({
@@ -40,7 +45,7 @@ export const businessDashboardApi = apiSlice.injectEndpoints({
       query: ({ account_email, id }) => ({
         url: `${BASE_BUSINESS_URL}/myBusiness/dashboard/hr/${id}`,
         method: "DELETE",
-        body: account_email,
+        body: { account_email },
       }),
     }),
     updateRole: builder.mutation<
@@ -53,6 +58,45 @@ export const businessDashboardApi = apiSlice.injectEndpoints({
         body: { account_email, role },
       }),
     }),
+    //////////////////////////// Dashboard Jobs ////////////////////////////////////
+    makeJobClosed: builder.mutation<IResponse, { id: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_JOB_URL}/makeJobClosed/${id}`,
+        method: "PUT",
+      }),
+    }),
+    makeJobArchived: builder.mutation<IResponse, { id: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_JOB_URL}/makeJobArchived/${id}`,
+        method: "PUT",
+      }),
+    }),
+    makeJobOpened: builder.mutation<IResponse, { id: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_JOB_URL}/makeJobOpened/${id}`,
+        method: "PUT",
+      }),
+    }),
+    updateJob: builder.mutation<
+      IUpdateJobResponse,
+      { id: string; data: IUpdateJobInputs }
+    >({
+      query: ({ id, data }) => ({
+        url: `${BASE_JOB_URL}/updateJob/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    getJobApplications: builder.mutation<
+      IUpdateJobResponse,
+      { id: string; data: IUpdateJobInputs }
+    >({
+      query: ({ id, data }) => ({
+        url: `${BASE_JOB_URL}/allJobApplicationsToOneJob/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -62,4 +106,8 @@ export const {
   useAddNewRoleMutation,
   useDeleteRoleMutation,
   useUpdateRoleMutation,
+  useMakeJobArchivedMutation,
+  useMakeJobClosedMutation,
+  useMakeJobOpenedMutation,
+  useUpdateJobMutation,
 } = businessDashboardApi;

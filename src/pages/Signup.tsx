@@ -22,7 +22,8 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../components/common/Loader";
 import Button from "../components/common/Button";
 import InputField from "../components/common/InputField";
-import { formSettings, IError } from "../interfaces/Common.interfaces";
+import { formSettings } from "../interfaces/Common.interfaces";
+import { handleApiError } from "../utils/helpers";
 
 function Signup() {
   const [step, setStep] = useState(1);
@@ -58,8 +59,7 @@ function Signup() {
       toast.success(res.message);
       localStorage.setItem("activationToken", res.activationToken);
     } catch (err) {
-      const error = err as IError;
-      toast.error(error.message);
+      handleApiError(err);
     }
   };
 

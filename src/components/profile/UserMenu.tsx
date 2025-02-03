@@ -14,7 +14,7 @@ import { useLogoutMutation } from "../../services/authApi";
 import toast from "react-hot-toast";
 import Loader from "../common/Loader";
 import { ReactNode, useRef, useState } from "react";
-import { IError } from "../../interfaces/Common.interfaces";
+import { handleApiError } from "../../utils/helpers";
 
 type UserMenuProps = {
   children: ReactNode;
@@ -38,8 +38,7 @@ function UserMenu({ children, type }: UserMenuProps) {
       toast.success(res.message);
       navigate("/login");
     } catch (err) {
-      const error = err as IError;
-      toast.error(error.message);
+      handleApiError(err);
     }
   }
   return (

@@ -3,20 +3,17 @@ import {
   useAddNewRoleMutation,
   useGetListOfHrRolesQuery,
 } from "../../../services/businessDashboardApi";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../store/store";
 import Loader from "../../common/Loader";
 import { useRef, useState } from "react";
 import { HrRole } from "../../../enums/index.enums";
 import { useClickOutside } from "../../../hooks/useOutsideClick";
-import { IError } from "../../../interfaces/Common.interfaces";
 import toast from "react-hot-toast";
 import CompanyCadidatesItem from "./CompanyCadidatesItem";
+import { useParams } from "react-router-dom";
+import { handleApiError } from "../../../utils/helpers";
 
 function CompanyCandidates() {
-  const { businessAccount } = useSelector(
-    (state: RootState) => state.businessAccount,
-  );
+  const { companyId } = useParams();
   // handle adding new role
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState("");
@@ -32,34 +29,28 @@ function CompanyCandidates() {
     if (email && role) {
       try {
         const res = await addNewRole({
-          id: businessAccount.id?.toString(),
+          id: companyId?.toString() || "",
           newRole: { account_email: email, role },
         }).unwrap();
+        setIsOpen(false);
         toast.success(res.message);
+        refetch();
       } catch (err) {
-        const error = err as IError;
-        toast.error(error.message);
-        if (typeof error.details !== "string" && error.details.msg) {
-          toast.error(error.details.msg);
-        }
+        handleApiError(err);
       }
     }
   }
 
   // handle get list of HRs
-  const { isLoading: isLoading2, data } = useGetListOfHrRolesQuery({
-    id: businessAccount.id?.toString(),
+  const {
+    isLoading: isLoading2,
+    data,
+    refetch,
+  } = useGetListOfHrRolesQuery({
+    id: companyId || "",
   });
   const listOfHRs = data?.HRs;
   const rolesValues = Object.values(HrRole);
-
-  // handle error
-  // useEffect(() => {
-  //   if (isError) {
-  //     const error = isError as unknown as IError;
-  //     toast.error(error.message);
-  //   }
-  // }, [isError]);
 
   if (isLoading1 || isLoading2) return <Loader />;
 
@@ -71,10 +62,8 @@ function CompanyCandidates() {
           <div className="flex items-center justify-between">
             <div className="flex gap-5">
               <p className="font-medium">
-                All Users <span className="text-gray-300">5</span>
-              </p>
-              <p className="font-medium">
-                Selected <span className="text-gray-300">0</span>
+                All Users{" "}
+                <span className="text-gray-300">{data?.HRs.length}</span>
               </p>
             </div>
             <div className="relative flex gap-3">
@@ -87,9 +76,9 @@ function CompanyCandidates() {
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                     d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                    clip-rule="evenodd"
+                    clipRule="evenodd"
                   ></path>
                 </svg>
               </div>
@@ -136,7 +125,6 @@ function CompanyCandidates() {
             <table className="w-[60rem] text-left text-sm">
               <thead className="bg-main uppercase text-white">
                 <tr>
-                  <th className="p-4"></th>
                   <th className="px-6 py-5">Name</th>
                   <th className="px-6 py-5">Role</th>
                   <th className="px-6 py-5">Date Added</th>
@@ -148,7 +136,7 @@ function CompanyCandidates() {
               <tbody className="font-medium">
                 {listOfHRs?.map((candidate) => (
                   <CompanyCadidatesItem
-                    setRole={setRole}
+                    key={candidate.account_id}
                     candidate={candidate}
                   />
                 ))}

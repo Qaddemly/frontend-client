@@ -12,12 +12,12 @@ import {
   EmploymentType,
   LocationType,
 } from "../../../enums/index.enums";
-import { createFormData } from "../../../utils/helpers";
+import { createFormData, handleApiError } from "../../../utils/helpers";
 import Loader from "../../common/Loader";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useUserInfoMutation } from "../../../services/authApi";
-import { formSettings, IError } from "../../../interfaces/Common.interfaces";
+import { formSettings } from "../../../interfaces/Common.interfaces";
 
 function UserInfoForm() {
   const [userInfo, { isLoading }] = useUserInfoMutation();
@@ -109,8 +109,7 @@ function UserInfoForm() {
         toast.success(res.message);
         navigate("/");
       } catch (err) {
-        const error = err as IError;
-        toast.error(error.message);
+        handleApiError(err);
       }
   };
 

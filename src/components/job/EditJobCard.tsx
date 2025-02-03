@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from "../common/Button";
 import EditJobCardItem from "./EditJobCardItem";
 
@@ -30,11 +30,16 @@ function EditJobCard({
   decsription,
 }: EditJobCardProps) {
   const navigate = useNavigate();
+  const { companyId, jobId } = useParams();
 
   return (
     <div
       className={`${active ? "border-green-100" : "border-danger-300"} max-w-md cursor-pointer rounded-xl border-2 bg-offWhite p-4 shadow-lg transition-all duration-100 hover:translate-x-1 hover:shadow-gray-400`}
-      onClick={() => navigate("/businessDashboard/companyJobs/1")} // id will change
+      onClick={() =>
+        navigate(
+          `/businessDashboard/companyJobs/${companyId}/jobApplications/${jobId}`,
+        )
+      } // id will change
     >
       <h3 className="text-lg font-medium text-gray-800">
         Job title: {jobTitle}
@@ -50,7 +55,13 @@ function EditJobCard({
       <EditJobCardItem title="Description:" content={decsription} />
 
       <div className="mt-4 flex justify-between pl-1">
-        <Button className="border border-main bg-white px-1 text-base text-main hover:bg-main hover:text-white md:text-sm lg:text-base">
+        <Button
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate("/businessDashboard/updatejob/1");
+          }}
+          className="border border-main bg-white px-3 text-base text-main hover:bg-main hover:text-white md:text-sm lg:text-base"
+        >
           Edit
         </Button>
         <Button className="border border-main bg-white px-1 text-base text-main hover:bg-main hover:text-white md:text-sm lg:text-base">

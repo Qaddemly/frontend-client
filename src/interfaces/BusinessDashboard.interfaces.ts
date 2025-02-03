@@ -1,3 +1,5 @@
+import { Country, EmploymentType, LocationType } from "../enums/index.enums";
+import { IUser } from "./Auth.interfaces";
 import { IBusinessAccount } from "./BusinessAccount.interfaces";
 import { IResponse } from "./Common.interfaces";
 
@@ -17,6 +19,43 @@ export interface INewRole {
   role: string;
 }
 
+export interface IUpdateJobInputs {
+  title: string;
+  description: string;
+  location: Country;
+  locationType: LocationType;
+  salary: number;
+  employmentType: EmploymentType;
+  keywords: string[];
+  skills: string[];
+  experience: string;
+}
+
+export interface IMetaJobApplication {
+  itemsPerPage: number;
+  totalItems: number;
+  perviousPage: number;
+  currentPage: number;
+  totalPages: number;
+  sortBy: string[];
+  search: string;
+  searchBy: string[];
+}
+
+export interface IResume {
+  id: number;
+  url: string;
+  account: IUser;
+}
+
+export interface IJobApplication {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  // job:{};
+  resume: IResume;
+}
+
 //////////////////////////////////////////////////////////////////////////////
 // Api Response Interfaces
 
@@ -27,4 +66,29 @@ export interface IGetListOfHrRolesResponse {
 
 export interface IUpdateBusinessAccountResponse extends IResponse {
   business: IBusinessAccount;
+}
+
+export interface IUpdateJobResponse {
+  success: boolean;
+  id: number;
+  title: string;
+  description: string;
+  location: Country;
+  location_type: LocationType;
+  skills: string[];
+  salary: number;
+  employee_type: EmploymentType;
+  keywords: string[];
+  experience: number;
+  created_at: string;
+  updated_at: string;
+  business_id: number;
+}
+
+export interface IGetJobApplicationsResponse {
+  success: boolean;
+  jobApplications: {
+    data: IJobApplication[];
+    meta: IMetaJobApplication;
+  };
 }

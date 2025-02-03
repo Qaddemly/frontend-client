@@ -1,3 +1,6 @@
+import toast from "react-hot-toast";
+import { IError } from "../interfaces/Common.interfaces";
+
 export const getCurrentDate = () => {
   const date = new Date();
   const year = date.getFullYear();
@@ -78,3 +81,16 @@ export const createFormData = (data: Record<string, unknown>) => {
 
   return formData;
 };
+
+export function handleApiError(err: unknown) {
+  const errorData = (err as { data?: IError })?.data;
+  if (errorData) {
+    toast.error(errorData.message);
+
+    if (Array.isArray(errorData.details)) {
+      errorData.details.forEach((detail) => toast.error(detail.msg));
+    }
+  } else {
+    toast.error("Something went wrong!");
+  }
+}
