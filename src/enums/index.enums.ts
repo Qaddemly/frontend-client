@@ -459,3 +459,11 @@ export enum HrRole {
   RECRUITER = "RECRUITER",
   HR = "HR",
 }
+
+export enum experience {
+  ENTRY = "Entry",
+  JUNIOR = "Junior",
+  MID = "Mid",
+  SENIOR = "Senior",
+  EXPERT = "Expert",
+}

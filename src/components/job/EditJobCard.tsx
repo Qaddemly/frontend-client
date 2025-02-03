@@ -1,59 +1,37 @@
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../common/Button";
 import EditJobCardItem from "./EditJobCardItem";
+import { IJob } from "../../interfaces/Job.interfaces";
 
-type EditJobCardProps = {
-  active: boolean;
-  jobTitle?: string;
-  locationType?: string;
-  location?: string;
-  salary?: string;
-  skills?: string[];
-  employmentType?: string;
-  experience?: string;
-  keyWords?: string[];
-  position?: string;
-  decsription?: string;
-};
-
-function EditJobCard({
-  active,
-  jobTitle,
-  locationType,
-  location,
-  salary,
-  skills,
-  employmentType,
-  experience,
-  keyWords,
-  position,
-  decsription,
-}: EditJobCardProps) {
+function EditJobCard({ job }: { job: IJob }) {
   const navigate = useNavigate();
   const { companyId, jobId } = useParams();
 
   return (
     <div
-      className={`${active ? "border-green-100" : "border-danger-300"} max-w-md cursor-pointer rounded-xl border-2 bg-offWhite p-4 shadow-lg transition-all duration-100 hover:translate-x-1 hover:shadow-gray-400`}
+      className={`${job.status === "open" ? "border-green-100" : "border-danger-300"} max-w-md cursor-pointer rounded-xl border-2 bg-offWhite p-4 shadow-lg transition-all duration-100 hover:translate-x-1 hover:shadow-gray-400`}
       onClick={() =>
         navigate(
           `/businessDashboard/companyJobs/${companyId}/jobApplications/${jobId}`,
         )
-      } // id will change
+      }
     >
       <h3 className="text-lg font-medium text-gray-800">
-        Job title: {jobTitle}
+        Job title: {job.title}
       </h3>
-      <EditJobCardItem title="Location type:" content={locationType} />
-      <EditJobCardItem title="Location:" content={location} />
-      <EditJobCardItem title="Salary:" content={salary} />
-      <EditJobCardItem title="Skills:" content={skills?.join(", ")} />
-      <EditJobCardItem title="Employment type:" content={employmentType} />
-      <EditJobCardItem title="Job experience:" content={experience} />
-      <EditJobCardItem title="Key words:" content={keyWords?.join(", ")} />
-      <EditJobCardItem title="Position:" content={position} />
-      <EditJobCardItem title="Description:" content={decsription} />
-
+      <EditJobCardItem title="Location type:" content={job.location_type} />
+      <EditJobCardItem title="Location:" content={job.location} />
+      <EditJobCardItem title="Salary:" content={job.salary.toString()} />
+      <EditJobCardItem title="Skills:" content={job.skills?.join(", ")} />
+      <EditJobCardItem title="Employment type:" content={job.employee_type} />
+      <EditJobCardItem
+        title="Job experience:"
+        content={job.experience.toString()}
+      />
+      <EditJobCardItem title="Key words:" content={job.keywords?.join(", ")} />
+      {/* <EditJobCardItem title="Position:" content={job.position} />  */}{" "}
+      {/* ask backend about position */}
+      <EditJobCardItem title="Description:" content={job.description} />
       <div className="mt-4 flex justify-between pl-1">
         <Button
           onClick={(e) => {
@@ -65,7 +43,7 @@ function EditJobCard({
           Edit
         </Button>
         <Button className="border border-main bg-white px-1 text-base text-main hover:bg-main hover:text-white md:text-sm lg:text-base">
-          {active ? "Set Unavailable" : "Set Available"}
+          {job.status === "open" ? "Set Unavailable" : "Set Available"}
         </Button>
         <Button className="border border-main bg-white px-1 text-base text-main hover:bg-main hover:text-white md:text-sm lg:text-base">
           Archive
