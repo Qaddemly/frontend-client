@@ -10,14 +10,44 @@ import { faSliders } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import JobCard from "../components/common/JobCard";
 import { EmploymentType } from "../enums/index.enums";
+import { IError } from "../interfaces/Common.interfaces";
+import toast from "react-hot-toast";
+
+import Loader from "../components/common/Loader";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useJobWithFoundQuery } from "../services/jobApi";
+import { IJob } from "../interfaces/BusinessAccount.interfaces";
+import { createFormData } from "../utils/helpers";
+import { useParams } from "react-router-dom";
 
 function FindJob() {
   const employmentTypeValues = Object.values(EmploymentType);
   const [isOpen, setIsOpen] = useState(false);
+
+  const { id } = useParams<{ id: string }>();
+  const [jobWithFound, { isLoading }] = useJobWithFoundQuery({
+    id: Number(id),
+  });
+  const methods = useForm<IJob>();
+
+  const onSubmit: SubmitHandler<IJob> = async (data) => {
+    try {
+      const formData = createFormData({ ...data } as Record<string, unknown>);
+      const res = await jobWithFound(formData).unwrap();
+      toast.success(res.message);
+    } catch (err) {
+      const error = err as IError;
+      toast.error(error.message);
+    }
+
+    console.log(data);
+  };
+
   return (
     <>
       <Navbar />
-      <div className="flex">
+      {isLoading && <Loader />}
+      <div className="flex" onSubmit={methods.handleSubmit(onSubmit)}>
         <div className="w-full bg-background pb-10">
           {/* Heading and search bar */}
           <div className="mx-6 max-w-5xl px-7 py-10 md:mx-4">
