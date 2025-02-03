@@ -31,7 +31,7 @@ export interface IUpdateJobInputs {
   experience: string;
 }
 
-export interface IMetaJobApplication {
+export interface IMeta {
   itemsPerPage: number;
   totalItems: number;
   perviousPage: number;
@@ -89,6 +89,6 @@ export interface IGetJobApplicationsResponse {
   success: boolean;
   jobApplications: {
     data: IJobApplication[];
-    meta: IMetaJobApplication;
+    meta: IMeta;
   };
 }

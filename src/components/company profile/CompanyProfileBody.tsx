@@ -1,13 +1,10 @@
 import CompanyProfileCard from "./CompanyProfileCard";
-import JobCard from "../common/JobCard";
 import ReviewCard from "../common/ReviewCard";
 import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IBusinessAccount } from "../../interfaces/BusinessAccount.interfaces";
 import {
   useGetFiveReviewsQuery,
-  useGetSixJobsQuery,
-  useLazyGetAllJobsQuery,
   useLazyGetAllReviewsQuery,
 } from "../../services/businessAccountApi";
 import { useState } from "react";
@@ -21,12 +18,12 @@ function CompanyProfileBody({
   data: companyData,
   id,
 }: CompanyProfileBodyProps) {
-  const { data: sixJobsData } = useGetSixJobsQuery({ id });
+  // const { data: sixJobsData } = useGetSixJobsQuery({ id });
   const { data: fiveReviewsData } = useGetFiveReviewsQuery({ id });
-  const [triggerAllJobs, { data: allJobsData }] = useLazyGetAllJobsQuery();
+  // const [triggerAllJobs, { data: allJobsData }] = useLazyGetAllJobsQuery();
   const [triggerAllReviews, { data: allReviewsData }] =
     useLazyGetAllReviewsQuery();
-  const [viewAllJobs, setViewAllJobs] = useState(false);
+  // const [viewAllJobs, setViewAllJobs] = useState(false);
   const [viewAllReviews, setViewAllReviews] = useState(false);
   return (
     <div className="overflow-hidden">
@@ -88,10 +85,10 @@ function CompanyProfileBody({
           <h2 className="text-2xl text-gray-800 md:text-3xl">Valid jobs</h2>
           <button
             className="space-x-2 self-end text-xl text-main"
-            onClick={() => {
-              triggerAllJobs({ id });
-              setViewAllJobs(true);
-            }}
+            // onClick={() => {
+            //   triggerAllJobs({ id });
+            //   setViewAllJobs(true);
+            // }}
           >
             <span>View all</span>
             <FontAwesomeIcon icon={faCircleRight} />
@@ -100,7 +97,7 @@ function CompanyProfileBody({
 
         {/* Valid jobs */}
         <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-          {viewAllJobs
+          {/* {viewAllJobs
             ? sixJobsData?.jobs.map((job) => (
                 <JobCard
                   key={job.job_id}
@@ -120,7 +117,7 @@ function CompanyProfileBody({
                   companyName={job.business_name}
                   companyLocation={job.job_location}
                 />
-              ))}
+              ))} */}
         </div>
       </div>
 

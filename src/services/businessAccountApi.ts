@@ -1,7 +1,7 @@
 import {
   ICreateBusinessAccountResponse,
   IGetBusinessAccountInfoResponse,
-  IGetJobsResponse,
+  // IGetJobsResponse,
   IGetReviewsResponse,
   IGetUserBusinessesResponse,
 } from "../interfaces/BusinessAccount.interfaces";
@@ -42,24 +42,24 @@ export const businessAccountApi = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
-    getSixJobs: builder.query<IGetJobsResponse, { id: number }>({
-      query: ({ id }) => ({
-        url: `${BASE_BUSINESS_URL}/profile/jobsSix/${id}`,
-        method: "GET",
-      }),
-    }),
+    // getSixJobs: builder.query<IGetJobsResponse, { id: number }>({
+    //   query: ({ id }) => ({
+    //     url: `${BASE_BUSINESS_URL}/profile/jobsSix/${id}`,
+    //     method: "GET",
+    //   }),
+    // }),
     getAllReviews: builder.query<IGetReviewsResponse, { id: number }>({
       query: ({ id }) => ({
         url: `${BASE_BUSINESS_URL}/profile/reviews/${id}`,
         method: "GET",
       }),
     }),
-    getAllJobs: builder.query<IGetJobsResponse, { id: number }>({
-      query: ({ id }) => ({
-        url: `${BASE_BUSINESS_URL}/profile/jobs/${id}`,
-        method: "GET",
-      }),
-    }),
+    // getAllJobs: builder.query<IGetJobsResponse, { id: number }>({
+    //   query: ({ id }) => ({
+    //     url: `${BASE_BUSINESS_URL}/profile/jobs/${id}`,
+    //     method: "GET",
+    //   }),
+    // }),
   }),
 });
 
@@ -68,7 +68,7 @@ export const {
   useGetUserBusinessesQuery,
   useGetBusinessAccountInfoQuery,
   useGetFiveReviewsQuery,
-  useGetSixJobsQuery,
+  // useGetSixJobsQuery,
   useLazyGetAllReviewsQuery,
-  useLazyGetAllJobsQuery,
+  // useLazyGetAllJobsQuery,
 } = businessAccountApi;

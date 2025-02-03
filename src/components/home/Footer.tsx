@@ -2,7 +2,7 @@ import Logo from "../common/Logo";
 
 function Footer() {
   return (
-    <>
+    <footer className="">
       <div className="flex items-center gap-36 bg-main-dark px-10 py-20 text-gray-100">
         <div className="flex flex-col gap-10">
           <Logo textColor="text-light-secondary-300" />
@@ -33,7 +33,7 @@ function Footer() {
       <div className="border-t border-t-gray-800 bg-main-dark py-5 text-sm text-gray-500">
         <p className="pl-20">&copy; 2025 Qaddemly, All Rights Reserved</p>
       </div>
-    </>
+    </footer>
   );
 }
 
