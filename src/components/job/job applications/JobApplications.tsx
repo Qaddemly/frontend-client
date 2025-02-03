@@ -1,39 +1,38 @@
 import { faUsers } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ApplicationsTable from "./ApplicationsTable";
-
-const applicants = [
-  {
-    id: 1,
-    name: "Lionel Messi",
-    phone: "(225) 555-0118",
-    email: "messi@goat.com",
-    country: "Palestine",
-  },
-  {
-    id: 2,
-    name: "Jacob Jones",
-    phone: "(629) 555-0129",
-    email: "jacob@yahoo.com",
-    country: "Palestine",
-  },
-  {
-    id: 3,
-    name: "Jerome Bell",
-    phone: "(208) 555-0112",
-    email: "jerome@google.com",
-    country: "Palestine",
-  },
-  {
-    id: 4,
-    name: "Kathryn Murphy",
-    phone: "(225) 555-0118",
-    email: "kathryn@microsoft.com",
-    country: "Palestine",
-  },
-];
+import { useGetJobApplicationsQuery } from "../../../services/businessDashboardApi";
+import { useParams } from "react-router-dom";
+import Loader from "../../common/Loader";
+import { IMeta } from "../../../interfaces/BusinessDashboard.interfaces";
+import { IError } from "../../../interfaces/Common.interfaces";
+import toast from "react-hot-toast";
+import { useEffect } from "react";
 
 function JobApplications() {
+  const { companyId } = useParams();
+  const { data, isLoading, isError, error } = useGetJobApplicationsQuery({
+    id: companyId || "",
+  });
+  const jobApplications = data?.jobApplications.data;
+  const meta = data?.jobApplications.meta;
+
+  const errorData = (error as { data?: IError })?.data;
+
+  useEffect(() => {
+    let toastId: string | undefined;
+    if (isError && errorData) {
+      toastId = toast.error(errorData.message);
+    }
+    return () => {
+      if (toastId) {
+        toast.dismiss(toastId);
+      }
+    };
+  }, [isError, errorData]);
+
+  if (isLoading) return <Loader />;
+
   return (
     <div className="my-8 flex flex-col items-center gap-3">
       <h2 className="text-center text-4xl font-bold">
@@ -45,14 +44,17 @@ function JobApplications() {
         </div>
         <div className="ml-4 flex flex-col">
           <p className="text-md text-gray-500">Total Applications</p>
-          <p className="text-3xl font-bold">{applicants.length}</p>
+          <p className="text-3xl font-bold">{jobApplications?.length}</p>
           <p>
             <span className="font-medium text-yellow">↑ 16%</span> this month
             {/* TODO: remove or evaluate */}
           </p>
         </div>
       </div>
-      <ApplicationsTable applicants={applicants} />
+      <ApplicationsTable
+        applications={jobApplications || []}
+        meta={meta || ({} as IMeta)}
+      />
     </div>
   );
 }

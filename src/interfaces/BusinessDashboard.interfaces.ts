@@ -2,6 +2,7 @@ import { Country, EmploymentType, LocationType } from "../enums/index.enums";
 import { IUser } from "./Auth.interfaces";
 import { IBusinessAccount } from "./BusinessAccount.interfaces";
 import { IResponse } from "./Common.interfaces";
+import { IJob } from "./Job.interfaces";
 
 export interface IHRs {
   account_id: string;
@@ -52,7 +53,7 @@ export interface IJobApplication {
   id: number;
   created_at: string;
   updated_at: string;
-  // job:{};
+  job: IJob;
   resume: IResume;
 }
 

@@ -2,10 +2,47 @@ import { useNavigate, useParams } from "react-router-dom";
 import Button from "../common/Button";
 import EditJobCardItem from "./EditJobCardItem";
 import { IJob } from "../../interfaces/Job.interfaces";
+import {
+  useMakeJobArchivedMutation,
+  useMakeJobClosedMutation,
+  useMakeJobOpenedMutation,
+} from "../../services/businessDashboardApi";
+import Loader from "../common/Loader";
+import { handleApiError } from "../../utils/helpers";
+import toast from "react-hot-toast";
 
 function EditJobCard({ job }: { job: IJob }) {
-  const navigate = useNavigate();
   const { companyId, jobId } = useParams();
+  const [makeJobArchived, { isLoading: loadingArchive }] =
+    useMakeJobArchivedMutation();
+  const [makeJobClosed, { isLoading: loadingClosed }] =
+    useMakeJobClosedMutation();
+  const [makeJobOpened, { isLoading: loadingOpened }] =
+    useMakeJobOpenedMutation();
+
+  const navigate = useNavigate();
+
+  async function handleJobStatus(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    status: "Delete" | "Archive" | "Open",
+  ) {
+    e.stopPropagation();
+    try {
+      let res;
+      if (status === "Delete") {
+        res = await makeJobClosed({ id: companyId || "" }).unwrap();
+      } else if (status === "Archive") {
+        res = await makeJobArchived({ id: companyId || "" }).unwrap();
+      } else {
+        res = await makeJobOpened({ id: companyId || "" }).unwrap();
+      }
+      toast.success(res?.message || "");
+    } catch (err) {
+      handleApiError(err);
+    }
+  }
+
+  if (loadingArchive || loadingClosed || loadingOpened) return <Loader />;
 
   return (
     <div
@@ -29,8 +66,8 @@ function EditJobCard({ job }: { job: IJob }) {
         content={job.experience.toString()}
       />
       <EditJobCardItem title="Key words:" content={job.keywords?.join(", ")} />
-      {/* <EditJobCardItem title="Position:" content={job.position} />  */}{" "}
-      {/* ask backend about position */}
+      {/* <EditJobCardItem title="Position:" content={job.position} />   {/* ask backend about position */}
+
       <EditJobCardItem title="Description:" content={job.description} />
       <div className="mt-4 flex justify-between pl-1">
         <Button
@@ -42,13 +79,25 @@ function EditJobCard({ job }: { job: IJob }) {
         >
           Edit
         </Button>
-        <Button className="border border-main bg-white px-1 text-base text-main hover:bg-main hover:text-white md:text-sm lg:text-base">
+        <Button
+          onClick={(e) => {
+            if (job.status === "open") handleJobStatus(e, "Delete");
+            else handleJobStatus(e, "Open");
+          }}
+          className="border border-main bg-white px-1 text-base text-main hover:bg-main hover:text-white md:text-sm lg:text-base"
+        >
           {job.status === "open" ? "Set Unavailable" : "Set Available"}
         </Button>
-        <Button className="border border-main bg-white px-1 text-base text-main hover:bg-main hover:text-white md:text-sm lg:text-base">
+        <Button
+          onClick={(e) => handleJobStatus(e, "Archive")}
+          className="border border-main bg-white px-1 text-base text-main hover:bg-main hover:text-white md:text-sm lg:text-base"
+        >
           Archive
         </Button>
-        <Button className="border border-main bg-white px-1 text-base text-main hover:bg-main hover:text-white md:text-sm lg:text-base">
+        <Button
+          onClick={(e) => handleJobStatus(e, "Delete")}
+          className="border border-main bg-white px-1 text-base text-main hover:bg-main hover:text-white md:text-sm lg:text-base"
+        >
           Delete
         </Button>
       </div>

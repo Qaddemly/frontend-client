@@ -1,15 +1,15 @@
-type Applicant = {
-  name: string;
-  phone: string;
-  email: string;
-  country: string;
-};
+import {
+  IJobApplication,
+  IMeta,
+} from "../../../interfaces/BusinessDashboard.interfaces";
 
-type ApplicationsTableProps = {
-  applicants: Applicant[];
-};
-
-function ApplicationsTable({ applicants }: ApplicationsTableProps) {
+function ApplicationsTable({
+  applications,
+  meta,
+}: {
+  meta: IMeta;
+  applications: IJobApplication[];
+}) {
   return (
     <div className="rounded-lg bg-white px-8 py-5 shadow-lg">
       <div className="mb-4 flex flex-wrap items-center justify-between">
@@ -38,24 +38,26 @@ function ApplicationsTable({ applicants }: ApplicationsTableProps) {
             </tr>
           </thead>
           <tbody>
-            {applicants.map((applicant, index) => (
+            {applications.map((application) => (
               <tr
-                key={index}
+                key={application.id}
                 // TODO: onClick => view the application
                 // GAD TODO: onHover => Show message to view the application
                 className="cursor-pointer border-t border-gray-100 transition hover:bg-gray-100 hover:bg-opacity-30"
               >
                 <td className="px-6 py-4 text-sm font-normal">
-                  {applicant.name}
+                  {application.resume.account.first_name}{" "}
+                  {application.resume.account.last_name}
                 </td>
                 <td className="px-6 py-4 text-sm font-normal">
-                  {applicant.phone}
+                  {application.resume.account.phone.number}
                 </td>
                 <td className="px-6 py-4 text-sm font-normal">
-                  {applicant.email}
+                  {application.resume.account.email}
                 </td>
                 <td className="px-6 py-4 text-sm font-normal">
-                  {applicant.country}
+                  {application.resume.account.address.country}{" "}
+                  {application.resume.account.address.city}
                 </td>
                 <td className="px-6 py-4 text-sm font-normal">
                   <button className="mr-2 rounded-lg border border-green-100 px-3 py-1 text-sm font-medium text-green-100 hover:bg-green-200 hover:text-white">
@@ -85,7 +87,7 @@ function ApplicationsTable({ applicants }: ApplicationsTableProps) {
         </button>
         <span className="px-2 py-1 text-sm text-gray-700">...</span>
         <button className="rounded-lg border px-2 py-1 text-sm text-gray-700 hover:bg-gray-700 hover:text-white">
-          20
+          {meta.totalItems}
         </button>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import {
+  IGetJobApplicationsResponse,
   IGetListOfHrRolesResponse,
   INewRole,
   IUpdateBusinessAccountResponse,
@@ -87,14 +88,13 @@ export const businessDashboardApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
-    getJobApplications: builder.mutation<
-      IUpdateJobResponse,
-      { id: string; data: IUpdateJobInputs }
+    getJobApplications: builder.query<
+      IGetJobApplicationsResponse,
+      { id: string }
     >({
-      query: ({ id, data }) => ({
+      query: ({ id }) => ({
         url: `${BASE_JOB_URL}/allJobApplicationsToOneJob/${id}`,
-        method: "PUT",
-        body: data,
+        method: "GET",
       }),
     }),
   }),
@@ -110,4 +110,5 @@ export const {
   useMakeJobClosedMutation,
   useMakeJobOpenedMutation,
   useUpdateJobMutation,
+  useGetJobApplicationsQuery,
 } = businessDashboardApi;

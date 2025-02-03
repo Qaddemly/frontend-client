@@ -5,102 +5,14 @@ import EditJobCard from "../../job/EditJobCard";
 import { useGetAllJobsQuery } from "../../../services/jobApi";
 import Loader from "../../common/Loader";
 
-// const jobCards = [
-//   {
-//     active: false,
-//     jobTitle: "Senior UX Designer",
-//     locationType: "In-place",
-//     location: "Gaza, Palastine",
-//     salary: "$2,000 - $5,000",
-//     skills: [
-//       "Networking Basics",
-//       "System Diagnostics",
-//       "Customer Service Orientation",
-//       "Experience with Remote Support Tools",
-//       "Team collaboration",
-//       "Strong time management",
-//       "Analytical thinking",
-//       "Empathy",
-//     ],
-//     employmentType: "Part-time",
-//     experience: "2+ Years",
-//     keyWords: ["UX", "UI", "Design", "Frontend", "Canva"],
-//     position: "Team member",
-//     decsription:
-//       "We are seeking a highly motivated and customer-focused Technical Support Specialist to join our team. As a key member of the support team, you will be responsible for providing exceptional technical assistance to clients, resolving their issues, and ensuring seamless operation of our products and services. If you thrive in a fast-paced environment and enjoy solving technical problems, we'd love to hear from you!",
-//   },
-//   {
-//     active: true,
-//     jobTitle: "Senior UX Designer",
-//     locationType: "In-place",
-//     location: "Gaza, Palastine",
-//     salary: "$52,000 - $55,000",
-//     skills: [
-//       "Networking Basics",
-//       "System Diagnostics",
-//       "Customer Service Orientation",
-//       "Experience with Remote Support Tools",
-//       "Team collaboration",
-//       "Analytical thinking",
-//       "Empathy",
-//     ],
-//     employmentType: "Full-time",
-//     experience: "10+ Years",
-//     keyWords: ["UX", "UI", "Design", "Frontend", "Canva"],
-//     position: "Team leader",
-//     decsription:
-//       "As a key member of the support team, you will be responsible for providing exceptional technical assistance to clients, resolving their issues, and ensuring seamless operation of our products and services. If you thrive in a fast-paced environment and enjoy solving technical problems, we'd love to hear from you!",
-//   },
-//   {
-//     active: true,
-//     jobTitle: "Senior UX Designer",
-//     locationType: "In-place",
-//     location: "Gaza, Palastine",
-//     salary: "$52,000 - $55,000",
-//     skills: [
-//       "Networking Basics",
-//       "System Diagnostics",
-//       "Customer Service Orientation",
-//       "Experience with Remote Support Tools",
-//       "Team collaboration",
-//       "Analytical thinking",
-//       "Empathy",
-//     ],
-//     employmentType: "Full-time",
-//     experience: "10+ Years",
-//     keyWords: ["UX", "UI", "Design", "Frontend", "Canva"],
-//     position: "Team leader",
-//     decsription:
-//       "As a key member of the support team, you will be responsible for providing exceptional technical assistance to clients, resolving their issues, and ensuring seamless operation of our products and services. If you thrive in a fast-paced environment and enjoy solving technical problems, we'd love to hear from you!",
-//   },
-//   {
-//     active: false,
-//     jobTitle: "Senior UX Designer",
-//     locationType: "In-place",
-//     location: "Gaza, Palastine",
-//     salary: "$52,000 - $55,000",
-//     skills: [
-//       "Networking Basics",
-//       "System Diagnostics",
-//       "Customer Service Orientation",
-//       "Experience with Remote Support Tools",
-//       "Team collaboration",
-//       "Analytical thinking",
-//       "Empathy",
-//     ],
-//     employmentType: "Full-time",
-//     experience: "No experience",
-//     keyWords: ["UX", "UI", "Design", "Frontend", "Canva"],
-//     position: "Team leader",
-//     decsription:
-//       "As a key member of the support team, you will be responsible for providing exceptional technical assistance to clients, resolving their issues, and ensuring seamless operation of our products and services. If you thrive in a fast-paced environment and enjoy solving technical problems, we'd love to hear from you!",
-//   },
-// ];
 function CompanyJobs() {
-  const { data, isLoading } = useGetAllJobsQuery({});
-  const jobs = data?.jobs.data;
-  const [selectedValue, setSelectedValue] = useState("all");
   const { companyId } = useParams();
+  const { data, isLoading } = useGetAllJobsQuery({});
+
+  const jobs = data?.jobs.data;
+
+  const [selectedValue, setSelectedValue] = useState("all");
+
   const isJobApplicationsRoute = location.pathname.includes(
     `/businessDashboard/companyJobs/${companyId}/jobApplications`,
   );
@@ -108,11 +20,11 @@ function CompanyJobs() {
 
   const isPostJobRoute = location.pathname.endsWith(`/postjob`);
 
-  // const filteredJobCards = jobCards.filter((job) => {
-  //   if (selectedValue === "available") return job.active === true;
-  //   if (selectedValue === "unavailable") return job.active === false;
-  //   return true; // Default: show all
-  // });
+  const filteredJobCards = jobs?.filter((job) => {
+    if (selectedValue === "available") return job.status === "open";
+    if (selectedValue === "unavailable") return job.status === "close";
+    return true; // Default: show all
+  });
 
   if (isLoading) return <Loader />;
 
@@ -143,7 +55,9 @@ function CompanyJobs() {
       ) : (
         <div className="my-10 flex flex-col-reverse justify-center gap-8 px-7 lg:flex-row">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-            {jobs?.map((job) => <EditJobCard key={job.id} job={job} />)}
+            {filteredJobCards?.map((job) => (
+              <EditJobCard key={job.id} job={job} />
+            ))}
           </div>
           <div className="flex h-full flex-col-reverse content-between gap-2 lg:flex-col lg:gap-4">
             {/* GAD TODO : is selected : button gap-32 */}
