@@ -44,3 +44,11 @@ export interface IGetJobDetailsResponse {
   success: boolean;
   job: IJob;
 }
+
+export interface ISavedJobsResponse {
+  success: boolean;
+  savedJobs: {
+    data: IJob[];
+    meta: IMeta;
+  };
+}
