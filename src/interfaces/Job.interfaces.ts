@@ -27,6 +27,7 @@ export interface IJob {
   created_at: string;
   updated_at: string;
   business: IBusinessAccount;
+  isSaved: boolean;
 }
 
 //////////////////////////////////////////////////////////////////////////////

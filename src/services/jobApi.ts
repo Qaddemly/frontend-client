@@ -1,3 +1,4 @@
+import { IResponse } from "../interfaces/Common.interfaces";
 import {
   IGetAllJobsResponse,
   IGetJobDetailsResponse,
@@ -32,14 +33,6 @@ export const jobApi = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
-
-    // getSavedJobs: builder.query<ISavedJobsResponse, void>({
-    //   query: () => ({
-    //     url: `${BASE_JOB_URL}/allUserSavedJobs`,
-    //     method: "GET",
-    //   }),
-    // }),
-
     getAllSavedJobs: builder.query<
       ISavedJobsResponse,
       { search?: string; page?: number; limit?: number }
@@ -56,6 +49,17 @@ export const jobApi = apiSlice.injectEndpoints({
           method: "GET",
         };
       },
+    saveJob: builder.mutation<IResponse, { id: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_JOB_URL}/saveJob/${id}`,
+        method: "POST",
+      }),
+    }),
+    unSaveJob: builder.mutation<IResponse, { id: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_JOB_URL}/unSaveJob/${id}`,
+        method: "DELETE",
+      }),
     }),
   }),
 });
@@ -64,20 +68,6 @@ export const {
   useGetJobDetailsQuery,
   useGetAllJobsQuery,
   useGetAllSavedJobsQuery,
+  useSaveJobMutation,
+  useUnSaveJobMutation,
 } = jobApi;
-
-// const BASE_JOB_URL = "job";
-// export const postApi = apiSlice.injectEndpoints({
-//   endpoints: (builder) => ({
-//     // void must be IPostResponse
-//     post: builder.mutation<void, IPostData>({
-//       query: (data) => ({
-//         url: `${BASE_JOB_URL}/postJob`,
-//         method: "POST",
-//         body: data,
-//       }),
-//     }),
-//   }),
-// });
-
-// export const { usePostMutation } = postApi;

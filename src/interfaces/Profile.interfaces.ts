@@ -1,8 +1,8 @@
-import { User } from "./Auth.interfaces";
+import { IUser } from "./Auth.interfaces";
 
 export interface IGetUserResponse {
   success: string;
-  user: User;
+  user: IUser;
 }
 
 /**

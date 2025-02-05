@@ -6,7 +6,9 @@ import {
   Prefixes,
 } from "../enums/index.enums";
 import { IReview } from "./BusinessAccount.interfaces";
+import { IJobApplication } from "./BusinessDashboard.interfaces";
 import { IResponse } from "./Common.interfaces";
+import { IJob } from "./Job.interfaces";
 
 export interface IUserInfo {
   // Personal
@@ -46,8 +48,8 @@ export interface IUser {
   reviews: IReview[];
   follow_businesses: string[]; // need interface
   business_roles: IBusinessRoles[];
-  job_applications: string[]; // need interafce
-  saved_job: string[]; // need interafce
+  job_applications: IJobApplication[]; // need interafce
+  saved_job: IJob[];
 }
 export interface IExperience {
   id: number;

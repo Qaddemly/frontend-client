@@ -63,9 +63,23 @@ const router = createBrowserRouter([
   { path: "/apply-job", element: <Apply /> },
   { path: "/message", element: <Message /> },
   { path: "/findCompany", element: <FindCompany /> },
-  { path: "/findJob", element: <FindJob /> },
+  {
+    path: "/findJob",
+    element: (
+      <ProtectedRoute>
+        <FindJob />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/findJob/jobProfile/:jobId",
+    element: (
+      <ProtectedRoute>
+        <JobProfile />
+      </ProtectedRoute>
+    ),
+  },
   { path: "/companyProfile/:companyId", element: <CompanyProfile /> },
-  { path: "/jobProfile/:jobId", element: <JobProfile /> },
   {
     path: "/createBusinessAccount",
     element: (

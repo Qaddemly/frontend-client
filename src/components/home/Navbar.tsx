@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "../../store/store";
 import UserMenu from "../profile/UserMenu";
@@ -6,8 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import Logo from "../common/Logo";
 import { useGetUserBusinessesQuery } from "../../services/businessAccountApi";
-import { useEffect, useRef, useState } from "react";
-import { setUserBusinessesAccounts } from "../business account/BusinessAccountSlice";
+import { useRef, useState } from "react";
 import Button from "../common/Button";
 import { useClickOutside } from "../../hooks/useOutsideClick";
 import BusinessAccountsMenu from "../business account/BusinessAccountsMenu";
@@ -15,22 +14,15 @@ import NavbarLink from "../common/NavbarLink";
 
 function Navbar() {
   const { user } = useSelector((state: RootState) => state.user);
-  const { data, isError } = useGetUserBusinessesQuery(undefined, {
+  const { data } = useGetUserBusinessesQuery(undefined, {
     skip: Object.entries(user).length === 0,
-  });
-  const dispatch = useDispatch();
+  }); // this api can handled with getMe api instead (ask backend)
   const [showMenu, setShowMenu] = useState(false);
   const divRef = useRef<HTMLDivElement>(null);
   const menuRef = useClickOutside<HTMLUListElement>(
     () => setShowMenu(false),
     divRef,
   );
-
-  useEffect(() => {
-    if (isError) console.log(isError);
-
-    dispatch(setUserBusinessesAccounts(data?.businesses ?? []));
-  }, [data, dispatch, isError]);
 
   return (
     <>
