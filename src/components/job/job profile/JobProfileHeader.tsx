@@ -1,32 +1,73 @@
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowUpRightFromSquare,
+  faBookmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../../common/Button";
-import { faBookmark } from "@fortawesome/free-regular-svg-icons";
+import { faBookmark as faBookmarkSolid } from "@fortawesome/free-solid-svg-icons";
 import { IJob } from "../../../interfaces/Job.interfaces";
-import { formatDate } from "../../../utils/helpers";
+import { formatDate, handleApiError } from "../../../utils/helpers";
+import Loader from "../../common/Loader";
+import toast from "react-hot-toast";
+import {
+  useGetJobDetailsQuery,
+  useSaveJobMutation,
+  useUnSaveJobMutation,
+} from "../../../services/jobApi";
+import { useParams } from "react-router-dom";
 
 function JobProfileHeader({ job }: { job: IJob }) {
+  const { jobId } = useParams();
+  const [saveJob, { isLoading: loadingSaveJob }] = useSaveJobMutation();
+  const [unSaveJob, { isLoading: loadingUnSaveJob }] = useUnSaveJobMutation();
+  const { refetch } = useGetJobDetailsQuery({ id: jobId || "" });
+
+  async function handleSaveJob(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) {
+    e.stopPropagation();
+    try {
+      const res = await saveJob({ id: job.id.toString() }).unwrap();
+      toast.success(res.message);
+      refetch();
+    } catch (error) {
+      handleApiError(error);
+    }
+  }
+
+  async function handleUnSaveJob(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) {
+    e.stopPropagation();
+    try {
+      const res = await unSaveJob({ id: job.id.toString() }).unwrap();
+      toast.success(res.message);
+      refetch();
+    } catch (error) {
+      handleApiError(error);
+    }
+  }
+
+  if (loadingSaveJob || loadingUnSaveJob) return <Loader />;
   return (
     <div className="flex w-full flex-col items-center bg-light-secondary py-4">
       <div className="mx-5 flex w-full max-w-[1000px] flex-col items-center justify-evenly gap-2 lg:mx-0 lg:items-start">
-        <FontAwesomeIcon
-          icon={faGoogle}
-          className="text-[60px] text-main md:text-[80px]"
+        <img
+          src={job?.business.logo}
+          alt={job.title}
+          className="mr-4 h-8 w-8"
         />
-        {/* <img src={logo} alt={name} className="w-8 h-8 mr-4" /> */}
-        {/* {logo} */}
         <div className="flex w-full flex-col items-center justify-between gap-2 lg:flex-row lg:gap-0">
           <h2 className="text-center text-4xl font-bold md:text-left md:text-5xl">
-            {job.title}
+            {job?.title}
           </h2>
           <p className="text-base text-gray-500">
             Updated {formatDate(job.updated_at)}
           </p>
         </div>
         <div className="flex w-fit flex-row items-center gap-1 text-lg">
-          <a href={job.business.website} target="_blank" className="underline">
-            {job.business.name}
+          <a href={job?.business.website} target="_blank" className="underline">
+            {job?.business.name}
           </a>
           <FontAwesomeIcon
             icon={faArrowUpRightFromSquare}
@@ -36,13 +77,25 @@ function JobProfileHeader({ job }: { job: IJob }) {
           {/* <p className="ml-2">{job.business.rating}</p> */}
           {/* <FontAwesomeIcon icon={faStar} /> */}
         </div>
-        <div className="flex items-center justify-between gap-5">
+        <div className="flex w-full items-center justify-between">
           <Button className="rounded-lg px-6 py-3 text-xl text-white">
             Apply Now <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
           </Button>
-          <Button className="bg-white px-3 py-2 text-main-dark hover:bg-light-main hover:text-white">
-            <FontAwesomeIcon icon={faBookmark} className="text-4xl" />
-          </Button>
+          {!job?.isSaved ? (
+            <button onClick={(e) => handleSaveJob(e)}>
+              <FontAwesomeIcon
+                icon={faBookmark}
+                className="text-2xl text-gray-300 transition-colors duration-100 hover:text-main"
+              />
+            </button>
+          ) : (
+            <button onClick={(e) => handleUnSaveJob(e)}>
+              <FontAwesomeIcon
+                icon={faBookmarkSolid}
+                className="text-2xl text-yellow"
+              />
+            </button>
+          )}
         </div>
       </div>
     </div>

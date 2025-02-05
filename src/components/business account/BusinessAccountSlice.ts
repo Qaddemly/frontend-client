@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IBusinesses } from "../../interfaces/BusinessAccount.interfaces";
+import { IBusinessRoles } from "../../interfaces/Auth.interfaces";
 
 const initialState = {
   businessAccount: {} as IBusinesses,
-  userBusinessesAccounts: [] as IBusinesses[],
+  userBusinessesAccounts: [] as IBusinessRoles[],
 };
 
 const businessAccountSlice = createSlice({
@@ -12,7 +13,7 @@ const businessAccountSlice = createSlice({
   reducers: {
     setUserBusinessesAccounts: (
       state,
-      action: PayloadAction<IBusinesses[]>,
+      action: PayloadAction<IBusinessRoles[]>,
     ) => {
       state.userBusinessesAccounts = action.payload;
     },
