@@ -49,6 +49,7 @@ export const jobApi = apiSlice.injectEndpoints({
           method: "GET",
         };
       },
+    }),
     saveJob: builder.mutation<IResponse, { id: string }>({
       query: ({ id }) => ({
         url: `${BASE_JOB_URL}/saveJob/${id}`,
