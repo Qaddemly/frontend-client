@@ -23,7 +23,7 @@ function FindJob() {
   return (
     <>
       <Navbar />
-      <div>
+      <div className="flex">
         <div className="w-full bg-background pb-20">
           {/* Heading and search bar */}
           <div className="mx-6 max-w-5xl px-7 py-10 md:mx-4">
@@ -59,7 +59,9 @@ function FindJob() {
             <div
               className={`mt-8 grid gap-6 ${isOpen ? "grid-cols-1 sm:grid-cols-2 md:grid-cols-2" : "grid-cols-1 sm:grid-cols-2 md:grid-cols-3"}`}
             >
-              {data?.jobs.data.map((job) => <JobCard key={job.id} job={job} />)}
+              {data?.jobs?.data.map((job) => (
+                <JobCard key={job.id} job={job} />
+              ))}
             </div>
           </div>
           {/* End of popular companies */}
