@@ -7,15 +7,13 @@ import Select from "../common/Select";
 import { Country, EmploymentType, LocationType } from "../../enums/index.enums";
 import { IUpdateExperienceInputs } from "../../interfaces/Profile.interfaces";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  useGetUserQuery,
-  useUpdateExperienceMutation,
-} from "../../services/profileApi";
-import { useSelector } from "react-redux";
+import { useUpdateExperienceMutation } from "../../services/profileApi";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { handleApiError } from "../../utils/helpers";
 import toast from "react-hot-toast";
 import Loader from "../common/Loader";
+import { updateUserExperience } from "../auth/UserSlice";
 
 function Experience() {
   const experiences = useSelector(
@@ -23,11 +21,11 @@ function Experience() {
   );
   const { expId } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const currentExperience = experiences?.find(
     (exp) => exp.id.toString() === expId,
   );
   const [updateExperience, { isLoading }] = useUpdateExperienceMutation();
-  const { refetch } = useGetUserQuery();
 
   const employmentTypeValues = Object.values(EmploymentType);
   const locationTypeValues = Object.values(LocationType);
@@ -38,10 +36,10 @@ function Experience() {
 
   const submitForm: SubmitHandler<IUpdateExperienceInputs> = async (data) => {
     try {
-      await updateExperience({ data, id: expId || "" }).unwrap();
+      const res = await updateExperience({ data, id: expId || "" }).unwrap();
       toast.success("Profile updated successfully");
       navigate("/profile/experience");
-      refetch();
+      dispatch(updateUserExperience(res.experience));
     } catch (error) {
       handleApiError(error);
     }
