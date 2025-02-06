@@ -1,12 +1,23 @@
-import { IUser } from "./Auth.interfaces";
+import { IExperience, IUser } from "./Auth.interfaces";
 
+export interface IUpdateExperienceInputs {
+  jobTitle: string;
+  companyName: string;
+  location: string;
+  locationType: string;
+  employmentType: string;
+  stillWorking: boolean;
+  startDate: string;
+  endDate: string;
+}
+//////////////////////////////////////////////////////////////////////////////
+// Api Response Interfaces
 export interface IGetUserResponse {
-  success: string;
+  success: boolean;
   user: IUser;
 }
 
-/**
- * this api is no longer work
- * this api need to be refactored with new one on postman
- */
-// export type IUpdateProfileResponse = IGetUserResponse;
+export interface IUpdateExperienceResponse {
+  success: boolean;
+  experience: IExperience;
+}

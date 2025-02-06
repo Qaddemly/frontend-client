@@ -77,7 +77,6 @@ function Personal() {
 
   return (
     <div className="mt-5">
-      {/* {isLoading && <Loader />} */}
       <form className="mt-10 px-10" onSubmit={handleSubmit(submitForm)}>
         <div className="mt-10 flex space-x-5">
           <InputField id="firstName" icon={faCircleUser} label="FirstName">

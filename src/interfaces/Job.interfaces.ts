@@ -33,7 +33,6 @@ export interface IJob {
 
 //////////////////////////////////////////////////////////////////////////////
 // Api Response Interfaces
-// export interface IPostResponse {}
 
 export interface IGetAllJobsResponse {
   success: boolean;

@@ -29,6 +29,7 @@ import CompanyCandidates from "../components/business account/business dashboard
 import PostJob from "../components/job/post Job/PostJob";
 import UpdateJob from "../components/job/update job/UpdateJob";
 import CompanyJobs from "../components/business account/business dashboard/CompanyJobs";
+import ExperienceCards from "../components/profile/ExperienceCards";
 
 const router = createBrowserRouter([
   {
@@ -52,7 +53,8 @@ const router = createBrowserRouter([
       { index: true, element: <Personal /> },
       { path: "personal", element: <Personal /> },
       { path: "education", element: <Education /> },
-      { path: "experience", element: <Experience /> },
+      { path: "experience", element: <ExperienceCards /> },
+      { path: "experience/:expId", element: <Experience /> },
       { path: "my-skills", element: <MySkills /> },
     ],
   },

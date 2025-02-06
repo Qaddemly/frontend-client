@@ -8,6 +8,7 @@ import {
 type DatePickerProps<T extends FieldValues> = {
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   register?: UseFormRegister<T>;
+  props?: React.InputHTMLAttributes<HTMLInputElement> & { id: string };
   options?: RegisterOptions<T>;
   name?: Path<T>;
 };
@@ -15,6 +16,7 @@ type DatePickerProps<T extends FieldValues> = {
 function DatePicker<T extends FieldValues>({
   onChange,
   register,
+  props,
   options,
   name,
 }: DatePickerProps<T>) {
@@ -34,6 +36,7 @@ function DatePicker<T extends FieldValues>({
       <input
         {...(register && name ? register(name, options) : {})}
         onChange={onChange}
+        {...props}
         type="date"
         className="block w-[13rem] rounded-md border-2 border-gray-100 p-2.5 ps-10 text-sm"
       />

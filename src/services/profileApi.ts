@@ -1,9 +1,11 @@
-import { IGetUserResponse } from "../interfaces/Profile.interfaces";
+import {
+  IGetUserResponse,
+  IUpdateExperienceInputs,
+  IUpdateExperienceResponse,
+} from "../interfaces/Profile.interfaces";
 import { apiSlice } from "./apiSlice";
 
-/**
- * this api need to be refactored with new one on postman
- */
+const BASE_USER_URL = "/user";
 
 export const profileApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -13,19 +15,17 @@ export const profileApi = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
-
-    /**
-     * this api is no longer work
-     * this api need to be refactored with new one on postman
-     */
-    // updateProfile: builder.mutation<IUpdateProfileResponse, FormData>({
-    //   query: (formData) => ({
-    //     url: "/auth/updateMe",
-    //     method: "PATCH",
-    //     body: formData,
-    //   }),
-    // }),
+    updateExperience: builder.mutation<
+      IUpdateExperienceResponse,
+      { data: IUpdateExperienceInputs; id: string }
+    >({
+      query: ({ data, id }) => ({
+        url: `${BASE_USER_URL}/updateExperience/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useGetUserQuery } = profileApi;
+export const { useGetUserQuery, useUpdateExperienceMutation } = profileApi;
