@@ -29,14 +29,14 @@ export const businessAccountApi = apiSlice.injectEndpoints({
     }),
     getBusinessAccountInfo: builder.query<
       IGetBusinessAccountInfoResponse,
-      { id: number }
+      { id: string }
     >({
       query: ({ id }) => ({
         url: `${BASE_BUSINESS_URL}/profile/${id}`,
         method: "GET",
       }),
     }),
-    getFiveReviews: builder.query<IGetReviewsResponse, { id: number }>({
+    getFiveReviews: builder.query<IGetReviewsResponse, { id: string }>({
       query: ({ id }) => ({
         url: `${BASE_BUSINESS_URL}/profile/reviewsFive/${id}`,
         method: "GET",

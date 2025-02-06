@@ -2,6 +2,7 @@ import { Country, LocationType } from "../enums/index.enums";
 import { IResponse } from "./Common.interfaces";
 
 export interface IBusinessAccount {
+  id: number;
   name: string;
   logo: string;
   CEO: string;
@@ -19,7 +20,8 @@ export interface IBusinessAccount {
   headquarter: string;
   email: string;
   phone: string;
-  id: number;
+  reviewsRatingsQuantity: number;
+  reviewsRatingsAverage: number;
   created_at: string;
   updated_at: string;
 }

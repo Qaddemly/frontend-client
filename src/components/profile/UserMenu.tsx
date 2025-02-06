@@ -12,7 +12,6 @@ import Button from "../common/Button";
 import { useClickOutside } from "../../hooks/useOutsideClick";
 import { useLogoutMutation } from "../../services/authApi";
 import toast from "react-hot-toast";
-import Loader from "../common/Loader";
 import { ReactNode, useRef, useState } from "react";
 import { handleApiError } from "../../utils/helpers";
 
@@ -29,7 +28,7 @@ function UserMenu({ children, type }: UserMenuProps) {
     () => setShowMenu(false),
     divRef,
   );
-  const [logout, { isLoading }] = useLogoutMutation();
+  const [logout] = useLogoutMutation();
   const navigate = useNavigate();
 
   async function handleLogout() {
@@ -43,7 +42,6 @@ function UserMenu({ children, type }: UserMenuProps) {
   }
   return (
     <>
-      {isLoading && <Loader />}
       <div
         className="relative flex items-center space-x-5"
         onClick={() => setShowMenu((s) => !s)}
