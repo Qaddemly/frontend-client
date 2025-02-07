@@ -10,8 +10,8 @@ type StartToEndDateProps<T extends FieldValues> = {
   register: UseFormRegister<T>;
   startDate: Path<T>;
   endDate: Path<T>;
-  startDateDefaultValue: string;
-  endDateDefaultValue: string;
+  startDateDefaultValue?: string;
+  endDateDefaultValue?: string;
 };
 
 function StartToEndDate<T extends FieldValues>({
@@ -29,13 +29,13 @@ function StartToEndDate<T extends FieldValues>({
       <label htmlFor="education">Start & End Date</label>
       <div className="flex items-center gap-4">
         <DatePicker
-          props={{ id: "startDate", defaultValue: startDateDefaultValue }}
+          props={{ id: startDate, defaultValue: startDateDefaultValue }}
           register={register}
           name={startDate}
         />
         <span className="text-gray-300">to</span>
         <DatePicker
-          props={{ id: "endDate", defaultValue: endDateDefaultValue }}
+          props={{ id: endDate, defaultValue: endDateDefaultValue }}
           register={register}
           name={endDate}
         />

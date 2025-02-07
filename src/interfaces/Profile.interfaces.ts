@@ -1,4 +1,4 @@
-import { IExperience, IUser } from "./Auth.interfaces";
+import { IEducation, IExperience, IUser } from "./Auth.interfaces";
 
 export interface IUpdateExperienceInputs {
   jobTitle: string;
@@ -20,4 +20,8 @@ export interface IGetUserResponse {
 export interface IUpdateExperienceResponse {
   success: boolean;
   experience: IExperience;
+}
+export interface IUpdateEducationResponse {
+  success: boolean;
+  education: IEducation;
 }

@@ -1,5 +1,7 @@
+import { IEducation } from "../interfaces/Auth.interfaces";
 import {
   IGetUserResponse,
+  IUpdateEducationResponse,
   IUpdateExperienceInputs,
   IUpdateExperienceResponse,
 } from "../interfaces/Profile.interfaces";
@@ -25,7 +27,21 @@ export const profileApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    updateEducation: builder.mutation<
+      IUpdateEducationResponse,
+      { data: IEducation }
+    >({
+      query: ({ data }) => ({
+        url: `${BASE_USER_URL}/updateEducation`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useGetUserQuery, useUpdateExperienceMutation } = profileApi;
+export const {
+  useGetUserQuery,
+  useUpdateExperienceMutation,
+  useUpdateEducationMutation,
+} = profileApi;

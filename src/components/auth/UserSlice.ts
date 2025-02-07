@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IExperience, IUser } from "../../interfaces/Auth.interfaces";
+import {
+  IEducation,
+  IExperience,
+  IUser,
+} from "../../interfaces/Auth.interfaces";
 
 const initialState = {
   user: {} as IUser,
@@ -19,6 +23,9 @@ const userSlice = createSlice({
         }
         return exp;
       });
+    },
+    updateUserEducation: (state, action: PayloadAction<IEducation>) => {
+      state.user.education = action.payload;
     },
   },
 });
