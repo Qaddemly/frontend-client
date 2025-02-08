@@ -28,6 +28,7 @@ import CompanyCandidates from "../components/business account/business dashboard
 import PostJob from "../components/job/post Job/PostJob";
 import UpdateJob from "../components/job/update job/UpdateJob";
 import CompanyJobs from "../components/business account/business dashboard/CompanyJobs";
+import SavedJob from "../components/profile/SavedJobs";
 import ExperienceCards from "../components/profile/ExperienceCards";
 import YourResume from "../components/profile/YourResume";
 import UserSettings from "../pages/UserSettings";
@@ -67,6 +68,7 @@ const router = createBrowserRouter([
       { path: "resumes", element: <YourResume /> },
     ],
   },
+  { path: "/saved-jobs", element: <SavedJob /> }, //should to be in profile ,but this for testing
   { path: "/emailVerfiy", element: <EmailVerfiy /> },
   { path: "/userInfo", element: <UserInfo /> },
   { path: "/forgetPassword", element: <ForgetPassword /> },
