@@ -4,53 +4,58 @@ import { IEducation } from "../../interfaces/Auth.interfaces";
 import InputField from "../common/InputField";
 import StartToEndDate from "../common/StartToEndDate";
 import Button from "../common/Button";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+import { useEffect } from "react";
+import { useUpdateEducationMutation } from "../../services/profileApi";
+import Loader from "../common/Loader";
+import { handleApiError } from "../../utils/helpers";
+import toast from "react-hot-toast";
 
 function Education() {
-  // this api is no longer work
-  // const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+  const [updateEducation, { isLoading }] = useUpdateEducationMutation();
+  const currentEducation = useSelector(
+    (state: RootState) => state.user.user.education,
+  );
 
-  type TEducation = {
-    education: IEducation;
-  };
+  const methods = useForm<IEducation>();
 
-  const methods = useForm<TEducation>();
   const {
     register,
     handleSubmit,
     formState: { errors },
-    // reset,
   } = methods;
 
-  const submitForm: SubmitHandler<TEducation> = async (data) => {
-    let filteredData: Partial<TEducation> = data;
-    if (data.education?.university?.length === 0)
-      filteredData = Object.fromEntries(
-        Object.entries(filteredData).filter(([key]) => key !== "education"),
-      );
-    console.log(filteredData);
-    // const formData = createFormData(filteredData);
-    // if (Object.entries(filteredData).length)
-    //   try {
-    //     const res = await updateProfile(formData).unwrap();
-    //     console.log(res);
-    //     toast.success("Profile Updated");
-    //     reset();
-    //   } catch (err) {
-    //     const error = err as IError;
-    //     toast.error(error.data.message);
-    //   }
+  const submitForm: SubmitHandler<IEducation> = async (data) => {
+    try {
+      await updateEducation({ data }).unwrap();
+      toast.success("Profile updated successfully");
+    } catch (error) {
+      handleApiError(error);
+    }
   };
+
+  useEffect(() => {
+    methods.reset({
+      university: currentEducation?.university || "",
+      field_of_study: currentEducation?.field_of_study || "",
+      gpa: currentEducation?.gpa ? Number(currentEducation.gpa) : undefined,
+      start_date: currentEducation?.start_date || "",
+      end_date: currentEducation?.end_date || "",
+    });
+  }, [currentEducation, methods.reset, methods]);
+
+  if (isLoading) return <Loader />;
   return (
     <FormProvider {...methods}>
-      {/* {isLoading && <Loader />} */}
       <form
-        className="mt-10 w-[40rem] space-y-3 px-10"
+        className="mt-10 flex w-[40rem] flex-col gap-3 px-10"
         onSubmit={handleSubmit(submitForm)}
       >
         <InputField id="University" errors={errors} label="University">
           <Input
             register={register}
-            name="education.university"
+            name="university"
             props={{
               placeholder: "Ex. Tanta University",
               type: "text",
@@ -62,7 +67,7 @@ function Education() {
         <InputField id="Field of study" errors={errors} label="Field of study">
           <Input
             register={register}
-            name="education.field_of_study"
+            name="field_of_study"
             props={{
               placeholder: "Ex. Engineering",
               type: "text",
@@ -74,7 +79,7 @@ function Education() {
         <InputField id="GPA" errors={errors} label="GPA">
           <Input
             register={register}
-            name="education.gpa"
+            name="gpa"
             options={{
               min: { value: 1, message: "min value 1" },
               max: { value: 4, message: "max value 4" },
@@ -82,6 +87,7 @@ function Education() {
             props={{
               placeholder: "Ex. 3.65",
               type: "number",
+              step: "0.01",
               id: "GPA",
             }}
           />
@@ -89,13 +95,15 @@ function Education() {
 
         <div>
           <StartToEndDate
-            startDate="education.start_date"
-            endDate="education.end_date"
+            startDate="start_date"
+            endDate="end_date"
             register={register}
           />
         </div>
 
-        <Button className="ml-[650px] px-2 py-2">Save Changes</Button>
+        <div className="self-end">
+          <Button className="px-2 py-2">Save Changes</Button>
+        </div>
       </form>
     </FormProvider>
   );

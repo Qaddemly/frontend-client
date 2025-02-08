@@ -1,5 +1,6 @@
 import { IBusinessAccount } from "./BusinessAccount.interfaces";
-import { IMeta } from "./BusinessDashboard.interfaces";
+import { IMeta, IResume } from "./BusinessDashboard.interfaces";
+import { IResponse } from "./Common.interfaces";
 
 // export interface IPostData {
 //   title: string;
@@ -32,7 +33,6 @@ export interface IJob {
 
 //////////////////////////////////////////////////////////////////////////////
 // Api Response Interfaces
-// export interface IPostResponse {}
 
 export interface IGetAllJobsResponse {
   success: boolean;
@@ -51,5 +51,16 @@ export interface ISavedJobsResponse {
   savedJobs: {
     data: IJob[];
     meta: IMeta;
+  };
+}
+
+export interface IApplyToJobResponse extends IResponse {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  jobApplication: {
+    job: IJob;
+    business: IBusinessAccount;
+    resume: IResume;
   };
 }

@@ -30,6 +30,9 @@ export const validateDateOfBirth = (value: string) => {
   const currentMonth = getCurrentDate().split("-")[1];
   const currentDay = getCurrentDate().split("-")[2];
 
+  console.log(inputYear, inputMonth, inputDay);
+  console.log(currentYear, currentMonth, currentDay);
+
   if (inputYear > currentYear) return "date is not correct";
   else if (inputMonth > currentMonth) return "date is not correct";
   else if (inputDay > currentDay) return "date is not correct";
@@ -63,11 +66,9 @@ export const createFormData = (data: Record<string, unknown>) => {
       });
     } else if (value instanceof FileList) {
       console.log("file");
-
       formData.append(key, value[0]);
     } else if (typeof value === "object" && value !== null) {
       console.log("obj");
-
       Object.entries(value).forEach(([nestedKey, nestedValue]) => {
         appendToFormData(`${key}[${nestedKey}]`, nestedValue);
       });

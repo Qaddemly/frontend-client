@@ -5,7 +5,6 @@ import UserInfoLayout from "../../../layout/UserInfoLayout";
 import { Country, Prefixes } from "../../../enums/index.enums";
 import InputField from "../../common/InputField";
 import { useFormContext } from "react-hook-form";
-import { validateDateOfBirth } from "../../../utils/helpers";
 import Select from "../../common/Select";
 import Input from "../../common/Input";
 
@@ -93,13 +92,7 @@ function UserInfoPersonal() {
           <label htmlFor="dateOfBirth" className="font-medium">
             Date of Birth
           </label>
-          <DatePicker
-            register={register}
-            name={"dateOfBirth"}
-            options={{
-              validate: (value) => validateDateOfBirth(value),
-            }}
-          />
+          <DatePicker register={register} name={"dateOfBirth"} />
           {errors.dateOfBirth &&
             typeof errors.dateOfBirth?.message === "string" && (
               <p className="text-danger text-sm">

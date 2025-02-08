@@ -32,7 +32,7 @@ function Message() {
             </InputField>
           </div>
           <div className="block space-y-2">
-            <Button className="mx-5 mt-5 bg-light-main px-2 text-gray-800 text-light-main">
+            <Button className="mx-5 mt-5 bg-light-main px-2 text-gray-800">
               UserName
               <FontAwesomeIcon
                 icon={faUser}
@@ -41,7 +41,7 @@ function Message() {
             </Button>
           </div>
           <div>
-            <Button className="mx-5 my-5 bg-light-main px-2 text-gray-800 text-light-main">
+            <Button className="mx-5 my-5 bg-light-main px-2 text-gray-800">
               UserName
               <FontAwesomeIcon
                 icon={faUser}

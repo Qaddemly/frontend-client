@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IUser } from "../../interfaces/Auth.interfaces";
+import {
+  IEducation,
+  IExperience,
+  IUser,
+} from "../../interfaces/Auth.interfaces";
 
 const initialState = {
   user: {} as IUser,
@@ -12,24 +16,19 @@ const userSlice = createSlice({
     setUser: (state, action: PayloadAction<IUser>) => {
       state.user = action.payload;
     },
+    updateUserExperience: (state, action: PayloadAction<IExperience>) => {
+      state.user.experiences = state.user.experiences.map((exp) => {
+        if (exp.id === action.payload.id) {
+          return action.payload;
+        }
+        return exp;
+      });
+    },
+    updateUserEducation: (state, action: PayloadAction<IEducation>) => {
+      state.user.education = action.payload;
+    },
   },
 });
 
-// this api no longer work
-// extraReducers: (builder) => {
-//   builder.addMatcher(
-//     profileApi.endpoints.getUser.matchFulfilled,
-//     (state, { payload }) => {
-//       state.user = payload.user;
-//     },
-//   );
-//   builder.addMatcher(
-//     profileApi.endpoints.updateProfile.matchFulfilled,
-//     (state, { payload }) => {
-//       state.user = payload.user;
-//     },
-//   );
-// },
-
-export const { setUser } = userSlice.actions;
+export const { setUser, updateUserExperience } = userSlice.actions;
 export default userSlice.reducer;

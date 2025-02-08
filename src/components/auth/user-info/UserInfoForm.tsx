@@ -86,6 +86,7 @@ function UserInfoForm() {
       ];
       setExperience(newExperience);
       filteredData = { ...filteredData, experience: newExperience };
+      console.log(experience);
     } else {
       filteredData = Object.fromEntries(
         Object.entries(filteredData).filter(([key]) => key !== "experience"),

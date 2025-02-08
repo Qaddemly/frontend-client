@@ -1,9 +1,16 @@
-import { IGetUserResponse } from "../interfaces/Profile.interfaces";
+import { IEducation } from "../interfaces/Auth.interfaces";
+import {
+  IAddResumeResponse,
+  IGetAllResumesResponse,
+  IGetUserResponse,
+  IUpdateEducationResponse,
+  IUpdateExperienceInputs,
+  IUpdateExperienceResponse,
+  IUpdatePersonalResponse,
+} from "../interfaces/Profile.interfaces";
 import { apiSlice } from "./apiSlice";
 
-/**
- * this api need to be refactored with new one on postman
- */
+const BASE_USER_URL = "/user";
 
 export const profileApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -13,19 +20,70 @@ export const profileApi = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
-
-    /**
-     * this api is no longer work
-     * this api need to be refactored with new one on postman
-     */
-    // updateProfile: builder.mutation<IUpdateProfileResponse, FormData>({
-    //   query: (formData) => ({
-    //     url: "/auth/updateMe",
-    //     method: "PATCH",
-    //     body: formData,
-    //   }),
-    // }),
+    updatePersonal: builder.mutation<
+      IUpdatePersonalResponse,
+      { data: FormData }
+    >({
+      query: ({ data }) => ({
+        url: `${BASE_USER_URL}/updateBasicInfo`,
+        method: "PATCH",
+        body: data,
+      }),
+    }),
+    updateExperience: builder.mutation<
+      IUpdateExperienceResponse,
+      { data: IUpdateExperienceInputs; id: string }
+    >({
+      query: ({ data, id }) => ({
+        url: `${BASE_USER_URL}/updateExperience/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    updateEducation: builder.mutation<
+      IUpdateEducationResponse,
+      { data: IEducation }
+    >({
+      query: ({ data }) => ({
+        url: `${BASE_USER_URL}/updateEducation`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    getAllResumes: builder.query<IGetAllResumesResponse, void>({
+      query: () => ({
+        url: `${BASE_USER_URL}/getAllResumes`,
+        method: "GET",
+      }),
+    }),
+    addResume: builder.mutation<IAddResumeResponse, { resumes: FormData }>({
+      query: ({ resumes }) => ({
+        url: `${BASE_USER_URL}/addResume`,
+        method: "POST",
+        body: resumes,
+      }),
+    }),
+    deleteResume: builder.mutation<void, { id: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/deleteResume/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    addNewSkill: builder.mutation<void, { id: string }>({
+      query: () => ({
+        url: `${BASE_USER_URL}/addNewSkill`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
-export const { useGetUserQuery } = profileApi;
+export const {
+  useGetUserQuery,
+  useUpdatePersonalMutation,
+  useUpdateExperienceMutation,
+  useUpdateEducationMutation,
+  useGetAllResumesQuery,
+  useAddResumeMutation,
+  useDeleteResumeMutation,
+} = profileApi;

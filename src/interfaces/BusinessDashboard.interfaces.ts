@@ -60,6 +60,7 @@ export interface IResume {
   id: number;
   url: string;
   account: IUser;
+  accountId: number;
 }
 
 export interface IJobApplication {

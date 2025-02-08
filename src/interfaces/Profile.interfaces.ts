@@ -1,12 +1,41 @@
-import { IUser } from "./Auth.interfaces";
+import { IEducation, IExperience, IUser } from "./Auth.interfaces";
+import { IResume } from "./BusinessDashboard.interfaces";
 
+export interface IUpdateExperienceInputs {
+  jobTitle: string;
+  companyName: string;
+  location: string;
+  locationType: string;
+  employmentType: string;
+  stillWorking: boolean;
+  startDate: string;
+  endDate: string;
+}
+//////////////////////////////////////////////////////////////////////////////
+// Api Response Interfaces
 export interface IGetUserResponse {
-  success: string;
+  success: boolean;
   user: IUser;
 }
 
-/**
- * this api is no longer work
- * this api need to be refactored with new one on postman
- */
-// export type IUpdateProfileResponse = IGetUserResponse;
+export interface IUpdatePersonalResponse {
+  success: boolean;
+  updatedUser: IUser;
+}
+export interface IUpdateExperienceResponse {
+  success: boolean;
+  experience: IExperience;
+}
+export interface IUpdateEducationResponse {
+  success: boolean;
+  education: IEducation;
+}
+
+export interface IGetAllResumesResponse {
+  success: boolean;
+  resumes: IResume[];
+}
+export interface IAddResumeResponse {
+  success: boolean;
+  resume: IResume;
+}
