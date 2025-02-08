@@ -30,7 +30,7 @@ function UserInfoLayout({
                 <p className="font-medium">{user.email}</p>
               </div>
               <Link
-                to="/profile/personal"
+                to="/userSettings/profile/personal"
                 className="rounded-md hover:bg-[#eee]"
               >
                 <div className="flex items-center gap-5 px-3 py-2">

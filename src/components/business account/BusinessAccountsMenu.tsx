@@ -18,7 +18,7 @@ function BusinessAccountsMenu({
   return (
     <ul
       ref={menuRef}
-      className="absolute top-[4rem] flex min-h-[15rem] flex-col justify-between rounded-md border bg-white pb-5 shadow-lg"
+      className="absolute top-[4rem] z-10 flex min-h-[15rem] flex-col justify-between rounded-md border bg-white pb-5 shadow-lg"
     >
       {data.map((company) => (
         <li

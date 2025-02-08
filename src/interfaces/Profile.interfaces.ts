@@ -18,6 +18,10 @@ export interface IGetUserResponse {
   user: IUser;
 }
 
+export interface IUpdatePersonalResponse {
+  success: boolean;
+  updatedUser: IUser;
+}
 export interface IUpdateExperienceResponse {
   success: boolean;
   experience: IExperience;

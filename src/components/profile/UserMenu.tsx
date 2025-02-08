@@ -50,13 +50,20 @@ function UserMenu({ children, type }: UserMenuProps) {
         {type === "NormalAccount" && (
           <FontAwesomeIcon icon={faBell} className="text-2xl" />
         )}
-        {!user.profile_picture ? (
+        {user.profile_picture === "undefined" ? (
           <FontAwesomeIcon
             icon={faUser}
-            className="rounded-full border-2 border-gray-200 bg-gray-200 px-2 py-2 text-2xl"
+            className="rounded-full border-2 border-gray-200 bg-gray-200 px-2 py-2 text-xl"
           />
         ) : (
-          <img src={user.profile_picture} className="h-12 w-12 rounded-full" />
+          <img
+            src={user?.profile_picture}
+            className="h-10 w-10 cursor-pointer rounded-full object-cover"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate("/userSettings/profile/personal");
+            }}
+          />
         )}
         <div className="cursor-pointer text-xl font-semibold">
           {user.first_name} {user.last_name}

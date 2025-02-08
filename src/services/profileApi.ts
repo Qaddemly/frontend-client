@@ -6,6 +6,7 @@ import {
   IUpdateEducationResponse,
   IUpdateExperienceInputs,
   IUpdateExperienceResponse,
+  IUpdatePersonalResponse,
 } from "../interfaces/Profile.interfaces";
 import { apiSlice } from "./apiSlice";
 
@@ -17,6 +18,16 @@ export const profileApi = apiSlice.injectEndpoints({
       query: () => ({
         url: "/auth/getMe",
         method: "GET",
+      }),
+    }),
+    updatePersonal: builder.mutation<
+      IUpdatePersonalResponse,
+      { data: FormData }
+    >({
+      query: ({ data }) => ({
+        url: `${BASE_USER_URL}/updateBasicInfo`,
+        method: "PATCH",
+        body: data,
       }),
     }),
     updateExperience: builder.mutation<
@@ -69,6 +80,7 @@ export const profileApi = apiSlice.injectEndpoints({
 
 export const {
   useGetUserQuery,
+  useUpdatePersonalMutation,
   useUpdateExperienceMutation,
   useUpdateEducationMutation,
   useGetAllResumesQuery,

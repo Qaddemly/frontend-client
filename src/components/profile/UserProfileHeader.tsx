@@ -6,24 +6,28 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import NavbarLink from "../common/NavbarLink";
 
-function Head() {
+function UserProfileHeader() {
   return (
     <>
       <div className="ml-10 mt-5">
         <ul className="mt-10 flex justify-start space-x-9 text-gray-600">
-          <NavbarLink to="/profile/personal" content="Personal" icon={faUser} />
           <NavbarLink
-            to="/profile/education"
+            to="/userSettings/profile/personal"
+            content="Personal"
+            icon={faUser}
+          />
+          <NavbarLink
+            to="/userSettings/profile/education"
             content="Education"
             icon={faBookOpen}
           />
           <NavbarLink
-            to="/profile/experience"
+            to="/userSettings/profile/experience"
             content="Experiences"
             icon={faBriefcase}
           />
           <NavbarLink
-            to="/profile/my-skills"
+            to="/userSettings/profile/my-skills"
             content="My Skills"
             icon={faListCheck}
           />
@@ -33,4 +37,4 @@ function Head() {
   );
 }
 
-export default Head;
+export default UserProfileHeader;

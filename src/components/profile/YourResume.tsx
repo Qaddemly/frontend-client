@@ -44,10 +44,13 @@ function YourResume() {
 
   // TODO: add resume name and size
   return (
-    <div className="my-20 mb-10 px-10">
-      {data?.resumes.length !== 0 && (
-        <p className="text-xl font-semibold">Your CV/Resumes</p>
-      )}
+    <div className="my-10 px-10">
+      <p className="text-xl font-semibold">Your CV/Resumes</p>
+
+      {/* {data?.resumes.length === 0 && (
+        <p className="text-sm italic text-gray-400">No resumes to show</p>
+      )} */}
+
       <ul className="mt-5 grid grid-cols-2 items-center gap-5 lg:grid-cols-3">
         {data?.resumes.map((resume) => (
           <li className="flex flex-col space-x-2 rounded-md bg-[#eee] px-5 py-3">

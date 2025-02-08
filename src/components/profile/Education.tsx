@@ -18,15 +18,7 @@ function Education() {
     (state: RootState) => state.user.user.education,
   );
 
-  const methods = useForm<IEducation>({
-    defaultValues: {
-      university: currentEducation?.university || "",
-      field_of_study: currentEducation?.field_of_study || "",
-      gpa: currentEducation?.gpa ? Number(currentEducation.gpa) : undefined,
-      start_date: currentEducation?.start_date || "",
-      end_date: currentEducation?.end_date || "",
-    },
-  });
+  const methods = useForm<IEducation>();
 
   const {
     register,

@@ -8,12 +8,12 @@ function ExperienceCards() {
   );
   const navigate = useNavigate();
   return (
-    <div className="grid grid-cols-3 p-10">
+    <div className="grid grid-cols-2 p-10">
       {experiences?.map((exp) => (
         <div
           key={exp.id}
           className="w-full max-w-md cursor-pointer rounded-2xl border border-gray-200 bg-white p-5 shadow-md hover:shadow-lg"
-          onClick={() => navigate(`/profile/experience/${exp.id}`)}
+          onClick={() => navigate(`/userSettings/profile/experience/${exp.id}`)}
         >
           <h2 className="text-gray-900 text-xl font-semibold">
             {exp.job_title}

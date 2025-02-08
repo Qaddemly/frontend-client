@@ -38,7 +38,7 @@ function Experience() {
     try {
       const res = await updateExperience({ data, id: expId || "" }).unwrap();
       toast.success("Profile updated successfully");
-      navigate("/profile/experience");
+      navigate("/userSettings/profile/experience");
       dispatch(updateUserExperience(res.experience));
     } catch (error) {
       handleApiError(error);

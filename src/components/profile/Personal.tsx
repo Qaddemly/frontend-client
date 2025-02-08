@@ -11,69 +11,67 @@ import Select from "../common/Select";
 import { Country, Prefixes } from "../../enums/index.enums";
 import DatePicker from "../common/DatePicker";
 import FileUpload from "../common/FileUpload";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+import { IUser } from "../../interfaces/Auth.interfaces";
+import { useEffect } from "react";
+import {
+  useGetUserQuery,
+  useUpdatePersonalMutation,
+} from "../../services/profileApi";
+import { createFormData, handleApiError } from "../../utils/helpers";
+import toast from "react-hot-toast";
+import Loader from "../common/Loader";
 
 function Personal() {
+  const user = useSelector((state: RootState) => state.user.user);
+  const [updatePersonal, { isLoading }] = useUpdatePersonalMutation();
+  const { refetch } = useGetUserQuery();
+
   const countryKeys = Object.keys(Country).filter(
     (key) => typeof Country[key as keyof typeof Country] === "string",
   );
   const prefixValues = Object.values(Prefixes).filter(
     (value) => typeof value == "string",
   );
-  // this api is no longer work
-  // const [updateProfile, { isLoading }] = useUpdateProfileMutation();
-
-  type TPersonal = {
-    firstName: string;
-    lastName: string;
-    phone: { number: string; countryCode: Prefixes };
-    address: { country: Country; city: string };
-    profilePicture: string;
-    dateOfBirth: string;
-  };
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    // reset,
-  } = useForm<TPersonal>();
+    reset,
+  } = useForm<IUser>();
 
-  const submitForm: SubmitHandler<TPersonal> = async (data) => {
-    let filteredData = Object.fromEntries(
-      Object.entries(data).filter(([, value]) => value !== ""),
-    );
-    if (!data.address.city.length) {
-      filteredData = Object.fromEntries(
-        Object.entries(filteredData).filter(([key]) => key !== "address"),
-      );
-    }
-    if (!data.phone.number.length) {
-      filteredData = Object.fromEntries(
-        Object.entries(filteredData).filter(([key]) => key !== "phone"),
-      );
-    }
-    if (!data.profilePicture.length) {
-      filteredData = Object.fromEntries(
-        Object.entries(filteredData).filter(
-          ([key]) => key !== "profilePicture",
-        ),
-      );
-    }
+  const submitForm: SubmitHandler<IUser> = async (data) => {
+    const formData = createFormData(data as unknown as Record<string, unknown>);
 
-    console.log(filteredData);
-
-    // const formData = createFormData(filteredData);
-    // if (Object.entries(filteredData).length)
-    //   try {
-    //     const res = await updateProfile(formData).unwrap();
-    //     console.log(res);
-    //     toast.success("Profile Updated");
-    //     reset();
-    //   } catch (err) {
-    //     const error = err as IError;
-    //     toast.error(error.data.message);
-    //   }
+    try {
+      const res = await updatePersonal({ data: formData }).unwrap();
+      console.log(res);
+      toast.success("Profile updated successfully");
+      refetch();
+    } catch (error) {
+      handleApiError(error);
+    }
   };
+
+  useEffect(() => {
+    reset({
+      first_name: user?.first_name,
+      last_name: user?.last_name,
+      phone: {
+        country_code: user?.phone?.country_code,
+        number: user?.phone?.number,
+      },
+      address: {
+        country: user?.address?.country,
+        city: user?.address?.city,
+      },
+      date_of_birth: user?.date_of_birth,
+    });
+  }, [reset, user]);
+
+  if (isLoading) return <Loader />;
 
   return (
     <div className="mt-5">
@@ -82,28 +80,28 @@ function Personal() {
         onSubmit={handleSubmit(submitForm)}
       >
         <div className="mt-10 flex space-x-5">
-          <InputField id="firstName" icon={faCircleUser} label="FirstName">
+          <InputField id="first_name" icon={faCircleUser} label="First name">
             <Input
               register={register}
-              name="firstName"
+              name="first_name"
               icon={faCircleUser}
               props={{
                 placeholder: "John",
                 type: "text",
-                id: "firstName",
+                id: "first_name",
               }}
             />
           </InputField>
 
-          <InputField id="lastName" icon={faCircleUser} label="LastName">
+          <InputField id="last_name" icon={faCircleUser} label="Last name">
             <Input
               register={register}
-              name="lastName"
+              name="last_name"
               icon={faCircleUser}
               props={{
                 placeholder: "Tom",
                 type: "text",
-                id: "lastName",
+                id: "last_name",
               }}
             />
           </InputField>
@@ -112,7 +110,7 @@ function Personal() {
         <div className="mt-10 flex items-end gap-3">
           <Select
             register={register}
-            name="phone.countryCode"
+            name="phone.country_code"
             label="Phone"
             id="phone"
             className="w-fit"
@@ -172,15 +170,15 @@ function Personal() {
           </InputField>
         </div>
         <div className="mt-10 flex flex-col gap-2 text-left">
-          <label htmlFor="dateOfBirth" className="font-medium">
+          <label htmlFor="date_of_birth" className="font-medium">
             Date of Birth
           </label>
-          <DatePicker name={"dateOfBirth"} register={register} />
+          <DatePicker name={"date_of_birth"} register={register} />
 
-          {errors.dateOfBirth &&
-            typeof errors.dateOfBirth?.message === "string" && (
+          {errors.date_of_birth &&
+            typeof errors.date_of_birth?.message === "string" && (
               <p className="text-danger text-sm">
-                {errors.dateOfBirth.message}
+                {errors.date_of_birth.message}
               </p>
             )}
         </div>
@@ -189,7 +187,7 @@ function Personal() {
 
           <FileUpload
             register={register}
-            name={"profilePicture"}
+            name={"profile_picture"}
             icon={faImage}
           />
         </div>
