@@ -11,41 +11,45 @@ import {
 } from "../../../enums/index.enums";
 import Select from "../../common/Select";
 import Button from "../../common/Button";
+import { useUserInfo } from "../../../context/UserInfoContext";
 
 function UserInfoExperience() {
   const {
     register,
     formState: { errors },
+    getValues,
+    resetField,
   } = useFormContext();
 
-  // const { setExperience } = useUserInfo();
+  const { setExperience } = useUserInfo();
   const employmentTypeValues = Object.values(EmploymentType);
   const locationTypeValues = Object.values(LocationType);
   const countryValues = Object.values(Country);
 
-  // function handleAddNewExperience() {
-  //   setExperience((experience) => [
-  //     ...experience,
-  //     {
-  //       jobTitle: getValues("experience.jobTitle"),
-  //       employmentType: getValues("experience.employmentType"),
-  //       companyName: getValues("experience.companyName"),
-  //       location: getValues("experience.location"),
-  //       locationType: getValues("experience.locationType"),
-  //       stillWorking: getValues("experience.stillWorking"),
-  //       startDate: getValues("experience.startDate"),
-  //       endDate: getValues("experience.endDate"),
-  //     },
-  //   ]);
-  //   resetField("experience.jobTitle");
-  //   resetField("experience.employmentType");
-  //   resetField("experience.companyName");
-  //   resetField("experience.location");
-  //   resetField("experience.locationType");
-  //   resetField("experience.stillWorking");
-  //   resetField("experience.startJobDate");
-  //   resetField("experience.endJobDate");
-  // }
+  function handleAddNewExperience() {
+    setExperience((experience) => [
+      ...experience,
+      {
+        id: new Date().getTime(),
+        job_title: getValues("experience.job_title"),
+        employment_type: getValues("experience.employment_type"),
+        company_name: getValues("experience.company_name"),
+        location: getValues("experience.location"),
+        location_type: getValues("experience.location_type"),
+        still_working: getValues("experience.still_working"),
+        start_date: getValues("experience.start_date"),
+        end_date: getValues("experience.end_date"),
+      },
+    ]);
+    resetField("experience.job_title");
+    resetField("experience.employment_type");
+    resetField("experience.company_name");
+    resetField("experience.location");
+    resetField("experience.location_type");
+    resetField("experience.still_working");
+    resetField("experience.start_date");
+    resetField("experience.end_date");
+  }
 
   return (
     <UserInfoLayout title="Experience">
@@ -58,7 +62,7 @@ function UserInfoExperience() {
         >
           <Input
             register={register}
-            name={"experience.jobTitle"}
+            name={"experience.job_title"}
             icon={faBriefcase}
             props={{
               id: "jobTitle",
@@ -69,7 +73,7 @@ function UserInfoExperience() {
         </InputField>
         <Select
           register={register}
-          name="experience.employmentType"
+          name="experience.employment_type"
           label="Employment type"
           id="employmentType"
         >
@@ -82,7 +86,7 @@ function UserInfoExperience() {
         <InputField errors={errors} id="companyName" label="Company name">
           <Input
             register={register}
-            name={"experience.companyName"}
+            name={"experience.company_name"}
             props={{
               id: "companyName",
               type: "text",
@@ -103,7 +107,7 @@ function UserInfoExperience() {
           ))}
         </Select>
         <Select
-          name="experience.locationType"
+          name="experience.location_type"
           register={register}
           label="Location type"
           id="locationType"
@@ -119,7 +123,7 @@ function UserInfoExperience() {
           <input
             {...register("experience.stillWorking")}
             type="checkbox"
-            id="stillWorking"
+            id="still_working"
             className="text-green-600 focus:ring-green-500 h-4 w-4 rounded border-gray-300"
           />
 
@@ -129,13 +133,13 @@ function UserInfoExperience() {
         </div>
 
         <StartToEndDate
-          startDate={"experience.startDate"}
-          endDate={"experience.endDate"}
+          startDate={"experience.start_date"}
+          endDate={"experience.end_date"}
           register={register}
         />
 
         <Button
-          // onClick={handleAddNewExperience}
+          onClick={handleAddNewExperience}
           type="button"
           className="w-full px-4 py-2"
         >

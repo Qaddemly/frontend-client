@@ -4,6 +4,11 @@ import SliderIndicators from "../components/auth/user-info/SliderIndicators";
 import { useUserInfo } from "../context/UserInfoContext";
 import UserMenu from "../components/profile/UserMenu";
 import Button from "../components/common/Button";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 function UserInfoLayout({
   children,
@@ -13,12 +18,28 @@ function UserInfoLayout({
   title: string;
 }) {
   const { step, setStep } = useUserInfo();
+  const { user } = useSelector((state: RootState) => state.user);
   return (
     <>
       <nav className="bg-white p-5">
         <div className="flex justify-between">
           <Logo fontSize="text-3xl" />
-          <UserMenu />
+          <UserMenu type="NormalAccount">
+            <div className="mt-2 flex flex-col gap-3">
+              <div className="px-3 pb-2">
+                <p className="font-medium">{user.email}</p>
+              </div>
+              <Link
+                to="/userSettings/profile/personal"
+                className="rounded-md hover:bg-[#eee]"
+              >
+                <div className="flex items-center gap-5 px-3 py-2">
+                  <FontAwesomeIcon icon={faUser} className="text-lg" />
+                  <span className="text-lg font-medium">Profile</span>
+                </div>
+              </Link>
+            </div>
+          </UserMenu>
         </div>
       </nav>
       <div className="min-h-screen bg-background p-20">

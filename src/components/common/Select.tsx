@@ -19,6 +19,8 @@ type AuthSelectProps<T extends FieldValues> = {
   isFilter?: boolean;
   required?: boolean;
   errors?: FieldErrors<T>;
+  props?: React.SelectHTMLAttributes<HTMLSelectElement> & { id: string };
+  defaultValue?: string;
   onChange?: (props: React.ChangeEvent<HTMLSelectElement>) => void;
   register?: UseFormRegister<T>;
 };
@@ -28,12 +30,14 @@ function Select<T extends FieldValues>({
   id,
   children,
   className,
-  value,
   options,
+  value,
   name,
   isFilter = false,
   required,
   errors,
+  props,
+  defaultValue,
   onChange,
   register,
 }: AuthSelectProps<T>) {
@@ -48,7 +52,9 @@ function Select<T extends FieldValues>({
       <select
         {...(register && name ? register(name, options) : {})}
         id={id}
-        value={value}
+        {...props}
+        defaultValue={defaultValue}
+        value={value === "" ? defaultValue : value}
         onChange={onChange}
         className={`w-full rounded-md border-2 border-gray-100 px-2 py-2 outline-none focus:border-secondary ${className} ${isFilter ? "text-light-secondary-200" : "text-gray-300"} location-input`}
       >

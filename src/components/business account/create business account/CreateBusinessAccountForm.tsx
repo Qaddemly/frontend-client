@@ -1,5 +1,4 @@
 import { useState } from "react";
-import BusinessLayout from "../../../layout/BusinessLayout";
 import CreateBusinessAccountStep1 from "./CreateBusinessAccountStep1";
 import CreateBusinessAccountStep2 from "./CreateBusinessAccountStep2";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
@@ -30,7 +29,7 @@ function CreateBusinessAccountForm() {
   };
 
   return (
-    <BusinessLayout>
+    <>
       {isLoading && <Loader />}
       <FormProvider {...methods}>
         <form
@@ -51,7 +50,7 @@ function CreateBusinessAccountForm() {
           )}
         </form>
       </FormProvider>
-    </BusinessLayout>
+    </>
   );
 }
 export default CreateBusinessAccountForm;

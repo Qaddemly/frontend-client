@@ -2,7 +2,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
-import Profile from "../pages/Profile";
 import UserInfo from "../pages/UserInfo";
 import EmailVerfiy from "../pages/EmailVerfiy";
 import Personal from "../components/profile/Personal";
@@ -30,6 +29,10 @@ import PostJob from "../components/job/post Job/PostJob";
 import UpdateJob from "../components/job/update job/UpdateJob";
 import CompanyJobs from "../components/business account/business dashboard/CompanyJobs";
 import SavedJob from "../components/profile/SavedJobs";
+import ExperienceCards from "../components/profile/ExperienceCards";
+import YourResume from "../components/profile/YourResume";
+import UserSettings from "../pages/UserSettings";
+import Profile from "../pages/Profile";
 
 const router = createBrowserRouter([
   {
@@ -43,18 +46,26 @@ const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
   { path: "/signup", element: <Signup /> },
   {
-    path: "/profile",
+    path: "/userSettings",
     element: (
       <ProtectedRoute>
-        <Profile />
+        <UserSettings />
       </ProtectedRoute>
     ),
     children: [
-      { index: true, element: <Personal /> },
-      { path: "personal", element: <Personal /> },
-      { path: "education", element: <Education /> },
-      { path: "experience", element: <Experience /> },
-      { path: "my-skills", element: <MySkills /> },
+      { index: true, element: <Profile /> },
+      {
+        path: "profile",
+        element: <Profile />,
+        children: [
+          { path: "personal", element: <Personal /> },
+          { path: "education", element: <Education /> },
+          { path: "experience", element: <ExperienceCards /> },
+          { path: "experience/:expId", element: <Experience /> },
+          { path: "my-skills", element: <MySkills /> },
+        ],
+      },
+      { path: "resumes", element: <YourResume /> },
     ],
   },
   { path: "/saved-jobs", element: <SavedJob /> }, //should to be in profile ,but this for testing

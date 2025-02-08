@@ -5,19 +5,23 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 import DatePicker from "./DatePicker";
-import { validateStartToEndDate } from "../../utils/helpers";
+
+type StartToEndDateProps<T extends FieldValues> = {
+  register: UseFormRegister<T>;
+  startDate: Path<T>;
+  endDate: Path<T>;
+  startDateDefaultValue?: string;
+  endDateDefaultValue?: string;
+};
 
 function StartToEndDate<T extends FieldValues>({
   register,
   startDate,
   endDate,
-}: {
-  register: UseFormRegister<T>;
-  startDate: Path<T>;
-  endDate: Path<T>;
-}) {
+  startDateDefaultValue,
+  endDateDefaultValue,
+}: StartToEndDateProps<T>) {
   const {
-    getValues,
     formState: { errors },
   } = useFormContext();
   return (
@@ -25,17 +29,18 @@ function StartToEndDate<T extends FieldValues>({
       <label htmlFor="education">Start & End Date</label>
       <div className="flex items-center gap-4">
         <DatePicker
+          props={{ id: startDate, defaultValue: startDateDefaultValue }}
           register={register}
           name={startDate}
-          options={{
-            validate: (value) =>
-              validateStartToEndDate(value, getValues(endDate)),
-          }}
         />
         <span className="text-gray-300">to</span>
-        <DatePicker register={register} name={endDate} />
+        <DatePicker
+          props={{ id: endDate, defaultValue: endDateDefaultValue }}
+          register={register}
+          name={endDate}
+        />
       </div>
-      <p className="text-sm text-danger">
+      <p className="text-danger text-sm">
         {typeof errors.startEducationDate?.message === "string" &&
           errors.startEducationDate?.message}
       </p>

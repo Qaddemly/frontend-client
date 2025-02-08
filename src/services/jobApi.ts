@@ -1,5 +1,6 @@
 import { IResponse } from "../interfaces/Common.interfaces";
 import {
+  IApplyToJobResponse,
   IGetAllJobsResponse,
   IGetJobDetailsResponse,
   ISavedJobsResponse,
@@ -60,6 +61,16 @@ export const jobApi = apiSlice.injectEndpoints({
       query: ({ id }) => ({
         url: `${BASE_JOB_URL}/unSaveJob/${id}`,
         method: "DELETE",
+      }),
+    }),
+    applyToJob: builder.mutation<
+      IApplyToJobResponse,
+      { id: string; resume_id: number }
+    >({
+      query: ({ resume_id, id }) => ({
+        url: `${BASE_JOB_URL}/applyToJob/${id}`,
+        method: "POST",
+        body: { resume_id },
       }),
     }),
   }),
