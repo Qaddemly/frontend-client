@@ -30,6 +30,9 @@ export const validateDateOfBirth = (value: string) => {
   const currentMonth = getCurrentDate().split("-")[1];
   const currentDay = getCurrentDate().split("-")[2];
 
+  console.log(inputYear, inputMonth, inputDay);
+  console.log(currentYear, currentMonth, currentDay);
+
   if (inputYear > currentYear) return "date is not correct";
   else if (inputMonth > currentMonth) return "date is not correct";
   else if (inputDay > currentDay) return "date is not correct";
