@@ -77,7 +77,10 @@ function Personal() {
 
   return (
     <div className="mt-5">
-      <form className="mt-10 px-10" onSubmit={handleSubmit(submitForm)}>
+      <form
+        className="mt-10 w-[40rem] px-10"
+        onSubmit={handleSubmit(submitForm)}
+      >
         <div className="mt-10 flex space-x-5">
           <InputField id="firstName" icon={faCircleUser} label="FirstName">
             <Input
@@ -181,7 +184,7 @@ function Personal() {
               </p>
             )}
         </div>
-        <div className="mt-5 flex flex-col items-start pr-[30rem]">
+        <div className="mt-5 flex flex-col items-start">
           <span className="font-medium"> Profile Photo</span>
 
           <FileUpload
@@ -190,7 +193,10 @@ function Personal() {
             icon={faImage}
           />
         </div>
-        <Button className="ml-[650px] px-2 py-2">Save Changes</Button>
+
+        <div className="mt-5 flex w-full justify-end">
+          <Button className="px-3">Save Changes</Button>
+        </div>
       </form>
     </div>
   );

@@ -63,11 +63,9 @@ export const createFormData = (data: Record<string, unknown>) => {
       });
     } else if (value instanceof FileList) {
       console.log("file");
-
       formData.append(key, value[0]);
     } else if (typeof value === "object" && value !== null) {
       console.log("obj");
-
       Object.entries(value).forEach(([nestedKey, nestedValue]) => {
         appendToFormData(`${key}[${nestedKey}]`, nestedValue);
       });

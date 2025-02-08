@@ -1,4 +1,5 @@
 import { IEducation, IExperience, IUser } from "./Auth.interfaces";
+import { IResume } from "./BusinessDashboard.interfaces";
 
 export interface IUpdateExperienceInputs {
   jobTitle: string;
@@ -24,4 +25,13 @@ export interface IUpdateExperienceResponse {
 export interface IUpdateEducationResponse {
   success: boolean;
   education: IEducation;
+}
+
+export interface IGetAllResumesResponse {
+  success: boolean;
+  resumes: IResume[];
+}
+export interface IAddResumeResponse {
+  success: boolean;
+  resume: IResume;
 }

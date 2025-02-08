@@ -57,7 +57,7 @@ function Education() {
   return (
     <FormProvider {...methods}>
       <form
-        className="mt-10 flex w-[40rem] flex-col gap-3 space-y-3 px-10"
+        className="mt-10 flex w-[40rem] flex-col gap-3 px-10"
         onSubmit={handleSubmit(submitForm)}
       >
         <InputField id="University" errors={errors} label="University">

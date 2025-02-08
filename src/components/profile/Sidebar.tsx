@@ -7,7 +7,7 @@ function Sidebar() {
   const [activeTab, setActiveTab] = useState("profile");
   return (
     <>
-      <div className="flex h-screen w-[20rem] flex-col gap-5 border-r border-r-gray-100 bg-[#eee]">
+      <div className="flex min-h-screen w-[20rem] flex-col gap-5 border-r border-r-gray-100 bg-[#eee]">
         <div>
           <p className="p-5 text-3xl font-medium">Settings</p>
         </div>

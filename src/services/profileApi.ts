@@ -1,5 +1,7 @@
 import { IEducation } from "../interfaces/Auth.interfaces";
 import {
+  IAddResumeResponse,
+  IGetAllResumesResponse,
   IGetUserResponse,
   IUpdateEducationResponse,
   IUpdateExperienceInputs,
@@ -37,6 +39,31 @@ export const profileApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    getAllResumes: builder.query<IGetAllResumesResponse, void>({
+      query: () => ({
+        url: `${BASE_USER_URL}/getAllResumes`,
+        method: "GET",
+      }),
+    }),
+    addResume: builder.mutation<IAddResumeResponse, { resumes: FormData }>({
+      query: ({ resumes }) => ({
+        url: `${BASE_USER_URL}/addResume`,
+        method: "POST",
+        body: resumes,
+      }),
+    }),
+    deleteResume: builder.mutation<void, { id: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/deleteResume/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    addNewSkill: builder.mutation<void, { id: string }>({
+      query: () => ({
+        url: `${BASE_USER_URL}/addNewSkill`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -44,4 +71,7 @@ export const {
   useGetUserQuery,
   useUpdateExperienceMutation,
   useUpdateEducationMutation,
+  useGetAllResumesQuery,
+  useAddResumeMutation,
+  useDeleteResumeMutation,
 } = profileApi;
