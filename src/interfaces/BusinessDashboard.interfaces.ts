@@ -59,6 +59,8 @@ export interface IMeta {
 export interface IResume {
   id: number;
   url: string;
+  name: string;
+  size: number;
   account: IUser;
   accountId: number;
 }

@@ -10,7 +10,7 @@ import { createFormData, handleApiError } from "../../../utils/helpers";
 import { formSettings } from "../../../interfaces/Common.interfaces";
 
 function CreateBusinessAccountForm() {
-  const [next, setNext] = useState(false);
+  const [step, setStep] = useState("1");
   const [createBusinessAccount, { isLoading }] =
     useCreateBusinessAccountMutation();
   const methods = useForm<IBusinessAccount>(formSettings);
@@ -40,11 +40,15 @@ function CreateBusinessAccountForm() {
           <p className="text-gray-500">
             Provide us with the following information
           </p>
-          {next ? (
-            <CreateBusinessAccountStep2 updateAccount={false} />
-          ) : (
+          {step === "2" && (
+            <CreateBusinessAccountStep2
+              setStep={setStep}
+              updateAccount={false}
+            />
+          )}
+          {step === "1" && (
             <CreateBusinessAccountStep1
-              setNext={setNext}
+              setStep={setStep}
               updateAccount={false}
             />
           )}

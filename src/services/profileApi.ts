@@ -1,5 +1,7 @@
 import { IEducation } from "../interfaces/Auth.interfaces";
 import {
+  IAddNewLanguageResponse,
+  IAddNewSkillResponse,
   IAddResumeResponse,
   IGetAllResumesResponse,
   IGetUserResponse,
@@ -69,10 +71,48 @@ export const profileApi = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
-    addNewSkill: builder.mutation<void, { id: string }>({
-      query: () => ({
-        url: `${BASE_USER_URL}/addNewSkill`,
+    deleteExperience: builder.mutation({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/deleteExperience/${id}`,
         method: "DELETE",
+      }),
+    }),
+    addNewExperience: builder.mutation({
+      query: (data) => ({
+        url: `${BASE_USER_URL}/addNewExperience`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    addNewSkill: builder.mutation<IAddNewSkillResponse, { skills: string[] }>({
+      query: (data) => ({
+        url: `${BASE_USER_URL}/addNewSkill`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    addNewLanguage: builder.mutation<
+      IAddNewLanguageResponse,
+      { languages: string[] }
+    >({
+      query: (data) => ({
+        url: `${BASE_USER_URL}/addNewLanguage`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    deleteSkill: builder.mutation<void, { skillsId: number[] }>({
+      query: (data) => ({
+        url: `${BASE_USER_URL}/deleteSkill`,
+        method: "DELETE",
+        body: data,
+      }),
+    }),
+    deleteLanguage: builder.mutation<void, { languagesId: number[] }>({
+      query: (data) => ({
+        url: `${BASE_USER_URL}/deleteLanguage`,
+        method: "DELETE",
+        body: data,
       }),
     }),
   }),
@@ -86,4 +126,10 @@ export const {
   useGetAllResumesQuery,
   useAddResumeMutation,
   useDeleteResumeMutation,
+  useDeleteExperienceMutation,
+  useAddNewExperienceMutation,
+  useAddNewSkillMutation,
+  useAddNewLanguageMutation,
+  useDeleteSkillMutation,
+  useDeleteLanguageMutation,
 } = profileApi;

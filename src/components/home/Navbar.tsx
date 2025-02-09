@@ -3,7 +3,11 @@ import { Link } from "react-router-dom";
 import { RootState } from "../../store/store";
 import UserMenu from "../profile/UserMenu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBookmark,
+  faFileLines,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import Logo from "../common/Logo";
 import { useGetUserBusinessesQuery } from "../../services/businessAccountApi";
 import { useRef, useState } from "react";
@@ -84,6 +88,24 @@ function Navbar() {
                   <div className="flex items-center gap-5 px-3 py-2">
                     <FontAwesomeIcon icon={faUser} className="text-lg" />
                     <span className="text-lg font-medium">Profile</span>
+                  </div>
+                </Link>
+                <Link
+                  to="/userSettings/resumes"
+                  className="rounded-md hover:bg-[#eee]"
+                >
+                  <div className="flex items-center gap-5 px-3 py-2">
+                    <FontAwesomeIcon icon={faFileLines} className="text-lg" />
+                    <span className="text-lg font-medium">Resumes</span>
+                  </div>
+                </Link>
+                <Link
+                  to="/userSettings/saved-jobs"
+                  className="rounded-md hover:bg-[#eee]"
+                >
+                  <div className="flex items-center gap-5 px-3 py-2">
+                    <FontAwesomeIcon icon={faBookmark} className="text-lg" />
+                    <span className="text-lg font-medium">Saved Jobs</span>
                   </div>
                 </Link>
               </div>

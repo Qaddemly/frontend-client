@@ -1,5 +1,4 @@
 import { faImage } from "@fortawesome/free-solid-svg-icons";
-import { validateDateOfBirth } from "../../../utils/helpers";
 import DatePicker from "../../common/DatePicker";
 import FileUpload from "../../common/FileUpload";
 import Input from "../../common/Input";
@@ -9,8 +8,10 @@ import { useFormContext } from "react-hook-form";
 
 function CreateBusinessAccountStep2({
   updateAccount,
+  setStep,
 }: {
   updateAccount: boolean;
+  setStep?: React.Dispatch<React.SetStateAction<string>>;
 }) {
   // const prefixValues = Object.values(Prefixes).filter(
   //   (value) => typeof value == "string",
@@ -97,18 +98,7 @@ function CreateBusinessAccountStep2({
             Founded Year{" "}
             {!updateAccount && <span className="text-danger-300">*</span>}
           </label>
-          <DatePicker
-            register={register}
-            name="founded"
-            options={
-              !updateAccount
-                ? {
-                    validate: (value) => validateDateOfBirth(value),
-                    required: "this field is required",
-                  }
-                : {}
-            }
-          />
+          <DatePicker register={register} name="founded" />
         </div>
       </div>
 
@@ -163,7 +153,20 @@ function CreateBusinessAccountStep2({
           options={!updateAccount ? { required: "this field is required" } : {}}
         />
       </div>
-      <Button className="px-3">Submit</Button>
+      <div className="flex items-center justify-between">
+        {!updateAccount && (
+          <Button
+            type="button"
+            onClick={() => setStep && setStep("1")}
+            className="px-3"
+          >
+            Back
+          </Button>
+        )}
+        <Button type="submit" className="px-3">
+          Submit
+        </Button>
+      </div>
     </div>
   );
 }
