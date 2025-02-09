@@ -88,10 +88,12 @@ export interface IBusinessRoles {
 export interface ISkills {
   id: number;
   name: string;
+  account_id: number;
 }
 export interface ILanguages {
   id: number;
   name: Languages;
+  account_id: number;
 }
 
 //////////////////////////////////////////////////////////////////////////////

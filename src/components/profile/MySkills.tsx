@@ -6,15 +6,38 @@ import Button from "../common/Button";
 import Select from "../common/Select";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  useAddNewLanguageMutation,
+  useAddNewSkillMutation,
+  useDeleteLanguageMutation,
+  useDeleteSkillMutation,
+  useGetUserQuery,
+} from "../../services/profileApi";
+import { handleApiError } from "../../utils/helpers";
+import toast from "react-hot-toast";
+import Loader from "../common/Loader";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 function MySkills() {
+  const userSkills = useSelector(
+    (state: RootState) => state.user?.user?.skills,
+  );
+  const userLanguages = useSelector(
+    (state: RootState) => state.user?.user?.languages,
+  );
   const [skill, setSkill] = useState("");
   const [skills, setSkills] = useState<string[]>([]);
   const [languages, setLanguages] = useState<Languages[]>([]);
   const [language, setLanguage] = useState<Languages | "">("");
   const languageValues = Object.values(Languages);
-  // this api is no longer work
-  // const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+
+  const [addNewSkill, { isLoading: isLoading1 }] = useAddNewSkillMutation();
+  const [addNewLanguage, { isLoading: isLoading2 }] =
+    useAddNewLanguageMutation();
+  const [deleteSkill] = useDeleteSkillMutation();
+  const [deleteLanguage] = useDeleteLanguageMutation();
+  const { refetch } = useGetUserQuery();
 
   function handleAddSkillsClick() {
     if (skill.length) {
@@ -35,19 +58,28 @@ function MySkills() {
   }
 
   async function handleSubmit() {
-    // const formData = createFormData({ skills, languages });
-    // if (Object.entries(formData).length)
-    //   try {
-    //     const res = await updateProfile(formData).unwrap();
-    //     console.log(res);
-    //     toast.success("Profile Updated");
-    //     setSkill("");
-    //     setLanguage("");
-    //   } catch (err) {
-    //     const error = err as IError;
-    //     toast.error(error.data.message);
-    //   }
+    try {
+      if (skills.length) {
+        await addNewSkill({ skills }).unwrap();
+        toast.success("Profile updated");
+        refetch();
+        setSkill("");
+        setSkills([]);
+      }
+      if (languages.length) {
+        await addNewLanguage({ languages }).unwrap();
+        toast.success("Profile updated");
+        refetch();
+        setLanguage("");
+        setLanguages([]);
+      }
+    } catch (error) {
+      handleApiError(error);
+    }
   }
+
+  if (isLoading1 || isLoading2) return <Loader />;
+
   return (
     <div className="w-[40rem] px-10">
       {/* {isLoading && <Loader />} */}
@@ -67,7 +99,7 @@ function MySkills() {
       </div>
 
       <div className="mt-4 flex flex-wrap gap-2">
-        {skills.map((skill, i) => (
+        {skills?.map((skill, i) => (
           <div
             key={i}
             className="flex w-fit items-center gap-3 rounded-full bg-green-200 px-4 py-2 text-lg text-white"
@@ -79,6 +111,24 @@ function MySkills() {
               onClick={() =>
                 setSkills((skills) => skills.filter((s) => s !== skill))
               }
+            />
+          </div>
+        ))}
+        {userSkills?.map((skill) => (
+          <div
+            key={skill.id}
+            className="flex w-fit items-center gap-3 rounded-full bg-green-200 px-4 py-2 text-lg text-white"
+          >
+            <p>{skill.name}</p>
+            <FontAwesomeIcon
+              icon={faXmark}
+              className="cursor-pointer text-xl"
+              onClick={async () => {
+                setSkills((skills) => skills.filter((s) => s !== skill.name));
+                await deleteSkill({ skillsId: [skill.id] });
+                refetch();
+                toast.success("Skill deleted successfully");
+              }}
             />
           </div>
         ))}
@@ -100,14 +150,14 @@ function MySkills() {
           value={language}
           onChange={(e) => setLanguage(e.target.value as Languages)}
         >
-          {languageValues.map((value) => (
+          {languageValues?.map((value) => (
             <option key={value} value={value}>
               {value}
             </option>
           ))}
         </Select>
         <div className="mt-4 flex flex-wrap gap-2">
-          {languages.map((lang, i) => (
+          {languages?.map((lang, i) => (
             <div
               key={i}
               className="flex w-fit items-center gap-3 rounded-full bg-green-200 px-4 py-2 text-lg text-white"
@@ -119,6 +169,24 @@ function MySkills() {
                 onClick={() =>
                   setLanguages((langs) => langs.filter((s) => s !== lang))
                 }
+              />
+            </div>
+          ))}
+          {userLanguages?.map((lang) => (
+            <div
+              key={lang.id}
+              className="flex w-fit items-center gap-3 rounded-full bg-green-200 px-4 py-2 text-lg text-white"
+            >
+              <p>{lang.name}</p>
+              <FontAwesomeIcon
+                icon={faXmark}
+                className="cursor-pointer text-xl"
+                onClick={async () => {
+                  await deleteLanguage({ languagesId: [lang.id] });
+                  setLanguages((langs) => langs.filter((s) => s !== lang.name));
+                  refetch();
+                  toast.success("Language deleted successfully");
+                }}
               />
             </div>
           ))}

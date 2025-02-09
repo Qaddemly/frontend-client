@@ -6,7 +6,11 @@ import {
   useDeleteResumeMutation,
   useGetAllResumesQuery,
 } from "../../services/profileApi";
-import { createFormData, handleApiError } from "../../utils/helpers";
+import {
+  createFormData,
+  formatBytes,
+  handleApiError,
+} from "../../utils/helpers";
 import Loader from "../common/Loader";
 import toast from "react-hot-toast";
 import Button from "../common/Button";
@@ -23,6 +27,7 @@ function YourResume() {
       try {
         await addResume({ resumes: formData }).unwrap();
         toast.success("Resume added successfully");
+        setResume(null);
         refetch();
       } catch (error) {
         handleApiError(error);
@@ -51,7 +56,7 @@ function YourResume() {
         <p className="text-sm italic text-gray-400">No resumes to show</p>
       )} */}
 
-      <ul className="mt-5 grid grid-cols-2 items-center gap-5 lg:grid-cols-3">
+      <ul className="mt-5 grid grid-cols-3 items-center gap-5">
         {data?.resumes.map((resume) => (
           <li className="flex flex-col space-x-2 rounded-md bg-[#eee] px-5 py-3">
             <div className="flex items-center gap-5">
@@ -59,10 +64,12 @@ function YourResume() {
                 icon={faFileLines}
                 className="pt-1 text-xl text-main"
               />
-              <span>Professional Resume</span>
+              <span>{resume.name}</span>
             </div>
             <div className="mt-2 flex items-center justify-between">
-              <span className="px-3 pl-7 text-sm text-gray-400">3.5MB</span>
+              <p className="px-3 pl-7 text-sm text-gray-400">
+                {formatBytes(resume.size)}
+              </p>
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => handleRemoveResume(resume.id.toString())}

@@ -1,4 +1,10 @@
-import { IEducation, IExperience, IUser } from "./Auth.interfaces";
+import {
+  IEducation,
+  IExperience,
+  ILanguages,
+  ISkills,
+  IUser,
+} from "./Auth.interfaces";
 import { IResume } from "./BusinessDashboard.interfaces";
 
 export interface IUpdateExperienceInputs {
@@ -38,4 +44,13 @@ export interface IGetAllResumesResponse {
 export interface IAddResumeResponse {
   success: boolean;
   resume: IResume;
+}
+
+export interface IAddNewSkillResponse {
+  success: boolean;
+  skills: ISkills[];
+}
+export interface IAddNewLanguageResponse {
+  success: boolean;
+  skills: ILanguages[];
 }
