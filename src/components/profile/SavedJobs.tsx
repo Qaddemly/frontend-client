@@ -1,24 +1,24 @@
 import { useGetAllSavedJobsQuery } from "../../services/jobApi";
 import Loader from "../common/Loader";
-import Footer from "../home/Footer";
-import Navbar from "../home/Navbar";
 import SavedJobsItems from "../job/SavedJobsItems";
 
 function SavedJob() {
-  const { isLoading: isLoading, data } = useGetAllSavedJobsQuery({});
+  const { isLoading, data } = useGetAllSavedJobsQuery({});
   const savedJob = data?.savedJobs.data;
 
   if (isLoading) return <Loader />;
+
+  if (savedJob?.length === 0)
+    return <p className="m-20 text-2xl italic text-gray-400">No saved jobs</p>;
   return (
     <>
-      <Navbar />
-      <div className="px-6 py-3">
+      <div className="m-10">
         <h2 className="mb-5 text-2xl font-semibold text-gray-800 md:text-3xl">
           Your Saved Jobs
         </h2>
         <p className="text-gray-300">Git access to millions of jobs</p>
-        <p className="ml-[185px] mt-5 font-medium">All Jobs</p>
-        <div className="relative ml-[185px] flex gap-3">
+        <p className="mt-5 font-medium">All Jobs</p>
+        <div className="relative flex gap-3">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center ps-3">
             <svg
               className="h-5 w-5"
@@ -47,7 +47,7 @@ function SavedJob() {
               <thead className="bg-main uppercase text-white">
                 <tr>
                   <th className="px-6 py-5">Job Title</th>
-                  <th className="px-6 py-5">Company Name</th>
+                  {/* <th className="px-6 py-5">Company Name</th> */}
                   <th className="px-6 py-5">Salary</th>
                   <th className="px-6 py-5">Location</th>
                   <th className="px-6 py-5">Employment Type</th>
@@ -63,7 +63,6 @@ function SavedJob() {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

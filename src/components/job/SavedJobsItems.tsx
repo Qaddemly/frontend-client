@@ -1,23 +1,25 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { handleApiError } from "../../utils/helpers";
-import { useUnSaveJobMutation } from "../../services/jobApi";
+import {
+  useGetAllSavedJobsQuery,
+  useUnSaveJobMutation,
+} from "../../services/jobApi";
 import Loader from "../common/Loader";
 import Modal from "../common/Modal";
 import { IJob } from "../../interfaces/Job.interfaces";
 
 function SavedJobsItems({ job }: { job: IJob }) {
   const [showDeleteModal, setDeleteShowModal] = useState(false);
-  const { savedJobId } = useParams();
-
+  const { refetch } = useGetAllSavedJobsQuery({});
   const [deleteJob, { isLoading: isLoading }] = useUnSaveJobMutation();
   async function handleDelete() {
     try {
       const res = await deleteJob({
-        id: savedJobId?.toString() || "",
+        id: job.id?.toString() || "",
       }).unwrap();
       setDeleteShowModal(false);
+      refetch();
       toast.success(res.message);
     } catch (err) {
       setDeleteShowModal(false);
@@ -28,19 +30,19 @@ function SavedJobsItems({ job }: { job: IJob }) {
   if (isLoading) return <Loader />;
   return (
     <>
-      {" "}
       <tr className="border-b border-b-[#eee] hover:bg-[#eee]">
         <th className="flex items-center gap-2 px-6 py-4">
-          <span> {job.title}</span>
+          <span> {job?.title}</span>
         </th>
-        <td className="px-6 py-4">
+        {/* company name is not send in api */}
+        {/* <td className="px-6 py-4">
           <span className="rounded-full bg-main px-2 py-1 text-white">
-            {job.business.name}
+            {job?.business?.name}
           </span>
-        </td>
-        <td className="px-6 py-4 text-gray-300"> {job.salary} </td>
-        <td className="px-6 py-4 text-gray-300">{job.location}</td>
-        <td className="px-6 py-4 text-gray-300">{job.employee_type}</td>
+        </td> */}
+        <td className="px-6 py-4 text-gray-300"> {job?.salary} </td>
+        <td className="px-6 py-4 text-gray-300">{job?.location}</td>
+        <td className="px-6 py-4 text-gray-300">{job?.employee_type}</td>
         <td className="space-x-5 px-6 py-4">
           <button
             onClick={() => setDeleteShowModal(true)}

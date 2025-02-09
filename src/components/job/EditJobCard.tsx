@@ -69,7 +69,7 @@ function EditJobCard({ job }: { job: IJob }) {
       {/* <EditJobCardItem title="Position:" content={job.position} />   {/* ask backend about position */}
 
       <EditJobCardItem title="Description:" content={job.description} />
-      <div className="mt-4 flex justify-between pl-1">
+      <div className="mt-4 flex gap-5 pl-1">
         <Button
           onClick={(e) => {
             e.stopPropagation();

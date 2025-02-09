@@ -7,12 +7,12 @@ import Select from "../../common/Select";
 import toast from "react-hot-toast";
 
 type CreateBusinessAccountStep1Props = {
-  setNext?: React.Dispatch<React.SetStateAction<boolean>>;
+  setStep?: React.Dispatch<React.SetStateAction<string>>;
   updateAccount: boolean;
 };
 
 function CreateBusinessAccountStep1({
-  setNext,
+  setStep,
   updateAccount,
 }: CreateBusinessAccountStep1Props) {
   const locationValues = Object.values(Country);
@@ -29,7 +29,7 @@ function CreateBusinessAccountStep1({
     if (!isValid) {
       toast.error("Threr are fields required");
       return;
-    } else if (setNext) setNext(true);
+    } else if (setStep) setStep("2");
   };
 
   return (
@@ -138,7 +138,7 @@ function CreateBusinessAccountStep1({
 
         <textarea
           {...register("description")}
-          className="min-h-[20rem] rounded-md bg-[#eee] p-5 outline-none"
+          className={`min-h-[20rem] rounded-md ${updateAccount ? "bg-[#eee]" : "bg-white"} p-5 outline-none`}
           placeholder="Enter company description"
         />
       </div>

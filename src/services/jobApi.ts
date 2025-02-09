@@ -46,7 +46,7 @@ export const jobApi = apiSlice.injectEndpoints({
         if (limit) params.append("limit", limit.toString());
 
         return {
-          url: `${BASE_JOB_URL}/getAllSavedJobs${params.toString() ? `?${params.toString()}` : ""}`,
+          url: `${BASE_JOB_URL}/allUserSavedJobs${params.toString() ? `?${params.toString()}` : ""}`,
           method: "GET",
         };
       },

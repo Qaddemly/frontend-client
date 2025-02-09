@@ -97,7 +97,7 @@ function NavbarBusiness() {
               </Link>
               <Link
                 className="flex items-center gap-2 rounded-md px-2 py-2 hover:bg-[#eee]"
-                to={`/profile/personal`}
+                to={`/userSettings/profile/personal`}
               >
                 <FontAwesomeIcon icon={faGear} className="text-2xl" />
                 <p className="text-lg font-medium">Account settings</p>

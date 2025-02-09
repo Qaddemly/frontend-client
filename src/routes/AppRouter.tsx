@@ -66,9 +66,9 @@ const router = createBrowserRouter([
         ],
       },
       { path: "resumes", element: <YourResume /> },
+      { path: "saved-jobs", element: <SavedJob /> },
     ],
   },
-  { path: "/saved-jobs", element: <SavedJob /> }, //should to be in profile ,but this for testing
   { path: "/emailVerfiy", element: <EmailVerfiy /> },
   { path: "/userInfo", element: <UserInfo /> },
   { path: "/forgetPassword", element: <ForgetPassword /> },

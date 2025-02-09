@@ -69,10 +69,23 @@ export const profileApi = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
-    addNewSkill: builder.mutation<void, { id: string }>({
+    addNewSkill: builder.mutation<void, void>({
       query: () => ({
         url: `${BASE_USER_URL}/addNewSkill`,
         method: "DELETE",
+      }),
+    }),
+    deleteExperience: builder.mutation({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/deleteExperience/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    addNewExperience: builder.mutation({
+      query: (data) => ({
+        url: `${BASE_USER_URL}/addNewExperience`,
+        method: "POST",
+        body: data,
       }),
     }),
   }),
@@ -86,4 +99,6 @@ export const {
   useGetAllResumesQuery,
   useAddResumeMutation,
   useDeleteResumeMutation,
+  useDeleteExperienceMutation,
+  useAddNewExperienceMutation,
 } = profileApi;
