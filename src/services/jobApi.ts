@@ -2,6 +2,7 @@ import { IResponse } from "../interfaces/Common.interfaces";
 import {
   IApplyToJobResponse,
   IGetAllJobsResponse,
+  IGetJobApplicationsResponse,
   IGetJobDetailsResponse,
   ISavedJobsResponse,
 } from "../interfaces/Job.interfaces";
@@ -73,6 +74,23 @@ export const jobApi = apiSlice.injectEndpoints({
         body: { resume_id },
       }),
     }),
+    getJobApplication: builder.query<
+      IGetJobApplicationsResponse,
+      { search?: string; page?: number; limit?: number }
+    >({
+      query: ({ search, page, limit }) => {
+        const params = new URLSearchParams();
+
+        if (search) params.append("search", search);
+        if (page) params.append("page", page.toString());
+        if (limit) params.append("limit", limit.toString());
+
+        return {
+          url: `${BASE_JOB_URL}/allUserJobApplications${params.toString() ? `?${params.toString()}` : ""}`,
+          method: "GET",
+        };
+      },
+    }),
   }),
 });
 
@@ -80,6 +98,7 @@ export const {
   useGetJobDetailsQuery,
   useGetAllJobsQuery,
   useGetAllSavedJobsQuery,
+  useGetJobApplicationQuery,
   useSaveJobMutation,
   useUnSaveJobMutation,
 } = jobApi;
