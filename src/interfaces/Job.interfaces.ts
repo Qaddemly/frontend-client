@@ -64,3 +64,17 @@ export interface IApplyToJobResponse extends IResponse {
     resume: IResume;
   };
 }
+export interface IJobApplication {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  resume: IResume;
+  job: IJob;
+}
+export interface IGetJobApplicationsResponse {
+  success: boolean;
+  jobApplications: {
+    data: IJobApplication[];
+    meta: IMeta;
+  };
+}

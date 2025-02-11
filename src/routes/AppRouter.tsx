@@ -33,6 +33,7 @@ import ExperienceCards from "../components/profile/ExperienceCards";
 import YourResume from "../components/profile/YourResume";
 import UserSettings from "../pages/UserSettings";
 import Profile from "../pages/Profile";
+import AppliedJob from "../components/profile/AppliedJobs";
 
 const router = createBrowserRouter([
   {
@@ -69,6 +70,7 @@ const router = createBrowserRouter([
       { path: "saved-jobs", element: <SavedJob /> },
     ],
   },
+  { path: "/applied-jobs", element: <AppliedJob /> },
   { path: "/emailVerfiy", element: <EmailVerfiy /> },
   { path: "/userInfo", element: <UserInfo /> },
   { path: "/forgetPassword", element: <ForgetPassword /> },
