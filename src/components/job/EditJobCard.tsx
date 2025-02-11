@@ -12,7 +12,7 @@ import { handleApiError } from "../../utils/helpers";
 import toast from "react-hot-toast";
 
 function EditJobCard({ job }: { job: IJob }) {
-  const { companyId, jobId } = useParams();
+  const { companyId } = useParams();
   const [makeJobArchived, { isLoading: loadingArchive }] =
     useMakeJobArchivedMutation();
   const [makeJobClosed, { isLoading: loadingClosed }] =
@@ -49,7 +49,7 @@ function EditJobCard({ job }: { job: IJob }) {
       className={`${job.status === "open" ? "border-green-100" : "border-danger-300"} max-w-md cursor-pointer rounded-xl border-2 bg-offWhite p-4 shadow-lg transition-all duration-100 hover:translate-x-1 hover:shadow-gray-400`}
       onClick={() =>
         navigate(
-          `/businessDashboard/companyJobs/${companyId}/jobApplications/${jobId}`,
+          `/businessDashboard/companyJobs/${companyId}/jobApplications/${job.id}`,
         )
       }
     >

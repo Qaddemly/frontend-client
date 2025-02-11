@@ -12,7 +12,6 @@ function UserSettings() {
             <div className="mb-10">
               <Outlet />
             </div>
-            {/* <YourResume /> */}
           </div>
         </div>
       </div>

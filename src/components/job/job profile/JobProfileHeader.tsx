@@ -10,17 +10,23 @@ import { formatDate, handleApiError } from "../../../utils/helpers";
 import Loader from "../../common/Loader";
 import toast from "react-hot-toast";
 import {
+  useApplyToJobMutation,
   useGetJobDetailsQuery,
   useSaveJobMutation,
   useUnSaveJobMutation,
 } from "../../../services/jobApi";
 import { useParams } from "react-router-dom";
+import { useState } from "react";
+import { useGetAllResumesQuery } from "../../../services/profileApi";
 
 function JobProfileHeader({ job }: { job: IJob }) {
+  const [close, setClose] = useState(false);
   const { jobId } = useParams();
   const [saveJob, { isLoading: loadingSaveJob }] = useSaveJobMutation();
   const [unSaveJob, { isLoading: loadingUnSaveJob }] = useUnSaveJobMutation();
   const { refetch } = useGetJobDetailsQuery({ id: jobId || "" });
+  const { data } = useGetAllResumesQuery();
+  const [applyToJob, { isLoading: loadingApplyJob }] = useApplyToJobMutation();
 
   async function handleSaveJob(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -48,7 +54,20 @@ function JobProfileHeader({ job }: { job: IJob }) {
     }
   }
 
-  if (loadingSaveJob || loadingUnSaveJob) return <Loader />;
+  async function handleApplyToJob(resumeId: number) {
+    try {
+      const res = await applyToJob({
+        resume_id: resumeId,
+        id: jobId || "",
+      }).unwrap();
+      toast.success(res.message);
+      setClose(false);
+    } catch (error) {
+      handleApiError(error);
+    }
+  }
+
+  if (loadingSaveJob || loadingUnSaveJob || loadingApplyJob) return <Loader />;
   return (
     <div className="flex w-full flex-col items-center bg-light-secondary py-4">
       <div className="mx-5 flex w-full max-w-[1000px] flex-col items-center justify-evenly gap-2 lg:mx-0 lg:items-start">
@@ -77,9 +96,12 @@ function JobProfileHeader({ job }: { job: IJob }) {
           {/* <p className="ml-2">{job.business.rating}</p> */}
           {/* <FontAwesomeIcon icon={faStar} /> */}
         </div>
-        <div className="flex w-full items-center justify-between">
-          <Button className="rounded-lg px-6 py-3 text-xl text-white">
-            Apply Now <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
+        <div className="flex w-full items-center justify-between px-10 lg:px-0">
+          <Button
+            className="rounded-lg px-6 py-3 text-xl text-white"
+            onClick={() => setClose(true)}
+          >
+            Easy Apply <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
           </Button>
           {!job?.isSaved ? (
             <button onClick={(e) => handleSaveJob(e)}>
@@ -97,6 +119,22 @@ function JobProfileHeader({ job }: { job: IJob }) {
             </button>
           )}
         </div>
+
+        {close && data?.resumes.length && (
+          <div className="h-20 w-[20rem] rounded-md bg-[#eee] p-5 shadow-lg">
+            {data?.resumes.map((resume) => (
+              <>
+                <p className="text-gray-300">Choose resume</p>
+                <div
+                  className="cursor-pointer rounded-md px-1 hover:bg-gray-200"
+                  onClick={() => handleApplyToJob(resume.id)}
+                >
+                  {resume.name}
+                </div>
+              </>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -82,4 +82,5 @@ export const {
   useGetAllSavedJobsQuery,
   useSaveJobMutation,
   useUnSaveJobMutation,
+  useApplyToJobMutation,
 } = jobApi;
