@@ -77,7 +77,7 @@ export interface IAddress {
 
 export interface IPhone {
   country_code: Prefixes;
-  number: number;
+  phone_number: number;
 }
 export interface IBusinessRoles {
   id: number;

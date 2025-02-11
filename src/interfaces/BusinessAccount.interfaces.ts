@@ -1,4 +1,5 @@
 import { Country, LocationType } from "../enums/index.enums";
+import { IPhone } from "./Auth.interfaces";
 import { IResponse } from "./Common.interfaces";
 
 export interface IBusinessAccount {
@@ -19,7 +20,7 @@ export interface IBusinessAccount {
   website: string;
   headquarter: string;
   email: string;
-  phone: string;
+  phone: IPhone[];
   reviewsRatingsQuantity: number;
   reviewsRatingsAverage: number;
   created_at: string;
@@ -45,25 +46,6 @@ export interface IReview {
   review_updated_at: string;
 }
 
-// export interface IJob {
-//   job_id: number;
-//   job_title: string;
-//   job_description: string;
-//   // may be location => country + city (ask backend)
-//   job_location: string;
-//   job_location_type: LocationType;
-//   job_skills: string[];
-//   job_salary: number;
-//   job_employee_type: string;
-//   job_keywords: string;
-//   job_experience: string;
-//   job_create_at: string;
-//   business_id: number;
-//   business_name: string;
-//   business_logo: string;
-//   business_industry: string;
-// }
-
 //////////////////////////////////////////////////////////////////////////////
 // Api Response Interfaces
 export interface ICreateBusinessAccountResponse extends IResponse {
@@ -84,8 +66,3 @@ export interface IGetReviewsResponse {
   status: string;
   reviews: IReview[];
 }
-
-// export interface IGetJobsResponse {
-//   status: string;
-//   jobs: IJob[];
-// }

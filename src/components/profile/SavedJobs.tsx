@@ -12,7 +12,7 @@ function SavedJob() {
     return <p className="m-20 text-2xl italic text-gray-400">No saved jobs</p>;
   return (
     <>
-      <div className="m-10">
+      <div className="my-10 px-10">
         <h2 className="mb-5 text-2xl font-semibold text-gray-800 md:text-3xl">
           Your Saved Jobs
         </h2>
@@ -43,11 +43,10 @@ function SavedJob() {
         </div>
         <div className="my-10 flex flex-col items-center justify-center">
           <div className="overflow-x-auto rounded-lg border-2 border-[#eee] shadow-md">
-            <table className="w-[60rem] text-left text-sm">
+            <table className="w-[50rem] text-left text-sm">
               <thead className="bg-main uppercase text-white">
                 <tr>
                   <th className="px-6 py-5">Job Title</th>
-                  {/* <th className="px-6 py-5">Company Name</th> */}
                   <th className="px-6 py-5">Salary</th>
                   <th className="px-6 py-5">Location</th>
                   <th className="px-6 py-5">Employment Type</th>

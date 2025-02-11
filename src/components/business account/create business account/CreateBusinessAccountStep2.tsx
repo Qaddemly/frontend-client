@@ -42,16 +42,37 @@ function CreateBusinessAccountStep2({
             }}
           />
         </InputField>
-        <InputField id="phone" label="Phone number">
-          <Input
-            name={"phone"}
-            props={{
-              placeholder: "123-456-789",
-              id: "phone",
-              type: "number",
-            }}
-          />
-        </InputField>
+        {/* <div className="flex items-end gap-3">
+          <Select
+            register={register}
+            name="phone[0].country_code"
+            label="Phone"
+            id="phone"
+            className="w-fit"
+          >
+            {prefixValues.map((value) => (
+              <option
+                key={value}
+                value={Prefixes[value as keyof typeof Prefixes]}
+              >
+                {value} +({Prefixes[value as keyof typeof Prefixes]})
+              </option>
+            ))}
+          </Select>
+
+          <InputField errors={errors} icon={faPhone} id="phone">
+            <Input
+              register={register}
+              name={"phone[0].phone_number"}
+              icon={faPhone}
+              props={{
+                placeholder: "123-456-789",
+                id: "phone",
+                type: "number",
+              }}
+            />
+          </InputField>
+        </div> */}
       </div>
 
       {/* phone number will be array  */}

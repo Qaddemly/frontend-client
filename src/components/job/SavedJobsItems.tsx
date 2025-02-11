@@ -8,8 +8,10 @@ import {
 import Loader from "../common/Loader";
 import Modal from "../common/Modal";
 import { IJob } from "../../interfaces/Job.interfaces";
+import { useNavigate } from "react-router-dom";
 
 function SavedJobsItems({ job }: { job: IJob }) {
+  const navigate = useNavigate();
   const [showDeleteModal, setDeleteShowModal] = useState(false);
   const { refetch } = useGetAllSavedJobsQuery({});
   const [deleteJob, { isLoading: isLoading }] = useUnSaveJobMutation();
@@ -30,8 +32,11 @@ function SavedJobsItems({ job }: { job: IJob }) {
   if (isLoading) return <Loader />;
   return (
     <>
-      <tr className="border-b border-b-[#eee] hover:bg-[#eee]">
-        <th className="flex items-center gap-2 px-6 py-4">
+      <tr
+        className="cursor-pointer border-b border-b-[#eee] hover:bg-[#eee]"
+        onClick={() => navigate(`/findJob/jobProfile/${job.id}`)}
+      >
+        <th className="flex items-center gap-2 px-3 py-4">
           <span> {job?.title}</span>
         </th>
         {/* company name is not send in api */}
@@ -45,7 +50,10 @@ function SavedJobsItems({ job }: { job: IJob }) {
         <td className="px-6 py-4 text-gray-300">{job?.employee_type}</td>
         <td className="space-x-5 px-6 py-4">
           <button
-            onClick={() => setDeleteShowModal(true)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setDeleteShowModal(true);
+            }}
             className="rounded-full bg-danger-300 px-2 py-1 font-medium text-white"
           >
             Delete

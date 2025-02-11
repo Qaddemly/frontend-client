@@ -10,10 +10,11 @@ import toast from "react-hot-toast";
 import { useEffect } from "react";
 
 function JobApplications() {
-  const { companyId } = useParams();
+  const { jobId } = useParams();
   const { data, isLoading, isError, error } = useGetJobApplicationsQuery({
-    id: companyId || "",
+    id: jobId || "",
   });
+
   const jobApplications = data?.jobApplications.data;
   const meta = data?.jobApplications.meta;
 
