@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom";
-import UserProfileHeader from "../components/profile/UserProfileHeader";
+import ProfileHeader from "./ProfileHeader";
 
 function Profile() {
   return (
     <>
-      <UserProfileHeader />
+      <ProfileHeader />
       <Outlet />
     </>
   );

@@ -6,7 +6,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import NavbarLink from "../common/NavbarLink";
 
-function UserProfileHeader() {
+function ProfileHeader() {
   return (
     <>
       <div className="ml-10 mt-5">
@@ -37,4 +37,4 @@ function UserProfileHeader() {
   );
 }
 
-export default UserProfileHeader;
+export default ProfileHeader;

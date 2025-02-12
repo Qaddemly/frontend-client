@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import Logo from "../components/common/Logo";
 import SliderIndicators from "../components/auth/user-info/SliderIndicators";
 import { useUserInfo } from "../context/UserInfoContext";
-import UserMenu from "../components/profile/UserMenu";
+import UserMenu from "../components/user settings/UserMenu";
 import Button from "../components/common/Button";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";

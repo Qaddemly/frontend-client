@@ -4,12 +4,12 @@ import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import UserInfo from "../pages/UserInfo";
 import EmailVerfiy from "../pages/EmailVerfiy";
-import Personal from "../components/profile/Personal";
-import Experience from "../components/profile/Experience";
-import Education from "../components/profile/Education";
+import Personal from "../components/user settings/Personal";
+import Experience from "../components/user settings/Experience";
+import Education from "../components/user settings/Education";
 import ForgetPassword from "../pages/ForgetPassword";
 import SetNewPassword from "../pages/SetNewPassword";
-import MySkills from "../components/profile/MySkills";
+import MySkills from "../components/user settings/MySkills";
 import { Toaster } from "react-hot-toast";
 import ProtectedRoute from "./ProtectedRoute";
 import Apply from "../components/job/apply job/ApplyJob";
@@ -28,12 +28,14 @@ import CompanyCandidates from "../components/business account/business dashboard
 import PostJob from "../components/job/post Job/PostJob";
 import UpdateJob from "../components/job/update job/UpdateJob";
 import CompanyJobs from "../components/business account/business dashboard/CompanyJobs";
-import SavedJob from "../components/profile/SavedJobs";
-import ExperienceCards from "../components/profile/ExperienceCards";
-import YourResume from "../components/profile/YourResume";
+import SavedJob from "../components/user settings/SavedJobs";
+import ExperienceCards from "../components/user settings/ExperienceCards";
+import YourResume from "../components/user settings/YourResume";
 import UserSettings from "../pages/UserSettings";
-import Profile from "../pages/Profile";
-import AppliedJob from "../components/profile/AppliedJobs";
+import AppliedJob from "../components/user settings/AppliedJobs";
+import Profile from "../components/user settings/Profile";
+import UserProfile from "../pages/UserProfile";
+import ScrollToTop from "../components/common/ScrollToTop";
 
 const router = createBrowserRouter([
   {
@@ -68,9 +70,9 @@ const router = createBrowserRouter([
       },
       { path: "resumes", element: <YourResume /> },
       { path: "saved-jobs", element: <SavedJob /> },
+      { path: "applied-jobs", element: <AppliedJob /> },
     ],
   },
-  { path: "/applied-jobs", element: <AppliedJob /> },
   { path: "/emailVerfiy", element: <EmailVerfiy /> },
   { path: "/userInfo", element: <UserInfo /> },
   { path: "/forgetPassword", element: <ForgetPassword /> },
@@ -78,6 +80,14 @@ const router = createBrowserRouter([
   { path: "/apply-job", element: <Apply /> },
   { path: "/message", element: <Message /> },
   { path: "/findCompany", element: <FindCompany /> },
+  {
+    path: "/userProfile",
+    element: (
+      <ProtectedRoute>
+        <UserProfile />
+      </ProtectedRoute>
+    ),
+  },
   {
     path: "/findJob",
     element: (
@@ -160,6 +170,7 @@ function AppRouter() {
           },
         }}
       />
+      <ScrollToTop />
     </>
   );
 }

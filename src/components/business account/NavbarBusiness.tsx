@@ -6,7 +6,7 @@ import {
   faPager,
 } from "@fortawesome/free-solid-svg-icons";
 import Logo from "../common/Logo";
-import UserMenu from "../profile/UserMenu";
+import UserMenu from "../user settings/UserMenu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Button from "../common/Button";
