@@ -32,8 +32,10 @@ import SavedJob from "../components/user settings/SavedJobs";
 import ExperienceCards from "../components/user settings/ExperienceCards";
 import YourResume from "../components/user settings/YourResume";
 import UserSettings from "../pages/UserSettings";
-import Profile from "../pages/Profile";
 import AppliedJob from "../components/user settings/AppliedJobs";
+import Profile from "../components/user settings/Profile";
+import UserProfile from "../pages/UserProfile";
+import ScrollToTop from "../components/common/ScrollToTop";
 
 const router = createBrowserRouter([
   {
@@ -78,6 +80,14 @@ const router = createBrowserRouter([
   { path: "/apply-job", element: <Apply /> },
   { path: "/message", element: <Message /> },
   { path: "/findCompany", element: <FindCompany /> },
+  {
+    path: "/userProfile",
+    element: (
+      <ProtectedRoute>
+        <UserProfile />
+      </ProtectedRoute>
+    ),
+  },
   {
     path: "/findJob",
     element: (
@@ -160,6 +170,7 @@ function AppRouter() {
           },
         }}
       />
+      <ScrollToTop />
     </>
   );
 }

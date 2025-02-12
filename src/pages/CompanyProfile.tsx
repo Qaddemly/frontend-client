@@ -12,7 +12,7 @@ function CompanyProfile() {
     (state: RootState) => state.businessAccount,
   );
   const { data, isLoading } = useGetBusinessAccountInfoQuery({
-    id: Number(businessAccount.id),
+    id: businessAccount.id.toString(),
   });
 
   if (isLoading) return <Loader />;

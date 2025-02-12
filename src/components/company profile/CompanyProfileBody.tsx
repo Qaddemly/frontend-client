@@ -19,7 +19,9 @@ function CompanyProfileBody({
   id,
 }: CompanyProfileBodyProps) {
   // const { data: sixJobsData } = useGetSixJobsQuery({ id });
-  const { data: fiveReviewsData } = useGetFiveReviewsQuery({ id });
+  const { data: fiveReviewsData } = useGetFiveReviewsQuery({
+    id: id.toString(),
+  });
   // const [triggerAllJobs, { data: allJobsData }] = useLazyGetAllJobsQuery();
   const [triggerAllReviews, { data: allReviewsData }] =
     useLazyGetAllReviewsQuery();
