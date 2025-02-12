@@ -1,6 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router-dom";
-
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 type NavbarLinkProps = {

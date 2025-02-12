@@ -5,11 +5,9 @@ import Signup from "../pages/Signup";
 import UserInfo from "../pages/UserInfo";
 import EmailVerfiy from "../pages/EmailVerfiy";
 import Personal from "../components/user settings/Personal";
-import Experience from "../components/user settings/Experience";
-import Education from "../components/user settings/Education";
+
 import ForgetPassword from "../pages/ForgetPassword";
 import SetNewPassword from "../pages/SetNewPassword";
-import MySkills from "../components/user settings/MySkills";
 import { Toaster } from "react-hot-toast";
 import ProtectedRoute from "./ProtectedRoute";
 import Apply from "../components/job/apply job/ApplyJob";
@@ -33,9 +31,17 @@ import ExperienceCards from "../components/user settings/ExperienceCards";
 import YourResume from "../components/user settings/YourResume";
 import UserSettings from "../pages/UserSettings";
 import AppliedJob from "../components/user settings/AppliedJobs";
-import Profile from "../components/user settings/Profile";
 import UserProfile from "../pages/UserProfile";
 import ScrollToTop from "../components/common/ScrollToTop";
+import Profile from "../components/user settings/Profile";
+import Education from "../components/user settings/Education";
+import Experience from "../components/user settings/Experience";
+import MySkills from "../components/user settings/MySkills";
+import ProjectCards from "../components/user settings/ProjectCards";
+import Projects from "../components/user settings/Projects";
+import CertificateCards from "../components/user settings/CertificateCards";
+import Certificates from "../components/user settings/Certificates";
+import VolunteeringCards from "../components/user settings/VolunteeringCards";
 
 const router = createBrowserRouter([
   {
@@ -65,6 +71,11 @@ const router = createBrowserRouter([
           { path: "education", element: <Education /> },
           { path: "experience", element: <ExperienceCards /> },
           { path: "experience/:expId", element: <Experience /> },
+          { path: "projects", element: <ProjectCards /> },
+          { path: "projects/:projectId", element: <Projects /> },
+          { path: "certificates", element: <CertificateCards /> },
+          { path: "certificates/:certificateId", element: <Certificates /> },
+          { path: "volunteering", element: <VolunteeringCards /> },
           { path: "my-skills", element: <MySkills /> },
         ],
       },

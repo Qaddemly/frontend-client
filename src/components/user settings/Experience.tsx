@@ -9,11 +9,11 @@ import { IUpdateExperienceInputs } from "../../interfaces/Profile.interfaces";
 import { useNavigate, useParams } from "react-router-dom";
 import { useUpdateExperienceMutation } from "../../services/profileApi";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store/store";
 import { handleApiError } from "../../utils/helpers";
 import toast from "react-hot-toast";
 import Loader from "../common/Loader";
 import { updateUserExperience } from "../auth/UserSlice";
+import { RootState } from "../../store/store";
 
 function Experience() {
   const experiences = useSelector(
