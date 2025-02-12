@@ -6,6 +6,7 @@ import Loader from "../common/Loader";
 import { handleApiError } from "../../utils/helpers";
 import toast from "react-hot-toast";
 import CreateExperience from "./CreateExperience";
+import ProfileCard from "../common/ProfileCard";
 
 function ExperienceCards() {
   const experiences = useSelector(
@@ -32,14 +33,18 @@ function ExperienceCards() {
     <div className="grid grid-cols-2 p-10">
       {experiences?.length === 0 && <CreateExperience />}
       {experiences?.map((exp) => (
-        <div
+        <ProfileCard
+          startDate={exp.start_date}
+          endDate={exp.end_date}
+          handleDelete={(e: React.MouseEvent<HTMLButtonElement>) =>
+            handleDeleteExperience(e, exp.id)
+          }
+          handleEdit={() =>
+            navigate(`/userSettings/profile/experience/${exp.id}`)
+          }
           key={exp.id}
-          className="w-full max-w-md cursor-pointer rounded-2xl border border-gray-200 bg-white p-8 shadow-md hover:shadow-lg"
-          onClick={() => navigate(`/userSettings/profile/experience/${exp.id}`)}
+          title={exp.job_title}
         >
-          <h2 className="text-gray-900 text-xl font-semibold">
-            {exp.job_title}
-          </h2>
           <p className="text-gray-600">{exp.company_name}</p>
           <p className="text-sm text-gray-500">
             {exp.location} • {exp.location_type}
@@ -50,30 +55,7 @@ function ExperienceCards() {
               {exp.employment_type}
             </span>
           </div>
-
-          <div className="mt-3 flex gap-5 text-sm text-gray-700">
-            <div>
-              <p>
-                <span className="font-semibold">Start Date: </span>
-                {new Date(exp.start_date).toLocaleDateString()}
-              </p>
-              <p>
-                <span className="font-semibold">End Date: </span>
-                {exp.still_working
-                  ? " Present"
-                  : exp.end_date
-                    ? new Date(exp.end_date).toLocaleDateString()
-                    : " N/A"}
-              </p>
-            </div>
-            <button
-              onClick={(e) => handleDeleteExperience(e, exp.id)}
-              className="rounded-md bg-danger-300 px-2 py-1 font-medium text-white hover:bg-danger-200"
-            >
-              Delete
-            </button>
-          </div>
-        </div>
+        </ProfileCard>
       ))}
     </div>
   );

@@ -1,6 +1,9 @@
 import {
   faBookOpen,
   faBriefcase,
+  faCertificate,
+  faFileWord,
+  faHandshakeAngle,
   faListCheck,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
@@ -30,6 +33,21 @@ function ProfileHeader() {
             to="/userSettings/profile/my-skills"
             content="My Skills"
             icon={faListCheck}
+          />
+          <NavbarLink
+            to="/userSettings/profile/projects"
+            content="Projects"
+            icon={faFileWord}
+          />
+          <NavbarLink
+            to="/userSettings/profile/certificates"
+            content="Certificates"
+            icon={faCertificate}
+          />
+          <NavbarLink
+            to="/userSettings/profile/volunteering"
+            content="Volunteering"
+            icon={faHandshakeAngle}
           />
         </ul>
       </div>
