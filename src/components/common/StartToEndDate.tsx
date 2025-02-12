@@ -26,8 +26,10 @@ function StartToEndDate<T extends FieldValues>({
   } = useFormContext();
   return (
     <>
-      <label htmlFor="education">Start & End Date</label>
-      <div className="flex items-center gap-4">
+      <label htmlFor="education" className="font-medium">
+        Start & End Date
+      </label>
+      <div className="flex items-center justify-between gap-4">
         <DatePicker
           props={{ id: startDate, defaultValue: startDateDefaultValue }}
           register={register}
@@ -40,7 +42,7 @@ function StartToEndDate<T extends FieldValues>({
           name={endDate}
         />
       </div>
-      <p className="text-danger text-sm">
+      <p className="text-sm text-danger-300">
         {typeof errors.startEducationDate?.message === "string" &&
           errors.startEducationDate?.message}
       </p>
