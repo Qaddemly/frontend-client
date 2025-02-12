@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import UserProfileHeader from "../components/profile/UserProfileHeader";
+import UserProfileHeader from "../components/user settings/UserProfileHeader";
 
 function Profile() {
   return (

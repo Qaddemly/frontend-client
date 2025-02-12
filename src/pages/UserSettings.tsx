@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import Sidebar from "../components/profile/Sidebar";
+import Sidebar from "../components/user settings/Sidebar";
 import Navbar from "../components/home/Navbar";
 function UserSettings() {
   return (
