@@ -17,6 +17,13 @@ export interface IUpdateExperienceInputs {
   startDate: string;
   endDate: string;
 }
+export interface IUpdateVolunteeringInputs {
+  organization: string;
+  description: string;
+  role: string;
+  startDate: string;
+  endDate: string;
+}
 //////////////////////////////////////////////////////////////////////////////
 // Api Response Interfaces
 export interface IGetUserResponse {
