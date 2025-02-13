@@ -2,6 +2,7 @@ import { IEducation } from "../interfaces/Auth.interfaces";
 import {
   IAddNewLanguageResponse,
   IAddNewSkillResponse,
+  IAddNewVolunteeringResponse,
   IAddResumeResponse,
   IGetAllResumesResponse,
   IGetUserResponse,
@@ -9,6 +10,7 @@ import {
   IUpdateExperienceInputs,
   IUpdateExperienceResponse,
   IUpdatePersonalResponse,
+  IUpdateVolunteeringInputs,
 } from "../interfaces/Profile.interfaces";
 import { apiSlice } from "./apiSlice";
 
@@ -115,6 +117,16 @@ export const profileApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    addNewVolunteering: builder.mutation<
+      IAddNewVolunteeringResponse,
+      { data: IUpdateVolunteeringInputs }
+    >({
+      query: (data) => ({
+        url: `${BASE_USER_URL}/addNewVolunteering`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -123,6 +135,7 @@ export const {
   useUpdatePersonalMutation,
   useUpdateExperienceMutation,
   useUpdateEducationMutation,
+  useAddNewVolunteeringMutation,
   useGetAllResumesQuery,
   useAddResumeMutation,
   useDeleteResumeMutation,

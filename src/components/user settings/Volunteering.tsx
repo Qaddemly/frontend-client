@@ -4,43 +4,48 @@ import InputField from "../common/InputField";
 import StartToEndDate from "../common/StartToEndDate";
 import Button from "../common/Button";
 import { IUpdateVolunteeringInputs } from "../../interfaces/Profile.interfaces";
-// import { useNavigate, useParams } from "react-router-dom";
-// import { useUpdateExperienceMutation } from "../../services/profileApi";
+import { useNavigate } from "react-router-dom";
+import { useAddNewVolunteeringMutation } from "../../services/profileApi";
+import toast from "react-hot-toast";
+import Loader from "../common/Loader";
+import { handleApiError } from "../../utils/helpers";
+// import {  useParams } from "react-router-dom";
 // import { useDispatch, useSelector } from "react-redux";
 // import { RootState } from "../../store/store";
-// import { handleApiError } from "../../utils/helpers";
-// import toast from "react-hot-toast";
-// import Loader from "../common/Loader";
 // import { updateUserExperience } from "../auth/UserSlice";
 
 function Volunteering() {
+  // const { volunteeringId } = useParams();
   // const volunteerings = useSelector(
   //   (state: RootState) => state.user.user.experiences,
   // );
-  // const { expId } = useParams();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   // const dispatch = useDispatch();
   // const currentVolunteering = volunteerings?.find(
   //   (exp) => exp.id.toString() === expId,
   // );
-  // const [updateVolunteering, { isLoading }] = useUpdateVolunteeringMutation();
+  const [updateVolunteering, { isLoading }] = useAddNewVolunteeringMutation();
 
   const methods = useForm<IUpdateVolunteeringInputs>();
   const { register, handleSubmit } = methods;
 
   const submitForm: SubmitHandler<IUpdateVolunteeringInputs> = async (data) => {
     console.log(data);
-    // try {
-    //   const res = await updateVolunteering({ data, id: expId || "" }).unwrap();
-    //   toast.success("Profile updated successfully");
-    //   navigate("/userSettings/profile/experience");
-    //   dispatch(updateUserVolunteering(res.volunteering));
-    // } catch (error) {
-    //   handleApiError(error);
-    // }
+    try {
+      // const res =
+      await updateVolunteering({
+        data,
+        // id: volunteeringId || "",
+      }).unwrap();
+      toast.success("Profile updated successfully");
+      navigate("/userSettings/profile/volunteering");
+      // dispatch(updateUserVolunteering(res.volunteering));
+    } catch (error) {
+      handleApiError(error);
+    }
   };
 
-  // if (isLoading) return <Loader />;
+  if (isLoading) return <Loader />;
 
   return (
     <FormProvider {...methods}>

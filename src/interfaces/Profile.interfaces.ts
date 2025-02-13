@@ -61,3 +61,7 @@ export interface IAddNewLanguageResponse {
   success: boolean;
   skills: ILanguages[];
 }
+export interface IAddNewVolunteeringResponse {
+  success: boolean;
+  // skills: ILanguages[];
+}
