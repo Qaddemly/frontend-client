@@ -4,7 +4,7 @@ import ProfileCard from "../common/ProfileCard";
 
 // we need api for get all certificates
 function CertificateCards() {
-  const naviagate = useNavigate();
+  const navigate = useNavigate();
   // const certificates = useSelector(
   //   (state: RootState) => state.user.user.certificate,
   // );
@@ -55,7 +55,7 @@ function CertificateCards() {
       <div className="self-end">
         <Button
           className="px-3"
-          onClick={() => naviagate("/userSettings/profile/certificates/0")}
+          onClick={() => navigate("/userSettings/profile/certificates/0")}
         >
           Add more
         </Button>
