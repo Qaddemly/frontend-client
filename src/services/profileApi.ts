@@ -18,6 +18,7 @@ import {
   IGetVolunteeringResponse,
   IGetAllProjectsResponse,
   IProject,
+  IGetAllCertificatesResponse,
 } from "../interfaces/Profile.interfaces";
 import { apiSlice } from "./apiSlice";
 
@@ -172,6 +173,18 @@ export const profileApi = apiSlice.injectEndpoints({
         body: certificates,
       }),
     }),
+    getAllCertificates: builder.query<IGetAllCertificatesResponse, void>({
+      query: () => ({
+        url: `${BASE_USER_URL}/get-my-all-certificates`,
+        method: "GET",
+      }),
+    }),
+    getCertificate: builder.query<ICertificateResponse, { id: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/get-one-certificate/${id}`,
+        method: "GET",
+      }),
+    }),
     updateCertificate: builder.mutation<
       ICertificateResponse,
       { data: FormData; id: string }
@@ -183,7 +196,7 @@ export const profileApi = apiSlice.injectEndpoints({
       }),
     }),
     deleteCertificate: builder.mutation<void, { id: string }>({
-      query: (id) => ({
+      query: ({ id }) => ({
         url: `${BASE_USER_URL}/deleteCertificate/${id}`,
         method: "DELETE",
       }),
@@ -247,6 +260,8 @@ export const {
   useDeleteSkillMutation,
   useDeleteLanguageMutation,
   useCreateCertificateMutation,
+  useGetAllCertificatesQuery,
+  useGetCertificateQuery,
   useUpdateCertificateMutation,
   useDeleteCertificateMutation,
   useAddProjectMutation,

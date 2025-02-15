@@ -93,6 +93,10 @@ export interface ICertificateResponse {
   success: boolean;
   certificate: ICertificate;
 }
+export interface IGetAllCertificatesResponse {
+  success: boolean;
+  certificates: ICertificate[];
+}
 
 export interface IAccount {
   id: number;

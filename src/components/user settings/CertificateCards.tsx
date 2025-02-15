@@ -1,65 +1,74 @@
+import toast from "react-hot-toast";
+import { handleApiError } from "../../utils/helpers";
+import Loader from "../common/Loader";
 import ProfileCard from "../common/ProfileCard";
+import { useNavigate } from "react-router-dom";
+import {
+  useDeleteCertificateMutation,
+  useGetAllCertificatesQuery,
+} from "../../services/profileApi";
+import Button from "../common/Button";
 
-// we need api for get all certificates
 function CertificateCards() {
-  // const navigate = useNavigate();
-  // const certificates = useSelector(
-  //   (state: RootState) => state.user.user.certificate,
-  // );
-  // const [deleteCertifiate, { isLoading }] = useDeleteCertificateMutation();
+  const navigate = useNavigate();
 
-  // async function handleDeleteCertificate(
-  //   e: React.MouseEvent<HTMLButtonElement>,
-  //   id: number,
-  // ) {
-  //   e.stopPropagation();
-  //   try {
-  //     await deleteCertifiate({ id }).unwrap();
-  //     toast.success("Certificate deleted successfully");
-  //   } catch (error) {
-  //     handleApiError(error);
-  //   }
-  // }
+  const [deleteCertifiate, { isLoading: isLoading1 }] =
+    useDeleteCertificateMutation();
+  const { data, isLoading: isLoading2, refetch } = useGetAllCertificatesQuery();
+  const certificates = data?.certificates;
 
-  // if (isLoading) return <Loader />;
+  async function handleDeleteCertificate(
+    e: React.MouseEvent<HTMLButtonElement>,
+    id: string,
+  ) {
+    e.stopPropagation();
+    try {
+      await deleteCertifiate({ id: id.toString() }).unwrap();
+      toast.success("Certificate deleted successfully");
+      refetch();
+    } catch (error) {
+      handleApiError(error);
+    }
+  }
+
+  if (isLoading1 || isLoading2) return <Loader />;
   return (
     <div className="flex flex-col gap-20">
-      <div className="grid grid-cols-2 p-10">
-        {/* {certificates?.map((cer) => (
-        <ProfileCard
-          startDate={cer.start_date}
-          endDate={cer.end_date}
-          handleDelete={(e: React.MouseEvent<HTMLButtonElement>) =>
-            handleDeleteCertificate(e, cer.id)
-          }
-          handleEdit={() =>
-            naviagate(`/userSettings/profile/certificate/${cer.id}`)
-          }
-          key={cer.id}
-          title={cer.t}
-        ></ProfileCard>
-      ))} */}
-        <ProfileCard
-          startDate={"2021-01-01"}
-          endDate={"2022-02-3"}
-          handleDelete={() => {}}
-          handleEdit={() => {}}
-          key={1}
-          title={"title"}
-        >
-          <p>skills</p>
-        </ProfileCard>
+      <div className="grid grid-cols-2 gap-10 p-10">
+        {certificates?.map((cer) => (
+          <ProfileCard
+            startDate={cer.start_date}
+            endDate={cer.end_date}
+            handleDelete={(e: React.MouseEvent<HTMLButtonElement>) =>
+              handleDeleteCertificate(e, cer.id.toString())
+            }
+            handleEdit={() =>
+              navigate(`/userSettings/profile/certificates/${cer.id}`)
+            }
+            key={cer.id}
+            title={cer.title}
+          >
+            {cer.issuing_organization}
+            <br />
+            <a
+              href={cer.media}
+              className="rounded-md bg-main px-3 py-1 text-white"
+            >
+              View certificate
+            </a>
+          </ProfileCard>
+        ))}
       </div>
-      {/* <div
-        className={`${volunteerings?.length === 0 ? "self-center" : "self-end"}`}
+      <div
+        className={`${certificates?.length === 0 ? "self-center" : "self-end"}`}
       >
         <Button
           className="px-3"
-          onClick={() => navigate("/userSettings/profile/volunteering/0")}
+          onClick={() => navigate("/userSettings/profile/certificates/0")}
         >
-          {`${volunteerings?.length === 0 ? "Add new" : "Add more"}`}
+          {`${certificates?.length === 0 ? "Add new" : "Add more"}`}
         </Button>
-      </div> */}
+      </div>
     </div>
   );
 }
