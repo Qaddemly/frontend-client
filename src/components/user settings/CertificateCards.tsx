@@ -41,8 +41,15 @@ function CertificateCards() {
             naviagate(`/userSettings/profile/certificate/${cer.id}`)
           }
           key={cer.id}
-          title={cer.t}
-        ></ProfileCard>
+          title={cer.title}
+        >
+          <p className="text-gray-600">{cer.issuing_organization}</p>
+          <div className="mt-3">
+            <span className="text-blue-600 bg-blue-100 rounded-full py-1 text-sm font-medium">
+              {cer.media}
+            </span>
+          </div>
+        </ProfileCard>
       ))}
     </div>
   );

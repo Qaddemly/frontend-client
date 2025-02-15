@@ -9,6 +9,7 @@ import { IReview } from "./BusinessAccount.interfaces";
 import { IJobApplication } from "./BusinessDashboard.interfaces";
 import { IResponse } from "./Common.interfaces";
 import { IJob } from "./Job.interfaces";
+import { ICertificate, IProject } from "./Profile.interfaces";
 
 export interface IUserInfo {
   // Personal
@@ -50,6 +51,8 @@ export interface IUser {
   business_roles: IBusinessRoles[];
   job_applications: IJobApplication[]; // need interafce
   saved_job: IJob[];
+  certificate: ICertificate[];
+  project: IProject[];
 }
 export interface IExperience {
   id: number;

@@ -52,7 +52,7 @@ function Certificates() {
   const submitForm: SubmitHandler<ICertificate> = async (data) => {
     try {
       await updateCertificate({ data, id: expId || "" }).unwrap();
-      toast.success("Profile updated successfully");
+      toast.success("Certificate updated successfully");
     } catch (error) {
       handleApiError(error);
     }
