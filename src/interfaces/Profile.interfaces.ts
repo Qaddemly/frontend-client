@@ -61,3 +61,18 @@ export interface IAddNewLanguageResponse {
   success: boolean;
   skills: ILanguages[];
 }
+
+export interface ICertificate {
+  id: number;
+  title: string;
+  issuing_organization: string;
+  start_date: string;
+  end_date: string;
+  account_id: number;
+  media: string;
+}
+
+export interface ICertificateResponse {
+  success: boolean;
+  certificate: ICertificate;
+}
