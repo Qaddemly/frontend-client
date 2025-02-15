@@ -36,11 +36,12 @@ export interface IUpdatePersonalResponse {
   success: boolean;
   updatedUser: IUser;
 }
-export interface IUpdateExperienceResponse {
+export interface IExperienceResponse {
   success: boolean;
   experience: IExperience;
 }
-export interface IUpdateEducationResponse {
+
+export interface IEducationResponse {
   success: boolean;
   education: IEducation;
 }
@@ -70,6 +71,10 @@ export interface IGetVolunteeringsResponse {
   success: boolean;
   volunteerings: IVolunteering[];
 }
+export interface IGetVolunteeringResponse {
+  success: boolean;
+  volunteering: IVolunteering;
+}
 export interface IUpdateVolunteeringResponse {
   success: boolean;
   volunteering: IVolunteering;
@@ -88,6 +93,10 @@ export interface ICertificate {
 export interface ICertificateResponse {
   success: boolean;
   certificate: ICertificate;
+}
+export interface IGetAllCertificatesResponse {
+  success: boolean;
+  certificates: ICertificate[];
 }
 
 export interface IAccount {
@@ -111,4 +120,9 @@ export interface IProject {
 export interface IProjectResponse {
   success: boolean;
   project: IProject;
+}
+
+export interface IGetAllProjectsResponse {
+  success: boolean;
+  projects: IProject[];
 }

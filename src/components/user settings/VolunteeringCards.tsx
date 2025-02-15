@@ -60,7 +60,7 @@ function VolunteeringCards() {
       >
         <Button
           className="px-3"
-          onClick={() => navigate("/userSettings/profile/volunteerings/0")}
+          onClick={() => navigate("/userSettings/profile/volunteering/0")}
         >
           {`${volunteerings?.length === 0 ? "Add new" : "Add more"}`}
         </Button>

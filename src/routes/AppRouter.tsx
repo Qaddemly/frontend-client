@@ -5,7 +5,6 @@ import Signup from "../pages/Signup";
 import UserInfo from "../pages/UserInfo";
 import EmailVerfiy from "../pages/EmailVerfiy";
 import Personal from "../components/user settings/Personal";
-
 import ForgetPassword from "../pages/ForgetPassword";
 import SetNewPassword from "../pages/SetNewPassword";
 import { Toaster } from "react-hot-toast";
@@ -38,11 +37,12 @@ import Education from "../components/user settings/Education";
 import Experience from "../components/user settings/Experience";
 import MySkills from "../components/user settings/MySkills";
 import ProjectCards from "../components/user settings/ProjectCards";
-import Projects from "../components/user settings/Projects";
 import CertificateCards from "../components/user settings/CertificateCards";
 import Certificates from "../components/user settings/Certificates";
 import VolunteeringCards from "../components/user settings/VolunteeringCards";
 import Volunteering from "../components/user settings/Volunteering";
+import Projects from "../components/user settings/Projects";
+import EducationCards from "../components/user settings/EducationCards";
 
 const router = createBrowserRouter([
   {
@@ -69,7 +69,8 @@ const router = createBrowserRouter([
         element: <Profile />,
         children: [
           { path: "personal", element: <Personal /> },
-          { path: "education", element: <Education /> },
+          { path: "education", element: <EducationCards /> },
+          { path: "education/:eduId", element: <Education /> },
           { path: "experience", element: <ExperienceCards /> },
           { path: "experience/:expId", element: <Experience /> },
           { path: "projects", element: <ProjectCards /> },

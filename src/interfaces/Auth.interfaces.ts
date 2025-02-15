@@ -66,6 +66,7 @@ export interface IExperience {
   end_date: string;
 }
 export interface IEducation {
+  id: number;
   account_id: number;
   university: string;
   field_of_study: string;

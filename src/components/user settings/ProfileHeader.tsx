@@ -21,7 +21,7 @@ function ProfileHeader() {
           />
           <NavbarLink
             to="/userSettings/profile/education"
-            content="Education"
+            content="Educations"
             icon={faBookOpen}
           />
           <NavbarLink
@@ -31,7 +31,7 @@ function ProfileHeader() {
           />
           <NavbarLink
             to="/userSettings/profile/my-skills"
-            content="My Skills"
+            content="Skills"
             icon={faListCheck}
           />
           <NavbarLink
