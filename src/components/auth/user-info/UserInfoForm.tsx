@@ -61,7 +61,7 @@ function UserInfoForm() {
         Object.entries(filteredData).filter(([key]) => key !== "address"),
       );
     }
-    if (data.phone.number.toString() === "") {
+    if (data.phone.phone_number.toString() === "") {
       filteredData = Object.fromEntries(
         Object.entries(filteredData).filter(([key]) => key !== "phone"),
       );
