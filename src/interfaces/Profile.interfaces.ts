@@ -73,4 +73,42 @@ export interface IGetVolunteeringsResponse {
 export interface IUpdateVolunteeringResponse {
   success: boolean;
   volunteering: IVolunteering;
+=======
+
+export interface ICertificate {
+  id: number;
+  title: string;
+  issuing_organization: string;
+  start_date: string;
+  end_date: string;
+  account_id: number;
+  media: string;
+}
+
+export interface ICertificateResponse {
+  success: boolean;
+  certificate: ICertificate;
+}
+
+export interface IAccount {
+  id: number;
+}
+
+export interface IProject {
+  id: number;
+  name: string;
+  account: IAccount;
+  description: string;
+  skills: string[];
+  start_date: string;
+  end_date: string;
+  still_working: boolean;
+  link: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface IProjectResponse {
+  success: boolean;
+  project: IProject;
 }

@@ -42,6 +42,7 @@ import Projects from "../components/user settings/Projects";
 import CertificateCards from "../components/user settings/CertificateCards";
 import Certificates from "../components/user settings/Certificates";
 import VolunteeringCards from "../components/user settings/VolunteeringCards";
+import Volunteering from "../components/user settings/Volunteering";
 
 const router = createBrowserRouter([
   {
@@ -76,6 +77,7 @@ const router = createBrowserRouter([
           { path: "certificates", element: <CertificateCards /> },
           { path: "certificates/:certificateId", element: <Certificates /> },
           { path: "volunteering", element: <VolunteeringCards /> },
+          { path: "volunteering/:volunteerId", element: <Volunteering /> },
           { path: "my-skills", element: <MySkills /> },
         ],
       },

@@ -4,8 +4,10 @@ import {
   IAddNewSkillResponse,
   IAddNewVolunteeringResponse,
   IAddResumeResponse,
+  ICertificateResponse,
   IGetAllResumesResponse,
   IGetUserResponse,
+  IProjectResponse,
   IUpdateEducationResponse,
   IUpdateExperienceInputs,
   IUpdateExperienceResponse,
@@ -149,6 +151,56 @@ export const profileApi = apiSlice.injectEndpoints({
         url: `${BASE_USER_URL}/volunteering/${id}`,
         method: "PUT",
         body: data,
+    createCertificate: builder.mutation<
+      ICertificateResponse,
+      { certificates: FormData }
+    >({
+      query: ({ certificates }) => ({
+        url: `${BASE_USER_URL}/createCertificate`,
+        method: "POST",
+        body: certificates,
+      }),
+    }),
+    updateCertificate: builder.mutation<
+      ICertificateResponse,
+      { data: FormData; id: string }
+    >({
+      query: ({ data, id }) => ({
+        url: `${BASE_USER_URL}/updateCertificate/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    deleteCertificate: builder.mutation<void, { id: string }>({
+      query: (id) => ({
+        url: `${BASE_USER_URL}/deleteCertificate/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    addProject: builder.mutation<IProjectResponse, { projects: FormData }>({
+      query: ({ projects }) => ({
+        url: `${BASE_USER_URL}/project`,
+        method: "POST",
+        body: projects,
+      }),
+    }),
+    getAllProjects: builder.query<IProjectResponse, { id: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/project/${id}`,
+        method: "GET",
+      }),
+    }),
+    deleteProject: builder.mutation({
+      query: (id) => ({
+        url: `${BASE_USER_URL}/project/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    updateProject: builder.mutation<IProjectResponse, { id: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/project/${id}`,
+        method: "PUT",
+        body: id,
       }),
     }),
   }),
@@ -171,4 +223,11 @@ export const {
   useAddNewLanguageMutation,
   useDeleteSkillMutation,
   useDeleteLanguageMutation,
+  useCreateCertificateMutation,
+  useUpdateCertificateMutation,
+  useDeleteCertificateMutation,
+  useAddProjectMutation,
+  useDeleteProjectMutation,
+  useGetAllProjectsQuery,
+  useUpdateProjectMutation,
 } = profileApi;

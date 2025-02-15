@@ -78,7 +78,7 @@ function Volunteering() {
           </label>
           <textarea
             {...register("description")}
-            className={`min-h-28 rounded-md border-2 border-gray-300 p-5 outline-none`}
+            className={`min-h-28 rounded-md border-2 border-gray-200 p-5 outline-none`}
             placeholder="Ex: I raised funds for our annul charity 5K."
           />
         </div>
