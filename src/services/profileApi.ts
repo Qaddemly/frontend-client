@@ -151,6 +151,8 @@ export const profileApi = apiSlice.injectEndpoints({
         url: `${BASE_USER_URL}/volunteering/${id}`,
         method: "PUT",
         body: data,
+      }),
+    }),
     createCertificate: builder.mutation<
       ICertificateResponse,
       { certificates: FormData }

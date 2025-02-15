@@ -73,7 +73,7 @@ export interface IGetVolunteeringsResponse {
 export interface IUpdateVolunteeringResponse {
   success: boolean;
   volunteering: IVolunteering;
-=======
+}
 
 export interface ICertificate {
   id: number;

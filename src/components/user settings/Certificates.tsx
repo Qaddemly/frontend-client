@@ -12,8 +12,8 @@ import {
 import { createFormData, handleApiError } from "../../utils/helpers";
 import toast from "react-hot-toast";
 import Loader from "../common/Loader";
-import { ICertificate } from "../../interfaces/Profile.interfaces";
 import { useParams } from "react-router-dom";
+import { ICertificate } from "../../interfaces/Profile.interfaces";
 
 type CertificateStatus = "update" | "create";
 
