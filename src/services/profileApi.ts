@@ -240,6 +240,7 @@ export const {
   useDeleteExperienceMutation,
   useDeleteVolunteeringMutation,
   useGetVolunteeringQuery,
+  useUpdateVolunteeringMutation,
   useAddNewExperienceMutation,
   useAddNewSkillMutation,
   useAddNewLanguageMutation,

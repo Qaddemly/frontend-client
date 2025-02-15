@@ -8,6 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   useAddNewVolunteeringMutation,
   useGetVolunteeringQuery,
+  useUpdateVolunteeringMutation,
 } from "../../services/profileApi";
 import toast from "react-hot-toast";
 import Loader from "../common/Loader";
@@ -29,6 +30,8 @@ function Volunteering() {
     { id: volunteerId || "" },
     { skip: volunteeringStatus === "create" }, // skip the query if the status is create
   );
+  const [updateVolunteering, { isLoading: isLoading3 }] =
+    useUpdateVolunteeringMutation();
 
   const volunteering = data?.volunteering;
 
@@ -36,21 +39,33 @@ function Volunteering() {
   const { register, handleSubmit, reset } = methods;
 
   const submitForm: SubmitHandler<IVolunteeringInputs> = async (data) => {
-    if (
-      data.description &&
-      data.organization &&
-      data.role &&
-      data.start_date &&
-      data.end_date
-    ) {
+    if (volunteeringStatus === "update") {
       try {
-        await addNewVolunteering({
-          data,
+        await updateVolunteering({
+          id: volunteerId || "",
+          data: data,
         }).unwrap();
-        toast.success("Profile updated successfully");
-        navigate("/userSettings/profile/volunteering");
+        toast.success("Volunteering updated successfully");
       } catch (error) {
         handleApiError(error);
+      }
+    } else {
+      if (
+        data.description &&
+        data.organization &&
+        data.role &&
+        data.start_date &&
+        data.end_date
+      ) {
+        try {
+          await addNewVolunteering({
+            data,
+          }).unwrap();
+          toast.success("Profile updated successfully");
+          navigate("/userSettings/profile/volunteering");
+        } catch (error) {
+          handleApiError(error);
+        }
       }
     }
   };
@@ -66,7 +81,7 @@ function Volunteering() {
       });
   }, [reset, volunteering, methods, volunteeringStatus]);
 
-  if (isLoading1 || isLoading2) return <Loader />;
+  if (isLoading1 || isLoading2 || isLoading3) return <Loader />;
 
   return (
     <FormProvider {...methods}>
