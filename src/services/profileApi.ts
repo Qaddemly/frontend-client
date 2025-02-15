@@ -2,6 +2,7 @@ import { IEducation } from "../interfaces/Auth.interfaces";
 import {
   IAddNewLanguageResponse,
   IAddNewSkillResponse,
+  IAddNewVolunteeringResponse,
   IAddResumeResponse,
   ICertificateResponse,
   IGetAllResumesResponse,
@@ -11,6 +12,9 @@ import {
   IUpdateExperienceInputs,
   IUpdateExperienceResponse,
   IUpdatePersonalResponse,
+  IGetVolunteeringsResponse,
+  IUpdateVolunteeringResponse,
+  IVolunteeringInputs,
 } from "../interfaces/Profile.interfaces";
 import { apiSlice } from "./apiSlice";
 
@@ -117,6 +121,36 @@ export const profileApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    addNewVolunteering: builder.mutation<
+      IAddNewVolunteeringResponse,
+      { data: IVolunteeringInputs }
+    >({
+      query: ({ data }) => ({
+        url: `${BASE_USER_URL}/volunteering`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getAllVolunteerings: builder.query<IGetVolunteeringsResponse, void>({
+      query: () => ({
+        url: `${BASE_USER_URL}/myVolunteerings`,
+        method: "GET",
+      }),
+    }),
+    deleteVolunteering: builder.mutation({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/volunteering/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    updateVolunteering: builder.mutation<
+      IUpdateVolunteeringResponse,
+      { data: IVolunteeringInputs; id: string }
+    >({
+      query: ({ data, id }) => ({
+        url: `${BASE_USER_URL}/volunteering/${id}`,
+        method: "PUT",
+        body: data,
     createCertificate: builder.mutation<
       ICertificateResponse,
       { certificates: FormData }
@@ -177,10 +211,13 @@ export const {
   useUpdatePersonalMutation,
   useUpdateExperienceMutation,
   useUpdateEducationMutation,
+  useAddNewVolunteeringMutation,
   useGetAllResumesQuery,
+  useGetAllVolunteeringsQuery,
   useAddResumeMutation,
   useDeleteResumeMutation,
   useDeleteExperienceMutation,
+  useDeleteVolunteeringMutation,
   useAddNewExperienceMutation,
   useAddNewSkillMutation,
   useAddNewLanguageMutation,

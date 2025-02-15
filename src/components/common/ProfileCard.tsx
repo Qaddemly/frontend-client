@@ -20,7 +20,7 @@ function ProfileCard({
   return (
     <div className="max-w-[20rem] rounded-2xl border border-gray-200 bg-white p-8 shadow-md hover:shadow-lg">
       <h2 className="text-gray-900 text-xl font-semibold">{title}</h2>
-      {children}
+      <p className="pt-2 text-gray-600">{children}</p>
       <div className="mt-3 flex items-center gap-5 text-sm text-gray-700">
         <div>
           <p>

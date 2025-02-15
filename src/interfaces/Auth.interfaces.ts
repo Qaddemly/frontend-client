@@ -98,6 +98,17 @@ export interface ILanguages {
   name: Languages;
   account_id: number;
 }
+export interface IVolunteering {
+  account: { id: number };
+  organization: string;
+  role: string;
+  description: string;
+  start_date: string;
+  end_date: string;
+  id: number;
+  created_at: string;
+  updated_at: string;
+}
 
 //////////////////////////////////////////////////////////////////////////////
 // Api Request Interfaces
