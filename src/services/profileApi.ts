@@ -6,6 +6,7 @@ import {
   ICertificateResponse,
   IGetAllResumesResponse,
   IGetUserResponse,
+  IProjectResponse,
   IUpdateEducationResponse,
   IUpdateExperienceInputs,
   IUpdateExperienceResponse,
@@ -142,6 +143,32 @@ export const profileApi = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
+    addProject: builder.mutation<IProjectResponse, { projects: FormData }>({
+      query: ({ projects }) => ({
+        url: `${BASE_USER_URL}/project`,
+        method: "POST",
+        body: projects,
+      }),
+    }),
+    getAllProjects: builder.query<IProjectResponse, { id: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/project/${id}`,
+        method: "GET",
+      }),
+    }),
+    deleteProject: builder.mutation({
+      query: (id) => ({
+        url: `${BASE_USER_URL}/project/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    updateProject: builder.mutation<IProjectResponse, { id: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/project/${id}`,
+        method: "PUT",
+        body: id,
+      }),
+    }),
   }),
 });
 
@@ -162,4 +189,8 @@ export const {
   useCreateCertificateMutation,
   useUpdateCertificateMutation,
   useDeleteCertificateMutation,
+  useAddProjectMutation,
+  useDeleteProjectMutation,
+  useGetAllProjectsQuery,
+  useUpdateProjectMutation,
 } = profileApi;

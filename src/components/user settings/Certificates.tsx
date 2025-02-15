@@ -62,7 +62,6 @@ function Certificates() {
   };
 
   if (isLoading1 || isLoading2) return <Loader />;
-
   return (
     <FormProvider {...methods}>
       <form
