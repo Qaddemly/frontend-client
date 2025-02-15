@@ -116,3 +116,8 @@ export interface IProjectResponse {
   success: boolean;
   project: IProject;
 }
+
+export interface IGetAllProjectsResponse {
+  success: boolean;
+  projects: IProject[];
+}

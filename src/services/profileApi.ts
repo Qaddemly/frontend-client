@@ -16,6 +16,8 @@ import {
   IUpdateVolunteeringResponse,
   IVolunteeringInputs,
   IGetVolunteeringResponse,
+  IGetAllProjectsResponse,
+  IProject,
 } from "../interfaces/Profile.interfaces";
 import { apiSlice } from "./apiSlice";
 
@@ -186,30 +188,40 @@ export const profileApi = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
-    addProject: builder.mutation<IProjectResponse, { projects: FormData }>({
-      query: ({ projects }) => ({
+    addProject: builder.mutation<IProjectResponse, { data: IProject }>({
+      query: ({ data }) => ({
         url: `${BASE_USER_URL}/project`,
         method: "POST",
-        body: projects,
+        body: data,
       }),
     }),
-    getAllProjects: builder.query<IProjectResponse, { id: string }>({
+    getAllProjects: builder.query<IGetAllProjectsResponse, void>({
+      query: () => ({
+        url: `${BASE_USER_URL}/myProjects`,
+        method: "GET",
+      }),
+    }),
+    getProject: builder.query<IProjectResponse, { id: string }>({
       query: ({ id }) => ({
         url: `${BASE_USER_URL}/project/${id}`,
         method: "GET",
       }),
     }),
+
     deleteProject: builder.mutation({
-      query: (id) => ({
+      query: ({ id }) => ({
         url: `${BASE_USER_URL}/project/${id}`,
         method: "DELETE",
       }),
     }),
-    updateProject: builder.mutation<IProjectResponse, { id: string }>({
-      query: ({ id }) => ({
+    updateProject: builder.mutation<
+      IProjectResponse,
+      { data: IProject; id: string }
+    >({
+      query: ({ id, data }) => ({
         url: `${BASE_USER_URL}/project/${id}`,
         method: "PUT",
-        body: id,
+        body: data,
       }),
     }),
   }),
@@ -239,5 +251,6 @@ export const {
   useAddProjectMutation,
   useDeleteProjectMutation,
   useGetAllProjectsQuery,
+  useGetProjectQuery,
   useUpdateProjectMutation,
 } = profileApi;

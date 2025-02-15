@@ -38,11 +38,11 @@ import Education from "../components/user settings/Education";
 import Experience from "../components/user settings/Experience";
 import MySkills from "../components/user settings/MySkills";
 import ProjectCards from "../components/user settings/ProjectCards";
-import Projects from "../components/user settings/Projects";
 import CertificateCards from "../components/user settings/CertificateCards";
 import Certificates from "../components/user settings/Certificates";
 import VolunteeringCards from "../components/user settings/VolunteeringCards";
 import Volunteering from "../components/user settings/Volunteering";
+import Projects from "../components/user settings/Projects";
 
 const router = createBrowserRouter([
   {

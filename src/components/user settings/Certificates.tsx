@@ -31,8 +31,6 @@ function Certificates() {
     useUpdateCertificateMutation();
 
   const submitForm: SubmitHandler<ICertificate> = async (data) => {
-    console.log(data);
-    console.log(certificateId === "0");
     const formData = createFormData(data as unknown as Record<string, unknown>);
     if (certificateStatus === "update") {
       try {

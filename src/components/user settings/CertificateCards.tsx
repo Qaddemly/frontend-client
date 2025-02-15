@@ -1,10 +1,8 @@
-import { useNavigate } from "react-router-dom";
-import Button from "../common/Button";
 import ProfileCard from "../common/ProfileCard";
 
 // we need api for get all certificates
 function CertificateCards() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   // const certificates = useSelector(
   //   (state: RootState) => state.user.user.certificate,
   // );
@@ -52,14 +50,16 @@ function CertificateCards() {
           <p>skills</p>
         </ProfileCard>
       </div>
-      <div className="self-end">
+      {/* <div
+        className={`${volunteerings?.length === 0 ? "self-center" : "self-end"}`}
+      >
         <Button
           className="px-3"
-          onClick={() => navigate("/userSettings/profile/certificates/0")}
+          onClick={() => navigate("/userSettings/profile/volunteering/0")}
         >
-          Add more
+          {`${volunteerings?.length === 0 ? "Add new" : "Add more"}`}
         </Button>
-      </div>
+      </div> */}
     </div>
   );
 }
