@@ -3,7 +3,6 @@ import {
   IAddNewLanguageResponse,
   IAddNewSkillResponse,
   IAddResumeResponse,
-  ICertificate,
   ICertificateResponse,
   IGetAllResumesResponse,
   IGetUserResponse,
@@ -129,7 +128,7 @@ export const profileApi = apiSlice.injectEndpoints({
     }),
     updateCertificate: builder.mutation<
       ICertificateResponse,
-      { data: ICertificate; id: string }
+      { data: FormData; id: string }
     >({
       query: ({ data, id }) => ({
         url: `${BASE_USER_URL}/updateCertificate/${id}`,
@@ -137,7 +136,7 @@ export const profileApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
-    deleteCertificate: builder.mutation({
+    deleteCertificate: builder.mutation<void, { id: string }>({
       query: (id) => ({
         url: `${BASE_USER_URL}/deleteCertificate/${id}`,
         method: "DELETE",

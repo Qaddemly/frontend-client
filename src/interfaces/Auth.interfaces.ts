@@ -43,7 +43,7 @@ export interface IUser {
   address: IAddress;
   phone: IPhone;
   experiences: IExperience[];
-  education: IEducation;
+  educations: IEducation[];
   languages: ILanguages[];
   reviews: IReview[];
   follow_businesses: string[]; // need interface
