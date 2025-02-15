@@ -4,33 +4,38 @@ import InputField from "../common/InputField";
 import StartToEndDate from "../common/StartToEndDate";
 import Button from "../common/Button";
 import { IVolunteeringInputs } from "../../interfaces/Profile.interfaces";
-import { useNavigate } from "react-router-dom";
-import { useAddNewVolunteeringMutation } from "../../services/profileApi";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  useAddNewVolunteeringMutation,
+  useGetVolunteeringQuery,
+} from "../../services/profileApi";
 import toast from "react-hot-toast";
 import Loader from "../common/Loader";
 import { handleApiError } from "../../utils/helpers";
-// import {  useParams } from "react-router-dom";
-// import { useDispatch, useSelector } from "react-redux";
-// import { RootState } from "../../store/store";
-// import { updateUserExperience } from "../auth/UserSlice";
+import { useEffect } from "react";
+
+type VolunteeringStatus = "update" | "create";
 
 function Volunteering() {
-  // const { volunteeringId } = useParams();
-  // const volunteerings = useSelector(
-  //   (state: RootState) => state.user.user.experiences,
-  // );
+  const { volunteerId } = useParams();
+
+  const volunteeringStatus: VolunteeringStatus =
+    volunteerId === "0" ? "create" : "update";
+
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
-  // const currentVolunteering = volunteerings?.find(
-  //   (exp) => exp.id.toString() === expId,
-  // );
-  const [addNewVolunteering, { isLoading }] = useAddNewVolunteeringMutation();
+  const [addNewVolunteering, { isLoading: isLoading1 }] =
+    useAddNewVolunteeringMutation();
+  const { data, isLoading: isLoading2 } = useGetVolunteeringQuery(
+    { id: volunteerId || "" },
+    { skip: volunteeringStatus === "create" }, // skip the query if the status is create
+  );
+
+  const volunteering = data?.volunteering;
 
   const methods = useForm<IVolunteeringInputs>();
-  const { register, handleSubmit } = methods;
+  const { register, handleSubmit, reset } = methods;
 
   const submitForm: SubmitHandler<IVolunteeringInputs> = async (data) => {
-    console.log(data);
     if (
       data.description &&
       data.organization &&
@@ -39,20 +44,29 @@ function Volunteering() {
       data.end_date
     ) {
       try {
-        // const res =
         await addNewVolunteering({
           data,
         }).unwrap();
         toast.success("Profile updated successfully");
         navigate("/userSettings/profile/volunteering");
-        // dispatch(updateUserVolunteering(res.volunteering));
       } catch (error) {
         handleApiError(error);
       }
     }
   };
 
-  if (isLoading) return <Loader />;
+  useEffect(() => {
+    if (volunteeringStatus === "update")
+      methods.reset({
+        organization: volunteering?.organization || "",
+        description: volunteering?.description || "",
+        role: volunteering?.role || "",
+        start_date: volunteering?.start_date || "",
+        end_date: volunteering?.end_date || "",
+      });
+  }, [reset, volunteering, methods, volunteeringStatus]);
+
+  if (isLoading1 || isLoading2) return <Loader />;
 
   return (
     <FormProvider {...methods}>
@@ -68,7 +82,6 @@ function Volunteering() {
               placeholder: "Ex: Google Developer Student Club",
               type: "text",
               id: "organization",
-              // defaultValue: currentVolunteering?.organization,
             }}
           />
         </InputField>
@@ -82,20 +95,6 @@ function Volunteering() {
             placeholder="Ex: I raised funds for our annul charity 5K."
           />
         </div>
-        {/* <InputField id="description" label="Description">
-          <Input
-            register={register}
-            name="description"
-            props={{
-              placeholder: "Ex: I raised funds for our annul charity 5K.",
-              type: "text",
-              id: "description",
-              className: "h-28",
-              // defaultValue: currentVolunteering?.description,
-            }}
-          />
-        </InputField> */}
-
         <InputField id="role" label="Role">
           <Input
             register={register}
@@ -104,7 +103,6 @@ function Volunteering() {
               placeholder: "Ex: Fundraising Volunteer",
               type: "text",
               id: "role",
-              // defaultValue: currentVolunteering?.role,
             }}
           />
         </InputField>
@@ -113,8 +111,6 @@ function Volunteering() {
           startDate="start_date"
           endDate="end_date"
           register={register}
-          // startDateDefaultValue={currentVolunteering?.start_date || ""}
-          // endDateDefaultValue={currentVolunteering?.end_date || ""}
         />
 
         <div className="mt-5 flex w-full justify-end">

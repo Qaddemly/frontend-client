@@ -15,6 +15,7 @@ import {
   IGetVolunteeringsResponse,
   IUpdateVolunteeringResponse,
   IVolunteeringInputs,
+  IGetVolunteeringResponse,
 } from "../interfaces/Profile.interfaces";
 import { apiSlice } from "./apiSlice";
 
@@ -137,6 +138,12 @@ export const profileApi = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getVolunteering: builder.query<IGetVolunteeringResponse, { id: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/volunteering/${id}`,
+        method: "GET",
+      }),
+    }),
     deleteVolunteering: builder.mutation({
       query: ({ id }) => ({
         url: `${BASE_USER_URL}/volunteering/${id}`,
@@ -220,6 +227,7 @@ export const {
   useDeleteResumeMutation,
   useDeleteExperienceMutation,
   useDeleteVolunteeringMutation,
+  useGetVolunteeringQuery,
   useAddNewExperienceMutation,
   useAddNewSkillMutation,
   useAddNewLanguageMutation,

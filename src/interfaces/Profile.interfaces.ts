@@ -70,6 +70,10 @@ export interface IGetVolunteeringsResponse {
   success: boolean;
   volunteerings: IVolunteering[];
 }
+export interface IGetVolunteeringResponse {
+  success: boolean;
+  volunteering: IVolunteering;
+}
 export interface IUpdateVolunteeringResponse {
   success: boolean;
   volunteering: IVolunteering;

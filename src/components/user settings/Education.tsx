@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 
 function Education() {
   const [updateEducation, { isLoading }] = useUpdateEducationMutation();
+  // education is array now handle this
   const currentEducation = useSelector(
     (state: RootState) => state.user.user.education,
   );
