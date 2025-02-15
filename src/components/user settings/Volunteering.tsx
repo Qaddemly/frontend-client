@@ -3,7 +3,7 @@ import Input from "../common/Input";
 import InputField from "../common/InputField";
 import StartToEndDate from "../common/StartToEndDate";
 import Button from "../common/Button";
-import { IUpdateVolunteeringInputs } from "../../interfaces/Profile.interfaces";
+import { IVolunteeringInputs } from "../../interfaces/Profile.interfaces";
 import { useNavigate } from "react-router-dom";
 import { useAddNewVolunteeringMutation } from "../../services/profileApi";
 import toast from "react-hot-toast";
@@ -24,24 +24,31 @@ function Volunteering() {
   // const currentVolunteering = volunteerings?.find(
   //   (exp) => exp.id.toString() === expId,
   // );
-  const [updateVolunteering, { isLoading }] = useAddNewVolunteeringMutation();
+  const [addNewVolunteering, { isLoading }] = useAddNewVolunteeringMutation();
 
-  const methods = useForm<IUpdateVolunteeringInputs>();
+  const methods = useForm<IVolunteeringInputs>();
   const { register, handleSubmit } = methods;
 
-  const submitForm: SubmitHandler<IUpdateVolunteeringInputs> = async (data) => {
+  const submitForm: SubmitHandler<IVolunteeringInputs> = async (data) => {
     console.log(data);
-    try {
-      // const res =
-      await updateVolunteering({
-        data,
-        // id: volunteeringId || "",
-      }).unwrap();
-      toast.success("Profile updated successfully");
-      navigate("/userSettings/profile/volunteering");
-      // dispatch(updateUserVolunteering(res.volunteering));
-    } catch (error) {
-      handleApiError(error);
+    if (
+      data.description &&
+      data.organization &&
+      data.role &&
+      data.start_date &&
+      data.end_date
+    ) {
+      try {
+        // const res =
+        await addNewVolunteering({
+          data,
+        }).unwrap();
+        toast.success("Profile updated successfully");
+        navigate("/userSettings/profile/volunteering");
+        // dispatch(updateUserVolunteering(res.volunteering));
+      } catch (error) {
+        handleApiError(error);
+      }
     }
   };
 
@@ -103,8 +110,8 @@ function Volunteering() {
         </InputField>
 
         <StartToEndDate
-          startDate="startDate"
-          endDate="endDate"
+          startDate="start_date"
+          endDate="end_date"
           register={register}
           // startDateDefaultValue={currentVolunteering?.start_date || ""}
           // endDateDefaultValue={currentVolunteering?.end_date || ""}

@@ -4,6 +4,7 @@ import {
   ILanguages,
   ISkills,
   IUser,
+  IVolunteering,
 } from "./Auth.interfaces";
 import { IResume } from "./BusinessDashboard.interfaces";
 
@@ -17,12 +18,12 @@ export interface IUpdateExperienceInputs {
   startDate: string;
   endDate: string;
 }
-export interface IUpdateVolunteeringInputs {
+export interface IVolunteeringInputs {
   organization: string;
-  description: string;
   role: string;
-  startDate: string;
-  endDate: string;
+  description: string;
+  start_date: string;
+  end_date: string;
 }
 //////////////////////////////////////////////////////////////////////////////
 // Api Response Interfaces
@@ -63,5 +64,13 @@ export interface IAddNewLanguageResponse {
 }
 export interface IAddNewVolunteeringResponse {
   success: boolean;
-  // skills: ILanguages[];
+  volunteering: IVolunteering;
+}
+export interface IGetVolunteeringsResponse {
+  success: boolean;
+  volunteerings: IVolunteering[];
+}
+export interface IUpdateVolunteeringResponse {
+  success: boolean;
+  volunteering: IVolunteering;
 }
