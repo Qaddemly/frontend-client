@@ -7,7 +7,10 @@ import Select from "../common/Select";
 import { Country, EmploymentType, LocationType } from "../../enums/index.enums";
 import { IUpdateExperienceInputs } from "../../interfaces/Profile.interfaces";
 import { useNavigate, useParams } from "react-router-dom";
-import { useUpdateExperienceMutation } from "../../services/profileApi";
+import {
+  useCreateExperienceMutation,
+  useUpdateExperienceMutation,
+} from "../../services/profileApi";
 import { useDispatch, useSelector } from "react-redux";
 import { handleApiError } from "../../utils/helpers";
 import toast from "react-hot-toast";
@@ -15,37 +18,55 @@ import Loader from "../common/Loader";
 import { updateUserExperience } from "../auth/UserSlice";
 import { RootState } from "../../store/store";
 
+type ExperienceStatus = "update" | "create";
 function Experience() {
+  const { expId } = useParams();
+  const experienceStatus: ExperienceStatus =
+    expId === "0" ? "create" : "update";
+
   const experiences = useSelector(
     (state: RootState) => state.user.user.experiences,
   );
-  const { expId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const currentExperience = experiences?.find(
     (exp) => exp.id.toString() === expId,
   );
-  const [updateExperience, { isLoading }] = useUpdateExperienceMutation();
 
-  const employmentTypeValues = Object.values(EmploymentType);
-  const locationTypeValues = Object.values(LocationType);
-  const countryValues = Object.values(Country);
+  const [createExperience, { isLoading: isLoading1 }] =
+    useCreateExperienceMutation();
+  const [updateExperience, { isLoading: isLoading2 }] =
+    useUpdateExperienceMutation();
+
+  const employmentTypeValues = Object.keys(EmploymentType);
+  const locationTypeValues = Object.keys(LocationType);
+  const countryValues = Object.keys(Country);
 
   const methods = useForm<IUpdateExperienceInputs>();
   const { register, handleSubmit } = methods;
 
   const submitForm: SubmitHandler<IUpdateExperienceInputs> = async (data) => {
-    try {
-      const res = await updateExperience({ data, id: expId || "" }).unwrap();
-      toast.success("Profile updated successfully");
-      navigate("/userSettings/profile/experience");
-      dispatch(updateUserExperience(res.experience));
-    } catch (error) {
-      handleApiError(error);
+    if (experienceStatus === "update")
+      try {
+        const res = await updateExperience({ data, id: expId || "" }).unwrap();
+        toast.success("Profile updated successfully");
+        navigate("/userSettings/profile/experience");
+        dispatch(updateUserExperience(res.experience));
+      } catch (error) {
+        handleApiError(error);
+      }
+    else {
+      try {
+        const res = await createExperience({ data }).unwrap();
+        toast.success("Experience created successfully");
+        dispatch(updateUserExperience(res.experience));
+      } catch (error) {
+        handleApiError(error);
+      }
     }
   };
 
-  if (isLoading) return <Loader />;
+  if (isLoading1 || isLoading2) return <Loader />;
 
   return (
     <FormProvider {...methods}>

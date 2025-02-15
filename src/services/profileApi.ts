@@ -8,9 +8,7 @@ import {
   IGetAllResumesResponse,
   IGetUserResponse,
   IProjectResponse,
-  IUpdateEducationResponse,
   IUpdateExperienceInputs,
-  IUpdateExperienceResponse,
   IUpdatePersonalResponse,
   IGetVolunteeringsResponse,
   IUpdateVolunteeringResponse,
@@ -19,6 +17,8 @@ import {
   IGetAllProjectsResponse,
   IProject,
   IGetAllCertificatesResponse,
+  IEducationResponse,
+  IExperienceResponse,
 } from "../interfaces/Profile.interfaces";
 import { apiSlice } from "./apiSlice";
 
@@ -26,6 +26,7 @@ const BASE_USER_URL = "/user";
 
 export const profileApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    ///////////////////////////////////////////// Personal //////////////////////////////////////////////
     getUser: builder.query<IGetUserResponse, void>({
       query: () => ({
         url: "/auth/getMe",
@@ -42,8 +43,19 @@ export const profileApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    ///////////////////////////////////////////// Experience //////////////////////////////////////////////
+    createExperience: builder.mutation<
+      IExperienceResponse,
+      { data: IUpdateExperienceInputs }
+    >({
+      query: ({ data }) => ({
+        url: `${BASE_USER_URL}/addNewExperience`,
+        method: "POST",
+        body: data,
+      }),
+    }),
     updateExperience: builder.mutation<
-      IUpdateExperienceResponse,
+      IExperienceResponse,
       { data: IUpdateExperienceInputs; id: string }
     >({
       query: ({ data, id }) => ({
@@ -52,16 +64,39 @@ export const profileApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    deleteExperience: builder.mutation({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/deleteExperience/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    ///////////////////////////////////////////// Education //////////////////////////////////////////////
+    createEducation: builder.mutation<IEducationResponse, { data: IEducation }>(
+      {
+        query: ({ data }) => ({
+          url: `${BASE_USER_URL}/addEducation`,
+          method: "POST",
+          body: data,
+        }),
+      },
+    ),
     updateEducation: builder.mutation<
-      IUpdateEducationResponse,
-      { data: IEducation }
+      IEducationResponse,
+      { data: IEducation; id: string }
     >({
-      query: ({ data }) => ({
-        url: `${BASE_USER_URL}/updateEducation`,
+      query: ({ data, id }) => ({
+        url: `${BASE_USER_URL}/updateEducation/${id}`,
         method: "PUT",
         body: data,
       }),
     }),
+    deleteEducation: builder.mutation<void, { id: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/deleteEducation/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    ///////////////////////////////////////////// Resumes //////////////////////////////////////////////
     getAllResumes: builder.query<IGetAllResumesResponse, void>({
       query: () => ({
         url: `${BASE_USER_URL}/getAllResumes`,
@@ -81,32 +116,10 @@ export const profileApi = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
-    deleteExperience: builder.mutation({
-      query: ({ id }) => ({
-        url: `${BASE_USER_URL}/deleteExperience/${id}`,
-        method: "DELETE",
-      }),
-    }),
-    addNewExperience: builder.mutation({
-      query: (data) => ({
-        url: `${BASE_USER_URL}/addNewExperience`,
-        method: "POST",
-        body: data,
-      }),
-    }),
+    ///////////////////////////////////////////// Skills //////////////////////////////////////////////
     addNewSkill: builder.mutation<IAddNewSkillResponse, { skills: string[] }>({
       query: (data) => ({
         url: `${BASE_USER_URL}/addNewSkill`,
-        method: "POST",
-        body: data,
-      }),
-    }),
-    addNewLanguage: builder.mutation<
-      IAddNewLanguageResponse,
-      { languages: string[] }
-    >({
-      query: (data) => ({
-        url: `${BASE_USER_URL}/addNewLanguage`,
         method: "POST",
         body: data,
       }),
@@ -118,6 +131,17 @@ export const profileApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    ///////////////////////////////////////////// Languages //////////////////////////////////////////////
+    addNewLanguage: builder.mutation<
+      IAddNewLanguageResponse,
+      { languages: string[] }
+    >({
+      query: (data) => ({
+        url: `${BASE_USER_URL}/addNewLanguage`,
+        method: "POST",
+        body: data,
+      }),
+    }),
     deleteLanguage: builder.mutation<void, { languagesId: number[] }>({
       query: (data) => ({
         url: `${BASE_USER_URL}/deleteLanguage`,
@@ -125,6 +149,7 @@ export const profileApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    ///////////////////////////////////////////// Volunteering //////////////////////////////////////////////
     addNewVolunteering: builder.mutation<
       IAddNewVolunteeringResponse,
       { data: IVolunteeringInputs }
@@ -163,6 +188,7 @@ export const profileApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    ///////////////////////////////////////////// Certificates //////////////////////////////////////////////
     createCertificate: builder.mutation<
       ICertificateResponse,
       { certificates: FormData }
@@ -201,6 +227,7 @@ export const profileApi = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
+    ///////////////////////////////////////////// Projects //////////////////////////////////////////////
     addProject: builder.mutation<IProjectResponse, { data: IProject }>({
       query: ({ data }) => ({
         url: `${BASE_USER_URL}/project`,
@@ -241,29 +268,40 @@ export const profileApi = apiSlice.injectEndpoints({
 });
 
 export const {
+  ////////////////////// Personal //////////////////////
   useGetUserQuery,
   useUpdatePersonalMutation,
+  ////////////////////// Experience //////////////////////
+  useCreateExperienceMutation,
   useUpdateExperienceMutation,
+  useDeleteExperienceMutation,
+  ////////////////////// Education //////////////////////
+  useCreateEducationMutation,
   useUpdateEducationMutation,
-  useAddNewVolunteeringMutation,
+  useDeleteEducationMutation,
+  ////////////////////// Resumes //////////////////////
   useGetAllResumesQuery,
-  useGetAllVolunteeringsQuery,
   useAddResumeMutation,
   useDeleteResumeMutation,
-  useDeleteExperienceMutation,
+  ////////////////////// Skills //////////////////////
+  useAddNewSkillMutation,
+  useDeleteSkillMutation,
+  ////////////////////// Languages //////////////////////
+  useAddNewLanguageMutation,
+  useDeleteLanguageMutation,
+  ////////////////////// Volunteering //////////////////////
+  useAddNewVolunteeringMutation,
+  useGetAllVolunteeringsQuery,
   useDeleteVolunteeringMutation,
   useGetVolunteeringQuery,
   useUpdateVolunteeringMutation,
-  useAddNewExperienceMutation,
-  useAddNewSkillMutation,
-  useAddNewLanguageMutation,
-  useDeleteSkillMutation,
-  useDeleteLanguageMutation,
+  ////////////////////// Certificates //////////////////////
   useCreateCertificateMutation,
   useGetAllCertificatesQuery,
   useGetCertificateQuery,
   useUpdateCertificateMutation,
   useDeleteCertificateMutation,
+  ////////////////////// Projects //////////////////////
   useAddProjectMutation,
   useDeleteProjectMutation,
   useGetAllProjectsQuery,

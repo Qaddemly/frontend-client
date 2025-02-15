@@ -4,21 +4,37 @@ import { IEducation } from "../../interfaces/Auth.interfaces";
 import InputField from "../common/InputField";
 import StartToEndDate from "../common/StartToEndDate";
 import Button from "../common/Button";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import { useEffect } from "react";
-import { useUpdateEducationMutation } from "../../services/profileApi";
+import {
+  useCreateEducationMutation,
+  useUpdateEducationMutation,
+} from "../../services/profileApi";
 import Loader from "../common/Loader";
 import { handleApiError } from "../../utils/helpers";
 import toast from "react-hot-toast";
+import { useNavigate, useParams } from "react-router-dom";
+import { updateUserEducation } from "../auth/UserSlice";
+
+type EducationStatus = "update" | "create";
 
 function Education() {
-  const [updateEducation, { isLoading }] = useUpdateEducationMutation();
-  // education is array now handle this
-  const currentEducation = useSelector(
-    (state: RootState) => state.user.user.education,
-  );
+  const { eduId } = useParams();
+  const educationsStatus: EducationStatus = eduId === "0" ? "create" : "update";
 
+  const navigate = useNavigate();
+  const educations = useSelector(
+    (state: RootState) => state.user.user.educations,
+  );
+  const [updateEducation, { isLoading: isLoading1 }] =
+    useUpdateEducationMutation();
+  const [createEducation, { isLoading: isLoading2 }] =
+    useCreateEducationMutation();
+
+  const dispatch = useDispatch();
+  const currentEducation = educations?.find(
+    (edu) => edu.id.toString() === eduId,
+  );
   const methods = useForm<IEducation>();
 
   const {
@@ -28,25 +44,25 @@ function Education() {
   } = methods;
 
   const submitForm: SubmitHandler<IEducation> = async (data) => {
-    try {
-      await updateEducation({ data }).unwrap();
-      toast.success("Profile updated successfully");
-    } catch (error) {
-      handleApiError(error);
+    if (educationsStatus === "update") {
+      try {
+        const res = await updateEducation({ data, id: eduId || "" }).unwrap();
+        toast.success("Education updated successfully");
+        navigate("/userSettings/profile/education");
+        dispatch(updateUserEducation(res.education));
+      } catch (error) {
+        handleApiError(error);
+      }
+    } else {
+      const res = await createEducation({ data }).unwrap();
+      toast.success("Education created successfully");
+      navigate("/userSettings/profile/education");
+      dispatch(updateUserEducation(res.education));
     }
   };
 
-  useEffect(() => {
-    methods.reset({
-      university: currentEducation?.university || "",
-      field_of_study: currentEducation?.field_of_study || "",
-      gpa: currentEducation?.gpa ? Number(currentEducation.gpa) : undefined,
-      start_date: currentEducation?.start_date || "",
-      end_date: currentEducation?.end_date || "",
-    });
-  }, [currentEducation, methods.reset, methods]);
+  if (isLoading1 || isLoading2) return <Loader />;
 
-  if (isLoading) return <Loader />;
   return (
     <FormProvider {...methods}>
       <form
@@ -61,6 +77,7 @@ function Education() {
               placeholder: "Ex. Tanta University",
               type: "text",
               id: "University",
+              defaultValue: currentEducation?.university,
             }}
           />
         </InputField>
@@ -73,6 +90,7 @@ function Education() {
               placeholder: "Ex. Engineering",
               type: "text",
               id: "Field of study",
+              defaultValue: currentEducation?.field_of_study,
             }}
           />
         </InputField>
@@ -90,6 +108,7 @@ function Education() {
               type: "number",
               step: "0.01",
               id: "GPA",
+              defaultValue: currentEducation?.gpa,
             }}
           />
         </InputField>
@@ -99,6 +118,8 @@ function Education() {
             startDate="start_date"
             endDate="end_date"
             register={register}
+            startDateDefaultValue={currentEducation?.start_date}
+            endDateDefaultValue={currentEducation?.end_date}
           />
         </div>
 

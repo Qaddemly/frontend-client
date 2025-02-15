@@ -25,10 +25,16 @@ const userSlice = createSlice({
       });
     },
     updateUserEducation: (state, action: PayloadAction<IEducation>) => {
-      state.user.education = action.payload;
+      state.user.educations = state.user.educations.map((edu) => {
+        if (edu.id === action.payload.id) {
+          return action.payload;
+        }
+        return edu;
+      });
     },
   },
 });
 
-export const { setUser, updateUserExperience } = userSlice.actions;
+export const { setUser, updateUserExperience, updateUserEducation } =
+  userSlice.actions;
 export default userSlice.reducer;

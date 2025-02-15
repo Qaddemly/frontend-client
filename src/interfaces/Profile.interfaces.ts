@@ -36,11 +36,12 @@ export interface IUpdatePersonalResponse {
   success: boolean;
   updatedUser: IUser;
 }
-export interface IUpdateExperienceResponse {
+export interface IExperienceResponse {
   success: boolean;
   experience: IExperience;
 }
-export interface IUpdateEducationResponse {
+
+export interface IEducationResponse {
   success: boolean;
   education: IEducation;
 }

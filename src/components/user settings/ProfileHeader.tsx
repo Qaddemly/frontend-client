@@ -21,7 +21,7 @@ function ProfileHeader() {
           />
           <NavbarLink
             to="/userSettings/profile/education"
-            content="Education"
+            content="Educations"
             icon={faBookOpen}
           />
           <NavbarLink
