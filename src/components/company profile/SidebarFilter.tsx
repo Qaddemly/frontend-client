@@ -2,24 +2,22 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../common/Button";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { ReactNode } from "react";
-import Select from "../common/Select";
-import { Country, LocationType } from "../../enums/index.enums";
 
 type SidebarFilterProps = {
   isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   title: string;
   children: ReactNode;
+  handleResetAll?: () => void;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function SidebarFilter({
   isOpen,
-  setIsOpen,
   title,
   children,
+  handleResetAll,
+  setIsOpen,
 }: SidebarFilterProps) {
-  const locationTypeValues = Object.values(LocationType);
-  const countryValues = Object.values(Country);
   return (
     <div>
       <div
@@ -39,35 +37,11 @@ function SidebarFilter({
 
         <div className="flex items-center justify-between font-medium">
           <p className="text-xl text-gray-700">{title}</p>
-          <p className="text-main">Reset all</p>
+          <button onClick={handleResetAll} className="text-main">
+            Reset all
+          </button>
         </div>
-        <div className="mt-6 flex flex-col gap-5 font-semibold">
-          <Select
-            isFilter={true}
-            label="Location type"
-            // name="experience.locationType"
-            id="locationType"
-          >
-            {locationTypeValues.map((value) => (
-              <option value={value} key={value}>
-                {value}
-              </option>
-            ))}
-          </Select>
-          <Select
-            isFilter={true}
-            label="Location"
-            // name="experience.locationType"
-            id="locationType"
-          >
-            {countryValues.map((value) => (
-              <option value={value} key={value}>
-                {value}
-              </option>
-            ))}
-          </Select>
-          {children}
-        </div>
+        <div className="mt-6 flex flex-col gap-5 font-semibold">{children}</div>
       </div>
     </div>
   );

@@ -7,23 +7,49 @@ import SidebarFilter from "../components/company profile/SidebarFilter";
 import Footer from "../components/home/Footer";
 import Navbar from "../components/home/Navbar";
 import { faSliders } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import JobCard from "../components/common/JobCard";
-import { EmploymentType } from "../enums/index.enums";
-import { useGetAllJobsQuery } from "../services/jobApi";
+import { Country, EmploymentType, LocationType } from "../enums/index.enums";
+import { useLazyGetAllJobsQuery } from "../services/jobApi";
 import Loader from "../components/common/Loader";
 
 function FindJob() {
-  const employmentTypeValues = Object.values(EmploymentType);
-  const [isOpen, setIsOpen] = useState(false);
+  const locationTypeValues = Object.values(LocationType);
+  const countryValues = Object.keys(Country);
+  const employmentTypeValues = Object.keys(EmploymentType);
 
-  const { data, isLoading } = useGetAllJobsQuery({});
+  const [isOpen, setIsOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const [locationType, setLocationType] = useState("");
+  const [location, setLocation] = useState("");
+  const [employmentType, setEmploymentType] = useState("");
+  // const [industryType, setIndustryType] = useState("");
+  const [salary, setSalary] = useState(0);
+  const [query, setQuery] = useState("");
+
+  const [fetchJobs, { data, isLoading }] = useLazyGetAllJobsQuery();
+
+  function handleFilters() {
+    setQuery(search);
+    fetchJobs({ locationType, employmentType, salary });
+  }
+
+  function handleReset() {
+    setLocation("");
+    setLocationType("");
+    setEmploymentType("");
+    setSalary(0);
+  }
+
+  useEffect(() => {
+    fetchJobs({ locationType, employmentType, salary });
+  }, [fetchJobs]);
 
   if (isLoading) return <Loader />;
   return (
     <>
       <Navbar />
-      <div className="flex">
+      <div className="flex min-h-screen">
         <div className="w-full bg-background pb-20">
           {/* Heading and search bar */}
           <div className="mx-6 max-w-5xl px-7 py-10 md:mx-4">
@@ -32,7 +58,16 @@ function FindJob() {
             </h2>
             <p className="mt-2 text-gray-600">Get access to millions of jobs</p>
             <div className="flex items-center gap-5 py-6">
-              <SearchBar placeholder="Find your job" buttonName="Find jobs" />
+              <SearchBar
+                placeholder="Find your job"
+                buttonName="Find jobs"
+                search={search}
+                setSearch={setSearch}
+                onClick={() => {
+                  setQuery(search);
+                  fetchJobs({ search: query });
+                }}
+              />
               {!isOpen && (
                 <Button
                   className="flex items-center gap-2 border border-gray-100 bg-white p-2 text-lg text-main hover:bg-main hover:text-white"
@@ -58,6 +93,9 @@ function FindJob() {
             <div
               className={`mt-8 grid gap-6 ${isOpen ? "grid-cols-1 sm:grid-cols-2 md:grid-cols-2" : "grid-cols-1 sm:grid-cols-2 md:grid-cols-3"}`}
             >
+              {data?.jobs.data.length === 0 && (
+                <p className="italic text-gray-300">No jobs founded</p>
+              )}
               {data?.jobs?.data.map((job) => (
                 <JobCard key={job.id} job={job} />
               ))}
@@ -67,26 +105,83 @@ function FindJob() {
         </div>
 
         {/* Sidebar filter */}
-        <SidebarFilter setIsOpen={setIsOpen} isOpen={isOpen} title="Job filter">
-          <Select isFilter={true} label="Employment type" id="EmploymentType">
+        <SidebarFilter
+          handleResetAll={handleReset}
+          setIsOpen={setIsOpen}
+          isOpen={isOpen}
+          title="Job filter"
+        >
+          <Select
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            isFilter={true}
+            label="Location"
+            defaultValue=""
+            id="location"
+          >
+            <option value="" disabled>
+              Select a location
+            </option>
+            {countryValues.map((value) => (
+              <option value={value} key={value}>
+                {value}
+              </option>
+            ))}
+          </Select>
+          <Select
+            value={locationType}
+            onChange={(e) => setLocationType(e.target.value)}
+            isFilter={true}
+            label="Location Type"
+            id="locationType"
+            defaultValue=""
+          >
+            <option value="" disabled>
+              Select a location type
+            </option>
+            {locationTypeValues.map((value) => (
+              <option value={value} key={value}>
+                {value}
+              </option>
+            ))}
+          </Select>
+          <Select
+            value={employmentType}
+            onChange={(e) => setEmploymentType(e.target.value)}
+            isFilter={true}
+            label="Employment type"
+            id="EmploymentType"
+            defaultValue=""
+          >
+            <option value="" disabled>
+              Select a employment type
+            </option>
             {employmentTypeValues.map((value) => (
               <option value={value} key={value}>
                 {value}
               </option>
             ))}
           </Select>
-          <Select isFilter={true} label="Industry type" id="industryType">
-            {/* {locationTypeValues.map((value) => (
+          {/* <Select isFilter={true} label="Industry type" id="industryType">
+            {locationTypeValues.map((value) => (
               <option value={value} key={value}>
                 {value}
               </option>
-              ))} */}
+              ))}
             <option value="">Select industy</option>
-          </Select>
-          <Slider label="Salary" min={0} max={1000} />
+          </Select> */}
+          <Slider
+            value={salary}
+            setValue={setSalary}
+            label="Salary Greater than"
+            min={0}
+            max={10000}
+          />
 
           {/* complete the filter with backend */}
-          <Button className="my-5">Filter Jobs</Button>
+          <Button onClick={handleFilters} className="my-5">
+            Filter Jobs
+          </Button>
         </SidebarFilter>
       </div>
       <Footer />

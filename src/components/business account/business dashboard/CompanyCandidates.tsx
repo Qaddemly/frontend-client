@@ -136,7 +136,7 @@ function CompanyCandidates() {
               <tbody className="font-medium">
                 {listOfHRs?.map((candidate) => (
                   <CompanyCadidatesItem
-                    key={candidate.account_id}
+                    key={candidate.account.id}
                     candidate={candidate}
                   />
                 ))}

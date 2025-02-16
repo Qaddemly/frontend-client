@@ -25,7 +25,10 @@ function JobProfile() {
 
       <JobProfileBody>
         <JobDescriptionSection>
-          <JobDescriptionItem title="Location" content={job?.location} />
+          <JobDescriptionItem
+            title="Location"
+            content={`${job?.location.country}, ${job?.location.city}`}
+          />
           <JobDescriptionItem
             title="Full Job Description"
             content={job?.description}
@@ -54,7 +57,6 @@ function JobProfile() {
           {/* <JobDescriptionItem title="Position" content={job.position} /> */}
           <JobDescriptionItem title="Experience" content={job?.experience} />
         </JobDescriptionSection>
-
         <SimilarJobs />
       </JobProfileBody>
       <Footer />

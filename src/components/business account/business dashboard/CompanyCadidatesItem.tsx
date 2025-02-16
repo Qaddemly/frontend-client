@@ -65,12 +65,19 @@ function CompanyCadidatesItem({ candidate }: { candidate: IHRs }) {
   return (
     <tr className="border-b border-b-[#eee] hover:bg-[#eee]">
       <th className="flex items-center gap-2 px-6 py-4">
-        <FontAwesomeIcon
-          icon={faUser}
-          className="rounded-full border-2 border-gray-200 bg-gray-200 px-2 py-2"
-        />
+        {candidate.account.profile_picture ? (
+          <img
+            src={candidate.account.profile_picture}
+            className="h-10 w-10 rounded-full object-cover"
+          />
+        ) : (
+          <FontAwesomeIcon
+            icon={faUser}
+            className="rounded-full border-2 border-gray-200 bg-gray-200 px-2 py-2"
+          />
+        )}
         <span>
-          {candidate.account_first_name} {candidate.account_last_name}
+          {candidate.account.first_name} {candidate.account.last_name}
         </span>
       </th>
       <td className="px-6 py-4">
@@ -107,7 +114,7 @@ function CompanyCadidatesItem({ candidate }: { candidate: IHRs }) {
               </select>
               <Button
                 className="px-3"
-                onClick={() => handleUpdateRole(candidate.account_email, role)}
+                onClick={() => handleUpdateRole(candidate.account.email, role)}
               >
                 Update
               </Button>
@@ -144,7 +151,7 @@ function CompanyCadidatesItem({ candidate }: { candidate: IHRs }) {
               <button
                 type="button"
                 className="inline-flex items-center rounded-lg bg-danger-300 px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4"
-                onClick={() => handleDeleteRole(candidate.account_email)}
+                onClick={() => handleDeleteRole(candidate.account.email)}
               >
                 Yes, I'm sure
               </button>

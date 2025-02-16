@@ -22,6 +22,7 @@ function ApplicationsTable({
           <option value="oldest">Sort: Oldest</option>
         </select>
       </div>
+
       <div className="overflow-x-auto">
         <table className="w-full text-center">
           <thead>
@@ -50,7 +51,7 @@ function ApplicationsTable({
                   {application.resume.account.last_name}
                 </td>
                 <td className="px-6 py-4 text-sm font-normal">
-                  {application.resume.account.phone.number}
+                  {application.resume.account.phone.phone_number}
                 </td>
                 <td className="px-6 py-4 text-sm font-normal">
                   {application.resume.account.email}
