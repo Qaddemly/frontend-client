@@ -4,7 +4,6 @@ import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import UserInfo from "../pages/UserInfo";
 import EmailVerfiy from "../pages/EmailVerfiy";
-import Personal from "../components/user settings/Personal";
 import ForgetPassword from "../pages/ForgetPassword";
 import SetNewPassword from "../pages/SetNewPassword";
 import { Toaster } from "react-hot-toast";
@@ -25,24 +24,28 @@ import CompanyCandidates from "../components/business account/business dashboard
 import PostJob from "../components/job/post Job/PostJob";
 import UpdateJob from "../components/job/update job/UpdateJob";
 import CompanyJobs from "../components/business account/business dashboard/CompanyJobs";
-import SavedJob from "../components/user settings/SavedJobs";
-import ExperienceCards from "../components/user settings/ExperienceCards";
-import YourResume from "../components/user settings/YourResume";
 import UserSettings from "../pages/UserSettings";
-import AppliedJob from "../components/user settings/AppliedJobs";
 import UserProfile from "../pages/UserProfile";
 import ScrollToTop from "../components/common/ScrollToTop";
-import Profile from "../components/user settings/Profile";
-import Education from "../components/user settings/Education";
-import Experience from "../components/user settings/Experience";
-import MySkills from "../components/user settings/MySkills";
-import ProjectCards from "../components/user settings/ProjectCards";
-import CertificateCards from "../components/user settings/CertificateCards";
-import Certificates from "../components/user settings/Certificates";
-import VolunteeringCards from "../components/user settings/VolunteeringCards";
-import Volunteering from "../components/user settings/Volunteering";
-import Projects from "../components/user settings/Projects";
-import EducationCards from "../components/user settings/EducationCards";
+import NotFound from "../pages/NotFound";
+import {
+  AppliedJobs,
+  CertificateCards,
+  Certificates,
+  Education,
+  EducationCards,
+  Experience,
+  ExperienceCards,
+  MySkills,
+  Personal,
+  Profile,
+  ProjectCards,
+  Projects,
+  SavedJobs,
+  Volunteering,
+  VolunteeringCards,
+  YourResume,
+} from "../components/user settings";
 
 const router = createBrowserRouter([
   {
@@ -83,8 +86,8 @@ const router = createBrowserRouter([
         ],
       },
       { path: "resumes", element: <YourResume /> },
-      { path: "saved-jobs", element: <SavedJob /> },
-      { path: "applied-jobs", element: <AppliedJob /> },
+      { path: "saved-jobs", element: <SavedJobs /> },
+      { path: "applied-jobs", element: <AppliedJobs /> },
     ],
   },
   { path: "/emailVerfiy", element: <EmailVerfiy /> },
@@ -161,6 +164,14 @@ const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: "*",
+    element: (
+      <ProtectedRoute>
+        <NotFound />
+      </ProtectedRoute>
+    ),
   },
 ]);
 

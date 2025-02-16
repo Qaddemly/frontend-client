@@ -18,7 +18,10 @@ export interface IJob {
   title: string;
   status: string;
   description: string;
-  location: string;
+  location: {
+    country: string;
+    city: string;
+  };
   location_type: string;
   skills: string[];
   salary: number;

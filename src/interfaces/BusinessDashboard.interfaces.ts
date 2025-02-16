@@ -5,14 +5,11 @@ import { IResponse } from "./Common.interfaces";
 import { IJob } from "./Job.interfaces";
 
 export interface IHRs {
-  account_id: string;
-  account_email: string;
-  account_first_name: string;
-  account_last_name: string;
-  account_profile_picture: string;
+  id: string;
   role: string;
   created_at: string;
   updated_at: string;
+  account: IUser;
 }
 
 export interface INewRole {

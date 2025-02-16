@@ -215,6 +215,7 @@ export enum Prefixes {
   Zambia = 260,
   Zimbabwe = 263,
 }
+
 export enum Country {
   USA = "United States of America",
   Afghanistan = "Afghanistan",
@@ -387,6 +388,7 @@ export enum Country {
   Syria = "Syria",
   Thailand = "Thailand",
 }
+
 export enum Languages {
   Mandarin = "Mandarin Chinese",
   Spanish = "Spanish",
@@ -436,20 +438,22 @@ export enum Languages {
   Malagasy = "Malagasy",
   Tagalog = "Tagalog",
 }
+
 export enum EmploymentType {
-  FullTime = "Full-time",
-  PartTime = "Part-time",
-  SelfEmployed = "Self-employed",
+  FullTime = "FullTime",
+  PartTime = "PartTime",
+  SelfEmployed = "SelfEmployed",
   Freelance = "Freelance",
   Contract = "Contract",
   Internship = "Internship",
   Apprenticeship = "Apprenticeship",
   Seasonal = "Seasonal",
 }
+
 export enum LocationType {
   Remote = "Remote",
-  OnSite = "On-site",
-  Hypird = "Hypird",
+  Onsite = "Onsite",
+  Hybrid = "Hybrid",
 }
 
 export enum HrRole {

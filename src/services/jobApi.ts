@@ -14,14 +14,40 @@ export const jobApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllJobs: builder.query<
       IGetAllJobsResponse,
-      { search?: string; page?: number; limit?: number }
+      {
+        search?: string;
+        page?: number;
+        limit?: number;
+        locationType?: string;
+        employmentType?: string;
+        salary?: number;
+      }
     >({
-      query: ({ search, page, limit }) => {
+      query: ({
+        search,
+        page,
+        limit,
+        locationType,
+        employmentType,
+        salary,
+      }) => {
         const params = new URLSearchParams();
 
         if (search) params.append("search", search);
         if (page) params.append("page", page.toString());
         if (limit) params.append("limit", limit.toString());
+
+        if (locationType?.length) {
+          params.append("filter.location_type[in]", locationType);
+        }
+
+        if (employmentType?.length) {
+          params.append("filter.employment_type[in]", employmentType);
+        }
+
+        if (salary) {
+          params.append("filter.salary[gt]", salary.toString());
+        }
 
         return {
           url: `${BASE_JOB_URL}/getAllJobs${params.toString() ? `?${params.toString()}` : ""}`,
@@ -97,6 +123,7 @@ export const jobApi = apiSlice.injectEndpoints({
 export const {
   useGetJobDetailsQuery,
   useGetAllJobsQuery,
+  useLazyGetAllJobsQuery,
   useGetAllSavedJobsQuery,
   useGetJobApplicationQuery,
   useSaveJobMutation,

@@ -1,14 +1,12 @@
-import { useState } from "react";
-
 type SliderProps = {
   label: string;
   min: number;
   max: number;
+  value?: number;
+  setValue?: (value: number) => void;
 };
 
-function Slider({ label, min, max }: SliderProps) {
-  const [value, setValue] = useState(0);
-
+function Slider({ label, min, max, value, setValue = () => {} }: SliderProps) {
   return (
     <div className="relative mb-6 text-left text-light-secondary-200">
       <label>{label}</label>
