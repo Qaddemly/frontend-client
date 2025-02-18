@@ -21,14 +21,14 @@ import GoogleLogo from "../common/GoogleLogo";
 function Main() {
   return (
     <>
-      <div className="mx-6 my-20">
-        <div className="flex items-center justify-around">
-          <div className="w-1/2">
-            <p className="text-4xl font-semibold">
+      <div className="mx-6 my-20 md:my-20">
+        <div className="flex flex-col items-center justify-between gap-10 md:flex-row">
+          <div className="text-center md:w-1/2 md:text-left">
+            <p className="text-xl font-semibold md:text-4xl">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid
               provident temporibus eius odit earum.
             </p>
-            <p className="mt-6 text-sm text-gray-600">
+            <p className="mt-4 text-sm text-gray-600 md:mt-6 md:text-base">
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut in
               architecto molestiae autem enim unde tempore explicabo
             </p>
@@ -37,55 +37,34 @@ function Main() {
         </div>
       </div>
 
-      <ul className="flex items-center justify-center gap-10">
-        <li className="flex h-[6rem] w-[14rem] items-center justify-around rounded-md bg-white p-3 shadow-md">
-          <FontAwesomeIcon
-            icon={faBriefcase}
-            className="mr-3 rounded-md bg-light-secondary p-3 text-3xl text-main"
-          />
-          <div className="flex flex-col">
-            <span className="mr-3 font-bold"> 4,593,456</span>
-            <span className="block text-gray-600">Live Jobs</span>
-          </div>
-        </li>
-
-        <li className="flex h-[6rem] w-[14rem] items-center justify-around rounded-md bg-white p-3 shadow-md">
-          <FontAwesomeIcon
-            icon={faBuilding}
-            className="mr-3 rounded-md bg-main p-3 text-3xl text-light-secondary"
-          />
-          <div className="flex flex-col">
-            <span className="mr-3 font-bold"> 4,593,456</span>
-            <span className="block text-gray-600">Companies</span>
-          </div>
-        </li>
-
-        <li className="flex h-[6rem] w-[14rem] items-center justify-around rounded-md bg-white p-3 shadow-md">
-          <FontAwesomeIcon
-            icon={faUsers}
-            className="mr-3 rounded-md bg-light-secondary p-3 text-3xl text-main"
-          />
-          <div className="flex flex-col">
-            <span className="mr-3 font-bold"> 4,593,456</span>
-            <span className="block text-gray-600">Candidates</span>
-          </div>
-        </li>
-
-        <li className="flex h-[6rem] w-[14rem] items-center justify-around rounded-md bg-white p-3 shadow-md">
-          <FontAwesomeIcon
-            icon={faArrowsSpin}
-            className="mr-3 rounded-md bg-light-secondary p-3 text-3xl text-main"
-          />
-          <div className="flex flex-col">
-            <span className="mr-3 font-bold"> 4,593,456</span>
-            <span className="block text-gray-600">New Jobs</span>
-          </div>
-        </li>
+      <ul className="mx-6 grid gap-6 sm:grid-cols-1 md:mx-auto md:w-3/4 md:grid-cols-2 lg:grid-cols-4">
+        {[
+          { icon: faBriefcase, text: "Live Jobs" },
+          { icon: faBuilding, text: "Companies" },
+          { icon: faUsers, text: "Candidates" },
+          { icon: faArrowsSpin, text: "New Jobs" },
+        ].map((item, index) => (
+          <li
+            key={index}
+            className="flex h-24 items-center justify-around rounded-md bg-white p-3 shadow-md"
+          >
+            <FontAwesomeIcon
+              icon={item.icon}
+              className="mr-3 rounded-md bg-light-secondary p-3 text-3xl text-main"
+            />
+            <div className="flex flex-col">
+              <span className="mr-3 font-bold"> 4,593,456</span>
+              <span className="block text-gray-600">{item.text}</span>
+            </div>
+          </li>
+        ))}
       </ul>
 
       <div className="mt-20 flex flex-col items-center justify-center bg-light-secondary">
-        <p className="my-20 text-3xl font-bold">How Qaddemly work ?</p>
-        <div className="relative mb-32 flex justify-around px-4">
+        <p className="my-10 text-center text-2xl font-bold md:text-3xl">
+          How Qaddemly work ?
+        </p>
+        <div className="relative mx-10 mb-10 flex flex-col justify-around gap-10 md:flex-row">
           <div className="flex flex-col items-center gap-1 p-5 text-center">
             <div className="text mb-7 h-fit w-fit rounded-full bg-white px-3 py-5">
               <FontAwesomeIcon
@@ -149,16 +128,16 @@ function Main() {
       </div>
 
       <div className="bg-white p-10 pb-32">
-        <div className="mt-20 flex items-center justify-between">
-          <p className="px-7 text-2xl font-bold">Recommended Jobs</p>
-          <button className="mr-7 rounded-md border-2 border-[#eee] p-2 px-7 text-main hover:border-main hover:bg-main hover:text-white">
+        <div className="flex flex-col items-center justify-between md:flex-row">
+          <p className="text-xl font-bold md:text-2xl">Recommended Jobs</p>
+          <button className="mt-4 rounded-md border-2 border-[#eee] px-5 py-2 text-main hover:border-main hover:bg-main hover:text-white md:mt-0">
             View All <FontAwesomeIcon icon={faAnglesRight} />
           </button>
         </div>
 
         <div className="p-4">
-          <ul className="mt-5 grid grid-cols-3 gap-5 px-3">
-            <li className="border-offWhite border p-5 shadow-md">
+          <ul className="mt-5 grid grid-cols-1 gap-5 px-3 sm:grid-cols-2 lg:grid-cols-3">
+            <li className="border border-offWhite p-5 shadow-md">
               <p className="my-2 text-lg font-medium">
                 Techical Support Specialist
               </p>
@@ -191,7 +170,7 @@ function Main() {
                 </div>
               </div>
             </li>
-            <li className="border-offWhite border p-5 shadow-md">
+            <li className="border border-offWhite p-5 shadow-md">
               <p className="my-2 text-lg font-medium">
                 Techical Support Specialist
               </p>
@@ -224,7 +203,7 @@ function Main() {
                 </div>
               </div>
             </li>
-            <li className="border-offWhite border p-5 shadow-md">
+            <li className="border border-offWhite p-5 shadow-md">
               <p className="my-2 text-lg font-medium">
                 Techical Support Specialist
               </p>
@@ -257,7 +236,7 @@ function Main() {
                 </div>
               </div>
             </li>
-            <li className="border-offWhite border p-5 shadow-md">
+            <li className="border border-offWhite p-5 shadow-md">
               <p className="my-2 text-lg font-medium">
                 Techical Support Specialist
               </p>
@@ -290,7 +269,7 @@ function Main() {
                 </div>
               </div>
             </li>
-            <li className="border-offWhite border p-5 shadow-md">
+            <li className="border border-offWhite p-5 shadow-md">
               <p className="my-2 text-lg font-medium">
                 Techical Support Specialist
               </p>
@@ -323,7 +302,7 @@ function Main() {
                 </div>
               </div>
             </li>
-            <li className="border-offWhite border p-5 shadow-md">
+            <li className="border border-offWhite p-5 shadow-md">
               <p className="my-2 text-lg font-medium">
                 Techical Support Specialist
               </p>

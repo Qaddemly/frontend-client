@@ -4,8 +4,10 @@ import { RootState } from "../../store/store";
 import UserMenu from "../user settings/UserMenu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faBars,
   faBookmark,
   faFileLines,
+  faTimes,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import Logo from "../common/Logo";
@@ -22,6 +24,7 @@ function Navbar() {
     skip: Object.entries(user).length === 0,
   }); // this api can handled with getMe api instead (ask backend)
   const [showMenu, setShowMenu] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const divRef = useRef<HTMLDivElement>(null);
   const menuRef = useClickOutside<HTMLUListElement>(
     () => setShowMenu(false),
@@ -30,9 +33,9 @@ function Navbar() {
 
   return (
     <>
-      <nav className="flex items-center justify-between border-b border-b-gray-100 bg-white px-6 py-3">
+      <nav className="flex w-full items-center justify-between border-b border-gray-200 bg-white px-6 py-3 md:px-10">
         <Logo fontSize="text-4xl" />
-        <div>
+        <div className="hidden md:flex">
           <ul className="flex items-center justify-between space-x-8">
             <li>
               <NavbarLink to="/" content="Home" />
@@ -45,8 +48,48 @@ function Navbar() {
             </li>
           </ul>
         </div>
+        <button
+          className="md:hidden"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
+          <FontAwesomeIcon
+            icon={mobileMenuOpen ? faTimes : faBars}
+            className="text-2xl text-main"
+          />
+        </button>
+        {mobileMenuOpen && (
+          <div className="absolute left-0 top-16 w-full bg-white shadow-md md:hidden">
+            <ul className="flex flex-col space-y-4 p-4">
+              <li>
+                <NavbarLink to="/" content="Home" />
+              </li>
+              <li>
+                <NavbarLink to="/findJob" content="Find job" />
+              </li>
+              <li>
+                <NavbarLink to="/findCompany" content="Find company" />
+              </li>
+              {!user.is_activated && (
+                <div className="flex flex-col space-y-2">
+                  <Link
+                    to="/signup"
+                    className="rounded-md border border-main px-6 py-2 text-center text-main hover:bg-main hover:text-white"
+                  >
+                    Sign up
+                  </Link>
+                  <Link
+                    to="/login"
+                    className="rounded-md border bg-main px-6 py-2 text-center text-white hover:border-main hover:bg-white hover:text-main"
+                  >
+                    Log in
+                  </Link>
+                </div>
+              )}
+            </ul>
+          </div>
+        )}
         {!user.is_activated ? (
-          <div className="flex space-x-2">
+          <div className="hidden space-x-2 md:flex">
             <Link
               to="/signup"
               className="rounded-md border border-main px-6 py-2 text-main hover:bg-main hover:text-white"
