@@ -1,9 +1,8 @@
 function HomeIcon() {
   return (
     <svg
-      width="492"
-      height="382"
-      viewBox="0 0 492 382"
+      className="h-auto w-full max-w-[500px] md:max-w-[400px] lg:max-w-[500px]"
+      viewBox="0 0 520 382"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >

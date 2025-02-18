@@ -6,7 +6,7 @@ function ArrowDown() {
       viewBox="0 0 224 49"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="absolute left-[26rem] top-[5rem]"
+      className="absolute left-[27rem] top-[5rem] hidden lg:block"
     >
       <g opacity="0.4">
         <path
