@@ -52,8 +52,8 @@ function FindJob() {
       <div className="flex min-h-screen">
         <div className="w-full bg-background pb-20">
           {/* Heading and search bar */}
-          <div className="mx-6 max-w-5xl px-7 py-10 md:mx-4">
-            <h2 className="text-4xl text-gray-800 md:text-3xl">
+          <div className="mx-6 max-w-5xl p-20 md:mx-4">
+            <h2 className="text-4xl font-semibold text-gray-800 md:text-3xl">
               Find your dream job
             </h2>
             <p className="mt-2 text-gray-600">Get access to millions of jobs</p>
@@ -86,7 +86,7 @@ function FindJob() {
           {/*End of heading and search bar */}
 
           {/* Popular companies */}
-          <div className="mx-6 mt-5 px-7 md:mx-4">
+          <div className="px-20 md:mx-4">
             <h3 className="text-2xl text-gray-800 md:text-3xl">
               Most viewed jobs
             </h3>

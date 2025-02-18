@@ -46,6 +46,8 @@ import {
   VolunteeringCards,
   YourResume,
 } from "../components/user settings";
+import JobTracker from "../pages/JobTracker";
+import JobTrackerArchived from "../components/job/job tracker/JobTrackerArchived";
 
 const router = createBrowserRouter([
   {
@@ -165,6 +167,8 @@ const router = createBrowserRouter([
       },
     ],
   },
+  { path: "/jobTracker", element: <JobTracker /> },
+  { path: "/jobTracker/archived", element: <JobTrackerArchived /> },
   {
     path: "*",
     element: (
