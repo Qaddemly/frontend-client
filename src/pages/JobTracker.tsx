@@ -8,9 +8,9 @@ function JobTracker() {
     <>
       <Navbar />
       <div className="bg-background p-20">
-        <JobTrackerHeader />
-        <JobTrackerItem />
-        <JobTrackerItem />
+        <JobTrackerHeader userType="user" />
+        <JobTrackerItem userType="user" />
+        <JobTrackerItem userType="user" />
       </div>
       <Footer />
     </>

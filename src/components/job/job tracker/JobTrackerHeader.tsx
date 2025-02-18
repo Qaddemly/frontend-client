@@ -1,15 +1,22 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import SearchBar from "../../common/SearchBar";
 
-function JobTrackerHeader() {
+function JobTrackerHeader({ userType }: { userType: "business" | "user" }) {
+  const { companyId, jobId } = useParams();
   return (
     <div className="relative">
       <p className="text-4xl font-semibold text-gray-800">Track your jobs</p>
       <div className="mt-4 flex gap-10 pb-2">
-        <p className="font-medium">4 Total Jobs</p>
+        <p className="font-medium">
+          4 Total {userType === "user" ? "Jobs" : "Applications"}
+        </p>
         <NavLink
           end
-          to="/jobTracker"
+          to={
+            userType === "user"
+              ? `/jobTracker`
+              : `/businessDashboard/companyJobs/${companyId}/jobApplications/${jobId}/jobTracker`
+          }
           className={({ isActive }: { isActive: boolean }) =>
             `cursor-pointer border-b-4 pb-2 hover:border-main hover:text-main ${
               isActive
@@ -20,43 +27,63 @@ function JobTrackerHeader() {
         >
           Active (4)
         </NavLink>
-        <NavLink
-          end
-          to="/jobTracker/archived"
-          className={({ isActive }: { isActive: boolean }) =>
-            `cursor-pointer border-b-4 pb-2 hover:border-main hover:text-main ${
-              isActive
-                ? "border-b-main text-main"
-                : "border-b-background text-gray-600"
-            }`
-          }
-        >
-          Archived (4)
-        </NavLink>
+        {userType === "user" ? (
+          <NavLink
+            end
+            to="/jobTracker/archived"
+            className={({ isActive }: { isActive: boolean }) =>
+              `cursor-pointer border-b-4 pb-2 hover:border-main hover:text-main ${
+                isActive
+                  ? "border-b-main text-main"
+                  : "border-b-background text-gray-600"
+              }`
+            }
+          >
+            Archived (4)
+          </NavLink>
+        ) : (
+          <NavLink
+            end
+            to="/"
+            className={({ isActive }: { isActive: boolean }) =>
+              `cursor-pointer border-b-4 pb-2 hover:border-main hover:text-main ${
+                isActive
+                  ? "border-b-main text-main"
+                  : "border-b-background text-gray-600"
+              }`
+            }
+          >
+            Rejected (4)
+          </NavLink>
+        )}
       </div>
       <hr className="absolute top-[5.7rem] w-full border border-gray-200" />
 
       <div className="mt-4 flex items-center gap-5">
         <SearchBar
-          placeholder="Search for roles or companies"
+          placeholder={`Search for ${userType === "user" ? "roles or companies" : "Applicant name or email"}`}
           buttonName="Search"
-          className="flex w-[1200rem] items-center rounded-lg border border-gray-100 bg-white px-5 py-2 shadow-sm outline-none focus-within:ring-2"
+          className="flex min-w-[60%] items-center rounded-lg border border-gray-100 bg-white px-5 py-2 shadow-sm outline-none focus-within:ring-2"
           btnClassName="hidden"
         />
 
-        <select className="rounded-md border border-gray-100 px-2 py-2 text-gray-400 outline-none focus:border-secondary">
-          <option value="All">Job Type</option>
+        <select className="rounded-md border border-gray-100 px-10 py-2 text-gray-400 outline-none focus:border-secondary">
+          {userType === "user" ? (
+            <option value="All">Job Type</option>
+          ) : (
+            <option value="All">Status</option>
+          )}
         </select>
 
         <input
           placeholder="Applied from"
           type="text"
-          className="w-32 rounded-md border-gray-100 px-2 py-2"
+          className="w-full rounded-md border-gray-100 px-2 py-2"
         />
         <input
           placeholder="Applied until"
           type="text"
-          className="w-32 rounded-md border-gray-100 px-2 py-2"
+          className="w-full rounded-md border-gray-100 px-2 py-2"
         />
       </div>
     </div>
