@@ -13,9 +13,6 @@ import { faUsers } from "@fortawesome/free-solid-svg-icons";
 import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 import { faAnglesRight } from "@fortawesome/free-solid-svg-icons";
 import HomeIcon from "./HomeIcon";
-import ArrowDown from "./ArrowDown";
-import ArrowUpFirst from "./ArrowUpFirst";
-import ArrowUpSecond from "./ArrowUpSecond";
 import GoogleLogo from "../common/GoogleLogo";
 
 function Main() {
@@ -64,7 +61,7 @@ function Main() {
         <p className="my-10 text-center text-2xl font-bold md:text-3xl">
           How Qaddemly work ?
         </p>
-        <div className="relative mx-10 mb-10 flex flex-col justify-around gap-10 md:flex-row">
+        <div className="relative mx-10 mb-10 flex flex-col justify-around gap-10 lg:flex-row">
           <div className="flex flex-col items-center gap-1 p-5 text-center">
             <div className="text mb-7 h-fit w-fit rounded-full bg-white px-3 py-5">
               <FontAwesomeIcon
@@ -79,7 +76,7 @@ function Main() {
               Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quos.
             </p>
           </div>
-          <ArrowUpFirst />
+          {/* <ArrowUpFirst /> */}
           <div className="flex flex-col items-center gap-1 rounded-md bg-white p-5 text-center">
             <div className="text mb-7 h-fit w-fit rounded-full bg-main px-3 py-5">
               <FontAwesomeIcon
@@ -94,7 +91,7 @@ function Main() {
               Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quos.
             </p>
           </div>
-          <ArrowDown />
+          {/* <ArrowDown /> */}
           <div className="flex flex-col items-center gap-1 p-5 text-center">
             <div className="text mb-7 h-fit w-fit rounded-full bg-white px-3 py-5">
               <FontAwesomeIcon
@@ -109,7 +106,7 @@ function Main() {
               Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quos.
             </p>
           </div>
-          <ArrowUpSecond />
+          {/* <ArrowUpSecond /> */}
           <div className="flex flex-col items-center gap-1 rounded-md bg-white p-5 text-center">
             <div className="text mb-7 h-fit w-fit rounded-full bg-main px-3 py-5">
               <FontAwesomeIcon

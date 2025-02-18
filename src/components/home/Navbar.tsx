@@ -33,9 +33,9 @@ function Navbar() {
 
   return (
     <>
-      <nav className="flex w-full items-center justify-between border-b border-gray-200 bg-white px-6 py-3 md:px-10">
-        <Logo fontSize="text-4xl" />
-        <div className="hidden md:flex">
+      <nav className="flex w-full items-center justify-between border-b border-gray-200 bg-white px-6 py-3 lg:px-10">
+        <Logo className="text-3xl font-medium text-main lg:text-4xl" />
+        <div className="hidden lg:flex">
           <ul className="flex items-center justify-between space-x-8">
             <li>
               <NavbarLink to="/" content="Home" />
@@ -55,7 +55,7 @@ function Navbar() {
           </ul>
         </div>
         <button
-          className="md:hidden"
+          className="lg:hidden"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           <FontAwesomeIcon
@@ -64,7 +64,7 @@ function Navbar() {
           />
         </button>
         {mobileMenuOpen && (
-          <div className="absolute left-0 top-16 w-full bg-white shadow-md md:hidden">
+          <div className="absolute left-0 top-14 w-full bg-white shadow-lg lg:hidden">
             <ul className="flex flex-col space-y-4 p-4">
               <li>
                 <NavbarLink to="/" content="Home" />
@@ -75,17 +75,31 @@ function Navbar() {
               <li>
                 <NavbarLink to="/findCompany" content="Find company" />
               </li>
+              <li>
+                <Button
+                  onClick={() => setShowMenu((s) => !s)}
+                  className="border border-main bg-white px-2 text-sm text-main hover:bg-main hover:text-white lg:px-5 lg:text-base"
+                >
+                  Business
+                </Button>
+                {showMenu && (
+                  <BusinessAccountsMenu
+                    menuRef={menuRef}
+                    data={data?.businesses ?? []}
+                  />
+                )}
+              </li>
               {!user.is_activated && (
                 <div className="flex flex-col space-y-2">
                   <Link
                     to="/signup"
-                    className="rounded-md border border-main px-6 py-2 text-center text-main hover:bg-main hover:text-white"
+                    className="rounded-lg border border-main px-6 py-2 text-center text-main hover:bg-main hover:text-white"
                   >
                     Sign up
                   </Link>
                   <Link
                     to="/login"
-                    className="rounded-md border bg-main px-6 py-2 text-center text-white hover:border-main hover:bg-white hover:text-main"
+                    className="rounded-lg border bg-main px-6 py-2 text-center text-white hover:border-main hover:bg-white hover:text-main"
                   >
                     Log in
                   </Link>
@@ -95,26 +109,26 @@ function Navbar() {
           </div>
         )}
         {!user.is_activated ? (
-          <div className="hidden space-x-2 md:flex">
+          <div className="hidden space-x-2 lg:flex">
             <Link
               to="/signup"
-              className="rounded-md border border-main px-6 py-2 text-main hover:bg-main hover:text-white"
+              className="rounded-lg border border-main px-6 py-2 text-main hover:bg-main hover:text-white"
             >
               Sign up
             </Link>
             <Link
               to="/login"
-              className="rounded-md border bg-main px-6 py-2 text-white hover:border-main hover:bg-white hover:text-main"
+              className="rounded-lg border bg-main px-6 py-2 text-white hover:border-main hover:bg-white hover:text-main"
             >
               Log in
             </Link>
           </div>
         ) : (
           <div className="relative flex items-center gap-10">
-            <div>
+            <div className="hidden lg:block">
               <Button
                 onClick={() => setShowMenu((s) => !s)}
-                className="border border-main bg-white px-5 text-main hover:bg-main hover:text-white"
+                className="border border-main bg-white px-2 text-sm text-main hover:bg-main hover:text-white lg:px-5 lg:text-base"
               >
                 Business
               </Button>
@@ -132,7 +146,7 @@ function Navbar() {
                 </div>
                 <Link
                   to="/userSettings/profile/personal"
-                  className="rounded-md hover:bg-[#eee]"
+                  className="rounded-lg hover:bg-[#eee]"
                 >
                   <div className="flex items-center gap-5 px-3 py-2">
                     <FontAwesomeIcon icon={faUser} className="text-lg" />
@@ -141,7 +155,7 @@ function Navbar() {
                 </Link>
                 <Link
                   to="/userSettings/resumes"
-                  className="rounded-md hover:bg-[#eee]"
+                  className="rounded-lg hover:bg-[#eee]"
                 >
                   <div className="flex items-center gap-5 px-3 py-2">
                     <FontAwesomeIcon icon={faFileLines} className="text-lg" />
@@ -150,7 +164,7 @@ function Navbar() {
                 </Link>
                 <Link
                   to="/userSettings/saved-jobs"
-                  className="rounded-md hover:bg-[#eee]"
+                  className="rounded-lg hover:bg-[#eee]"
                 >
                   <div className="flex items-center gap-5 px-3 py-2">
                     <FontAwesomeIcon icon={faBookmark} className="text-lg" />
