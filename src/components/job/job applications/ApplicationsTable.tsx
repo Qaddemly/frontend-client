@@ -1,3 +1,4 @@
+import { useNavigate, useParams } from "react-router-dom";
 import {
   IJobApplication,
   IMeta,
@@ -10,17 +11,31 @@ function ApplicationsTable({
   meta: IMeta;
   applications: IJobApplication[];
 }) {
+  const { companyId, jobId } = useParams();
+  const navigate = useNavigate();
   return (
     <div className="rounded-lg bg-white px-8 py-5 shadow-lg">
       <div className="mb-4 flex flex-wrap items-center justify-between">
         <h3 className="text-xl font-semibold">All Applications</h3>
-        <select
-          name="Sort"
-          className="rounded-lg border-none bg-light-secondary p-2 text-sm"
-        >
-          <option value="newest">Sort: Newest</option>
-          <option value="oldest">Sort: Oldest</option>
-        </select>
+        <div className="flex gap-5">
+          <select
+            name="Sort"
+            className="rounded-lg border-none bg-light-secondary p-2 text-sm"
+          >
+            <option value="newest">Sort: Newest</option>
+            <option value="oldest">Sort: Oldest</option>
+          </select>
+          <button
+            onClick={() =>
+              navigate(
+                `/businessDashboard/companyJobs/${companyId}/jobApplications/${jobId}/jobTracker`,
+              )
+            }
+            className="rounded-lg border border-main px-3 py-1 text-sm font-medium text-main hover:bg-main hover:text-white"
+          >
+            Track this job
+          </button>
+        </div>
       </div>
 
       <div className="overflow-x-auto">
@@ -61,14 +76,14 @@ function ApplicationsTable({
                   {application.resume.account.address.city}
                 </td>
                 <td className="px-6 py-4 text-sm font-normal">
-                  <button className="mr-2 rounded-lg border border-green-100 px-3 py-1 text-sm font-medium text-green-100 hover:bg-green-200 hover:text-white">
+                  {/* <button className="mr-2 rounded-lg border border-green-100 px-3 py-1 text-sm font-medium text-green-100 hover:bg-green-200 hover:text-white">
                     Approve
                   </button>
                   <button className="mr-2 rounded-lg border border-danger-300 px-3 py-1 text-sm font-medium text-danger-300 hover:bg-danger-300 hover:text-white">
                     Deny
-                  </button>
+                  </button> */}
                   <button className="rounded-lg border border-main px-3 py-1 text-sm font-medium text-main hover:bg-main hover:text-white">
-                    ATS scan
+                    Show Profile
                   </button>
                 </td>
               </tr>

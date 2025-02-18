@@ -46,6 +46,9 @@ import {
   VolunteeringCards,
   YourResume,
 } from "../components/user settings";
+import JobTracker from "../pages/JobTracker";
+import JobTrackerArchived from "../components/job/job tracker/JobTrackerArchived";
+import JobTrackerBusiness from "../components/job/job tracker/JobTrackerBusiness";
 
 const router = createBrowserRouter([
   {
@@ -146,6 +149,7 @@ const router = createBrowserRouter([
           {
             path: "jobApplications/:jobId",
             element: <JobApplications />,
+            children: [{ path: "jobTracker", element: <JobTrackerBusiness /> }],
           },
           { path: "postjob", element: <PostJob /> },
         ],
@@ -165,6 +169,8 @@ const router = createBrowserRouter([
       },
     ],
   },
+  { path: "/jobTracker", element: <JobTracker /> },
+  { path: "/jobTracker/archived", element: <JobTrackerArchived /> },
   {
     path: "*",
     element: (

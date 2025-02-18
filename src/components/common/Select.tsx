@@ -10,7 +10,7 @@ import {
 
 type AuthSelectProps<T extends FieldValues> = {
   label?: string;
-  id: string;
+  id?: string;
   children: ReactNode;
   className?: string;
   value?: string | number | string[];
@@ -61,6 +61,7 @@ function Select<T extends FieldValues>({
         {children}
       </select>
       {errors &&
+        id &&
         id
           .split(".")
           .reduce(

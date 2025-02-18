@@ -471,3 +471,11 @@ export enum experience {
   SENIOR = "Senior",
   EXPERT = "Expert",
 }
+
+export enum JobApplicationState {
+  PENDING = "pending",
+  UNDER_REVIEW = "underReview",
+  UNDER_CONSIDERATION = "underConsideration",
+  ACCEPTED = "accepted",
+  REJECTED = "rejected",
+}

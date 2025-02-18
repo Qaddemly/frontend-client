@@ -43,6 +43,12 @@ function Navbar() {
             <li>
               <NavbarLink to="/findCompany" content="Find company" />
             </li>
+            <li>
+              <NavbarLink
+                to={["/jobTracker", "/jobTracker/archived"]}
+                content="Job Tracker"
+              />
+            </li>
           </ul>
         </div>
         {!user.is_activated ? (
