@@ -16,7 +16,7 @@ function CompanyAccount() {
   // );
   const { companyId } = useParams();
   const { data, isLoading } = useGetBusinessAccountInfoQuery({
-    id: Number(companyId),
+    id: companyId || "",
   });
   const companyInfo = data?.business;
 
@@ -45,7 +45,11 @@ function CompanyAccount() {
 
             <div className="flex items-center gap-2 text-gray-300">
               <FontAwesomeIcon icon={faPhone} />
-              <p>{companyInfo?.phone ? companyInfo.phone : "No phone added"}</p>
+              {companyInfo?.phone?.map((phone) => (
+                <p>
+                  {phone.phone_number ? phone.phone_number : "No phone added"}
+                </p>
+              ))}
             </div>
             <div className="flex items-center gap-2 text-gray-300">
               <FontAwesomeIcon icon={faLocationDot} />
@@ -58,8 +62,12 @@ function CompanyAccount() {
         <div className="flex w-full flex-col gap-5">
           <CardEmployerSettings>
             <p className="text-md font-medium">Website</p>
-            <p className="text-gray-300">
-              {companyInfo?.website ? companyInfo.website : "No websited added"}
+            <p className="text-gray-300 underline">
+              {companyInfo?.website ? (
+                <a href={companyInfo.website}>Link</a>
+              ) : (
+                "No websited added"
+              )}
             </p>
           </CardEmployerSettings>
           <CardEmployerSettings>

@@ -102,8 +102,19 @@ export const businessDashboardApi = apiSlice.injectEndpoints({
       { id: string }
     >({
       query: ({ id }) => ({
-        url: `${BASE_JOB_URL}/allJobApplicationsToOneJob/${id}`,
+        url: `${BASE_BUSINESS_URL}/jobApplication/getAllJobApplications/job/${id}`,
         method: "GET",
+      }),
+    }),
+    //////////////////////////// Dashboard Jobs Tracker ////////////////////////////////////
+    updateJobApplicationStatus: builder.mutation<
+      IResponse,
+      { jobId: string; applicationId: string; status: string }
+    >({
+      query: ({ jobId, applicationId, status }) => ({
+        url: `${BASE_BUSINESS_URL}/myBusiness/dashboard/job/${jobId}/applications/${applicationId}`,
+        method: "PUT",
+        body: { status: status },
       }),
     }),
   }),
@@ -121,4 +132,5 @@ export const {
   useMakeJobOpenedMutation,
   useUpdateJobMutation,
   useGetJobApplicationsQuery,
+  useUpdateJobApplicationStatusMutation,
 } = businessDashboardApi;

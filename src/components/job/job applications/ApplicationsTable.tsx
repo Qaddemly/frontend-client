@@ -62,18 +62,18 @@ function ApplicationsTable({
                 className="cursor-pointer border-t border-gray-100 transition hover:bg-gray-100 hover:bg-opacity-30"
               >
                 <td className="px-6 py-4 text-sm font-normal">
-                  {application.resume.account.first_name}{" "}
-                  {application.resume.account.last_name}
+                  {application.account.first_name}{" "}
+                  {application.account.last_name}
                 </td>
                 <td className="px-6 py-4 text-sm font-normal">
-                  {application.resume.account.phone.phone_number}
+                  {application.account.phone.phone_number}
                 </td>
                 <td className="px-6 py-4 text-sm font-normal">
-                  {application.resume.account.email}
+                  {application.account.email}
                 </td>
                 <td className="px-6 py-4 text-sm font-normal">
-                  {application.resume.account.address.country}{" "}
-                  {application.resume.account.address.city}
+                  {application.account.address.country}{" "}
+                  {application.account.address.city}
                 </td>
                 <td className="px-6 py-4 text-sm font-normal">
                   {/* <button className="mr-2 rounded-lg border border-green-100 px-3 py-1 text-sm font-medium text-green-100 hover:bg-green-200 hover:text-white">

@@ -473,9 +473,17 @@ export enum experience {
 }
 
 export enum JobApplicationState {
-  PENDING = "pending",
-  UNDER_REVIEW = "underReview",
-  UNDER_CONSIDERATION = "underConsideration",
-  ACCEPTED = "accepted",
-  REJECTED = "rejected",
+  // APPLIED_AT = "APPLIED_AT",
+  PENDING = "PENDING",
+  UNDER_REVIEW = "UNDER_REVIEW",
+  UNDER_CONSIDERATION = "UNDER_CONSIDERATION",
+  ACCEPTED = "ACCEPTED",
+  REJECTED = "REJECTED",
+}
+export enum JobApplicationStateIndex {
+  PENDING = "1",
+  UNDER_REVIEW = "2",
+  UNDER_CONSIDERATION = "3",
+  ACCEPTED = "4",
+  REJECTED = "5",
 }

@@ -14,8 +14,10 @@ import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 import { faAnglesRight } from "@fortawesome/free-solid-svg-icons";
 import HomeIcon from "./HomeIcon";
 import GoogleLogo from "../common/GoogleLogo";
+import { useNavigate } from "react-router-dom";
 
 function Main() {
+  const navigate = useNavigate();
   return (
     <>
       <div className="mx-6 my-20 md:my-20">
@@ -127,7 +129,10 @@ function Main() {
       <div className="bg-white p-10 pb-32">
         <div className="flex flex-col items-center justify-between md:flex-row">
           <p className="text-xl font-bold md:text-2xl">Recommended Jobs</p>
-          <button className="mt-4 rounded-md border-2 border-[#eee] px-5 py-2 text-main hover:border-main hover:bg-main hover:text-white md:mt-0">
+          <button
+            onClick={() => navigate("/findJob")}
+            className="mt-4 rounded-md border-2 border-[#eee] px-5 py-2 text-main hover:border-main hover:bg-main hover:text-white md:mt-0"
+          >
             View All <FontAwesomeIcon icon={faAnglesRight} />
           </button>
         </div>

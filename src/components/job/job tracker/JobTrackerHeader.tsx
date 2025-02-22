@@ -1,14 +1,23 @@
 import { NavLink, useParams } from "react-router-dom";
 import SearchBar from "../../common/SearchBar";
 
-function JobTrackerHeader({ userType }: { userType: "business" | "user" }) {
+type JobTrackerHeaderProps = {
+  userType: "business" | "user";
+  businessJobApplicationsLength?: number;
+};
+
+function JobTrackerHeader({
+  userType,
+  businessJobApplicationsLength,
+}: JobTrackerHeaderProps) {
   const { companyId, jobId } = useParams();
   return (
     <div className="relative">
       <p className="text-4xl font-semibold text-gray-800">Track your jobs</p>
       <div className="mt-4 flex gap-10 pb-2">
         <p className="font-medium">
-          4 Total {userType === "user" ? "Jobs" : "Applications"}
+          {businessJobApplicationsLength} Total{" "}
+          {userType === "user" ? "Jobs" : "Applications"}
         </p>
         <NavLink
           end
@@ -25,9 +34,12 @@ function JobTrackerHeader({ userType }: { userType: "business" | "user" }) {
             }`
           }
         >
-          Active (4)
+          Active{" "}
+          {userType === "business"
+            ? `(${businessJobApplicationsLength})`
+            : `()`}
         </NavLink>
-        {userType === "user" ? (
+        {userType === "user" && (
           <NavLink
             end
             to="/jobTracker/archived"
@@ -40,20 +52,6 @@ function JobTrackerHeader({ userType }: { userType: "business" | "user" }) {
             }
           >
             Archived (4)
-          </NavLink>
-        ) : (
-          <NavLink
-            end
-            to="/"
-            className={({ isActive }: { isActive: boolean }) =>
-              `cursor-pointer border-b-4 pb-2 hover:border-main hover:text-main ${
-                isActive
-                  ? "border-b-main text-main"
-                  : "border-b-background text-gray-600"
-              }`
-            }
-          >
-            Rejected (4)
           </NavLink>
         )}
       </div>

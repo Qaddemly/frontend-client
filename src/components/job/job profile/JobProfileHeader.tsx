@@ -70,7 +70,7 @@ function JobProfileHeader({ job }: { job: IJob }) {
   if (loadingSaveJob || loadingUnSaveJob || loadingApplyJob) return <Loader />;
   return (
     <div className="flex w-full flex-col items-center bg-light-secondary py-4">
-      <div className="mx-5 flex w-full max-w-[1000px] flex-col items-center justify-evenly gap-2 lg:mx-0 lg:items-start">
+      <div className="mx-5 flex w-full flex-col items-center justify-evenly gap-2 px-[25rem] py-10 lg:mx-0 lg:items-start">
         <img
           src={job?.business.logo}
           alt={job.title}

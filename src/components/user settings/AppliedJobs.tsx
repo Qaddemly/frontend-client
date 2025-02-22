@@ -1,9 +1,9 @@
-import { useGetJobApplicationQuery } from "../../services/jobApi";
+import { useGetUserJobApplicationsQuery } from "../../services/jobApi";
 import Loader from "../common/Loader";
 import AppliedJobsItem from "../job/AppliedJobsItems";
 
 function AppliedJob() {
-  const { isLoading, data } = useGetJobApplicationQuery({});
+  const { isLoading, data } = useGetUserJobApplicationsQuery({});
   const appliedJob = data?.jobApplications.data;
 
   if (isLoading) return <Loader />;
@@ -12,6 +12,7 @@ function AppliedJob() {
     return (
       <p className="m-20 text-2xl italic text-gray-400">No applied jobs</p>
     );
+
   return (
     <>
       <div className="m-10">

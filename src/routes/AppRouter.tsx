@@ -169,7 +169,14 @@ const router = createBrowserRouter([
       },
     ],
   },
-  { path: "/jobTracker", element: <JobTracker /> },
+  {
+    path: "/jobTracker",
+    element: (
+      <ProtectedRoute>
+        <JobTracker />
+      </ProtectedRoute>
+    ),
+  },
   { path: "/jobTracker/archived", element: <JobTrackerArchived /> },
   {
     path: "*",

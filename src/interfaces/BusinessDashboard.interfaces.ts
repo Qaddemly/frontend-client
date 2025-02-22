@@ -26,7 +26,7 @@ export interface IPostNewJobInputs {
   salary: number;
   employee_type: string;
   keywords: string[];
-  experience: string;
+  experience: number;
   skills: string[];
 }
 
@@ -58,16 +58,24 @@ export interface IResume {
   url: string;
   name: string;
   size: number;
-  account: IUser;
   accountId: number;
 }
 
 export interface IJobApplication {
   id: number;
+  jop_application_state: string;
   created_at: string;
   updated_at: string;
+  account: IUser;
   job: IJob;
   resume: IResume;
+  job_application_state: IJobApplicationState;
+}
+
+export interface IJobApplicationState {
+  job_application_id: number;
+  job_id: number;
+  state: string;
 }
 
 //////////////////////////////////////////////////////////////////////////////

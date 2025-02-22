@@ -15,7 +15,11 @@ function SavedJobsItems({ job }: { job: IJob }) {
   const [showDeleteModal, setDeleteShowModal] = useState(false);
   const { refetch } = useGetAllSavedJobsQuery({});
   const [deleteJob, { isLoading: isLoading }] = useUnSaveJobMutation();
-  async function handleDelete() {
+
+  async function handleDelete(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) {
+    e.stopPropagation();
     try {
       const res = await deleteJob({
         id: job.id?.toString() || "",
@@ -46,7 +50,9 @@ function SavedJobsItems({ job }: { job: IJob }) {
           </span>
         </td> */}
         <td className="px-6 py-4 text-gray-300"> {job?.salary} </td>
-        <td className="px-6 py-4 text-gray-300">{job?.location}</td>
+        <td className="px-6 py-4 text-gray-300">
+          {job?.country}, {job?.city}
+        </td>
         <td className="px-6 py-4 text-gray-300">{job?.employee_type}</td>
         <td className="space-x-5 px-6 py-4">
           <button
@@ -82,7 +88,7 @@ function SavedJobsItems({ job }: { job: IJob }) {
                 <button
                   type="button"
                   className="inline-flex items-center rounded-lg bg-danger-300 px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4"
-                  onClick={() => handleDelete()}
+                  onClick={(e) => handleDelete(e)}
                 >
                   Yes, I'm sure
                 </button>

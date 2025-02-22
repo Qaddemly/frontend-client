@@ -16,8 +16,7 @@ function SavedJob() {
         <h2 className="mb-5 text-2xl font-semibold text-gray-800 md:text-3xl">
           Your Saved Jobs
         </h2>
-        <p className="text-gray-300">Git access to millions of jobs</p>
-        <p className="mt-5 font-medium">All Jobs</p>
+        <p className="my-5 text-gray-300">Git access to millions of jobs</p>
         <div className="relative flex gap-3">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center ps-3">
             <svg
@@ -54,8 +53,8 @@ function SavedJob() {
                 </tr>
               </thead>
               <tbody className="font-medium">
-                {savedJob?.map((job) => (
-                  <SavedJobsItems key={job.id} job={job} />
+                {savedJob?.map((savedJob) => (
+                  <SavedJobsItems key={savedJob.id} job={savedJob.job} />
                 ))}
               </tbody>
             </table>

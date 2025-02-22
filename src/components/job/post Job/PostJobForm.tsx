@@ -26,9 +26,12 @@ function PostJobForm() {
   });
   const [employeeType, setEmployeeType] = useState("Employee type");
   const [keywords, setKeywords] = useState<string[]>([]);
-  const [experience, setExperience] = useState("");
+  const [
+    experience,
+    //  setExperience
+  ] = useState(2);
   const [skills, setSkills] = useState<string[]>([]);
-  const [position, setPosition] = useState("");
+  const [city, setCity] = useState("");
 
   const { companyId } = useParams();
 
@@ -83,7 +86,7 @@ function PostJobForm() {
       !salary.currency ||
       !employeeType ||
       !experience ||
-      !position ||
+      !city ||
       !skills.length ||
       !keywords.length
     ) {
@@ -94,14 +97,15 @@ function PostJobForm() {
       title,
       description,
       location: country,
-      location_type: "Onsite", // handle with backend
+      location_type: locationType,
       salary: 5000, // GAD TODO : min, max, currency, other currency
-      employee_type: "FullTime", // handle with backend
+      employee_type: employeeType,
       keywords,
-      experience: "2", // GAD TODO : talk with BackEnd
+      country,
+      city,
+      experience: 2,
       business_id: companyId ? parseInt(companyId) : undefined,
       skills,
-      // position, // GAD TODO : talk with BackEnd
     };
     console.log(data);
     try {
@@ -149,26 +153,29 @@ function PostJobForm() {
           </select>
 
           {/* Location & City */}
-          {locationType !== "Location type" && locationType !== "Remote" && (
-            <div className="grid grid-cols-2 gap-2">
-              <select
-                className="w-full rounded-md border border-gray-300 p-2 focus:border-main"
-                onChange={(e) => setCountry(e.target.value)}
-                value={country}
-              >
-                <option disabled>Location</option>
-                {countryLocation.map((country) => (
-                  <option key={country} value={country}>
-                    {country}
-                  </option>
-                ))}
-              </select>
-              <select className="w-full rounded-md border border-gray-300 p-2 focus:border-main">
-                <option>City</option>
-                {/* GAD TODO : input text ... talk with BackEnd */}
-              </select>
-            </div>
-          )}
+
+          <div className="grid grid-cols-2 gap-2">
+            <select
+              className="w-full rounded-md border border-gray-300 p-2 focus:border-main"
+              onChange={(e) => setCountry(e.target.value)}
+              value={country}
+            >
+              <option disabled>Location</option>
+              {countryLocation.map((country) => (
+                <option key={country} value={country}>
+                  {country}
+                </option>
+              ))}
+            </select>
+
+            <input
+              type="text"
+              placeholder="City"
+              className="w-full rounded-md border border-gray-300 p-2 focus:border-none focus:ring-main"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+            />
+          </div>
 
           {/* Skills */}
           <div>
@@ -240,7 +247,10 @@ function PostJobForm() {
               />
             )}
           </div>
+        </div>
 
+        {/* Right Column */}
+        <div className="flex flex-col space-y-3">
           {/* Employment type */}
           <select
             className="w-full rounded-md border border-gray-300 p-2 focus:border-main"
@@ -254,12 +264,8 @@ function PostJobForm() {
               </option>
             ))}
           </select>
-        </div>
-
-        {/* Right Column */}
-        <div className="flex flex-col space-y-3">
           {/* Job Experience */}
-          <select
+          {/* <select
             className="w-full rounded-md border border-gray-300 p-2 focus:border-main"
             value={experience}
             onChange={(e) => setExperience(e.target.value)}
@@ -270,7 +276,7 @@ function PostJobForm() {
             <option>2-5 years</option>
             <option>5-10 years (Senior)</option>
             <option>10+ years</option>
-          </select>
+          </select> */}
 
           {/* Keywords */}
           <div>
@@ -300,15 +306,6 @@ function PostJobForm() {
               ))}
             </div>
           </div>
-
-          {/* Position */}
-          <input
-            type="text"
-            placeholder="Position"
-            className="w-full rounded-md border border-gray-300 p-2 focus:border-none focus:ring-main"
-            value={position}
-            onChange={(e) => setPosition(e.target.value)}
-          />
 
           {/* Description */}
           <textarea
