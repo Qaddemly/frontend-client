@@ -25,22 +25,21 @@ function FindCompany() {
             <p className="mt-2 text-gray-600">
               Get access to millions of companies
             </p>
-            <div className="flex items-center gap-10 py-6">
+            <div className="flex items-center gap-5 py-6">
               <SearchBar
                 placeholder="Company name"
                 buttonName="Find companies"
               />
               {!isOpen && (
                 <Button
-                  className="hover:none flex items-center gap-2 bg-white px-5 text-lg text-main"
+                  className="flex items-center gap-2 border border-gray-100 bg-white p-2 text-lg text-main hover:bg-main hover:text-white"
                   onClick={() => {
                     setIsOpen(true);
                   }}
                 >
-                  Filters
                   <FontAwesomeIcon
                     icon={faSliders}
-                    className="rounded-md bg-main p-3 text-xl text-white"
+                    className="rounded-md bg-main p-3 text-xl text-white hover:bg-background hover:text-main"
                   />
                 </Button>
               )}

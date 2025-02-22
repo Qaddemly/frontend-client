@@ -85,7 +85,7 @@ function FindJob() {
           </div>
           {/*End of heading and search bar */}
 
-          {/* Popular companies */}
+          {/* Popular jobs */}
           <div className="px-20 md:mx-4">
             <h3 className="text-2xl text-gray-800 md:text-3xl">
               Most viewed jobs
