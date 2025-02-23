@@ -24,24 +24,24 @@ function NavbarBusiness() {
   const businessAccount = data?.business;
 
   return (
-    <nav className="flex justify-between border-b border-b-gray-100 px-6 py-3">
+    <nav className="flex items-center justify-between gap-2 border-b border-b-gray-100 px-3 py-3 lg:px-6">
       <Logo fontSize="text-4xl" />
       <div className="flex items-center gap-2">
-        <div className="flex items-center gap-5 pr-10">
+        <div className="hidden items-center gap-5 pr-4 sm:flex md:pr-10">
           <Link to="" className="flex gap-2">
             <FontAwesomeIcon icon={faBell} className="text-2xl" />
-            <p>Notifications</p>
+            <p className="hidden lg:block">Notifications</p>
           </Link>
           <Link to="" className="flex gap-2">
             <FontAwesomeIcon icon={faEnvelope} className="text-2xl" />
-            <p>Messages</p>
+            <p className="hidden lg:block">Messages</p>
           </Link>
           <div>
             <Button
               onClick={() => navigate("/")}
-              className="border border-main bg-white px-5 text-main hover:bg-main hover:text-white"
+              className="border border-main bg-white px-2 text-main hover:bg-main hover:text-white lg:px-5"
             >
-              Switch to your account
+              Switch to account
             </Button>
           </div>
         </div>

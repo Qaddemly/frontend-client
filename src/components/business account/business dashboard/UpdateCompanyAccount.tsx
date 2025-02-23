@@ -52,8 +52,13 @@ function UpdateCompanyAccount() {
     <FormProvider {...methods}>
       <div>
         {isLoading && <Loader />}
-        <p className="text-3xl font-medium">Update company</p>
-        <form onSubmit={methods.handleSubmit(onSubmit)} className="flex gap-5">
+        <p className="px-3 text-center text-3xl font-medium">
+          Update Company Information
+        </p>
+        <form
+          onSubmit={methods.handleSubmit(onSubmit)}
+          className="mx-6 flex flex-col gap-5 lg:mx-0 lg:flex-row"
+        >
           <CreateBusinessAccountStep1 updateAccount={true} />
           <CreateBusinessAccountStep2 updateAccount={true} />
         </form>

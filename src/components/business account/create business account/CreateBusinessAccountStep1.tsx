@@ -34,7 +34,7 @@ function CreateBusinessAccountStep1({
 
   return (
     <div
-      className={`mt-10 flex flex-col gap-5 ${updateAccount ? "border-r border-gray-100 pr-5" : ""}`}
+      className={`mt-10 flex flex-col gap-5 ${updateAccount ? "lg:border-r lg:border-gray-100 lg:pr-5" : ""}`}
     >
       <InputField
         errors={!updateAccount ? errors : {}}
@@ -138,7 +138,7 @@ function CreateBusinessAccountStep1({
 
         <textarea
           {...register("description")}
-          className={`min-h-[20rem] rounded-md ${updateAccount ? "bg-[#eee]" : "bg-white"} p-5 outline-none`}
+          className={`min-h-[14rem] rounded-md ${updateAccount ? "border-2 border-gray-100 lg:min-h-[20rem] lg:bg-[#eee]" : "bg-white"} p-5 outline-none`}
           placeholder="Enter company description"
         />
       </div>

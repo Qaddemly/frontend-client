@@ -8,7 +8,7 @@ function CompanySettings() {
   return (
     <>
       <div className="flex items-center bg-[#eee] p-2">
-        <div className="border-r border-r-gray-100 px-10 py-3">
+        <div className="border-r border-r-gray-100 px-3 py-3 md:px-10">
           <p className="text-xl font-semibold">Employer settings</p>
         </div>
         <div className="flex gap-5 pl-5 text-lg font-medium">
@@ -18,7 +18,7 @@ function CompanySettings() {
               `px-2 py-1 ${isActive ? "rounded-md bg-main text-white" : ""}`
             }
           >
-            Company Info
+            <span className="hidden md:inline">Company</span> Info
           </NavLink>
           <NavLink
             to={`/businessDashboard/companySettings/updateCompanyAccount/${companyId}`}
@@ -26,7 +26,7 @@ function CompanySettings() {
               `px-2 py-1 ${isActive ? "rounded-md bg-main text-white" : ""}`
             }
           >
-            Edit Company Info
+            Edit <span className="hidden md:inline">Company Info</span>
           </NavLink>
         </div>
       </div>

@@ -24,30 +24,30 @@ function CompanyAccount() {
     <div className="w-[50rem]">
       {isLoading && <Loader />}
       <div className="font-medium">
-        <p className="text-3xl">About company</p>
-        <p className="text-gray-300">
+        <p className="text-center text-3xl lg:text-left">About company</p>
+        <p className="mx-8 text-center text-gray-300 lg:mx-0 lg:text-left">
           Your name and role may be visible to job seekers and other members of
           your company
         </p>
       </div>
-      <div className="mt-10 flex gap-10">
-        <div className="flex w-1/2 flex-col gap-5">
-          <CardEmployerSettings className="items-center justify-center">
+      <div className="mt-10 flex flex-col gap-10 lg:flex-row">
+        <div className="flex w-full flex-col gap-5 lg:w-1/2">
+          <CardEmployerSettings className="justify-center">
             <p>{companyInfo?.name}</p>
             <img src={companyInfo?.logo} alt="company logo" />
           </CardEmployerSettings>
           <CardEmployerSettings>
             <p>Contact</p>
-            <div className="flex items-center gap-2 text-gray-300">
+            <div className="flex gap-2 text-gray-300">
               <FontAwesomeIcon icon={faEnvelope} />
               <p>{companyInfo?.email ? companyInfo.email : "No email added"}</p>
             </div>
 
-            <div className="flex items-center gap-2 text-gray-300">
+            <div className="flex gap-2 text-gray-300">
               <FontAwesomeIcon icon={faPhone} />
               <p>{companyInfo?.phone ? companyInfo.phone : "No phone added"}</p>
             </div>
-            <div className="flex items-center gap-2 text-gray-300">
+            <div className="flex gap-2 text-gray-300">
               <FontAwesomeIcon icon={faLocationDot} />
               <p>
                 {companyInfo?.address.country}, {companyInfo?.address.city}
@@ -55,7 +55,7 @@ function CompanyAccount() {
             </div>
           </CardEmployerSettings>
         </div>
-        <div className="flex w-full flex-col gap-5">
+        <div className="flex w-full flex-col gap-5 lg:w-1/2">
           <CardEmployerSettings>
             <p className="text-md font-medium">Website</p>
             <p className="text-gray-300">
