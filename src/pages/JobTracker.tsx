@@ -19,6 +19,7 @@ function JobTracker() {
         )}
         {data?.jobApplications.data.map((jobApplication) => (
           <JobTrackerItem
+            key={jobApplication.id}
             archive={true}
             jobApplication={jobApplication}
             userType="user"

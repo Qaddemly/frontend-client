@@ -27,6 +27,7 @@ export interface IJob {
   created_at: string;
   updated_at: string;
   business: IBusinessAccount;
+  business_id: number;
   resume: IResume;
   account: IUser;
   isSaved: boolean;
@@ -76,4 +77,9 @@ export interface IGetJobApplicationsResponse {
     data: IJobApplication[];
     meta: IMeta;
   };
+}
+
+export interface IGetRecommendedJobs {
+  success: boolean;
+  recommendedJobs: IJob[];
 }

@@ -8,8 +8,10 @@ import Loader from "../../common/Loader";
 import toast from "react-hot-toast";
 import { createFormData, handleApiError } from "../../../utils/helpers";
 import { formSettings } from "../../../interfaces/Common.interfaces";
+import { useNavigate } from "react-router-dom";
 
 function CreateBusinessAccountForm() {
+  const navigate = useNavigate();
   const [step, setStep] = useState("1");
   const [createBusinessAccount, { isLoading }] =
     useCreateBusinessAccountMutation();
@@ -21,6 +23,7 @@ function CreateBusinessAccountForm() {
       const formData = createFormData({ ...data } as Record<string, unknown>);
       const res = await createBusinessAccount(formData).unwrap();
       toast.success(res.message);
+      navigate("/");
     } catch (err) {
       handleApiError(err);
     }

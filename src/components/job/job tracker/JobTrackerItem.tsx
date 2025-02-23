@@ -10,7 +10,6 @@ import GoogleLogo from "../../common/GoogleLogo";
 import Button from "../../common/Button";
 import JobTrackerStatus from "./JobTrackerStatus";
 import { useState } from "react";
-import { useArchiveJobApplicationMutation } from "../../../services/jobApi";
 import Loader from "../../common/Loader";
 import { handleApiError } from "../../../utils/helpers";
 import toast from "react-hot-toast";
@@ -21,6 +20,7 @@ import {
   JobApplicationState,
   JobApplicationStateIndex,
 } from "../../../enums/index.enums";
+import { useGetBusinessAccountInfoQuery } from "../../../services/businessAccountApi";
 
 type JobTrackerItemProps = {
   userType: "business" | "user";
@@ -30,11 +30,12 @@ type JobTrackerItemProps = {
 
 function JobTrackerItem({
   userType,
-  archive,
+  // archive,
   jobApplication,
 }: JobTrackerItemProps) {
   const { jobId } = useParams();
   //////////////////////////// For Business ///////////////////////////
+
   const key = jobApplication?.job_application_state
     .state as keyof typeof JobApplicationStateIndex;
   const stateValue = key ? JobApplicationStateIndex[key] : undefined;
@@ -71,19 +72,32 @@ function JobTrackerItem({
   }
 
   //////////////////////////// For User ///////////////////////////
-  const [archiveJobApplication, { isLoading: isLoading2 }] =
-    useArchiveJobApplicationMutation();
+  // const [archiveJobApplication, { isLoading: isLoading2 }] =
+  //   useArchiveJobApplicationMutation();
 
-  async function handleArchiveJobApplication() {
-    try {
-      await archiveJobApplication({ id: "1", archive: true }).unwrap();
-      toast.success("Job application archived successfully");
-    } catch (error) {
-      handleApiError(error);
-    }
-  }
+  // async function handleArchiveJobApplication() {
+  //   try {
+  //     await archiveJobApplication({ id: "1", archive: true }).unwrap();
+  //     toast.success("Job application archived successfully");
+  //   } catch (error) {
+  //     handleApiError(error);
+  //   }
+  // }
 
-  if (isLoading1 || isLoading2) return <Loader />;
+  // useEffect(() => {
+  //   businessesAccounts.userBusinessesAccounts.map((business) => {
+  //     console.log(business.id);
+  //     console.log(jobApplication?.job.business_id);
+
+  //     if (jobApplication?.job.business_id === business.id)
+  //       setCurrentBusinessId(business.id.toString());
+  //   });
+  // }, [businessesAccounts.userBusinessesAccounts, jobApplication]);
+  const { data } = useGetBusinessAccountInfoQuery({
+    id: jobApplication?.job.business_id.toString() || "",
+  });
+
+  if (isLoading1) return <Loader />;
 
   return (
     <div className="mt-4 flex items-center gap-5 rounded-md bg-white p-5 shadow-md">
@@ -106,15 +120,15 @@ function JobTrackerItem({
           {userType === "user" ? (
             <>
               <div className="text-lg font-semibold">
-                Software Developer Intern
+                {jobApplication?.job.title}
               </div>
               <div className="flex items-center gap-2 text-gray-500">
                 <FontAwesomeIcon icon={faBuilding} />
-                <p>Google Inc.</p>
+                <p>{data?.business.name}.</p>
               </div>
               <div className="flex items-center gap-2 text-gray-500">
                 <FontAwesomeIcon icon={faLocationDot} />
-                <p>Hybird</p>
+                <p>{data?.business.location_type}</p>
               </div>
             </>
           ) : (
@@ -128,7 +142,9 @@ function JobTrackerItem({
               </div>
               <div className="flex items-center gap-2 text-gray-500">
                 <FontAwesomeIcon icon={faPhone} />
-                <p>{user?.phone.phone_number}</p>
+                <p>
+                  +{user?.phone.country_code} {user?.phone.number}
+                </p>
               </div>
             </>
           )}
@@ -144,10 +160,11 @@ function JobTrackerItem({
 
       <div>
         {userType === "user" ? (
-          <Button onClick={handleArchiveJobApplication} className="px-3">
-            {archive ? "Archive" : "Unarchive"}
-          </Button>
+          <></>
         ) : (
+          // <Button onClick={handleArchiveJobApplication} className="px-3">
+          //   {archive ? "Archive" : "Unarchive"}
+          // </Button>
           showConfirm && (
             <Button onClick={handleUpdateJobApplicationStatus} className="px-3">
               Confirm

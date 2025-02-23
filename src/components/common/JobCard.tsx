@@ -50,11 +50,7 @@ function JobCard({ job }: { job: IJob }) {
       <div className="flex flex-col gap-6">
         <div className="flex gap-3">
           <span
-            className={`rounded-md bg-light-green px-1 text-sm font-medium ${
-              job?.employee_type.toLowerCase() === "full-time"
-                ? "text-green-100"
-                : "text-yellow"
-            }`}
+            className={`rounded-md bg-light-green px-1 text-sm font-medium text-green-100`}
           >
             {job?.employee_type.toUpperCase()}
           </span>

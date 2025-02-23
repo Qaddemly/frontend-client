@@ -1,10 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CardEmployerSettings from "./CardEmployerSettings";
-import {
-  faEnvelope,
-  faLocationDot,
-  faPhone,
-} from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { useGetBusinessAccountInfoQuery } from "../../../services/businessAccountApi";
 import Loader from "../../common/Loader";
 import { useParams } from "react-router-dom";
@@ -34,7 +30,7 @@ function CompanyAccount() {
         <div className="flex w-1/2 flex-col gap-5">
           <CardEmployerSettings className="items-center justify-center">
             <p>{companyInfo?.name}</p>
-            <img src={companyInfo?.logo} alt="company logo" />
+            {/* <img src={companyInfo?.logo} alt="company logo" /> */}
           </CardEmployerSettings>
           <CardEmployerSettings>
             <p>Contact</p>
@@ -43,14 +39,16 @@ function CompanyAccount() {
               <p>{companyInfo?.email ? companyInfo.email : "No email added"}</p>
             </div>
 
-            <div className="flex items-center gap-2 text-gray-300">
+            {/* <div className="flex items-center gap-2 text-gray-300">
               <FontAwesomeIcon icon={faPhone} />
               {companyInfo?.phone?.map((phone) => (
                 <p>
-                  {phone.phone_number ? phone.phone_number : "No phone added"}
+                  {phone.phone_number === undefined
+                    ? phone.phone_number
+                    : "No phone added"}
                 </p>
               ))}
-            </div>
+            </div> */}
             <div className="flex items-center gap-2 text-gray-300">
               <FontAwesomeIcon icon={faLocationDot} />
               <p>

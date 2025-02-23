@@ -110,7 +110,11 @@ function CompanyCandidates() {
                     onChange={(e) => setRole(e.target.value as HrRole | "")}
                   >
                     {rolesValues.map((role) => (
-                      <option value={role} key={role}>
+                      <option
+                        value={role}
+                        key={role}
+                        disabled={role === HrRole.OWNER}
+                      >
                         {role}
                       </option>
                     ))}

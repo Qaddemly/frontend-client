@@ -4,6 +4,7 @@ import {
   IGetAllJobsResponse,
   IGetJobApplicationsResponse,
   IGetJobDetailsResponse,
+  IGetRecommendedJobs,
   ISavedJobsResponse,
 } from "../interfaces/Job.interfaces";
 import { apiSlice } from "./apiSlice";
@@ -126,6 +127,12 @@ export const jobApi = apiSlice.injectEndpoints({
         method: "PUT",
       }),
     }),
+    getRecommendedJobs: builder.query<IGetRecommendedJobs, void>({
+      query: () => ({
+        url: `${BASE_JOB_URL}/recommendedJobsForUser`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -139,4 +146,5 @@ export const {
   useUnSaveJobMutation,
   useApplyToJobMutation,
   useArchiveJobApplicationMutation,
+  useGetRecommendedJobsQuery,
 } = jobApi;
