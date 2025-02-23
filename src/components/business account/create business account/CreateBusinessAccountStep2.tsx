@@ -21,7 +21,9 @@ function CreateBusinessAccountStep2({
     formState: { errors },
   } = useFormContext();
   return (
-    <div className="mt-10 flex flex-col gap-5">
+    <div
+      className={`flex flex-col gap-5 ${updateAccount ? "lg:mt-10" : "mt-10"}`}
+    >
       <div className="flex gap-5">
         <InputField
           errors={!updateAccount ? errors : {}}
@@ -76,7 +78,7 @@ function CreateBusinessAccountStep2({
       </div>
 
       {/* phone number will be array  */}
-      <div className="flex items-end justify-between">
+      <div className="flex items-end justify-between gap-3">
         {/* handle with backend */}
         {/* <Select
           register={register}
@@ -184,8 +186,8 @@ function CreateBusinessAccountStep2({
             Back
           </Button>
         )}
-        <Button type="submit" className="px-3">
-          Submit
+        <Button type="submit" className={`px-3 ${updateAccount && "w-full"}`}>
+          Submit {updateAccount && <span>changes</span>}
         </Button>
       </div>
     </div>
