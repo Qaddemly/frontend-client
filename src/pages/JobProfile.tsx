@@ -5,7 +5,6 @@ import JobDescriptionItem from "../components/job/job profile/JobDescriptionItem
 import JobDescriptionSection from "../components/job/job profile/JobDescriptionSection";
 import JobProfileBody from "../components/job/job profile/JobProfileBody";
 import JobProfileHeader from "../components/job/job profile/JobProfileHeader";
-import SimilarJobs from "../components/job/job profile/SimilarJobs";
 import { useParams } from "react-router-dom";
 import { useGetJobDetailsQuery } from "../services/jobApi";
 import Loader from "../components/common/Loader";
@@ -27,7 +26,7 @@ function JobProfile() {
         <JobDescriptionSection>
           <JobDescriptionItem
             title="Location"
-            content={`${job?.location.country}, ${job?.location.city}`}
+            content={`${job?.location?.country}, ${job?.location?.city}`}
           />
           <JobDescriptionItem
             title="Full Job Description"
@@ -57,7 +56,7 @@ function JobProfile() {
           {/* <JobDescriptionItem title="Position" content={job.position} /> */}
           <JobDescriptionItem title="Experience" content={job?.experience} />
         </JobDescriptionSection>
-        <SimilarJobs />
+        {/* <SimilarJobs /> */}
       </JobProfileBody>
       <Footer />
     </>

@@ -4,6 +4,7 @@ import {
   IGetAllJobsResponse,
   IGetJobApplicationsResponse,
   IGetJobDetailsResponse,
+  IGetRecommendedJobs,
   ISavedJobsResponse,
 } from "../interfaces/Job.interfaces";
 import { apiSlice } from "./apiSlice";
@@ -73,7 +74,7 @@ export const jobApi = apiSlice.injectEndpoints({
         if (limit) params.append("limit", limit.toString());
 
         return {
-          url: `${BASE_JOB_URL}/allUserSavedJobs${params.toString() ? `?${params.toString()}` : ""}`,
+          url: `user/${BASE_JOB_URL}/mySavedJobs${params.toString() ? `?${params.toString()}` : ""}`,
           method: "GET",
         };
       },
@@ -100,7 +101,7 @@ export const jobApi = apiSlice.injectEndpoints({
         body: { resume_id },
       }),
     }),
-    getJobApplication: builder.query<
+    getUserJobApplications: builder.query<
       IGetJobApplicationsResponse,
       { search?: string; page?: number; limit?: number }
     >({
@@ -112,10 +113,25 @@ export const jobApi = apiSlice.injectEndpoints({
         if (limit) params.append("limit", limit.toString());
 
         return {
-          url: `${BASE_JOB_URL}/allUserJobApplications${params.toString() ? `?${params.toString()}` : ""}`,
+          url: `user/jobApplication/myAllJobApplications${params.toString() ? `?${params.toString()}` : ""}`,
           method: "GET",
         };
       },
+    }),
+    archiveJobApplication: builder.mutation<
+      void,
+      { id: string; archive: boolean }
+    >({
+      query: ({ archive, id }) => ({
+        url: `user/jobApplication/archived/${id}?archive=${archive}`,
+        method: "PUT",
+      }),
+    }),
+    getRecommendedJobs: builder.query<IGetRecommendedJobs, void>({
+      query: () => ({
+        url: `${BASE_JOB_URL}/recommendedJobsForUser`,
+        method: "GET",
+      }),
     }),
   }),
 });
@@ -125,8 +141,10 @@ export const {
   useGetAllJobsQuery,
   useLazyGetAllJobsQuery,
   useGetAllSavedJobsQuery,
-  useGetJobApplicationQuery,
+  useGetUserJobApplicationsQuery,
   useSaveJobMutation,
   useUnSaveJobMutation,
   useApplyToJobMutation,
+  useArchiveJobApplicationMutation,
+  useGetRecommendedJobsQuery,
 } = jobApi;

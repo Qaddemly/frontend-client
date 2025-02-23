@@ -1,17 +1,11 @@
+import { IUser } from "./Auth.interfaces";
 import { IBusinessAccount } from "./BusinessAccount.interfaces";
-import { IMeta, IResume } from "./BusinessDashboard.interfaces";
+import {
+  IJobApplication,
+  IMeta,
+  IResume,
+} from "./BusinessDashboard.interfaces";
 import { IResponse } from "./Common.interfaces";
-
-// export interface IPostData {
-//   title: string;
-//   description: string;
-//   location: string;
-//   locationType: string;
-//   salary: number;
-//   employmentType: string;
-//   experience: string;
-//   business_id: number;
-// }
 
 export interface IJob {
   id: number;
@@ -22,6 +16,8 @@ export interface IJob {
     country: string;
     city: string;
   };
+  country: string;
+  city: string;
   location_type: string;
   skills: string[];
   salary: number;
@@ -31,6 +27,9 @@ export interface IJob {
   created_at: string;
   updated_at: string;
   business: IBusinessAccount;
+  business_id: number;
+  resume: IResume;
+  account: IUser;
   isSaved: boolean;
 }
 
@@ -52,7 +51,12 @@ export interface IGetJobDetailsResponse {
 export interface ISavedJobsResponse {
   success: boolean;
   savedJobs: {
-    data: IJob[];
+    data: {
+      id: string;
+      created_at: string;
+      updated_at: string;
+      job: IJob;
+    }[];
     meta: IMeta;
   };
 }
@@ -67,17 +71,15 @@ export interface IApplyToJobResponse extends IResponse {
     resume: IResume;
   };
 }
-export interface IJobApplication {
-  id: number;
-  created_at: string;
-  updated_at: string;
-  resume: IResume;
-  job: IJob;
-}
 export interface IGetJobApplicationsResponse {
   success: boolean;
   jobApplications: {
     data: IJobApplication[];
     meta: IMeta;
   };
+}
+
+export interface IGetRecommendedJobs {
+  success: boolean;
+  recommendedJobs: IJob[];
 }

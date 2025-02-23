@@ -4,30 +4,34 @@ import {
   faBriefcase,
   faCircleCheck,
   faCloudArrowUp,
-  faLocationDot,
   faMagnifyingGlassPlus,
   faUserCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import { faBuilding } from "@fortawesome/free-regular-svg-icons";
 import { faUsers } from "@fortawesome/free-solid-svg-icons";
-import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 import { faAnglesRight } from "@fortawesome/free-solid-svg-icons";
 import HomeIcon from "./HomeIcon";
-import GoogleLogo from "../common/GoogleLogo";
+import { useNavigate } from "react-router-dom";
+import { useGetRecommendedJobsQuery } from "../../services/jobApi";
+import JobCard from "../common/JobCard";
 
 function Main() {
+  const navigate = useNavigate();
+
+  const { data } = useGetRecommendedJobsQuery();
+
   return (
     <>
       <div className="mx-6 my-20 md:my-20">
         <div className="flex flex-col items-center justify-between gap-10 md:flex-row">
-          <div className="text-center md:w-1/2 md:text-left">
-            <p className="text-xl font-semibold md:text-4xl">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid
-              provident temporibus eius odit earum.
+          <div className="ml-20 text-center md:text-left">
+            <p className="text-[3.2rem] font-semibold">
+              Find Your Dream Job with Qaddemly!
             </p>
-            <p className="mt-4 text-sm text-gray-600 md:mt-6 md:text-base">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut in
-              architecto molestiae autem enim unde tempore explicabo
+            <p className="mt-4 w-[45rem] text-[1.5rem] text-gray-600">
+              We make job searching effortless—personalized recommendations,
+              AI-assisted resume building, and more to help you land your
+              perfect role.
             </p>
           </div>
           <HomeIcon />
@@ -127,211 +131,19 @@ function Main() {
       <div className="bg-white p-10 pb-32">
         <div className="flex flex-col items-center justify-between md:flex-row">
           <p className="text-xl font-bold md:text-2xl">Recommended Jobs</p>
-          <button className="mt-4 rounded-md border-2 border-[#eee] px-5 py-2 text-main hover:border-main hover:bg-main hover:text-white md:mt-0">
+          <button
+            onClick={() => navigate("/findJob")}
+            className="mt-4 rounded-md border-2 border-[#eee] px-5 py-2 text-main hover:border-main hover:bg-main hover:text-white md:mt-0"
+          >
             View All <FontAwesomeIcon icon={faAnglesRight} />
           </button>
         </div>
 
         <div className="p-4">
           <ul className="mt-5 grid grid-cols-1 gap-5 px-3 sm:grid-cols-2 lg:grid-cols-3">
-            <li className="border border-offWhite p-5 shadow-md">
-              <p className="my-2 text-lg font-medium">
-                Techical Support Specialist
-              </p>
-              <div className="flex flex-col gap-6">
-                <div className="flex gap-3">
-                  <span className="rounded-md bg-light-green px-1 font-medium text-green-100">
-                    Part-Time
-                  </span>
-                  <span className="block text-gray-600">
-                    Salary: $20,000 - $25,000
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-5">
-                    <div className="w-fit rounded-md bg-[#eee] p-2">
-                      <GoogleLogo />
-                    </div>
-                    <div className="felx flex-col">
-                      <p className="font-medium">Google Inc.</p>
-                      <div className="flex items-center gap-2 text-gray-300">
-                        <FontAwesomeIcon icon={faLocationDot} />
-                        <p>USA</p>
-                      </div>
-                    </div>
-                  </div>
-                  <FontAwesomeIcon
-                    icon={faBookmark}
-                    className="text-2xl text-gray-300"
-                  />
-                </div>
-              </div>
-            </li>
-            <li className="border border-offWhite p-5 shadow-md">
-              <p className="my-2 text-lg font-medium">
-                Techical Support Specialist
-              </p>
-              <div className="flex flex-col gap-6">
-                <div className="flex gap-3">
-                  <span className="rounded-md bg-light-green px-1 font-medium text-green-100">
-                    Part-Time
-                  </span>
-                  <span className="block text-gray-600">
-                    Salary: $20,000 - $25,000
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-5">
-                    <div className="w-fit rounded-md bg-[#eee] p-2">
-                      <GoogleLogo />
-                    </div>
-                    <div className="felx flex-col">
-                      <p className="font-medium">Google Inc.</p>
-                      <div className="flex items-center gap-2 text-gray-300">
-                        <FontAwesomeIcon icon={faLocationDot} />
-                        <p>USA</p>
-                      </div>
-                    </div>
-                  </div>
-                  <FontAwesomeIcon
-                    icon={faBookmark}
-                    className="text-2xl text-gray-300"
-                  />
-                </div>
-              </div>
-            </li>
-            <li className="border border-offWhite p-5 shadow-md">
-              <p className="my-2 text-lg font-medium">
-                Techical Support Specialist
-              </p>
-              <div className="flex flex-col gap-6">
-                <div className="flex gap-3">
-                  <span className="rounded-md bg-light-green px-1 font-medium text-green-100">
-                    Part-Time
-                  </span>
-                  <span className="block text-gray-600">
-                    Salary: $20,000 - $25,000
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-5">
-                    <div className="w-fit rounded-md bg-[#eee] p-2">
-                      <GoogleLogo />
-                    </div>
-                    <div className="felx flex-col">
-                      <p className="font-medium">Google Inc.</p>
-                      <div className="flex items-center gap-2 text-gray-300">
-                        <FontAwesomeIcon icon={faLocationDot} />
-                        <p>USA</p>
-                      </div>
-                    </div>
-                  </div>
-                  <FontAwesomeIcon
-                    icon={faBookmark}
-                    className="text-2xl text-gray-300"
-                  />
-                </div>
-              </div>
-            </li>
-            <li className="border border-offWhite p-5 shadow-md">
-              <p className="my-2 text-lg font-medium">
-                Techical Support Specialist
-              </p>
-              <div className="flex flex-col gap-6">
-                <div className="flex gap-3">
-                  <span className="rounded-md bg-light-green px-1 font-medium text-green-100">
-                    Part-Time
-                  </span>
-                  <span className="block text-gray-600">
-                    Salary: $20,000 - $25,000
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-5">
-                    <div className="w-fit rounded-md bg-[#eee] p-2">
-                      <GoogleLogo />
-                    </div>
-                    <div className="felx flex-col">
-                      <p className="font-medium">Google Inc.</p>
-                      <div className="flex items-center gap-2 text-gray-300">
-                        <FontAwesomeIcon icon={faLocationDot} />
-                        <p>USA</p>
-                      </div>
-                    </div>
-                  </div>
-                  <FontAwesomeIcon
-                    icon={faBookmark}
-                    className="text-2xl text-gray-300"
-                  />
-                </div>
-              </div>
-            </li>
-            <li className="border border-offWhite p-5 shadow-md">
-              <p className="my-2 text-lg font-medium">
-                Techical Support Specialist
-              </p>
-              <div className="flex flex-col gap-6">
-                <div className="flex gap-3">
-                  <span className="rounded-md bg-light-green px-1 font-medium text-green-100">
-                    Part-Time
-                  </span>
-                  <span className="block text-gray-600">
-                    Salary: $20,000 - $25,000
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-5">
-                    <div className="w-fit rounded-md bg-[#eee] p-2">
-                      <GoogleLogo />
-                    </div>
-                    <div className="felx flex-col">
-                      <p className="font-medium">Google Inc.</p>
-                      <div className="flex items-center gap-2 text-gray-300">
-                        <FontAwesomeIcon icon={faLocationDot} />
-                        <p>USA</p>
-                      </div>
-                    </div>
-                  </div>
-                  <FontAwesomeIcon
-                    icon={faBookmark}
-                    className="text-2xl text-gray-300"
-                  />
-                </div>
-              </div>
-            </li>
-            <li className="border border-offWhite p-5 shadow-md">
-              <p className="my-2 text-lg font-medium">
-                Techical Support Specialist
-              </p>
-              <div className="flex flex-col gap-6">
-                <div className="flex gap-3">
-                  <span className="rounded-md bg-light-green px-1 font-medium text-green-100">
-                    Part-Time
-                  </span>
-                  <span className="block text-gray-600">
-                    Salary: $20,000 - $25,000
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-5">
-                    <div className="w-fit rounded-md bg-[#eee] p-2">
-                      <GoogleLogo />
-                    </div>
-                    <div className="felx flex-col">
-                      <p className="font-medium">Google Inc.</p>
-                      <div className="flex items-center gap-2 text-gray-300">
-                        <FontAwesomeIcon icon={faLocationDot} />
-                        <p>USA</p>
-                      </div>
-                    </div>
-                  </div>
-                  <FontAwesomeIcon
-                    icon={faBookmark}
-                    className="text-2xl text-gray-300"
-                  />
-                </div>
-              </div>
-            </li>
+            {data?.recommendedJobs.map((job) => (
+              <JobCard job={job} key={job.id} />
+            ))}
           </ul>
         </div>
       </div>

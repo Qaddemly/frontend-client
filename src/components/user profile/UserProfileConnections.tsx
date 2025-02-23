@@ -14,7 +14,9 @@ function UserProfileConnections({ user }: { user: IUser }) {
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-2">
           <FontAwesomeIcon icon={faPhone} className="text-xl" />
-          <p className="text-gray-500">{user?.phone?.phone_number}</p>
+          <p className="text-gray-500">
+            +{user?.phone?.country_code} {user?.phone?.number}
+          </p>
         </div>
         <div className="flex items-center gap-2">
           <FontAwesomeIcon icon={faLink} className="text-xl" />
@@ -22,15 +24,12 @@ function UserProfileConnections({ user }: { user: IUser }) {
         </div>
         <div className="flex items-center gap-2">
           <FontAwesomeIcon icon={faInstagram} className="text-xl" />
-          {/* <p className="text-gray-500"></p> */}
         </div>
         <div className="flex items-center gap-2">
           <FontAwesomeIcon icon={faGithub} className="text-xl" />
-          {/* <p className="text-gray-500"></p> */}
         </div>
         <div className="flex items-center gap-2">
           <FontAwesomeIcon icon={faLinkedin} className="text-xl" />
-          {/* <p className="text-gray-500"></p> */}
         </div>
       </div>
     </div>

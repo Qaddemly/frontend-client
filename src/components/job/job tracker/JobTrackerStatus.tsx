@@ -1,20 +1,25 @@
-import { useState } from "react";
 import { JobApplicationState } from "../../../enums/index.enums";
+
+type JobTrackerStatusProps = {
+  setShowConfirm: (s: boolean) => void;
+  userType: "business" | "user";
+  currentIndex: number;
+  setCurrentIndex: (s: number) => void;
+};
 
 function JobTrackerStatus({
   userType,
   setShowConfirm,
-}: {
-  setShowConfirm: (s: boolean) => void;
-  userType: "business" | "user";
-}) {
+  currentIndex,
+  setCurrentIndex,
+}: JobTrackerStatusProps) {
   const stages = Object.keys(JobApplicationState);
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   const handleChangeStatus = (index: number) => {
     setCurrentIndex(index);
     setShowConfirm(true);
   };
+
   return (
     <div className="flex w-full flex-col items-start">
       <div className="flex w-full justify-between text-xs text-gray-700">

@@ -1,10 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CardEmployerSettings from "./CardEmployerSettings";
-import {
-  faEnvelope,
-  faLocationDot,
-  faPhone,
-} from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { useGetBusinessAccountInfoQuery } from "../../../services/businessAccountApi";
 import Loader from "../../common/Loader";
 import { useParams } from "react-router-dom";
@@ -16,7 +12,7 @@ function CompanyAccount() {
   // );
   const { companyId } = useParams();
   const { data, isLoading } = useGetBusinessAccountInfoQuery({
-    id: Number(companyId),
+    id: companyId || "",
   });
   const companyInfo = data?.business;
 
@@ -34,7 +30,7 @@ function CompanyAccount() {
         <div className="flex w-full flex-col gap-5 lg:w-1/2">
           <CardEmployerSettings className="justify-center">
             <p>{companyInfo?.name}</p>
-            <img src={companyInfo?.logo} alt="company logo" />
+            {/* <img src={companyInfo?.logo} alt="company logo" /> */}
           </CardEmployerSettings>
           <CardEmployerSettings>
             <p>Contact</p>
@@ -43,11 +39,17 @@ function CompanyAccount() {
               <p>{companyInfo?.email ? companyInfo.email : "No email added"}</p>
             </div>
 
-            <div className="flex gap-2 text-gray-300">
+            {/* <div className="flex items-center gap-2 text-gray-300">
               <FontAwesomeIcon icon={faPhone} />
-              <p>{companyInfo?.phone ? companyInfo.phone : "No phone added"}</p>
-            </div>
-            <div className="flex gap-2 text-gray-300">
+              {companyInfo?.phone?.map((phone) => (
+                <p>
+                  {phone.phone_number === undefined
+                    ? phone.phone_number
+                    : "No phone added"}
+                </p>
+              ))}
+            </div> */}
+            <div className="flex items-center gap-2 text-gray-300">
               <FontAwesomeIcon icon={faLocationDot} />
               <p>
                 {companyInfo?.address.country}, {companyInfo?.address.city}
@@ -58,8 +60,12 @@ function CompanyAccount() {
         <div className="flex w-full flex-col gap-5 lg:w-1/2">
           <CardEmployerSettings>
             <p className="text-md font-medium">Website</p>
-            <p className="text-gray-300">
-              {companyInfo?.website ? companyInfo.website : "No websited added"}
+            <p className="text-gray-300 underline">
+              {companyInfo?.website ? (
+                <a href={companyInfo.website}>Link</a>
+              ) : (
+                "No websited added"
+              )}
             </p>
           </CardEmployerSettings>
           <CardEmployerSettings>

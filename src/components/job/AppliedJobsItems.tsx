@@ -2,7 +2,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { handleApiError } from "../../utils/helpers";
 import {
-  useGetJobApplicationQuery,
+  useGetUserJobApplicationsQuery,
   useUnSaveJobMutation,
 } from "../../services/jobApi";
 import Loader from "../common/Loader";
@@ -11,7 +11,7 @@ import { IJob } from "../../interfaces/Job.interfaces";
 
 function AppliedJobsItem({ job }: { job: IJob }) {
   const [showDeleteModal, setDeleteShowModal] = useState(false);
-  const { refetch } = useGetJobApplicationQuery({});
+  const { refetch } = useGetUserJobApplicationsQuery({});
   const [deleteJob, { isLoading: isLoading }] = useUnSaveJobMutation();
   async function handleDelete() {
     try {
@@ -35,7 +35,7 @@ function AppliedJobsItem({ job }: { job: IJob }) {
           <span> {job?.title}</span>
         </th>
         <td className="px-6 py-4 text-gray-300"> {job?.salary} </td>
-        <td className="px-6 py-4 text-gray-300">{job?.location}</td>
+        <td className="px-6 py-4 text-gray-300">{job?.location.country}</td>
         <td className="px-6 py-4 text-gray-300">{job?.employee_type}</td>
         <td className="space-x-5 px-6 py-4">
           <button
