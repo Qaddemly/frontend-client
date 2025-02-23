@@ -25,7 +25,7 @@ function CompanyAccount() {
       {isLoading && <Loader />}
       <div className="font-medium">
         <p className="text-center text-3xl lg:text-left">About company</p>
-        <p className="text-center text-gray-300 lg:text-left">
+        <p className="mx-8 text-center text-gray-300 lg:mx-0 lg:text-left">
           Your name and role may be visible to job seekers and other members of
           your company
         </p>
