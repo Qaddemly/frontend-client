@@ -68,16 +68,18 @@ function UserMenu({ children, type }: UserMenuProps) {
         <div className="hidden cursor-pointer text-xl font-semibold lg:block">
           {user.first_name} {user.last_name}
         </div>
-        {!showMenu ? (
-          <FontAwesomeIcon icon={faChevronDown} />
-        ) : (
-          <FontAwesomeIcon icon={faChevronUp} />
-        )}
+        <span className="hidden sm:block">
+          {!showMenu ? (
+            <FontAwesomeIcon icon={faChevronDown} />
+          ) : (
+            <FontAwesomeIcon icon={faChevronUp} />
+          )}
+        </span>
       </div>
       {showMenu && (
         <div
           ref={menuRef}
-          className={`absolute right-6 top-[4.3rem] z-10 flex ${type === "NormalAccount" ? "w-[18rem]" : "w-[24rem]"} flex-col justify-between rounded-md border bg-white py-2 text-gray-800 shadow-md`}
+          className={`absolute top-[4.3rem] z-10 flex sm:right-6 ${type === "NormalAccount" ? "w-[14rem] md:w-[18rem]" : "w-[20rem] md:w-[24rem]"} flex-col justify-between rounded-md border bg-white py-2 text-gray-800 shadow-md`}
         >
           {children}
           <Button

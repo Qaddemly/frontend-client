@@ -27,7 +27,7 @@ function NavbarBusiness() {
     <nav className="flex items-center justify-between gap-2 border-b border-b-gray-100 px-3 py-3 lg:px-6">
       <Logo fontSize="text-4xl" />
       <div className="flex items-center gap-2">
-        <div className="flex items-center gap-5 pr-4 md:pr-10">
+        <div className="hidden items-center gap-5 pr-4 sm:flex md:pr-10">
           <Link to="" className="flex gap-2">
             <FontAwesomeIcon icon={faBell} className="text-2xl" />
             <p className="hidden lg:block">Notifications</p>
