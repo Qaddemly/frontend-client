@@ -1,104 +1,85 @@
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../common/Button";
-import EditJobCardItem from "./EditJobCardItem";
 import { IJob } from "../../interfaces/Job.interfaces";
-import {
-  useMakeJobArchivedMutation,
-  useMakeJobClosedMutation,
-  useMakeJobOpenedMutation,
-} from "../../services/businessDashboardApi";
-import Loader from "../common/Loader";
-import { handleApiError } from "../../utils/helpers";
-import toast from "react-hot-toast";
 
-function EditJobCard({ job }: { job: IJob }) {
-  const { companyId } = useParams();
-  const [makeJobArchived, { isLoading: loadingArchive }] =
-    useMakeJobArchivedMutation();
-  const [makeJobClosed, { isLoading: loadingClosed }] =
-    useMakeJobClosedMutation();
-  const [makeJobOpened, { isLoading: loadingOpened }] =
-    useMakeJobOpenedMutation();
-
-  const navigate = useNavigate();
-
-  async function handleJobStatus(
+function EditJobCard({
+  job,
+  handleJobStatus,
+  handleArchiveJob,
+}: {
+  job: IJob;
+  handleJobStatus: (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    status: "Delete" | "Archive" | "Open",
-  ) {
-    e.stopPropagation();
-    try {
-      let res;
-      if (status === "Delete") {
-        res = await makeJobClosed({ id: companyId || "" }).unwrap();
-      } else if (status === "Archive") {
-        res = await makeJobArchived({ id: companyId || "" }).unwrap();
-      } else {
-        res = await makeJobOpened({ id: companyId || "" }).unwrap();
-      }
-      toast.success(res?.message || "");
-    } catch (err) {
-      handleApiError(err);
-    }
-  }
-
-  if (loadingArchive || loadingClosed || loadingOpened) return <Loader />;
+    status: "Closed" | "Opened",
+    id: number,
+  ) => void;
+  handleArchiveJob: (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => void;
+}) {
+  const { companyId } = useParams();
+  const navigate = useNavigate();
 
   return (
     <div
-      className={`${job.status === "open" ? "border-green-100" : "border-danger-300"} max-w-md cursor-pointer rounded-xl border-2 bg-offWhite p-4 shadow-lg transition-all duration-100 hover:translate-x-1 hover:shadow-gray-400`}
+      className={`${job.status === "Opened" ? "border-green-100" : "border-danger-300"} flex cursor-pointer flex-col gap-2 rounded-xl border-2 bg-background p-4 shadow-lg shadow-gray-200 hover:bg-gray-100 hover:bg-opacity-30`}
       onClick={() =>
         navigate(
           `/businessDashboard/companyJobs/${companyId}/jobApplications/${job.id}`,
         )
       }
     >
-      <h3 className="text-lg font-medium text-gray-800">
-        Job title: {job.title}
-      </h3>
-      <EditJobCardItem title="Location type:" content={job.location_type} />
-      <EditJobCardItem title="Location:" content={job.location} />
-      <EditJobCardItem title="Salary:" content={job.salary.toString()} />
-      <EditJobCardItem title="Skills:" content={job.skills?.join(", ")} />
-      <EditJobCardItem title="Employment type:" content={job.employee_type} />
-      <EditJobCardItem
-        title="Job experience:"
-        content={job.experience.toString()}
-      />
-      <EditJobCardItem title="Key words:" content={job.keywords?.join(", ")} />
-      {/* <EditJobCardItem title="Position:" content={job.position} />   {/* ask backend about position */}
+      <div className="text-center">
+        <h3 className="text-lg font-medium text-gray-800">
+          Job title: {job.title}
+        </h3>
+        <p className="pl-1 text-sm text-gray-600">
+          <span className="font-medium">Job type:</span> {job.location_type}
+        </p>
+        <p className="pl-1 text-sm text-gray-600">
+          <span className="font-medium">No. of Applications:</span>{" "}
+          {/* {job.noOfApps} */}2
+        </p>
+      </div>
 
-      <EditJobCardItem title="Description:" content={job.description} />
-      <div className="mt-4 flex gap-5 pl-1">
+      <div className="grid gap-2 sm:grid-cols-2">
+        <Button
+          className="border border-main bg-white px-1 py-1 text-xs text-main hover:bg-main hover:text-white"
+          onClick={() =>
+            navigate(
+              `/businessDashboard/companyJobs/${companyId}/jobApplications/${job.id}`,
+            )
+          }
+        >
+          Show Applications
+        </Button>
+        <Button
+          onClick={(e) => {
+            if (job.status === "Opened") handleJobStatus(e, "Closed", job.id);
+            else handleJobStatus(e, "Opened", job.id);
+          }}
+          className={`border px-3 py-1 text-xs hover:text-white ${
+            job.status === "Opened"
+              ? "border-danger-300 bg-white text-danger-300 hover:bg-danger-300"
+              : "border-green-100 bg-white text-green-100 hover:bg-green-100"
+          }`}
+        >
+          {job.status === "Opened" ? "Set Unavailable" : "Set Available"}
+        </Button>
         <Button
           onClick={(e) => {
             e.stopPropagation();
-            navigate("/businessDashboard/updatejob/1");
+            navigate(`/businessDashboard/updatejob/${job.id}`);
           }}
-          className="border border-main bg-white px-3 text-base text-main hover:bg-main hover:text-white md:text-sm lg:text-base"
+          className="border border-main bg-white px-3 py-1 text-xs text-main hover:bg-main hover:text-white"
         >
           Edit
         </Button>
         <Button
-          onClick={(e) => {
-            if (job.status === "open") handleJobStatus(e, "Delete");
-            else handleJobStatus(e, "Open");
-          }}
-          className="border border-main bg-white px-1 text-base text-main hover:bg-main hover:text-white md:text-sm lg:text-base"
-        >
-          {job.status === "open" ? "Set Unavailable" : "Set Available"}
-        </Button>
-        <Button
-          onClick={(e) => handleJobStatus(e, "Archive")}
-          className="border border-main bg-white px-1 text-base text-main hover:bg-main hover:text-white md:text-sm lg:text-base"
+          onClick={(e) => handleArchiveJob(e)}
+          className="border border-main bg-main px-3 py-1 text-xs text-white hover:bg-white hover:text-main"
         >
           Archive
-        </Button>
-        <Button
-          onClick={(e) => handleJobStatus(e, "Delete")}
-          className="border border-main bg-white px-1 text-base text-main hover:bg-main hover:text-white md:text-sm lg:text-base"
-        >
-          Delete
         </Button>
       </div>
     </div>
