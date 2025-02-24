@@ -143,7 +143,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <CompanyAccount /> },
       {
-        path: "companyJobs/:companyId",
+        path: "companyJobs/:companyId/active",
         element: <CompanyJobs />,
         children: [
           {
