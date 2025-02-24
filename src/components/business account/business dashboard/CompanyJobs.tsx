@@ -64,10 +64,11 @@ function CompanyJobs() {
   }
   async function handleArchiveJob(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    id: number,
   ) {
     e.stopPropagation();
     try {
-      const res = await makeJobArchived({ id: companyId || "" }).unwrap();
+      const res = await makeJobArchived({ id: id.toString() || "" }).unwrap();
       toast.success(res?.message || "");
       refetch();
     } catch (err) {
@@ -267,7 +268,7 @@ function CompanyJobs() {
                                   Edit
                                 </Button>
                                 <Button
-                                  onClick={(e) => handleArchiveJob(e)}
+                                  onClick={(e) => handleArchiveJob(e, job.id)}
                                   className="border border-main bg-main px-3 py-1 text-base text-white hover:bg-white hover:text-main"
                                 >
                                   Archive
