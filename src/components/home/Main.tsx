@@ -128,14 +128,14 @@ function Main() {
         </div>
       </div>
 
-      <div className="bg-white p-10 pb-32">
+      <div className="bg-background p-10 pb-32">
         <div className="flex flex-col items-center justify-between md:flex-row">
           <p className="text-xl font-bold md:text-2xl">Recommended Jobs</p>
           <button
             onClick={() => navigate("/findJob")}
-            className="mt-4 rounded-md border-2 border-[#eee] px-5 py-2 text-main hover:border-main hover:bg-main hover:text-white md:mt-0"
+            className="mt-4 rounded-md border-2 px-5 py-2 text-main hover:border-main hover:bg-main hover:text-white md:mt-0"
           >
-            View All <FontAwesomeIcon icon={faAnglesRight} />
+            Find more jobs <FontAwesomeIcon icon={faAnglesRight} />
           </button>
         </div>
 
