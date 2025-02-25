@@ -1,4 +1,6 @@
 import {
+  IAddReview,
+  IAddReviewResponse,
   ICreateBusinessAccountResponse,
   IGetBusinessAccountInfoResponse,
   // IGetJobsResponse,
@@ -49,7 +51,7 @@ export const businessAccountApi = apiSlice.injectEndpoints({
     //     method: "GET",
     //   }),
     // }),
-    getAllReviews: builder.query<IGetReviewsResponse, { id: string }>({
+    getBusinessReviews: builder.query<IGetReviewsResponse, { id: string }>({
       query: ({ id }) => ({
         url: `${BASE_BUSINESS_URL}/profile/reviews/${id}`,
         method: "GET",
@@ -73,6 +75,29 @@ export const businessAccountApi = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
+    addReview: builder.mutation<IAddReviewResponse, { data: IAddReview }>({
+      query: ({ data }) => ({
+        url: `/review`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    updateReview: builder.mutation<
+      void,
+      { data: { rating?: number; description?: string }; id: string }
+    >({
+      query: ({ data, id }) => ({
+        url: `/review/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    deleteReview: builder.mutation<void, { id: string }>({
+      query: ({ id }) => ({
+        url: `/review/${id}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -82,8 +107,11 @@ export const {
   useGetBusinessAccountInfoQuery,
   useGetFiveReviewsQuery,
   // useGetSixJobsQuery,
-  useLazyGetAllReviewsQuery,
+  useGetBusinessReviewsQuery,
   // useLazyGetAllJobsQuery,
   useFollowBusinessMutation,
   useUnfollowBusinessMutation,
+  useAddReviewMutation,
+  useUpdateReviewMutation,
+  useDeleteReviewMutation,
 } = businessAccountApi;

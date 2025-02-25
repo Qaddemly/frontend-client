@@ -9,16 +9,19 @@ import { useParams } from "react-router-dom";
 function CompanyProfile() {
   const { companyId } = useParams();
 
-  const { data, isLoading } = useGetBusinessAccountInfoQuery({
+  const { data, isLoading, refetch } = useGetBusinessAccountInfoQuery({
     id: companyId || "",
   });
 
   if (isLoading) return <Loader />;
   return (
     <div className="bg-background">
-      {/* {data?.status === "fail" && toast.error("There is an Error")} */}
       <Navbar />
-      <CompanyProfileHeader data={data?.business} />
+      <CompanyProfileHeader
+        refetch={refetch}
+        isFollowed={data?.ifFollowedByLoggedInUser ?? null}
+        data={data?.business}
+      />
       <CompanyProfileBody data={data?.business} id={Number(companyId)} />
       <Footer />
     </div>
