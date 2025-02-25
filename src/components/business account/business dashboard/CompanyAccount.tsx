@@ -28,9 +28,13 @@ function CompanyAccount() {
       </div>
       <div className="mt-10 flex flex-col gap-10 lg:flex-row">
         <div className="flex w-full flex-col gap-5 lg:w-1/2">
-          <CardEmployerSettings className="justify-center">
+          <CardEmployerSettings className="items-center">
+            <img
+              src={companyInfo?.logo}
+              alt="company logo"
+              className="h-36 w-36 rounded-full"
+            />
             <p>{companyInfo?.name}</p>
-            {/* <img src={companyInfo?.logo} alt="company logo" /> */}
           </CardEmployerSettings>
           <CardEmployerSettings>
             <p>Contact</p>
@@ -39,16 +43,6 @@ function CompanyAccount() {
               <p>{companyInfo?.email ? companyInfo.email : "No email added"}</p>
             </div>
 
-            {/* <div className="flex items-center gap-2 text-gray-300">
-              <FontAwesomeIcon icon={faPhone} />
-              {companyInfo?.phone?.map((phone) => (
-                <p>
-                  {phone.phone_number === undefined
-                    ? phone.phone_number
-                    : "No phone added"}
-                </p>
-              ))}
-            </div> */}
             <div className="flex items-center gap-2 text-gray-300">
               <FontAwesomeIcon icon={faLocationDot} />
               <p>
@@ -62,7 +56,7 @@ function CompanyAccount() {
             <p className="text-md font-medium">Website</p>
             <p className="text-gray-300 underline">
               {companyInfo?.website ? (
-                <a href={companyInfo.website}>Link</a>
+                <a href={companyInfo.website}>{companyInfo.website}</a>
               ) : (
                 "No websited added"
               )}

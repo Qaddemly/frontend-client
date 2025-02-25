@@ -2,12 +2,23 @@ import CompanyProfileCard from "./CompanyProfileCard";
 import ReviewCard from "../common/ReviewCard";
 import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { IBusinessAccount } from "../../interfaces/BusinessAccount.interfaces";
 import {
-  useGetFiveReviewsQuery,
-  useLazyGetAllReviewsQuery,
+  IBusinessAccount,
+  IReview,
+} from "../../interfaces/BusinessAccount.interfaces";
+import {
+  useAddReviewMutation,
+  useDeleteReviewMutation,
+  useGetBusinessReviewsQuery,
+  useUpdateReviewMutation,
 } from "../../services/businessAccountApi";
 import { useState } from "react";
+import Button from "../common/Button";
+import Slider from "../common/Slider";
+import { handleApiError } from "../../utils/helpers";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 type CompanyProfileBodyProps = {
   data: IBusinessAccount | undefined;
@@ -18,15 +29,83 @@ function CompanyProfileBody({
   data: companyData,
   id,
 }: CompanyProfileBodyProps) {
+  const { user } = useSelector((state: RootState) => state.user);
   // const { data: sixJobsData } = useGetSixJobsQuery({ id });
-  const { data: fiveReviewsData } = useGetFiveReviewsQuery({
+  // const { data: fiveReviewsData } = useGetFiveReviewsQuery({
+  //   id: id.toString(),
+  // });
+  // const [triggerAllJobs, { data: allJobsData }] = useLazyGetAllJobsQuery();
+  const { data, refetch } = useGetBusinessReviewsQuery({
     id: id.toString(),
   });
-  // const [triggerAllJobs, { data: allJobsData }] = useLazyGetAllJobsQuery();
-  const [triggerAllReviews, { data: allReviewsData }] =
-    useLazyGetAllReviewsQuery();
+
+  const currentReview: IReview | null =
+    data?.reviews?.filter((review) => review?.account_id === user?.id)[0] ||
+    null;
+
   // const [viewAllJobs, setViewAllJobs] = useState(false);
-  const [viewAllReviews, setViewAllReviews] = useState(false);
+  // const [viewAllReviews, setViewAllReviews] = useState(false);
+
+  //////////////////////////  Adding, updating and deleting review  //////////////////////////////////////////////
+  const [showEditReview, setShowEditReview] = useState(false);
+  const [description, setDescription] = useState(
+    currentReview?.description || "",
+  );
+  const [rating, setRating] = useState(currentReview?.review_rating || 1);
+
+  const [addReview] = useAddReviewMutation();
+  const [updateReview] = useUpdateReviewMutation();
+  const [deleteReview] = useDeleteReviewMutation();
+  async function handleAddReview() {
+    if (description.length)
+      try {
+        const res = addReview({
+          data: {
+            description,
+            rating: Number(rating),
+            business_id: id,
+            account_id: Number(user.id),
+          },
+        }).unwrap();
+
+        toast.promise(res, {
+          loading: "Adding...",
+          success: <b>Review added successfully</b>,
+          error: <b>Could not add the review.</b>,
+        });
+        await res;
+
+        refetch();
+      } catch (error) {
+        handleApiError(error);
+      }
+  }
+
+  async function handleUpdateReview() {
+    try {
+      const res = updateReview({
+        data: {
+          rating: Number(rating),
+          description,
+        },
+        id: currentReview?.review_id.toString() || "",
+      }).unwrap();
+
+      toast.promise(res, {
+        loading: "Updating...",
+        success: <b>Review updated successfully</b>,
+        error: <b>Could not update the review.</b>,
+      });
+
+      await res;
+      refetch();
+    } catch (error) {
+      handleApiError(error);
+    }
+  }
+
+  // if (isLoading) return <Loader />;
+
   return (
     <div className="overflow-hidden">
       {/* About Us section  */}
@@ -130,8 +209,8 @@ function CompanyProfileBody({
           <button
             className="space-x-2 self-end text-xl text-main"
             onClick={() => {
-              triggerAllReviews({ id });
-              setViewAllReviews(true);
+              // triggerAllReviews({ id: id.toString() });
+              // setViewAllReviews(true);
             }}
           >
             <span>View all</span>
@@ -140,26 +219,124 @@ function CompanyProfileBody({
         </div>
 
         {/* Reviews */}
-        <div className="flex w-[140rem] animate-slide space-x-10">
-          {viewAllReviews
-            ? fiveReviewsData?.reviews.map((review) => (
-                <ReviewCard
-                  key={review.review_account_id}
-                  userName={`${review.account_first_name} ${review.account_last_name}`}
-                  date={review.review_created_at}
-                  text={review.review_description}
-                  img={review.account_profile_picture}
-                />
-              ))
-            : allReviewsData?.reviews.map((review) => (
-                <ReviewCard
-                  key={review.review_account_id}
-                  userName={`${review.account_first_name} ${review.account_last_name}`}
-                  date={review.review_created_at}
-                  text={review.review_description}
-                  img={review.account_profile_picture}
-                />
-              ))}
+        {/* <div className="flex w-[140rem] animate-slide space-x-10">
+          {fiveReviewsData?.reviews.map((review) => (
+            <ReviewCard
+              key={review?.review_business_id}
+              userName={`${review.account_first_name} ${review.account_last_name}`}
+              date={review.review_created_at}
+              text={review.description}
+              img={review.account_profile_picture}
+              rating={review.review_rating}
+            />
+          ))}
+        </div> */}
+
+        {/* Adding reviews */}
+        <div className="mt-5 flex flex-col gap-5">
+          {currentReview === null ? (
+            <>
+              <h2 className="text-2xl font-semibold text-gray-800 md:text-3xl">
+                Add your review
+              </h2>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className={`min-h-[14rem] rounded-md border-2 border-gray-100 p-5 outline-none lg:min-h-[15rem] lg:bg-[#eee]`}
+                placeholder="Enter your review"
+              />
+              <div className="flex items-center justify-between">
+                <div>
+                  <Slider
+                    value={Number(rating)}
+                    setValue={setRating}
+                    label="Rating"
+                    min={1}
+                    max={5}
+                  />
+                </div>
+                <div>
+                  <Button onClick={handleAddReview} className="px-3">
+                    Add review
+                  </Button>
+                </div>
+              </div>
+            </>
+          ) : (
+            !showEditReview && (
+              <div>
+                <h2 className="mb-5 text-2xl font-semibold text-gray-800 md:text-3xl">
+                  Your review
+                </h2>
+                <div className="flex justify-center">
+                  <ReviewCard
+                    userName={`${currentReview.account_first_name} ${currentReview.account_last_name}`}
+                    date={currentReview.review_created_at}
+                    text={currentReview.description}
+                    img={currentReview.account_profile_picture}
+                    rating={currentReview.review_rating}
+                  />
+                </div>
+                <div className="mt-5 flex justify-end gap-2">
+                  <Button
+                    onClick={() => setShowEditReview(true)}
+                    className="mt-2 px-3"
+                  >
+                    Edit your review
+                  </Button>
+                  <Button
+                    onClick={async () => {
+                      const deletePromise = deleteReview({
+                        id: currentReview.review_id.toString(),
+                      }).unwrap();
+
+                      toast.promise(deletePromise, {
+                        loading: "Deleting...",
+                        success: <b>Review deleted successfully!</b>,
+                        error: <b>Could not delete the review.</b>,
+                      });
+
+                      await deletePromise;
+                      refetch();
+                    }}
+                    className="mt-2 bg-danger-300 px-3 hover:bg-danger-200"
+                  >
+                    Delete your review
+                  </Button>
+                </div>
+              </div>
+            )
+          )}
+
+          {showEditReview && (
+            <>
+              <h2 className="text-2xl font-semibold text-gray-800 md:text-3xl">
+                Edit your review
+              </h2>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className={`min-h-[14rem] rounded-md border-2 border-gray-100 p-5 outline-none lg:min-h-[15rem] lg:bg-[#eee]`}
+                placeholder="Enter your review"
+              />
+              <div className="flex items-center justify-between">
+                <div>
+                  <Slider
+                    value={Number(rating)}
+                    setValue={setRating}
+                    label="Rating"
+                    min={1}
+                    max={5}
+                  />
+                </div>
+                <div>
+                  <Button onClick={handleUpdateReview} className="px-3">
+                    Edit review
+                  </Button>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
