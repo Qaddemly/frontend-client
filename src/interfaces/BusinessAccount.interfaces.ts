@@ -35,6 +35,7 @@ export interface IBusinesses {
 }
 
 export interface IReview {
+  review_id: number;
   account_id: number;
   account_first_name: string;
   account_last_name: string;

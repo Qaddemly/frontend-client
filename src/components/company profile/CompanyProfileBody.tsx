@@ -10,7 +10,6 @@ import {
   useAddReviewMutation,
   useDeleteReviewMutation,
   useGetBusinessReviewsQuery,
-  useGetFiveReviewsQuery,
   useUpdateReviewMutation,
 } from "../../services/businessAccountApi";
 import { useState } from "react";
@@ -32,9 +31,9 @@ function CompanyProfileBody({
 }: CompanyProfileBodyProps) {
   const { user } = useSelector((state: RootState) => state.user);
   // const { data: sixJobsData } = useGetSixJobsQuery({ id });
-  const { data: fiveReviewsData } = useGetFiveReviewsQuery({
-    id: id.toString(),
-  });
+  // const { data: fiveReviewsData } = useGetFiveReviewsQuery({
+  //   id: id.toString(),
+  // });
   // const [triggerAllJobs, { data: allJobsData }] = useLazyGetAllJobsQuery();
   const { data, refetch } = useGetBusinessReviewsQuery({
     id: id.toString(),
@@ -43,7 +42,6 @@ function CompanyProfileBody({
   const currentReview: IReview | null =
     data?.reviews?.filter((review) => review?.account_id === user?.id)[0] ||
     null;
-  let currentReviewId: number = 0;
 
   // const [viewAllJobs, setViewAllJobs] = useState(false);
   // const [viewAllReviews, setViewAllReviews] = useState(false);
@@ -77,9 +75,6 @@ function CompanyProfileBody({
         });
         await res;
 
-        currentReviewId = (await res)?.review?.id;
-        console.log(currentReviewId);
-
         refetch();
       } catch (error) {
         handleApiError(error);
@@ -93,7 +88,7 @@ function CompanyProfileBody({
           rating: Number(rating),
           description,
         },
-        id: currentReviewId.toString(),
+        id: currentReview?.review_id.toString() || "",
       }).unwrap();
 
       toast.promise(res, {
@@ -224,7 +219,7 @@ function CompanyProfileBody({
         </div>
 
         {/* Reviews */}
-        <div className="flex w-[140rem] animate-slide space-x-10">
+        {/* <div className="flex w-[140rem] animate-slide space-x-10">
           {fiveReviewsData?.reviews.map((review) => (
             <ReviewCard
               key={review?.review_business_id}
@@ -235,7 +230,7 @@ function CompanyProfileBody({
               rating={review.review_rating}
             />
           ))}
-        </div>
+        </div> */}
 
         {/* Adding reviews */}
         <div className="mt-5 flex flex-col gap-5">
@@ -292,7 +287,7 @@ function CompanyProfileBody({
                   <Button
                     onClick={async () => {
                       const deletePromise = deleteReview({
-                        id: currentReviewId.toString(),
+                        id: currentReview.review_id.toString(),
                       }).unwrap();
 
                       toast.promise(deletePromise, {
