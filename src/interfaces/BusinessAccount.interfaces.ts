@@ -1,5 +1,6 @@
 import { Country, LocationType } from "../enums/index.enums";
 import { IPhone } from "./Auth.interfaces";
+import { IMeta } from "./BusinessDashboard.interfaces";
 import { IResponse } from "./Common.interfaces";
 
 export interface IBusinessAccount {
@@ -73,6 +74,12 @@ export interface IGetBusinessAccountInfoResponse {
 export interface IIfFollowedByLoggedInUser {
   account_id: number;
   business_id: number;
+}
+
+export interface IGetAllBusinessesResponse {
+  status: string;
+  // businesses: IBusinessAccount[];
+  businesses: { data: IBusinessAccount[]; meta: IMeta };
 }
 
 export interface IGetReviewsResponse {

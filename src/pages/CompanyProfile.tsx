@@ -8,11 +8,10 @@ import { useParams } from "react-router-dom";
 
 function CompanyProfile() {
   const { companyId } = useParams();
-
   const { data, isLoading, refetch } = useGetBusinessAccountInfoQuery({
     id: companyId || "",
   });
-
+  console.log(data);
   if (isLoading) return <Loader />;
   return (
     <div className="bg-background">

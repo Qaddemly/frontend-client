@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CompanyCard from "../components/common/CompanyCard";
 import SearchBar from "../components/common/SearchBar";
 import SidebarFilter from "../components/company profile/SidebarFilter";
@@ -9,9 +9,45 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSliders } from "@fortawesome/free-solid-svg-icons";
 import Select from "../components/common/Select";
 import Slider from "../components/common/Slider";
+import { useLazyGetAllBusinessesQuery } from "../services/businessAccountApi";
+import Loader from "../components/common/Loader";
+import { Country, EmploymentType, LocationType } from "../enums/index.enums";
+import MultiSelect from "../components/common/MultiSelect";
 
 function FindCompany() {
   const [isOpen, setIsOpen] = useState(false);
+  const [fetchCompanies, { isLoading }] = useLazyGetAllBusinessesQuery({});
+  const locationTypeValues = Object.values(LocationType);
+  const countryValues = Object.keys(Country);
+  const employmentTypeValues = Object.keys(EmploymentType);
+
+  const [search, setSearch] = useState("");
+  const [selectedEmploymentTypes, setSelectedEmploymentTypes] = useState<
+    string[]
+  >([]);
+  const [locationType, setLocationType] = useState("");
+  const [location, setLocation] = useState("");
+  const [industryType, setIndustryType] = useState("");
+  const [salary, setSalary] = useState(0);
+  const [query, setQuery] = useState("");
+
+  function handleFilters() {
+    setQuery(search);
+    // fetchCompanies({ locationType, employmentType, salary });
+  }
+
+  function handleReset() {
+    setLocation("");
+    setLocationType("");
+    setSelectedEmploymentTypes([]);
+    setIndustryType("");
+  }
+
+  useEffect(() => {
+    fetchCompanies({});
+  }, [fetchCompanies]);
+
+  if (isLoading) return <Loader />;
   return (
     <>
       <Navbar />
@@ -55,52 +91,18 @@ function FindCompany() {
             <div
               className={`mt-8 grid gap-6 ${isOpen ? "grid-cols-1 sm:grid-cols-2" : "sm:grid-cols-3"}`}
             >
-              {/*في مشكلة في ال ريسبونسيف من 1000 ل 1200 تقريبا */}
-              <CompanyCard
-                companyName="Google"
-                // companyImage="../assets/google-logo.svg"
-                numberOfReviews={5}
-              />
-              <CompanyCard
-                companyName="Google"
-                // companyImage="../assets/google-logo.svg"
-                numberOfReviews={45}
-              />
-              <CompanyCard
-                companyName="Google"
-                // companyImage="../assets/google-logo.svg"
-                numberOfReviews={5}
-              />
-              <CompanyCard
-                companyName="Google"
-                // companyImage="../assets/google-logo.svg"
-                numberOfReviews={5}
-              />
-              <CompanyCard
-                companyName="Google"
-                // companyImage="../assets/google-logo.svg"
-                numberOfReviews={5}
-              />
-              <CompanyCard
-                companyName="Google"
-                // companyImage="../assets/google-logo.svg"
-                numberOfReviews={5}
-              />
-              <CompanyCard
-                companyName="Google"
-                // companyImage="../assets/google-logo.svg"
-                numberOfReviews={5}
-              />
-              <CompanyCard
-                companyName="Google"
-                // companyImage="../assets/google-logo.svg"
-                numberOfReviews={5}
-              />
-              <CompanyCard
-                companyName="Google"
-                // companyImage="../assets/google-logo.svg"
-                numberOfReviews={5}
-              />
+              {/*data?.businesses.length === 0 ? (
+                <p>No companies found 😐</p>
+              ) : (
+                data?.map((business: any) => (
+                  <CompanyCard
+                    key={business.id}
+                    companyName={business.name}
+                    // companyImage={business.logo}
+                    numberOfReviews={business.reviewsRatingsQuantity}
+                  />
+                ))
+              )*/}
             </div>
           </div>
           {/* End of popular companies */}
@@ -112,13 +114,52 @@ function FindCompany() {
           isOpen={isOpen}
           title="Company filter"
         >
-          <Select isFilter={true} label="Industry type" id="industryType">
-            {/* {locationTypeValues.map((value) => (
+          <Select isFilter={true} label="Location Type" id="locationType">
+            <option value="" disabled>
+              Select preferred type
+            </option>
+            {locationTypeValues.map((value) => (
               <option value={value} key={value}>
                 {value}
               </option>
-            ))} */}
-            <option value="">Select industy</option>
+            ))}
+          </Select>
+          <Select isFilter={true} label="Location" id="location">
+            <option value="" disabled>
+              Select country
+            </option>
+            {countryValues.map((value) => (
+              <option value={value} key={value}>
+                {value}
+              </option>
+            ))}
+          </Select>
+          {/* <Select isFilter={true} label="Employment type" id="employmentType">
+            <option value="" disabled>
+              Select type
+            </option>
+            {employmentTypeValues.map((value) => (
+              <option value={value} key={value}>
+                {value}
+              </option>
+            ))}
+          </Select> */}
+          <MultiSelect
+            label="Employment type"
+            types={employmentTypeValues}
+            selectedTypes={selectedEmploymentTypes}
+            onSelect={setSelectedEmploymentTypes}
+          />
+
+          <Select isFilter={true} label="Industry type" id="industryType">
+            <option value="" disabled>
+              Select industy
+            </option>
+            <option value="Technology">Technology</option>
+            <option value="Healthcare">Healthcare</option>
+            <option value="Finance">Finance</option>
+            <option value="Education">Education</option>
+            <option value="Other">Other</option>
           </Select>
           <Slider label="Rating" min={0} max={10} />
           <Button className="my-5">Filter Companies</Button>

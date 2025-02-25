@@ -99,7 +99,14 @@ const router = createBrowserRouter([
   { path: "/setNewPassword", element: <SetNewPassword /> },
   { path: "/apply-job", element: <Apply /> },
   { path: "/message", element: <Message /> },
-  { path: "/findCompany", element: <FindCompany /> },
+  {
+    path: "/findCompany",
+    element: (
+      <ProtectedRoute>
+        <FindCompany />
+      </ProtectedRoute>
+    ),
+  },
   {
     path: "/userProfile",
     element: (

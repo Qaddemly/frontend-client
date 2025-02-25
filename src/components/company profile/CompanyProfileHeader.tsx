@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IBusinessAccount } from "../../interfaces/BusinessAccount.interfaces";
 import toast from "react-hot-toast";
 import {
   IBusinessAccount,
@@ -9,6 +11,11 @@ import {
 } from "../../services/businessAccountApi";
 import { handleApiError } from "../../utils/helpers";
 import Button from "../common/Button";
+import { faStar } from "@fortawesome/free-regular-svg-icons";
+import {
+  faStar as faStarFilled,
+  faStarHalfStroke,
+} from "@fortawesome/free-solid-svg-icons";
 
 function CompanyProfileHeader({
   data,
@@ -53,7 +60,6 @@ function CompanyProfileHeader({
         <div className="flex flex-col items-center gap-6 md:flex-row md:gap-12">
           <div className="h-20 w-20 md:h-40 md:w-40">
             {/* rounded-full bg-background */}
-            {/* <GoogleLogo/> */}
             <img
               src={data?.logo}
               alt="Company Logo"
@@ -67,8 +73,10 @@ function CompanyProfileHeader({
               {data?.name} {/* Google Inc. */}
             </h1>
             {/* no rating in backend response */}
-            {/* <span className="text-lg font-medium">{data}</span> */}
-            {/* <div className="mt-2 flex items-center justify-center gap-2 md:justify-start">
+            <span className="text-lg font-medium">
+              {data?.reviewsRatingsQuantity}
+            </span>
+            <div className="mt-2 flex items-center justify-center gap-2 md:justify-start">
               <span>
                 <FontAwesomeIcon icon={faStarFilled} />
                 <FontAwesomeIcon icon={faStarFilled} />
@@ -77,9 +85,12 @@ function CompanyProfileHeader({
                 <FontAwesomeIcon icon={faStar} />
               </span>
               <span className="text-gray-600">
-                {numberOfReviews} {numberOfReviews <= 1 ? "review" : "reviews"}
+                {data?.reviewsRatingsQuantity === 0
+                  ? "No Rating"
+                  : data?.reviewsRatingsQuantity}
+                {/* <= 1  ? "review" : "reviews" */}
               </span>
-            </div> */}
+            </div>
           </div>
         </div>
         {/* Actions Section */}
@@ -99,14 +110,15 @@ function CompanyProfileHeader({
       {/* Navigation Section */}
       <div className="bor mb-0 flex w-full justify-center text-sm text-gray-600">
         <ul className="flex gap-10 border-b border-gray-600 sm:gap-20 md:gap-36">
-          <li
-            // href="#about-the-company" //في حاجة غلط مش عارفها
-            className="cursor-pointer pb-2 hover:text-gray-800"
-          >
-            About Us
+          <li className="cursor-pointer pb-2 hover:text-gray-800">
+            <a href="#about-the-company">About Us</a>
           </li>
-          <li className="cursor-pointer pb-2 hover:text-gray-800">Jobs</li>
-          <li className="cursor-pointer pb-2 hover:text-gray-800">Reviews</li>
+          <li className="cursor-pointer pb-2 hover:text-gray-800">
+            <a href="#valid-jobs">Jobs</a>
+          </li>
+          <li className="cursor-pointer pb-2 hover:text-gray-800">
+            <a href="#job-reviews">Reviews</a>
+          </li>
         </ul>
       </div>
     </div>
