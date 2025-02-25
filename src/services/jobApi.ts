@@ -43,7 +43,7 @@ export const jobApi = apiSlice.injectEndpoints({
         }
 
         if (employmentType?.length) {
-          params.append("filter.employment_type[in]", employmentType);
+          params.append("filter.employee_type[in]", employmentType);
         }
 
         if (salary) {
