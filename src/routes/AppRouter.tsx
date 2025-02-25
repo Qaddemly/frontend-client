@@ -47,8 +47,8 @@ import {
   YourResume,
 } from "../components/user settings";
 import JobTracker from "../pages/JobTracker";
-import JobTrackerArchived from "../components/job/job tracker/JobTrackerArchived";
 import JobTrackerBusiness from "../components/job/job tracker/JobTrackerBusiness";
+import JobTrackerArchived from "../components/job/job tracker/JobTrackerArchived";
 
 const router = createBrowserRouter([
   {

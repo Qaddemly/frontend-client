@@ -1,5 +1,4 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { IBusinessAccount } from "../../interfaces/BusinessAccount.interfaces";
 import toast from "react-hot-toast";
 import {
   IBusinessAccount,

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import CompanyCard from "../components/common/CompanyCard";
 import SearchBar from "../components/common/SearchBar";
 import SidebarFilter from "../components/company profile/SidebarFilter";
 import Footer from "../components/home/Footer";
@@ -12,7 +11,6 @@ import Slider from "../components/common/Slider";
 import { useLazyGetAllBusinessesQuery } from "../services/businessAccountApi";
 import Loader from "../components/common/Loader";
 import { Country, EmploymentType, LocationType } from "../enums/index.enums";
-import MultiSelect from "../components/common/MultiSelect";
 
 function FindCompany() {
   const [isOpen, setIsOpen] = useState(false);
@@ -144,12 +142,12 @@ function FindCompany() {
               </option>
             ))}
           </Select> */}
-          <MultiSelect
+          {/* <MultiSelect
             label="Employment type"
             types={employmentTypeValues}
             selectedTypes={selectedEmploymentTypes}
             onSelect={setSelectedEmploymentTypes}
-          />
+          /> */}
 
           <Select isFilter={true} label="Industry type" id="industryType">
             <option value="" disabled>

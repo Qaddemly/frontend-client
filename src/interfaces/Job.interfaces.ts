@@ -91,7 +91,7 @@ export interface IGetJobApplicationsResponse {
 
 export interface IGetArchivedJobApplicationsResponse {
   success: boolean;
-  jobApplications: IGetArchivedJobApplication[];
+  jobApplications: IJobApplication[];
 }
 export interface IGetRecommendedJobs {
   success: boolean;

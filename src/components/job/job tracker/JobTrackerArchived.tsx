@@ -1,5 +1,4 @@
 import { useGetArchivedJobApplicationQuery } from "../../../services/jobApi";
-import { handleApiError } from "../../../utils/helpers";
 import Loader from "../../common/Loader";
 import Footer from "../../home/Footer";
 import Navbar from "../../home/Navbar";
@@ -7,10 +6,9 @@ import JobTrackerHeader from "./JobTrackerHeader";
 import JobTrackerItem from "./JobTrackerItem";
 
 function JobTrackerArchived() {
-  const { data, isLoading, error } = useGetArchivedJobApplicationQuery();
+  const { data, isLoading } = useGetArchivedJobApplicationQuery();
 
   if (isLoading) return <Loader />;
-  if (error) return handleApiError(error);
 
   return (
     <>
