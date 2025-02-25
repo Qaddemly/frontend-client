@@ -112,7 +112,7 @@ function PostJobForm() {
       const res = await postNewJob(data as IPostNewJobInputs).unwrap();
       toast.success(res.message);
       refetch();
-      navigate(`/businessDashboard/companyJobs/${companyId}`);
+      navigate(`/businessDashboard/companyJobs/${companyId}/active`);
     } catch (error) {
       handleApiError(error);
     }
