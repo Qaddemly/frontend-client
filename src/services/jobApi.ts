@@ -2,6 +2,7 @@ import { IResponse } from "../interfaces/Common.interfaces";
 import {
   IApplyToJobResponse,
   IGetAllJobsResponse,
+  IGetArchivedJobApplicationsResponse,
   IGetJobApplicationsResponse,
   IGetJobDetailsResponse,
   IGetRecommendedJobs,
@@ -127,6 +128,24 @@ export const jobApi = apiSlice.injectEndpoints({
         method: "PUT",
       }),
     }),
+    getOneJobDetails: builder.query<
+      IGetJobApplicationsResponse,
+      { id: string }
+    >({
+      query: ({ id }) => ({
+        url: `user/jobApplication/${id}`,
+        method: "GET",
+      }),
+    }),
+    getArchivedJobApplication: builder.query<
+      IGetArchivedJobApplicationsResponse,
+      void
+    >({
+      query: () => ({
+        url: "user/jobApplication/archived/all",
+        method: "GET",
+      }),
+    }),
     getRecommendedJobs: builder.query<IGetRecommendedJobs, void>({
       query: () => ({
         url: `${BASE_JOB_URL}/recommendedJobsForUser`,
@@ -147,4 +166,6 @@ export const {
   useApplyToJobMutation,
   useArchiveJobApplicationMutation,
   useGetRecommendedJobsQuery,
+  useGetOneJobDetailsQuery,
+  useGetArchivedJobApplicationQuery,
 } = jobApi;
