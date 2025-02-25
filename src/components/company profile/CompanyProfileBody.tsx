@@ -8,6 +8,8 @@ import {
   useLazyGetAllReviewsQuery,
 } from "../../services/businessAccountApi";
 import { useState } from "react";
+import Button from "../common/Button";
+import Slider from "../common/Slider";
 
 type CompanyProfileBodyProps = {
   data: IBusinessAccount | undefined;
@@ -27,6 +29,10 @@ function CompanyProfileBody({
     useLazyGetAllReviewsQuery();
   // const [viewAllJobs, setViewAllJobs] = useState(false);
   const [viewAllReviews, setViewAllReviews] = useState(false);
+
+  //////////////////////////  Adding review  //////////////////////////////////////////////
+  const [description, setDescription] = useState("");
+  const [rating, setRating] = useState(0);
   return (
     <div className="overflow-hidden">
       {/* About Us section  */}
@@ -130,7 +136,7 @@ function CompanyProfileBody({
           <button
             className="space-x-2 self-end text-xl text-main"
             onClick={() => {
-              triggerAllReviews({ id });
+              triggerAllReviews({ id: id.toString() });
               setViewAllReviews(true);
             }}
           >
@@ -160,6 +166,29 @@ function CompanyProfileBody({
                   img={review.account_profile_picture}
                 />
               ))}
+        </div>
+
+        {/* Adding reviews */}
+        <div className="flex flex-col gap-5">
+          <h2 className="text-2xl font-semibold text-gray-800 md:text-3xl">
+            Add your review
+          </h2>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className={`min-h-[14rem] rounded-md border-2 border-gray-100 p-5 outline-none lg:min-h-[15rem] lg:bg-[#eee]`}
+            placeholder="Enter your review"
+          />
+          <Slider
+            value={rating}
+            setValue={setRating}
+            label="Rating"
+            min={0}
+            max={10}
+          />
+          <div>
+            <Button className="px-3">Add review</Button>
+          </div>
         </div>
       </div>
     </div>
