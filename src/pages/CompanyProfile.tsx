@@ -4,27 +4,22 @@ import Footer from "../components/home/Footer";
 import Navbar from "../components/home/Navbar";
 import { useGetBusinessAccountInfoQuery } from "../services/businessAccountApi";
 import Loader from "../components/common/Loader";
-import { useSelector } from "react-redux";
-import { RootState } from "../store/store";
+
+import { useParams } from "react-router-dom";
 
 function CompanyProfile() {
-  const { businessAccount } = useSelector(
-    (state: RootState) => state.businessAccount,
-  );
+  const { companyId } = useParams();
   const { data, isLoading } = useGetBusinessAccountInfoQuery({
-    id: businessAccount.id.toString(),
+    id: companyId?.toString() || "",
   });
-
+  console.log(data);
   if (isLoading) return <Loader />;
   return (
-    <div className="bg-background">
+    <div className="bg-background transition duration-100 ease-in">
       {/* {data?.status === "fail" && toast.error("There is an Error")} */}
       <Navbar />
       <CompanyProfileHeader data={data?.business} />
-      <CompanyProfileBody
-        data={data?.business}
-        id={Number(businessAccount.id)}
-      />
+      <CompanyProfileBody data={data?.business} id={Number(companyId)} />
       <Footer />
     </div>
   );

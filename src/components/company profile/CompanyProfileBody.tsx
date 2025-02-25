@@ -81,7 +81,10 @@ function CompanyProfileBody({
       </div>
 
       {/* Valid jobs section  */}
-      <div className="relative mx-auto max-w-[1000px] px-6 py-12 md:px-12">
+      <div
+        className="relative mx-auto max-w-[1000px] px-6 py-12 md:px-12"
+        id="valid-jobs"
+      >
         {/* Section Title */}
         <div className="flex items-center justify-between font-semibold">
           <h2 className="text-2xl text-gray-800 md:text-3xl">Valid jobs</h2>
@@ -124,7 +127,10 @@ function CompanyProfileBody({
       </div>
 
       {/* Reviews section  */}
-      <div className="relative mx-auto max-w-[1000px] px-6 py-12 md:px-12">
+      <div
+        className="relative mx-auto max-w-[1000px] px-6 py-12 md:px-12"
+        id="job-reviews"
+      >
         <div className="mb-10 flex items-center justify-between font-semibold">
           <h2 className="text-2xl text-gray-800 md:text-3xl">Reviews</h2>
           <button

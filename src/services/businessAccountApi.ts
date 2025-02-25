@@ -1,5 +1,6 @@
 import {
   ICreateBusinessAccountResponse,
+  IGetAllBusinessesResponse,
   IGetBusinessAccountInfoResponse,
   // IGetJobsResponse,
   IGetReviewsResponse,
@@ -36,6 +37,55 @@ export const businessAccountApi = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+
+    getAllBusinesses: builder.query<
+      IGetAllBusinessesResponse,
+      {
+        search?: string;
+        page?: number;
+        limit?: number;
+        locationType?: string;
+        Country?: string;
+        Industry?: string;
+        AverageRating?: number;
+      }
+    >({
+      query: ({
+        search,
+        page,
+        limit,
+        locationType,
+        Country,
+        Industry,
+        AverageRating,
+      }) => {
+        const params = new URLSearchParams();
+
+        if (search) params.append("search", search);
+        if (page) params.append("page", page.toString());
+        if (limit) params.append("limit", limit.toString());
+        if (locationType?.length) {
+          params.append("filter.location_type", locationType);
+        }
+        if (Country?.length) {
+          params.append("filter.address.country", Country);
+        }
+        if (Industry?.length) {
+          params.append("filter.industry", Industry);
+        }
+        if (AverageRating) {
+          params.append(
+            "filter.reviewsRatingsAverage[eq]",
+            AverageRating.toString(),
+          );
+        }
+
+        return {
+          url: `${BASE_BUSINESS_URL}/searchAndFilter${params.toString() ? `?${params.toString()}` : ""}`,
+          method: "GET",
+        };
+      },
+    }),
     getFiveReviews: builder.query<IGetReviewsResponse, { id: string }>({
       query: ({ id }) => ({
         url: `${BASE_BUSINESS_URL}/profile/reviewsFive/${id}`,
@@ -67,6 +117,7 @@ export const {
   useCreateBusinessAccountMutation,
   useGetUserBusinessesQuery,
   useGetBusinessAccountInfoQuery,
+  useLazyGetAllBusinessesQuery,
   useGetFiveReviewsQuery,
   // useGetSixJobsQuery,
   useLazyGetAllReviewsQuery,
