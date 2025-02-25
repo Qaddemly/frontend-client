@@ -131,7 +131,14 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
-  { path: "/companyProfile/:companyId", element: <CompanyProfile /> },
+  {
+    path: "/companyProfile/:companyId",
+    element: (
+      <ProtectedRoute>
+        <CompanyProfile />
+      </ProtectedRoute>
+    ),
+  },
   {
     path: "/createBusinessAccount",
     element: (

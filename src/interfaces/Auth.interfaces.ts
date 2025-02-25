@@ -28,7 +28,7 @@ export interface IUserInfo {
   resume: string; // need interface
 }
 export interface IUser {
-  id: string;
+  id: number;
   first_name: string;
   last_name: string;
   email: string;

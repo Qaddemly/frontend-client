@@ -1,4 +1,6 @@
 import {
+  IAddReview,
+  IAddReviewResponse,
   ICreateBusinessAccountResponse,
   IGetAllBusinessesResponse,
   IGetBusinessAccountInfoResponse,
@@ -6,6 +8,7 @@ import {
   IGetReviewsResponse,
   IGetUserBusinessesResponse,
 } from "../interfaces/BusinessAccount.interfaces";
+import { IResponse } from "../interfaces/Common.interfaces";
 import { apiSlice } from "./apiSlice";
 
 const BASE_BUSINESS_URL = "/business";
@@ -98,7 +101,7 @@ export const businessAccountApi = apiSlice.injectEndpoints({
     //     method: "GET",
     //   }),
     // }),
-    getAllReviews: builder.query<IGetReviewsResponse, { id: number }>({
+    getBusinessReviews: builder.query<IGetReviewsResponse, { id: string }>({
       query: ({ id }) => ({
         url: `${BASE_BUSINESS_URL}/profile/reviews/${id}`,
         method: "GET",
@@ -110,6 +113,41 @@ export const businessAccountApi = apiSlice.injectEndpoints({
     //     method: "GET",
     //   }),
     // }),
+    followBusiness: builder.mutation<IResponse, { id: string }>({
+      query: ({ id }) => ({
+        url: `/account/followBusiness/${id}`,
+        method: "POST",
+      }),
+    }),
+    unfollowBusiness: builder.mutation<IResponse, { id: string }>({
+      query: ({ id }) => ({
+        url: `/account/unfollowBusiness/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    addReview: builder.mutation<IAddReviewResponse, { data: IAddReview }>({
+      query: ({ data }) => ({
+        url: `/review`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    updateReview: builder.mutation<
+      void,
+      { data: { rating?: number; description?: string }; id: string }
+    >({
+      query: ({ data, id }) => ({
+        url: `/review/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    deleteReview: builder.mutation<void, { id: string }>({
+      query: ({ id }) => ({
+        url: `/review/${id}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -120,6 +158,11 @@ export const {
   useLazyGetAllBusinessesQuery,
   useGetFiveReviewsQuery,
   // useGetSixJobsQuery,
-  useLazyGetAllReviewsQuery,
+  useGetBusinessReviewsQuery,
   // useLazyGetAllJobsQuery,
+  useFollowBusinessMutation,
+  useUnfollowBusinessMutation,
+  useAddReviewMutation,
+  useUpdateReviewMutation,
+  useDeleteReviewMutation,
 } = businessAccountApi;
