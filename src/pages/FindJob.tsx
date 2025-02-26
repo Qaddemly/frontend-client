@@ -12,6 +12,7 @@ import JobCard from "../components/common/JobCard";
 import { Country, EmploymentType, LocationType } from "../enums/index.enums";
 import { useLazyGetAllJobsQuery } from "../services/jobApi";
 import Loader from "../components/common/Loader";
+import MultiSelect from "../components/common/MultiSelect";
 import Pagination from "../components/common/Pagination";
 
 function FindJob() {
@@ -23,7 +24,10 @@ function FindJob() {
   const [search, setSearch] = useState("");
   const [locationType, setLocationType] = useState("");
   const [location, setLocation] = useState("");
-  const [employmentType, setEmploymentType] = useState("");
+  // const [employmentType, setEmploymentType] = useState("");
+  const [selectedEmploymentTypes, setSelectedEmploymentTypes] = useState<
+    string[]
+  >([]);
   // const [industryType, setIndustryType] = useState("");
   const [salary, setSalary] = useState(0);
 
@@ -38,7 +42,7 @@ function FindJob() {
   function handleReset() {
     setLocation("");
     setLocationType("");
-    setEmploymentType("");
+    setSelectedEmploymentTypes([]);
     setSalary(0);
   }
 
@@ -157,23 +161,13 @@ function FindJob() {
               </option>
             ))}
           </Select>
-          <Select
-            value={employmentType}
-            onChange={(e) => setEmploymentType(e.target.value)}
-            isFilter={true}
+
+          <MultiSelect
             label="Employment type"
-            id="EmploymentType"
-            defaultValue=""
-          >
-            <option value="" disabled>
-              Select a employment type
-            </option>
-            {employmentTypeValues.map((value) => (
-              <option value={value} key={value}>
-                {value}
-              </option>
-            ))}
-          </Select>
+            types={employmentTypeValues}
+            selectedTypes={selectedEmploymentTypes}
+            onSelect={setSelectedEmploymentTypes}
+          />
           {/* <Select isFilter={true} label="Industry type" id="industryType">
             {locationTypeValues.map((value) => (
               <option value={value} key={value}>
