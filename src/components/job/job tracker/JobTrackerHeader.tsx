@@ -65,7 +65,7 @@ function JobTrackerHeader({
           btnClassName="hidden"
         />
 
-        <select className="rounded-md border border-gray-100 px-10 py-2 text-gray-400 outline-none focus:border-secondary">
+        {/* <select className="rounded-md border border-gray-100 px-10 py-2 text-gray-400 outline-none focus:border-secondary">
           {userType === "user" ? (
             <option value="All">Job Type</option>
           ) : (
@@ -82,7 +82,7 @@ function JobTrackerHeader({
           placeholder="Applied until"
           type="text"
           className="w-full rounded-md border-gray-100 px-2 py-2"
-        />
+        /> */}
       </div>
     </div>
   );
