@@ -26,7 +26,7 @@ function JobProfile() {
         <JobDescriptionSection>
           <JobDescriptionItem
             title="Location"
-            content={`${job?.location?.country}, ${job?.location?.city}`}
+            content={`${job?.location?.country || "No country"}, ${job?.location?.city || "No city"}`}
           />
           <JobDescriptionItem
             title="Full Job Description"

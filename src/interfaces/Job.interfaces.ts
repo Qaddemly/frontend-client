@@ -32,6 +32,16 @@ export interface IJob {
   account: IUser;
   isSaved: boolean;
 }
+export interface IGetArchivedJobApplication {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  job_id: number;
+  resume_id: number;
+  account_id: number;
+  is_archived: boolean;
+  job_application_id: number;
+}
 
 //////////////////////////////////////////////////////////////////////////////
 // Api Response Interfaces
@@ -79,6 +89,10 @@ export interface IGetJobApplicationsResponse {
   };
 }
 
+export interface IGetArchivedJobApplicationsResponse {
+  success: boolean;
+  jobApplications: IJobApplication[];
+}
 export interface IGetRecommendedJobs {
   success: boolean;
   recommendedJobs: IJob[];

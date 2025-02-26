@@ -74,7 +74,7 @@ function JobProfileHeader({ job }: { job: IJob }) {
         <img
           src={job?.business.logo}
           alt={job.title}
-          className="mr-4 h-8 w-8"
+          className="mr-4 h-20 w-20 rounded-full"
         />
         <div className="flex w-full flex-col items-center justify-between gap-2 lg:flex-row lg:gap-0">
           <h2 className="text-center text-4xl font-bold md:text-left md:text-5xl">

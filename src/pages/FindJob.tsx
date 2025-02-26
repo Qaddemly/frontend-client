@@ -13,6 +13,7 @@ import { Country, EmploymentType, LocationType } from "../enums/index.enums";
 import { useLazyGetAllJobsQuery } from "../services/jobApi";
 import Loader from "../components/common/Loader";
 import MultiSelect from "../components/common/MultiSelect";
+import Pagination from "../components/common/Pagination";
 
 function FindJob() {
   const locationTypeValues = Object.values(LocationType);
@@ -29,17 +30,13 @@ function FindJob() {
   >([]);
   // const [industryType, setIndustryType] = useState("");
   const [salary, setSalary] = useState(0);
-  const [query, setQuery] = useState("");
 
   const [fetchJobs, { data, isLoading }] = useLazyGetAllJobsQuery();
+  const meta = data?.jobs.meta;
+  const [currentPage, setCurrentPage] = useState(meta?.currentPage);
 
   function handleFilters() {
-    setQuery(search);
-    fetchJobs({
-      locationType,
-      employmentType: selectedEmploymentTypes,
-      salary,
-    });
+    fetchJobs({ page: 1, limit: 9, locationType, employmentType, salary });
   }
 
   function handleReset() {
@@ -50,11 +47,7 @@ function FindJob() {
   }
 
   useEffect(() => {
-    fetchJobs({
-      locationType,
-      employmentType: selectedEmploymentTypes,
-      salary,
-    });
+    fetchJobs({ page: 1, limit: 9, locationType, employmentType, salary });
   }, [fetchJobs]);
 
   if (isLoading) return <Loader />;
@@ -76,8 +69,7 @@ function FindJob() {
                 search={search}
                 setSearch={setSearch}
                 onClick={() => {
-                  setQuery(search);
-                  fetchJobs({ search: query });
+                  fetchJobs({ page: 1, limit: 9, search });
                 }}
               />
               {!isOpen && (
@@ -99,11 +91,8 @@ function FindJob() {
 
           {/* Popular jobs */}
           <div className="px-20 md:mx-4">
-            <h3 className="text-2xl text-gray-800 md:text-3xl">
-              Most viewed jobs
-            </h3>
             <div
-              className={`mt-8 grid gap-6 ${isOpen ? "grid-cols-1 sm:grid-cols-2 md:grid-cols-2" : "grid-cols-1 sm:grid-cols-2 md:grid-cols-3"}`}
+              className={`grid gap-6 ${isOpen ? "grid-cols-1 sm:grid-cols-2 md:grid-cols-2" : "grid-cols-1 sm:grid-cols-2 md:grid-cols-3"}`}
             >
               {data?.jobs.data.length === 0 && (
                 <p className="italic text-gray-300">No jobs founded</p>
@@ -113,6 +102,21 @@ function FindJob() {
               ))}
             </div>
           </div>
+          <Pagination
+            currentPage={currentPage || 1}
+            totalPages={meta?.totalPages || 1}
+            onPageChange={(page) => {
+              fetchJobs({
+                page,
+                limit: 9,
+                search,
+                locationType,
+                employmentType,
+                salary,
+              });
+              setCurrentPage(page);
+            }}
+          />
           {/* End of popular companies */}
         </div>
 

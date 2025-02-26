@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import CompanyCard from "../components/common/CompanyCard";
 import SearchBar from "../components/common/SearchBar";
 import SidebarFilter from "../components/company profile/SidebarFilter";
 import Footer from "../components/home/Footer";
@@ -161,7 +160,6 @@ function FindCompany() {
               </option>
             ))}
           </Select>
-
           <Select
             isFilter={true}
             label="Industry type"

@@ -38,9 +38,9 @@ function PostJobForm() {
   const [inputValue, setInputValue] = useState("");
   const [skillInputValue, setSkillInputValue] = useState("");
 
-  const locationTypes = Object.values(LocationType);
-  const countryLocation = Object.values(Country);
-  const employmentType = Object.values(EmploymentType);
+  const locationTypes = Object.keys(LocationType);
+  const countryLocation = Object.keys(Country);
+  const employmentType = Object.keys(EmploymentType);
 
   const [postNewJob, { isLoading }] = usePostNewJobMutation();
   const { refetch } = useGetAllJobsQuery({});

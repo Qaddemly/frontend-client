@@ -1,5 +1,14 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { IBusinessAccount } from "../../interfaces/BusinessAccount.interfaces";
+import toast from "react-hot-toast";
+import {
+  IBusinessAccount,
+  IIfFollowedByLoggedInUser,
+} from "../../interfaces/BusinessAccount.interfaces";
+import {
+  useFollowBusinessMutation,
+  useUnfollowBusinessMutation,
+} from "../../services/businessAccountApi";
+import { handleApiError } from "../../utils/helpers";
 import Button from "../common/Button";
 import { faStar } from "@fortawesome/free-regular-svg-icons";
 import {
@@ -9,10 +18,39 @@ import {
 
 function CompanyProfileHeader({
   data,
+  isFollowed,
+  refetch,
 }: {
   data: IBusinessAccount | undefined;
+  isFollowed: IIfFollowedByLoggedInUser | null;
+  refetch: () => void;
 }) {
-  console.log(data?.logo);
+  const [followBusiness] = useFollowBusinessMutation();
+  const [unFollowBusiness] = useUnfollowBusinessMutation();
+
+  async function handleFollowBusiness() {
+    try {
+      const res = await followBusiness({
+        id: data?.id.toString() || "",
+      }).unwrap();
+      toast.success(res.message);
+      refetch();
+    } catch (error) {
+      handleApiError(error);
+    }
+  }
+
+  async function handleUnfollowBusiness() {
+    try {
+      const res = await unFollowBusiness({
+        id: data?.id.toString() || "",
+      }).unwrap();
+      toast.success(res.message);
+      refetch();
+    } catch (error) {
+      handleApiError(error);
+    }
+  }
   return (
     <div className="mx-auto flex w-full flex-col items-center justify-between bg-light-secondary">
       {/* Log, Info and Actions */}
@@ -56,8 +94,16 @@ function CompanyProfileHeader({
         </div>
         {/* Actions Section */}
         <div className="mt-6 flex items-center gap-4 md:mt-0">
-          <Button className="px-2">Follow</Button>
-          <Button className="px-2">Message</Button>
+          {isFollowed === null ? (
+            <Button className="px-2" onClick={handleFollowBusiness}>
+              Follow
+            </Button>
+          ) : (
+            <Button className="px-2" onClick={handleUnfollowBusiness}>
+              Unfollow
+            </Button>
+          )}
+          {/* <Button className="px-2">Message</Button> */}
         </div>
       </div>
       {/* Navigation Section */}
