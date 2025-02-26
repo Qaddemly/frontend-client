@@ -25,7 +25,6 @@ function FindCompany() {
 
   const [industryType, setIndustryType] = useState("");
   const [rating, setRating] = useState(0);
-  const [query, setQuery] = useState("");
 
   const [getAllBusinesses, { data, isLoading }] = useLazyGetAllBusinessesQuery(
     {},
@@ -35,8 +34,8 @@ function FindCompany() {
 
   const navigate = useNavigate();
   function handleFilters() {
-    setQuery(search);
     getAllBusinesses({
+      search,
       locationType,
       Country: location,
       Industry: industryType,
@@ -75,8 +74,8 @@ function FindCompany() {
                 search={search}
                 setSearch={setSearch}
                 onClick={() => {
-                  setQuery(search);
-                  getAllBusinesses({ search: query });
+                  setSearch(search);
+                  getAllBusinesses({ search });
                 }}
               />
               {!isOpen && (
