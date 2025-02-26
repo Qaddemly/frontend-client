@@ -41,7 +41,7 @@ export interface IReview {
   account_first_name: string;
   account_last_name: string;
   account_profile_picture: string;
-  description: string;
+  review_description: string;
   review_rating: string;
   review_business_id: number;
   review_created_at: string;

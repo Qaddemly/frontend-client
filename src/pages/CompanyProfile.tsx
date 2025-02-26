@@ -11,7 +11,6 @@ function CompanyProfile() {
   const { data, isLoading, refetch } = useGetBusinessAccountInfoQuery({
     id: companyId || "",
   });
-  console.log(data);
   if (isLoading) return <Loader />;
   return (
     <div className="bg-background">
