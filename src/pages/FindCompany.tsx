@@ -12,6 +12,7 @@ import { useLazyGetAllBusinessesQuery } from "../services/businessAccountApi";
 import Loader from "../components/common/Loader";
 import { Country, LocationType } from "../enums/index.enums";
 import { useNavigate } from "react-router-dom";
+import CompanyCard from "../components/common/CompanyCard";
 
 function FindCompany() {
   const [isOpen, setIsOpen] = useState(false);
@@ -56,20 +57,22 @@ function FindCompany() {
   return (
     <>
       <Navbar />
-      <div className="flex">
-        <div className="w-full bg-background pb-10">
+      <div className="flex flex-col-reverse sm:flex-row">
+        <div
+          className={`w-full bg-background px-2 pb-10 text-center sm:px-5 lg:px-10 ${isOpen ? "lg:text-left" : "md:text-left"}`}
+        >
           {/* Heading and search bar */}
-          <div className="max-w-5xl p-20 md:mx-4">
-            <h2 className="text-4xl font-semibold text-gray-800 md:text-3xl">
+          <div className="max-w-5xl py-10 pt-20 md:mx-4">
+            <h2 className="text-3xl font-semibold text-gray-800 md:text-4xl">
               Find great place to work
             </h2>
             <p className="mt-2 text-gray-600">
               Get access to millions of companies
             </p>
-            <div className="flex items-center gap-5 py-6">
+            <div className="flex items-center gap-1 py-6 sm:gap-3 md:gap-5">
               <SearchBar
                 placeholder="Company name"
-                buttonName="Find companies"
+                buttonName="Search"
                 search={search}
                 setSearch={setSearch}
                 onClick={() => {
@@ -79,7 +82,7 @@ function FindCompany() {
               />
               {!isOpen && (
                 <Button
-                  className="flex items-center gap-2 border border-gray-100 bg-white p-2 text-lg text-main hover:bg-main hover:text-white"
+                  className="flex items-center gap-2 border border-gray-100 bg-white p-1 text-lg text-main hover:bg-main hover:text-white md:p-2"
                   onClick={() => {
                     setIsOpen(true);
                   }}
@@ -95,15 +98,15 @@ function FindCompany() {
           {/*End of heading and search bar */}
 
           {/* Popular companies */}
-          <div className="px-20 md:mx-4">
-            <h3 className="text-2xl text-gray-800 md:text-3xl">
+          <div className="md:mx-4">
+            <h3 className="text-2xl font-medium text-gray-800 md:text-3xl">
               Popular companies
             </h3>
             <div
-              className={`mt-8 grid gap-6 ${isOpen ? "grid-cols-1 sm:grid-cols-2" : "sm:grid-cols-3"}`}
+              className={`mt-8 grid grid-cols-1 place-items-center gap-6 ${isOpen ? "lg:grid-cols-2 lg:place-items-stretch xl:grid-cols-3 2xl:grid-cols-4" : "sm:grid-cols-2 sm:place-items-stretch lg:grid-cols-3 2xl:grid-cols-4"}`}
             >
               {businesses?.data?.length === 0 ? (
-                <p className="text-2xl italic text-gray-300">
+                <p className="text-center text-2xl italic text-gray-300 md:text-3xl">
                   No companies found 😐
                 </p>
               ) : (
@@ -181,7 +184,13 @@ function FindCompany() {
             value={rating}
             setValue={setRating}
           />
-          <Button className="my-5" onClick={handleFilters}>
+          <Button
+            className="my-5"
+            onClick={() => {
+              handleFilters();
+              setIsOpen(false);
+            }}
+          >
             Filter Companies
           </Button>
         </SidebarFilter>

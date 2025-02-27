@@ -19,7 +19,7 @@ function CompanyCard({
 }: CompanyCardProps) {
   return (
     <div
-      className="m-2 h-[135px] w-96 cursor-pointer rounded-lg border-none bg-white p-4 hover:shadow-md"
+      className="m-2 h-[135px] w-fit cursor-pointer rounded-lg border-none bg-white p-4 hover:shadow-md"
       onClick={onClick}
     >
       <div className="flex items-center justify-between">

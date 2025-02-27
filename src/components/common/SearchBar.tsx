@@ -23,23 +23,21 @@ function SearchBar({
 }: SearchBarProps) {
   return (
     <div
-      className={`${className ? className : "flex w-full max-w-[950px] items-center rounded-lg border border-gray-100 bg-white px-4 py-2 shadow-sm outline-none focus-within:ring-2"}`}
+      className={`${className ? className : "flex w-full max-w-[950px] items-center rounded-lg border border-gray-100 bg-white px-2 py-2 shadow-sm outline-none focus-within:ring-2 md:px-4"}`}
     >
-      {/* <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
-       */}
       <FontAwesomeIcon icon={faMagnifyingGlass} className="text-main" />
       <input
         value={search}
         onChange={(e) => setSearch && setSearch(e.target.value)}
         type="text"
-        placeholder={`${placeholder}`} // "Company name"
-        className="ml-2 flex-1 text-sm text-gray-700 placeholder-gray-400 outline-none focus:outline-none"
+        placeholder={`${placeholder}`}
+        className="ml-2 w-[8rem] flex-1 text-sm text-gray-700 placeholder-gray-400 outline-none focus:outline-none sm:w-full"
       />
       <Button
         onClick={onClick}
-        className={`${btnClassName ? btnClassName : "px-8 py-2"}`}
+        className={` ${btnClassName ? btnClassName : "px-2 sm:px-4 md:px-8"}`}
       >
-        {buttonName} {/* Find Companies */}
+        {buttonName}
       </Button>
     </div>
   );
