@@ -1,16 +1,29 @@
 import { NavLink, useParams } from "react-router-dom";
 import SearchBar from "../../common/SearchBar";
+import { JobApplicationState } from "../../../enums/index.enums";
+import { useEffect, useState } from "react";
 
 type JobTrackerHeaderProps = {
   userType: "business" | "user";
   businessJobApplicationsLength?: number;
+  currentState: string;
+  fetchApplications: (params: { id: string; filterByState: string }) => void;
 };
 
 function JobTrackerHeader({
   userType,
   businessJobApplicationsLength,
+  currentState,
+  fetchApplications,
 }: JobTrackerHeaderProps) {
   const { companyId, jobId } = useParams();
+  const jobApplicationsStateValues = Object.values(JobApplicationState);
+  const [applicationsState, setApplicationsState] = useState(currentState);
+
+  useEffect(() => {
+    fetchApplications({ id: jobId || "", filterByState: applicationsState });
+  }, [fetchApplications, applicationsState]);
+
   return (
     <div className="relative">
       <p className="text-4xl font-semibold text-gray-800">Track your jobs</p>
@@ -65,24 +78,19 @@ function JobTrackerHeader({
           btnClassName="hidden"
         />
 
-        <select className="rounded-md border border-gray-100 px-10 py-2 text-gray-400 outline-none focus:border-secondary">
+        <select
+          value={applicationsState}
+          onChange={(e) => setApplicationsState(e.target.value)}
+          className="w-[15rem] rounded-md border border-gray-100 px-5 py-2 text-gray-400 outline-none focus:border-secondary"
+        >
           {userType === "user" ? (
             <option value="All">Job Type</option>
           ) : (
-            <option value="All">Status</option>
+            jobApplicationsStateValues.map((state) => (
+              <option value={state}>{state}</option>
+            ))
           )}
         </select>
-
-        <input
-          placeholder="Applied from"
-          type="text"
-          className="w-full rounded-md border-gray-100 px-2 py-2"
-        />
-        <input
-          placeholder="Applied until"
-          type="text"
-          className="w-full rounded-md border-gray-100 px-2 py-2"
-        />
       </div>
     </div>
   );

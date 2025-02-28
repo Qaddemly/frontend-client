@@ -49,6 +49,7 @@ import {
 import JobTracker from "../pages/JobTracker";
 import JobTrackerBusiness from "../components/job/job tracker/JobTrackerBusiness";
 import JobTrackerArchived from "../components/job/job tracker/JobTrackerArchived";
+import ArchivedCompanyJobs from "../components/business account/business dashboard/ArchivedCompanyJobs";
 
 const router = createBrowserRouter([
   {
@@ -166,9 +167,13 @@ const router = createBrowserRouter([
             children: [{ path: "jobTracker", element: <JobTrackerBusiness /> }],
           },
           { path: "postjob", element: <PostJob /> },
+          {
+            path: "archived",
+            element: <ArchivedCompanyJobs />,
+          },
         ],
       },
-      { path: "updateJob/1", element: <UpdateJob /> },
+      { path: "updateJob/:jobId", element: <UpdateJob /> },
       { path: "companyCandidates/:companyId", element: <CompanyCandidates /> },
       {
         path: "companySettings",

@@ -152,7 +152,7 @@ function JobTrackerItem({
       </div>
 
       <JobTrackerStatus
-        currentIndex={userType === "user" ? currentIndex - 1 : currentIndex}
+        currentIndex={currentIndex - 1}
         setCurrentIndex={setCurrentIndex}
         userType={userType}
         setShowConfirm={setShowConfirm}

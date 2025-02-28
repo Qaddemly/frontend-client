@@ -38,6 +38,9 @@ export interface IUser {
   resume: string[]; // need interface
   skills: ISkills[];
   password_changed_at: string;
+  about_me: string;
+  subtitle: string;
+  links: string[];
   is_activated: boolean;
   created_at: string;
   updated_at: string;

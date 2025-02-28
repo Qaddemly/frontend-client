@@ -1,38 +1,42 @@
 // CompanyJobs should take jobs from Backend and pass each one to EditJobCard
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate, useParams } from "react-router-dom";
 import EditJobCard from "../../job/EditJobCard";
-import { useGetAllJobsQuery } from "../../../services/jobApi";
 import Loader from "../../common/Loader";
 import Button from "../../common/Button";
 import {
+  useGetAllArchivedJobsOfBusinessQuery,
+  useLazyGetAllJobsOfBusinessQuery,
   useMakeJobArchivedMutation,
   useMakeJobClosedMutation,
   useMakeJobOpenedMutation,
 } from "../../../services/businessDashboardApi";
 import toast from "react-hot-toast";
 import { handleApiError } from "../../../utils/helpers";
+import Pagination from "../../common/Pagination";
 
 function CompanyJobs() {
-  const [makeJobArchived, { isLoading: loadingArchive }] =
-    useMakeJobArchivedMutation();
-  const [makeJobClosed, { isLoading: loadingClosed }] =
-    useMakeJobClosedMutation();
-  const [makeJobOpened, { isLoading: loadingOpened }] =
-    useMakeJobOpenedMutation();
+  const [makeJobArchived] = useMakeJobArchivedMutation();
+  const [makeJobClosed] = useMakeJobClosedMutation();
+  const [makeJobOpened] = useMakeJobOpenedMutation();
 
   const { companyId } = useParams();
-  const { data, isLoading, refetch } = useGetAllJobsQuery({});
+  const [fetchJobs, { isLoading, data }] = useLazyGetAllJobsOfBusinessQuery();
+  const { data: archivedJobs, refetch } = useGetAllArchivedJobsOfBusinessQuery({
+    id: companyId || "",
+  });
 
-  const jobs = data?.jobs.data;
+  const jobs = data?.jobs?.data;
+  const meta = data?.jobs?.meta;
+  const [currentPage, setCurrentPage] = useState(meta?.currentPage);
 
   const [selectedValue, setSelectedValue] = useState("all");
 
   const isJobApplicationsRoute = location.pathname.includes(
-    `/businessDashboard/companyJobs/${companyId}/jobApplications`,
+    `/businessDashboard/companyJobs/${companyId}/active/jobApplications`,
   );
   const isJobRoute = location.pathname.endsWith("/active");
-
+  const isJobRouteArchived = location.pathname.endsWith("/archived");
   const isPostJobRoute = location.pathname.endsWith(`/postjob`);
 
   const filteredJobCards = jobs?.filter((job) => {
@@ -52,12 +56,23 @@ function CompanyJobs() {
     try {
       let res;
       if (status === "Opened") {
-        res = await makeJobClosed({ id: id.toString() || "" }).unwrap();
+        res = makeJobClosed({ id: id.toString() || "" }).unwrap();
+        toast.promise(res, {
+          loading: "Closing Job",
+          success: "Job closed successfully",
+          error: "Could not close job",
+        });
+        await res;
       } else {
-        res = await makeJobOpened({ id: id.toString() || "" }).unwrap();
+        res = makeJobOpened({ id: id.toString() || "" }).unwrap();
+        toast.promise(res, {
+          loading: "Opening Job",
+          success: "Job opened successfully",
+          error: "Could not open job",
+        });
+        await res;
       }
-      toast.success(res?.message || "");
-      refetch();
+      fetchJobs({ id: companyId || "", page: 1, limit: 9 });
     } catch (err) {
       handleApiError(err);
     }
@@ -68,16 +83,23 @@ function CompanyJobs() {
   ) {
     e.stopPropagation();
     try {
-      const res = await makeJobArchived({ id: id.toString() || "" }).unwrap();
-      toast.success(res?.message || "");
+      const res = makeJobArchived({ id: id.toString() || "" }).unwrap();
+      toast.promise(res, {
+        loading: "Archiving Job",
+        success: "Job archived successfully",
+        error: "Could not archive job",
+      });
+      await res;
+      fetchJobs({ id: companyId || "", page: 1, limit: 9 });
       refetch();
     } catch (err) {
       handleApiError(err);
     }
   }
 
-  if (isLoading || loadingArchive || loadingClosed || loadingOpened)
-    return <Loader />;
+  useEffect(() => {
+    fetchJobs({ id: companyId || "", page: 1, limit: 9 });
+  }, [fetchJobs]);
 
   return (
     <>
@@ -88,7 +110,7 @@ function CompanyJobs() {
         <div className="flex gap-5 pl-5 text-lg font-medium">
           <NavLink
             to={`/businessDashboard/companyJobs/${companyId}/active`}
-            className={`px-2 py-1 ${isJobApplicationsRoute || isJobRoute || isPostJobRoute ? "rounded-md bg-main text-white" : ""}`}
+            className={`px-2 py-1 ${isJobApplicationsRoute || isJobRoute || isPostJobRoute || isJobRouteArchived ? "rounded-md bg-main text-white" : ""}`}
           >
             Jobs
           </NavLink>
@@ -143,7 +165,7 @@ function CompanyJobs() {
               {/* Active/Archived */}
               <div className="flex justify-center gap-5 border-b-2 border-b-gray-400 md:justify-start md:gap-10">
                 <p className="text-center font-medium md:text-left">
-                  {jobs?.length} Total Jobs
+                  {meta?.totalItems} Total Jobs
                 </p>
                 <NavLink
                   end
@@ -161,7 +183,7 @@ function CompanyJobs() {
 
                 <NavLink
                   end
-                  to={`/businessDashboard/companyJobs/${companyId}/archived`}
+                  to={`/businessDashboard/companyJobs/${companyId}/active/archived`}
                   className={({ isActive }: { isActive: boolean }) =>
                     `cursor-pointer border-b-4 pb-2 text-center hover:text-main md:text-left ${
                       isActive
@@ -170,143 +192,150 @@ function CompanyJobs() {
                     }`
                   }
                 >
-                  Archived (0)
+                  Archived ({archivedJobs?.jobs?.data?.length})
                 </NavLink>
               </div>
 
-              {filteredJobCards?.length !== 0 ? (
-                <>
-                  {/* mobile view : cards */}
-                  <div className="my-6 flex flex-col-reverse justify-center gap-8 px-7 md:hidden">
-                    <div
-                      className={`grid grid-cols-1 gap-8 ${filteredJobCards?.length === 1 ? "sm:grid-cols-1" : "sm:grid-cols-2"}`}
-                    >
-                      {filteredJobCards?.map((job) => (
-                        <EditJobCard
-                          key={job.id}
-                          job={job}
-                          handleJobStatus={handleJobStatus}
-                          handleArchiveJob={handleArchiveJob}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                  {/* Big screen view : table */}
-                  <div className="hidden overflow-x-auto md:block">
-                    <table className="w-full text-center">
-                      <thead>
-                        <tr className="">
-                          <th className="p-3 text-sm font-bold text-gray-500">
-                            Job title
-                          </th>
-                          <th className="p-3 text-sm font-bold text-gray-500">
-                            Job type
-                          </th>
-                          <th className="p-3 text-sm font-bold text-gray-500">
-                            No. of Applications
-                          </th>
-                          <th className="p-3 text-sm font-bold text-gray-500">
-                            Actions
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {filteredJobCards?.map((job) => (
-                          <tr
-                            key={job.id}
-                            // GAD TODO: onClick => view full job details
-                            // GAD TODO: onHover => Show message to view details
-                            className="cursor-pointer border-t border-gray-100 hover:bg-gray-100 hover:bg-opacity-30"
-                          >
-                            <td className="px-6 py-4 text-sm font-normal">
-                              {job.title}
-                            </td>
-
-                            <td className="px-6 py-4 text-sm font-normal">
-                              {job.location_type}
-                            </td>
-                            <td className="px-6 py-4 text-sm font-normal">
-                              {/* {job.noOfApps} */}2
-                            </td>
-                            <td className="flex justify-center px-6 py-4 text-sm font-normal">
-                              <div className="flex flex-row gap-2">
-                                <Button
-                                  className="border border-main bg-white px-3 py-1 text-base text-main hover:bg-main hover:text-white"
-                                  onClick={() =>
-                                    navigate(
-                                      `/businessDashboard/companyJobs/${companyId}/jobApplications/${job.id}`,
-                                    )
-                                  }
-                                >
-                                  Show Applications
-                                </Button>
-                                <Button
-                                  onClick={(e) => {
-                                    if (job.status === "Closed")
-                                      handleJobStatus(e, "Closed", job.id);
-                                    else handleJobStatus(e, "Opened", job.id);
-                                  }}
-                                  className={`border px-3 py-1 text-base hover:text-white ${
-                                    job.status === "Opened"
-                                      ? "border-danger-300 bg-white text-danger-300 hover:bg-danger-300"
-                                      : "border-green-100 bg-white text-green-100 hover:bg-green-100"
-                                  }`}
-                                >
-                                  {job.status === "Opened"
-                                    ? "Set Unavailable"
-                                    : "Set Available"}
-                                </Button>
-                                <Button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    navigate(
-                                      `/businessDashboard/updatejob/${job.id}`,
-                                    );
-                                  }}
-                                  className="border border-main bg-white px-3 py-1 text-base text-main hover:bg-main hover:text-white"
-                                >
-                                  Edit
-                                </Button>
-                                <Button
-                                  onClick={(e) => handleArchiveJob(e, job.id)}
-                                  className="border border-main bg-main px-3 py-1 text-base text-white hover:bg-white hover:text-main"
-                                >
-                                  Archive
-                                </Button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                  {/* pagination
-                TODO : make it a separate component */}
-                  <div className="flex items-center justify-center space-x-1 md:justify-end">
-                    <Button className="rounded-lg bg-background px-2 py-1 text-sm text-gray-700 hover:bg-main hover:text-white">
-                      1
-                    </Button>
-                    <Button className="rounded-lg bg-background px-2 py-1 text-sm text-gray-700 hover:bg-main hover:text-white">
-                      2
-                    </Button>
-                    <Button className="rounded-lg bg-background px-2 py-1 text-sm text-gray-700 hover:bg-main hover:text-white">
-                      3
-                    </Button>
-                    <span className="px-2 py-1 text-sm text-gray-700">...</span>
-                    <Button className="rounded-lg bg-background px-2 py-1 text-sm text-gray-700 hover:bg-main hover:text-white">
-                      {/* {meta.totalItems} */}
-                      40
-                    </Button>
-                  </div>
-                </>
+              {isJobRouteArchived ? (
+                <Outlet />
               ) : (
-                <h3 className="text-center text-2xl font-bold text-gray-600">
-                  {selectedValue === "all"
-                    ? "There is no active jobs to show."
-                    : selectedValue === "available"
-                      ? "There are no available jobs to show."
-                      : "There are no unavailable jobs to show."}
-                </h3>
+                <>
+                  {filteredJobCards?.length !== 0 ? (
+                    <>
+                      {/* mobile view : cards */}
+                      <div className="my-6 flex flex-col-reverse justify-center gap-8 px-7 md:hidden">
+                        <div
+                          className={`grid grid-cols-1 gap-8 ${filteredJobCards?.length === 1 ? "sm:grid-cols-1" : "sm:grid-cols-2"}`}
+                        >
+                          {filteredJobCards?.map((job) => (
+                            <EditJobCard
+                              key={job.id}
+                              job={job}
+                              handleJobStatus={handleJobStatus}
+                              handleArchiveJob={handleArchiveJob}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                      {/* Big screen view : table */}
+                      <div className="hidden overflow-x-auto md:block">
+                        <table className="w-full text-center">
+                          <thead>
+                            <tr className="">
+                              <th className="p-3 text-sm font-bold text-gray-500">
+                                Job title
+                              </th>
+                              <th className="p-3 text-sm font-bold text-gray-500">
+                                Job type
+                              </th>
+                              <th className="p-3 text-sm font-bold text-gray-500">
+                                No. of Applications
+                              </th>
+                              <th className="p-3 text-sm font-bold text-gray-500">
+                                Actions
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {filteredJobCards?.map((job) => (
+                              <tr
+                                key={job.id}
+                                onClick={() =>
+                                  navigate(`/findJob/jobProfile/${job.id}`)
+                                }
+                                className="cursor-pointer border-t border-gray-100 hover:bg-gray-100 hover:bg-opacity-30"
+                              >
+                                <td className="px-6 py-4 text-sm font-normal">
+                                  {job.title}
+                                </td>
+
+                                <td className="px-6 py-4 text-sm font-normal">
+                                  {job.location_type}
+                                </td>
+                                <td className="px-6 py-4 text-sm font-normal">
+                                  {/* {job.noOfApps} */}2
+                                </td>
+                                <td className="flex justify-center px-6 py-4 text-sm font-normal">
+                                  <div className="flex flex-row gap-2">
+                                    <Button
+                                      className="border border-main bg-white px-3 py-1 text-base text-main hover:bg-main hover:text-white"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        navigate(
+                                          `/businessDashboard/companyJobs/${companyId}/active/jobApplications/${job.id}`,
+                                        );
+                                      }}
+                                    >
+                                      Show Applications
+                                    </Button>
+                                    <Button
+                                      onClick={(e) => {
+                                        if (job.status === "Closed")
+                                          handleJobStatus(e, "Closed", job.id);
+                                        else
+                                          handleJobStatus(e, "Opened", job.id);
+                                      }}
+                                      className={`border px-3 py-1 text-base hover:text-white ${
+                                        job.status === "Opened"
+                                          ? "border-danger-300 bg-white text-danger-300 hover:bg-danger-300"
+                                          : "border-green-100 bg-white text-green-100 hover:bg-green-100"
+                                      }`}
+                                    >
+                                      {job.status === "Opened"
+                                        ? "Set Unavailable"
+                                        : "Set Available"}
+                                    </Button>
+                                    <Button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        navigate(
+                                          `/businessDashboard/updatejob/${job.id}`,
+                                        );
+                                      }}
+                                      className="border border-main bg-white px-3 py-1 text-base text-main hover:bg-main hover:text-white"
+                                    >
+                                      Edit
+                                    </Button>
+                                    <Button
+                                      onClick={(e) =>
+                                        handleArchiveJob(e, job.id)
+                                      }
+                                      className="border border-main bg-main px-3 py-1 text-base text-white hover:bg-white hover:text-main"
+                                    >
+                                      Archive
+                                    </Button>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+
+                      {isLoading && <Loader forSection={true} />}
+                      <Pagination
+                        currentPage={currentPage || 1}
+                        totalPages={meta?.totalPages || 1}
+                        onPageChange={(page) => {
+                          fetchJobs({
+                            page,
+                            limit: 9,
+                            id: companyId || "",
+                          });
+                          setCurrentPage(page);
+                        }}
+                      />
+                    </>
+                  ) : (
+                    <h3 className="text-center text-2xl font-bold text-gray-600">
+                      {selectedValue === "all"
+                        ? "There is no active jobs to show."
+                        : selectedValue === "available"
+                          ? "There are no available jobs to show."
+                          : "There are no unavailable jobs to show."}
+                    </h3>
+                  )}
+                </>
               )}
             </div>
           ) : (

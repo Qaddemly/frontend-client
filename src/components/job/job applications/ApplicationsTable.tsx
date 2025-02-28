@@ -1,28 +1,45 @@
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  IJobApplication,
-  IMeta,
-} from "../../../interfaces/BusinessDashboard.interfaces";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUsers } from "@fortawesome/free-solid-svg-icons";
+import { IJob } from "../../../interfaces/Job.interfaces";
+import { useLazyGetJobApplicationsQuery } from "../../../services/businessDashboardApi";
+import Loader from "../../common/Loader";
+import { useEffect, useState } from "react";
+import Pagination from "../../common/Pagination";
 
-function ApplicationsTable({
-  applications,
-  meta,
-}: {
-  meta: IMeta;
-  applications: IJobApplication[];
-}) {
+function ApplicationsTable() {
   const { companyId, jobId } = useParams();
+
   const navigate = useNavigate();
+
+  const [fetchApplications, { data, isLoading }] =
+    useLazyGetJobApplicationsQuery();
+
+  const jobApplications = data?.jobApplications.data;
+  const meta = data?.jobApplications.meta;
+  const [currentPage, setCurrentPage] = useState(meta?.currentPage);
+  const [sort, setSort] = useState("");
+
+  const currentJob: IJob | undefined = jobApplications?.find(
+    (application) => application?.job?.id.toString() === jobId,
+  )?.job;
+
+  useEffect(() => {
+    if (sort === "oldest")
+      fetchApplications({ id: jobId || "", page: 1, limit: 5, sortBy: "ASC" });
+    else
+      fetchApplications({ id: jobId || "", page: 1, limit: 5, sortBy: "DESC" });
+  }, [fetchApplications, sort]);
+
+  if (isLoading) return <Loader forSection={true} />;
   return (
     <>
-      {applications.length === 0 ? (
+      {jobApplications?.length === 0 ? (
         <p className="mt-10 text-xl italic text-gray-400">No applications</p>
       ) : (
         <>
           <h2 className="text-center text-4xl font-bold">
-            Senior UX designer - Full time
+            {currentJob && currentJob.title}
           </h2>
           <div className="flex w-fit flex-row rounded-lg bg-white p-5 shadow-md">
             <div className="flex items-center rounded-full bg-light-secondary p-4 text-center text-4xl text-main">
@@ -30,7 +47,7 @@ function ApplicationsTable({
             </div>
             <div className="ml-4 flex flex-col">
               <p className="text-md text-gray-500">Total Applications</p>
-              <p className="text-3xl font-bold">{applications?.length}</p>
+              <p className="text-3xl font-bold">{jobApplications?.length}</p>
               <p>
                 <span className="font-medium text-yellow">↑ 16%</span> this
                 month
@@ -43,6 +60,8 @@ function ApplicationsTable({
               <h3 className="text-xl font-semibold">All Applications</h3>
               <div className="flex gap-5">
                 <select
+                  value={sort}
+                  onChange={(e) => setSort(e.target.value)}
                   name="Sort"
                   className="rounded-lg border-none bg-light-secondary p-2 text-sm"
                 >
@@ -52,7 +71,7 @@ function ApplicationsTable({
                 <button
                   onClick={() =>
                     navigate(
-                      `/businessDashboard/companyJobs/${companyId}/jobApplications/${jobId}/jobTracker`,
+                      `/businessDashboard/companyJobs/${companyId}/active/jobApplications/${jobId}/jobTracker`,
                     )
                   }
                   className="rounded-lg border border-main px-3 py-1 text-sm font-medium text-main hover:bg-main hover:text-white"
@@ -84,11 +103,9 @@ function ApplicationsTable({
                   </tr>
                 </thead>
                 <tbody>
-                  {applications.map((application) => (
+                  {jobApplications?.map((application) => (
                     <tr
                       key={application.id}
-                      // TODO: onClick => view the application
-                      // GAD TODO: onHover => Show message to view the application
                       className="cursor-pointer border-t border-gray-100 transition hover:bg-gray-100 hover:bg-opacity-30"
                     >
                       <td className="px-6 py-4 text-sm font-normal">
@@ -96,22 +113,17 @@ function ApplicationsTable({
                         {application.account.last_name}
                       </td>
                       <td className="px-6 py-4 text-sm font-normal">
+                        +{application.account.phone.country_code}{" "}
                         {application.account.phone.number}
                       </td>
                       <td className="px-6 py-4 text-sm font-normal">
                         {application.account.email}
                       </td>
                       <td className="px-6 py-4 text-sm font-normal">
-                        {application.account.address.country}{" "}
+                        {application.account.address.country},{" "}
                         {application.account.address.city}
                       </td>
                       <td className="px-6 py-4 text-sm font-normal">
-                        {/* <button className="mr-2 rounded-lg border border-green-100 px-3 py-1 text-sm font-medium text-green-100 hover:bg-green-200 hover:text-white">
-                    Approve
-                  </button>
-                  <button className="mr-2 rounded-lg border border-danger-300 px-3 py-1 text-sm font-medium text-danger-300 hover:bg-danger-300 hover:text-white">
-                    Deny
-                  </button> */}
                         <button className="rounded-lg border border-main px-3 py-1 text-sm font-medium text-main hover:bg-main hover:text-white">
                           Show Profile
                         </button>
@@ -121,21 +133,18 @@ function ApplicationsTable({
                 </tbody>
               </table>
             </div>
-            <div className="mt-3 flex items-center justify-center space-x-1">
-              <button className="rounded-lg border px-2 py-1 text-sm text-gray-700 hover:bg-gray-700 hover:text-white">
-                1
-              </button>
-              <button className="rounded-lg border px-2 py-1 text-sm text-gray-700 hover:bg-gray-700 hover:text-white">
-                2
-              </button>
-              <button className="rounded-lg border px-2 py-1 text-sm text-gray-700 hover:bg-gray-700 hover:text-white">
-                3
-              </button>
-              <span className="px-2 py-1 text-sm text-gray-700">...</span>
-              <button className="rounded-lg border px-2 py-1 text-sm text-gray-700 hover:bg-gray-700 hover:text-white">
-                {meta.totalItems}
-              </button>
-            </div>
+            <Pagination
+              currentPage={currentPage || 1}
+              totalPages={meta?.totalPages || 1}
+              onPageChange={(page) => {
+                fetchApplications({
+                  id: jobId || "",
+                  page,
+                  limit: 9,
+                });
+                setCurrentPage(page);
+              }}
+            />
           </div>
         </>
       )}

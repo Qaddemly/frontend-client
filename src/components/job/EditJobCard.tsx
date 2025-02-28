@@ -13,7 +13,7 @@ function EditJobCard({
     status: "Closed" | "Opened",
     id: number,
   ) => void;
-  handleArchiveJob: (
+  handleArchiveJob?: (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     id: number,
   ) => void;
@@ -77,7 +77,7 @@ function EditJobCard({
           Edit
         </Button>
         <Button
-          onClick={(e) => handleArchiveJob(e, job.id)}
+          onClick={(e) => handleArchiveJob && handleArchiveJob(e, job.id)}
           className="border border-main bg-main px-3 py-1 text-xs text-white hover:bg-white hover:text-main"
         >
           Archive

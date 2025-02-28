@@ -53,6 +53,13 @@ export interface IGetAllJobsResponse {
     meta: IMeta;
   };
 }
+export interface IGetallJobsOfBusinessResponse {
+  success: string;
+  jobs: {
+    data: IJob[];
+    meta: IMeta;
+  };
+}
 export interface IGetJobDetailsResponse {
   success: boolean;
   job: IJob;

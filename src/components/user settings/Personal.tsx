@@ -24,7 +24,7 @@ import toast from "react-hot-toast";
 import Loader from "../common/Loader";
 
 function Personal() {
-  const user = useSelector((state: RootState) => state.user.user);
+  const user = useSelector((state: RootState) => state?.user?.user);
   const [updatePersonal, { isLoading }] = useUpdatePersonalMutation();
   const { refetch } = useGetUserQuery();
 
@@ -45,13 +45,17 @@ function Personal() {
   const submitForm: SubmitHandler<IUser> = async (data) => {
     const formData = createFormData(data as unknown as Record<string, unknown>);
 
-    try {
-      const res = await updatePersonal({ data: formData }).unwrap();
-      console.log(res);
-      toast.success("Profile updated successfully");
-      refetch();
-    } catch (error) {
-      handleApiError(error);
+    if (Object.values(data).some((value) => value === null)) {
+      toast.error("No changes detected or invalid data");
+    } else {
+      try {
+        const res = await updatePersonal({ data: formData }).unwrap();
+        console.log(res);
+        toast.success("Profile updated successfully");
+        refetch();
+      } catch (error) {
+        handleApiError(error);
+      }
     }
   };
 
@@ -68,6 +72,8 @@ function Personal() {
         city: user?.address?.city,
       },
       date_of_birth: user?.date_of_birth,
+      subtitle: user?.subtitle,
+      about_me: user?.about_me,
     });
   }, [reset, user]);
 
@@ -79,7 +85,7 @@ function Personal() {
         className="mt-10 w-[40rem] px-10"
         onSubmit={handleSubmit(submitForm)}
       >
-        <div className="mt-10 flex space-x-5">
+        <div className="mt-10 flex justify-between space-x-5">
           <InputField id="first_name" icon={faCircleUser} label="First name">
             <Input
               register={register}
@@ -107,13 +113,12 @@ function Personal() {
           </InputField>
         </div>
 
-        <div className="mt-10 flex items-end gap-3">
+        <div className="mt-10 flex items-end justify-between gap-3">
           <Select
             register={register}
             name="phone.country_code"
             label="Phone"
             id="phone"
-            className="w-fit"
           >
             {prefixValues.map((value) => (
               <option
@@ -138,13 +143,12 @@ function Personal() {
             />
           </InputField>
         </div>
-        <div className="mt-10 flex items-end gap-3 text-left">
+        <div className="mt-10 flex items-end justify-between gap-3 text-left">
           <Select
             register={register}
             name={"address.country"}
             label="Address"
             id="country"
-            className="w-fit"
           >
             <option value="" disabled>
               Select a country
@@ -164,7 +168,7 @@ function Personal() {
                 placeholder: "City",
                 type: "text",
                 id: "city",
-                className: "w-[9rem]",
+                className: "w-[16rem]",
               }}
             />
           </InputField>
@@ -182,6 +186,33 @@ function Personal() {
               </p>
             )}
         </div>
+
+        <div className="mt-10">
+          <InputField id="subtitle" label="Subtitle">
+            <Input
+              register={register}
+              name="subtitle"
+              props={{
+                placeholder: "Subtitle",
+                type: "text",
+                id: "subtitle",
+                className: "w-[16rem]",
+              }}
+            />
+          </InputField>
+        </div>
+
+        <div className="mt-10 flex flex-col gap-1">
+          <label htmlFor="aboutMe" className="font-medium">
+            About me
+          </label>
+          <textarea
+            {...register("about_me")}
+            className={`min-h-28 rounded-md border-2 border-gray-200 p-5 outline-none`}
+            placeholder="Ex: I am software engineer"
+          />
+        </div>
+
         <div className="mt-5 flex flex-col items-start">
           <span className="font-medium"> Profile Photo</span>
 
