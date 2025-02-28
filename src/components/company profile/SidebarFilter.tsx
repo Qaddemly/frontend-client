@@ -19,9 +19,9 @@ function SidebarFilter({
   setIsOpen,
 }: SidebarFilterProps) {
   return (
-    <div>
+    <div className="flex justify-center">
       <div
-        className={`scrollbar-hide h-full w-[25rem] transform overflow-y-scroll bg-white p-5 text-right shadow-lg ${
+        className={`scrollbar-hide h-full w-[20rem] transform overflow-y-scroll bg-white p-5 text-right shadow-lg sm:w-[22rem] ${
           isOpen ? "block" : "hidden"
         } transition-all duration-300 ease-in-out`}
       >
