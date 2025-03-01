@@ -10,21 +10,20 @@ import Loader from "../components/common/Loader";
 import JobTrackerItem from "../components/job/job tracker/JobTrackerItem";
 import Button from "../components/common/Button";
 import { useState } from "react";
-import { IGetArchivedJobApplication } from "../interfaces/Job.interfaces";
 import toast from "react-hot-toast";
 import { handleApiError } from "../utils/helpers";
 
-function JobTracker({ job }: { job: IGetArchivedJobApplication }) {
+function JobTracker() {
   const { data, isLoading } = useGetUserJobApplicationsQuery({});
   const [archive, setArchive] = useState(false);
   const { refetch } = useGetArchivedJobApplicationQuery();
   const [getarchive, { isLoading: isLoading1 }] =
     useArchiveJobApplicationMutation();
-  async function handleArchive() {
+  async function handleArchive(jobId: string) {
     try {
       await getarchive({
-        id: job.id?.toString(),
-        archive: job.is_archived,
+        id: jobId.toString(),
+        archive: true,
       }).unwrap();
       setArchive(false);
       refetch();
@@ -46,20 +45,17 @@ function JobTracker({ job }: { job: IGetArchivedJobApplication }) {
         )}
         {data?.jobApplications.data.map((jobApplication) => (
           <>
-            <div className="flex items-center justify-between gap-4 rounded-lg bg-white p-5 shadow-md">
-              <JobTrackerItem
-                key={jobApplication.id}
-                archive={true}
-                jobApplication={jobApplication}
-                userType="user"
-              />
-              <Button
-                onClick={handleArchive}
-                className="rounded-md bg-main px-4 py-2 text-white shadow-md transition-all duration-300 hover:border hover:bg-white hover:text-main hover:outline-1"
-              >
-                Archive
-              </Button>
-            </div>
+            <JobTrackerItem
+              key={jobApplication.id}
+              archive={true}
+              jobApplication={jobApplication}
+              userType="user"
+            />
+            <Button
+              onClick={() => handleArchive(jobApplication.job.id.toString())}
+            >
+              Archive
+            </Button>
           </>
         ))}
       </div>
