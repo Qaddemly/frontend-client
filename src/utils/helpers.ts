@@ -109,3 +109,8 @@ export function formatBytes(bytes: number, decimals = 2): string {
 
   return `${(bytes / Math.pow(k, i)).toFixed(decimals)} ${sizes[i]}`;
 }
+
+export function formatDateByYearAndMonth(dateStr: string): string {
+  const date = new Date(dateStr);
+  return date.toLocaleString("en-US", { month: "short", year: "numeric" });
+}

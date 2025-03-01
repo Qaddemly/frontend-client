@@ -6,8 +6,8 @@ import { useEffect, useState } from "react";
 type JobTrackerHeaderProps = {
   userType: "business" | "user";
   businessJobApplicationsLength?: number;
-  currentState: string;
-  fetchApplications: (params: { id: string; filterByState: string }) => void;
+  currentState?: string;
+  fetchApplications?: (params: { id: string; filterByState: string }) => void;
 };
 
 function JobTrackerHeader({
@@ -21,7 +21,11 @@ function JobTrackerHeader({
   const [applicationsState, setApplicationsState] = useState(currentState);
 
   useEffect(() => {
-    fetchApplications({ id: jobId || "", filterByState: applicationsState });
+    if (fetchApplications)
+      fetchApplications({
+        id: jobId || "",
+        filterByState: applicationsState || "",
+      });
   }, [fetchApplications, applicationsState]);
 
   return (

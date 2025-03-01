@@ -264,7 +264,7 @@ export const profileApi = apiSlice.injectEndpoints({
     }),
     getAllProjects: builder.query<IGetAllProjectsResponse, { id?: string }>({
       query: ({ id }) => ({
-        url: `${BASE_USER_URL}/${id ? `projects/user/${id}` : "myProjects"}`,
+        url: `${BASE_USER_URL}/${id ? `projects/user/${id}` : "allProjects"}`,
         method: "GET",
       }),
     }),

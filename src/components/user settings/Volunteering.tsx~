@@ -6,10 +6,9 @@ import Button from "../common/Button";
 import { IVolunteeringInputs } from "../../interfaces/Profile.interfaces";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  useAddNewVolunteeringMutation,
-  useGetAllVolunteeringsQuery,
+  useAddNewVolunteeringMutation, useGetAllVolunteeringsQuery,
   useGetVolunteeringQuery,
-  useUpdateVolunteeringMutation,
+  useUpdateVolunteeringMutation
 } from "../../services/profileApi";
 import toast from "react-hot-toast";
 import Loader from "../common/Loader";
@@ -33,7 +32,7 @@ function Volunteering() {
   );
   const [updateVolunteering, { isLoading: isLoading3 }] =
     useUpdateVolunteeringMutation();
-  const { refetch: refetchVolunteering } = useGetAllVolunteeringsQuery({});
+  const {refetch:refetchVolunteering} = useGetAllVolunteeringsQuery({});
 
   const volunteering = data?.volunteering;
 
@@ -48,7 +47,7 @@ function Volunteering() {
           data: data,
         }).unwrap();
         toast.success("Volunteering updated successfully");
-        refetchVolunteering();
+        refetchVolunteering()
       } catch (error) {
         handleApiError(error);
       }

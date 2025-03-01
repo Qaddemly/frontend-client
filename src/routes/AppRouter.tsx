@@ -112,7 +112,15 @@ const router = createBrowserRouter([
     path: "/userProfile",
     element: (
       <ProtectedRoute>
-        <UserProfile />
+        <UserProfile profileType={"me"} />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/userProfile/:userId",
+    element: (
+      <ProtectedRoute>
+        <UserProfile profileType={"others"} />
       </ProtectedRoute>
     ),
   },

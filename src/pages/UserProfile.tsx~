@@ -15,7 +15,7 @@ function UserProfile({ profileType }: { profileType: "me" | "others" }) {
     <div>
       {basicInfoData && (
         <>
-          {profileType === "me" && <Navbar />}
+          {profileType==="me"&&<Navbar />}
           <UserProfileHeader basicInfo={basicInfoData.basicInfo} />
           <div className="flex">
             <UserProfileBody

@@ -20,7 +20,7 @@ function UserProfileBody({
   basicInfo: IBasicInfo;
   profileType: "me" | "others";
 }) {
-  const { userId } = useParams();
+  const userId = useParams();
   const { data: projectsData, isLoading: loadingProjects } =
     useGetAllProjectsQuery({
       id: profileType === "others" ? userId : undefined,

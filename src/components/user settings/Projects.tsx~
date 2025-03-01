@@ -9,10 +9,9 @@ import Button from "../common/Button";
 import { IProject } from "../../interfaces/Profile.interfaces";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  useAddProjectMutation,
-  useGetAllProjectsQuery,
+  useAddProjectMutation, useGetAllProjectsQuery,
   useGetProjectQuery,
-  useUpdateProjectMutation,
+  useUpdateProjectMutation
 } from "../../services/profileApi";
 import { handleApiError } from "../../utils/helpers";
 import toast from "react-hot-toast";
@@ -35,7 +34,7 @@ function Projects() {
     id: projectId || "",
   });
   const project = data?.project;
-  const { refetch: refetchProjects } = useGetAllProjectsQuery({});
+  const {refetch:refetchProjects}=useGetAllProjectsQuery({})
 
   const [skill, setSkill] = useState("");
   const [skills, setSkills] = useState<string[]>([]);
@@ -73,7 +72,7 @@ function Projects() {
           await addProject({ data: { ...data, skills } }).unwrap();
           toast.success("Project created successfully");
           navigate("/userSettings/profile/projects");
-          refetchProjects();
+          refetchProjects()
         } catch (error) {
           handleApiError(error);
         }

@@ -1,4 +1,5 @@
 import {
+  IBasicInfo,
   IEducation,
   IExperience,
   ILanguages,
@@ -36,14 +37,28 @@ export interface IUpdatePersonalResponse {
   success: boolean;
   updatedUser: IUser;
 }
+
+export interface IGetBasicInfoResponse {
+  success: boolean;
+  basicInfo: IBasicInfo;
+}
 export interface IExperienceResponse {
   success: boolean;
   experience: IExperience;
 }
 
+export interface IGetExperienceResponse {
+  success: boolean;
+  experiences: IExperience[];
+}
 export interface IEducationResponse {
   success: boolean;
   education: IEducation;
+}
+
+export interface IGetEducationResponse {
+  success: boolean;
+  educations: IEducation[];
 }
 
 export interface IGetAllResumesResponse {

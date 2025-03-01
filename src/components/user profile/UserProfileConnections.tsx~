@@ -9,7 +9,13 @@ import {
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 
-function UserProfileConnections({ basicInfo }: { basicInfo: IBasicInfo }) {
+function UserProfileConnections({
+  basicInfo,
+
+}: {
+  basicInfo: IBasicInfo;
+  
+}) {
   return (
     <div className="w-[40rem] p-10">
       <p className="mb-5 text-xl font-semibold">Connect</p>

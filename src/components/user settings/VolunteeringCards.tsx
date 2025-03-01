@@ -13,7 +13,7 @@ function VolunteeringCards() {
     data,
     isLoading: isLoading1,
     refetch,
-  } = useGetAllVolunteeringsQuery();
+  } = useGetAllVolunteeringsQuery({});
   const volunteerings = data?.volunteerings;
   const [deleteVolunteering, { isLoading: isLoading2 }] =
     useDeleteVolunteeringMutation();

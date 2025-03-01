@@ -60,7 +60,7 @@ function Education() {
       toast.success("Education created successfully");
       navigate("/userSettings/profile/education");
       dispatch(updateUserEducation(res.education));
-      refetchEducations();
+      refetchEducations()
     }
   };
 
