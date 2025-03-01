@@ -10,63 +10,79 @@ import Select from "../components/common/Select";
 import Slider from "../components/common/Slider";
 import { useLazyGetAllBusinessesQuery } from "../services/businessAccountApi";
 import Loader from "../components/common/Loader";
-import { Country, EmploymentType, LocationType } from "../enums/index.enums";
+import { Country, LocationType } from "../enums/index.enums";
+import { useNavigate } from "react-router-dom";
+import CompanyCard from "../components/common/CompanyCard";
 
 function FindCompany() {
   const [isOpen, setIsOpen] = useState(false);
-  const [fetchCompanies, { isLoading }] = useLazyGetAllBusinessesQuery({});
   const locationTypeValues = Object.values(LocationType);
   const countryValues = Object.keys(Country);
-  const employmentTypeValues = Object.keys(EmploymentType);
 
   const [search, setSearch] = useState("");
-  const [selectedEmploymentTypes, setSelectedEmploymentTypes] = useState<
-    string[]
-  >([]);
   const [locationType, setLocationType] = useState("");
   const [location, setLocation] = useState("");
-  const [industryType, setIndustryType] = useState("");
-  const [salary, setSalary] = useState(0);
-  const [query, setQuery] = useState("");
 
+  const [industryType, setIndustryType] = useState("");
+  const [rating, setRating] = useState(0);
+
+  const [getAllBusinesses, { data, isLoading }] = useLazyGetAllBusinessesQuery(
+    {},
+  );
+
+  const { businesses } = data || {};
+
+  const navigate = useNavigate();
   function handleFilters() {
-    setQuery(search);
-    // fetchCompanies({ locationType, employmentType, salary });
+    getAllBusinesses({
+      search,
+      locationType,
+      Country: location,
+      Industry: industryType,
+      AverageRating: rating,
+    });
   }
 
   function handleReset() {
     setLocation("");
     setLocationType("");
-    setSelectedEmploymentTypes([]);
     setIndustryType("");
   }
 
   useEffect(() => {
-    fetchCompanies({});
-  }, [fetchCompanies]);
+    getAllBusinesses({});
+  }, [getAllBusinesses]);
 
   if (isLoading) return <Loader />;
   return (
     <>
       <Navbar />
-      <div className="flex">
-        <div className="w-full bg-background pb-10">
+      <div className="flex flex-col-reverse sm:flex-row">
+        <div
+          className={`w-full bg-background px-2 pb-10 text-center sm:px-5 lg:px-10 ${isOpen ? "lg:text-left" : "md:text-left"}`}
+        >
           {/* Heading and search bar */}
-          <div className="max-w-5xl p-20 md:mx-4">
-            <h2 className="text-4xl font-semibold text-gray-800 md:text-3xl">
+          <div className="max-w-5xl py-10 pt-20 md:mx-4">
+            <h2 className="text-3xl font-semibold text-gray-800 md:text-4xl">
               Find great place to work
             </h2>
             <p className="mt-2 text-gray-600">
               Get access to millions of companies
             </p>
-            <div className="flex items-center gap-5 py-6">
+            <div className="flex items-center gap-1 py-6 sm:gap-3 md:gap-5">
               <SearchBar
                 placeholder="Company name"
-                buttonName="Find companies"
+                buttonName="Search"
+                search={search}
+                setSearch={setSearch}
+                onClick={() => {
+                  setSearch(search);
+                  getAllBusinesses({ search });
+                }}
               />
               {!isOpen && (
                 <Button
-                  className="flex items-center gap-2 border border-gray-100 bg-white p-2 text-lg text-main hover:bg-main hover:text-white"
+                  className="flex items-center gap-2 border border-gray-100 bg-white p-1 text-lg text-main hover:bg-main hover:text-white md:p-2"
                   onClick={() => {
                     setIsOpen(true);
                   }}
@@ -82,25 +98,31 @@ function FindCompany() {
           {/*End of heading and search bar */}
 
           {/* Popular companies */}
-          <div className="px-20 md:mx-4">
-            <h3 className="text-2xl text-gray-800 md:text-3xl">
+          <div className="md:mx-4">
+            <h3 className="text-2xl font-medium text-gray-800 md:text-3xl">
               Popular companies
             </h3>
             <div
-              className={`mt-8 grid gap-6 ${isOpen ? "grid-cols-1 sm:grid-cols-2" : "sm:grid-cols-3"}`}
+              className={`mt-8 grid grid-cols-1 place-items-center gap-6 ${isOpen ? "lg:grid-cols-2 lg:place-items-stretch xl:grid-cols-3 2xl:grid-cols-4" : "sm:grid-cols-2 sm:place-items-stretch lg:grid-cols-3 2xl:grid-cols-4"}`}
             >
-              {/*data?.businesses.length === 0 ? (
-                <p>No companies found 😐</p>
+              {businesses?.data?.length === 0 ? (
+                <p className="text-center text-2xl italic text-gray-300 md:text-3xl">
+                  No companies found 😐
+                </p>
               ) : (
-                data?.map((business: any) => (
+                businesses?.data?.map((business) => (
                   <CompanyCard
                     key={business.id}
                     companyName={business.name}
-                    // companyImage={business.logo}
+                    companyImage={business.logo}
                     numberOfReviews={business.reviewsRatingsQuantity}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/companyprofile/${business.id}`);
+                    }}
                   />
                 ))
-              )*/}
+              )}
             </div>
           </div>
           {/* End of popular companies */}
@@ -111,56 +133,66 @@ function FindCompany() {
           setIsOpen={setIsOpen}
           isOpen={isOpen}
           title="Company filter"
+          handleResetAll={handleReset}
         >
-          <Select isFilter={true} label="Location Type" id="locationType">
-            <option value="" disabled>
-              Select preferred type
-            </option>
+          <Select
+            isFilter={true}
+            label="Location Type"
+            id="locationType"
+            onChange={(e) => setLocationType(e.target.value)}
+            value={locationType}
+          >
+            <option value="">Select preferred type</option>
             {locationTypeValues.map((value) => (
               <option value={value} key={value}>
                 {value}
               </option>
             ))}
           </Select>
-          <Select isFilter={true} label="Location" id="location">
-            <option value="" disabled>
-              Select country
-            </option>
+          <Select
+            isFilter={true}
+            label="Location"
+            id="location"
+            onChange={(e) => setLocation(e.target.value)}
+            value={location}
+          >
+            <option value="">Select country</option>
             {countryValues.map((value) => (
               <option value={value} key={value}>
                 {value}
               </option>
             ))}
           </Select>
-          {/* <Select isFilter={true} label="Employment type" id="employmentType">
-            <option value="" disabled>
-              Select type
-            </option>
-            {employmentTypeValues.map((value) => (
-              <option value={value} key={value}>
-                {value}
-              </option>
-            ))}
-          </Select> */}
-          {/* <MultiSelect
-            label="Employment type"
-            types={employmentTypeValues}
-            selectedTypes={selectedEmploymentTypes}
-            onSelect={setSelectedEmploymentTypes}
-          /> */}
-
-          <Select isFilter={true} label="Industry type" id="industryType">
-            <option value="" disabled>
-              Select industy
-            </option>
+          <Select
+            isFilter={true}
+            label="Industry type"
+            id="industryType"
+            value={industryType}
+            onChange={(e) => setIndustryType(e.target.value)}
+          >
+            <option value="">Select industy</option>
             <option value="Technology">Technology</option>
             <option value="Healthcare">Healthcare</option>
             <option value="Finance">Finance</option>
             <option value="Education">Education</option>
             <option value="Other">Other</option>
           </Select>
-          <Slider label="Rating" min={0} max={10} />
-          <Button className="my-5">Filter Companies</Button>
+          <Slider
+            label="Rating"
+            min={0}
+            max={10}
+            value={rating}
+            setValue={setRating}
+          />
+          <Button
+            className="my-5"
+            onClick={() => {
+              handleFilters();
+              setIsOpen(false);
+            }}
+          >
+            Filter Companies
+          </Button>
         </SidebarFilter>
       </div>
       <Footer />

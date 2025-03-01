@@ -21,7 +21,7 @@ export const jobApi = apiSlice.injectEndpoints({
         page?: number;
         limit?: number;
         locationType?: string;
-        employmentType?: string;
+        employmentType?: string[];
         salary?: number;
       }
     >({
