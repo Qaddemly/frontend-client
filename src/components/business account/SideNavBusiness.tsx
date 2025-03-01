@@ -34,7 +34,7 @@ function SideNavBusiness() {
       </div>
 
       <SideNavBusinessLink
-        to={`/businessDashboard/companyJobs/${companyId}`}
+        to={`/businessDashboard/companyJobs/${companyId}/active`}
         icon={faBriefcase}
         content="Jobs"
         showSideNav={showSideNav}

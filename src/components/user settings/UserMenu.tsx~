@@ -62,7 +62,7 @@ function UserMenu({ children, type }: UserMenuProps) {
             className="h-10 w-10 cursor-pointer rounded-full object-cover"
             onClick={(e) => {
               e.stopPropagation();
-              navigate("/userProfile");
+              navigate("/userSettings/profile/personal");
             }}
           />
         )}

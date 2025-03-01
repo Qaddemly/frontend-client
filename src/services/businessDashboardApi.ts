@@ -9,6 +9,7 @@ import {
   IUpdateJobResponse,
 } from "../interfaces/BusinessDashboard.interfaces";
 import { IResponse } from "../interfaces/Common.interfaces";
+import { IGetallJobsOfBusinessResponse } from "../interfaces/Job.interfaces";
 import { apiSlice } from "./apiSlice";
 
 const BASE_BUSINESS_URL = "/business";
@@ -99,12 +100,60 @@ export const businessDashboardApi = apiSlice.injectEndpoints({
     }),
     getJobApplications: builder.query<
       IGetJobApplicationsResponse,
-      { id: string }
+      {
+        id: string;
+        page?: number;
+        limit?: number;
+        sortBy?: "DESC" | "ASC";
+        filterByState?: string;
+      }
     >({
-      query: ({ id }) => ({
-        url: `${BASE_BUSINESS_URL}/jobApplication/getAllJobApplications/job/${id}`,
-        method: "GET",
-      }),
+      query: ({ id, page, limit, sortBy, filterByState }) => {
+        const params = new URLSearchParams();
+
+        if (page) params.append("page", page.toString());
+        if (limit) params.append("limit", limit.toString());
+        if (sortBy) params.append("sortBy=created_at", sortBy);
+        if (filterByState)
+          params.append("filter.job_application_state.state", filterByState);
+
+        return {
+          url: `${BASE_BUSINESS_URL}/jobApplication/getAllJobApplications/job/${id}${params.toString() ? `?${params.toString()}` : ""}`,
+          method: "GET",
+        };
+      },
+    }),
+    getAllJobsOfBusiness: builder.query<
+      IGetallJobsOfBusinessResponse,
+      { id: string; search?: string; page?: number; limit?: number }
+    >({
+      query: ({ id, search, page, limit }) => {
+        const params = new URLSearchParams();
+
+        if (search) params.append("search", search);
+        if (page) params.append("page", page.toString());
+        if (limit) params.append("limit", limit.toString());
+        return {
+          url: `/business/profile/getAllJobs/${id}${params.toString() ? `?${params.toString()}` : ""}`,
+          method: "GET",
+        };
+      },
+    }),
+    getAllArchivedJobsOfBusiness: builder.query<
+      IGetallJobsOfBusinessResponse,
+      { id: string; search?: string; page?: number; limit?: number }
+    >({
+      query: ({ id, search, page, limit }) => {
+        const params = new URLSearchParams();
+
+        if (search) params.append("search", search);
+        if (page) params.append("page", page.toString());
+        if (limit) params.append("limit", limit.toString());
+        return {
+          url: `/business/myBusiness/dashboard/AllArchivedJobs/${id}${params.toString() ? `?${params.toString()}` : ""}`,
+          method: "GET",
+        };
+      },
     }),
     //////////////////////////// Dashboard Jobs Tracker ////////////////////////////////////
     updateJobApplicationStatus: builder.mutation<
@@ -132,5 +181,9 @@ export const {
   useMakeJobOpenedMutation,
   useUpdateJobMutation,
   useGetJobApplicationsQuery,
+  useLazyGetJobApplicationsQuery,
+  useLazyGetAllJobsOfBusinessQuery,
+  useGetAllArchivedJobsOfBusinessQuery,
+  useLazyGetAllArchivedJobsOfBusinessQuery,
   useUpdateJobApplicationStatusMutation,
 } = businessDashboardApi;

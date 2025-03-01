@@ -13,7 +13,7 @@ function ProjectCards() {
   const navigate = useNavigate();
 
   const [deleteProject, { isLoading: isLoading1 }] = useDeleteProjectMutation();
-  const { data, isLoading: isLoading2, refetch } = useGetAllProjectsQuery();
+  const { data, isLoading: isLoading2, refetch } = useGetAllProjectsQuery({});
   const projects = data?.projects;
 
   async function handleDeleteProject(
@@ -33,8 +33,8 @@ function ProjectCards() {
   if (isLoading1 || isLoading2) return <Loader />;
 
   return (
-    <div className="flex flex-col gap-10">
-      <div className="grid grid-cols-2 p-10">
+    <div className="flex flex-col gap-8">
+      <div className="grid grid-cols-2 gap-5 p-10">
         {projects?.map((pro) => (
           <ProfileCard
             startDate={pro.start_date}

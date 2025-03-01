@@ -1,11 +1,10 @@
 function NotFoundIcon() {
   return (
     <svg
-      width="989"
-      height="711"
       viewBox="0 0 989 711"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className="w-[20rem] md:w-[40rem] lg:w-[60rem]"
     >
       <g clipPath="url(#clip0_108_4055)">
         <path

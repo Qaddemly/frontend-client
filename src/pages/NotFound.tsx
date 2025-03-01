@@ -8,7 +8,7 @@ function NotFound() {
   return (
     <>
       <Navbar />
-      <div className="mb-20 flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center">
         <NotFoundIcon />
         <Button onClick={() => navigate("/")} className="px-3">
           Back to home

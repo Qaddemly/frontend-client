@@ -38,6 +38,9 @@ export interface IUser {
   resume: string[]; // need interface
   skills: ISkills[];
   password_changed_at: string;
+  about_me: string;
+  subtitle: string;
+  links: string[];
   is_activated: boolean;
   created_at: string;
   updated_at: string;
@@ -54,6 +57,21 @@ export interface IUser {
   certificate: ICertificate[];
   project: IProject[];
 }
+
+export interface IBasicInfo {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  date_of_birth: string;
+  profile_picture: string;
+  about_me: string;
+  subtitle: string;
+  links: ILinks;
+  address: IAddress;
+  phone: IPhone;
+}
+
 export interface IExperience {
   id: number;
   job_title: string;
@@ -83,6 +101,17 @@ export interface IPhone {
   country_code: Prefixes;
   number: number;
   phone_number: number;
+}
+
+export interface ILinks {
+  linkedin: string;
+  github: string;
+  portfolio: string;
+  twitter: string;
+  facebook: string;
+  instagram: string;
+  youtube: string;
+  website: string;
 }
 export interface IBusinessRoles {
   id: number;

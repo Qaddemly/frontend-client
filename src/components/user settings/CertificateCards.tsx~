@@ -14,11 +14,7 @@ function CertificateCards() {
 
   const [deleteCertifiate, { isLoading: isLoading1 }] =
     useDeleteCertificateMutation();
-  const {
-    data,
-    isLoading: isLoading2,
-    refetch,
-  } = useGetAllCertificatesQuery({});
+  const { data, isLoading: isLoading2, refetch } = useGetAllCertificatesQuery({});
   const certificates = data?.certificates;
 
   async function handleDeleteCertificate(

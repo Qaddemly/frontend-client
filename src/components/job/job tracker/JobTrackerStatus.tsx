@@ -19,7 +19,7 @@ function JobTrackerStatus({
     setCurrentIndex(index);
     setShowConfirm(true);
   };
-
+  console.log(currentIndex);
   return (
     <div className="flex w-full flex-col items-start">
       <div className="flex w-full justify-between text-xs text-gray-700">

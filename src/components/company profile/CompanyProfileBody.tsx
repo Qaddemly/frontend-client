@@ -12,13 +12,17 @@ import {
   useGetBusinessReviewsQuery,
   useUpdateReviewMutation,
 } from "../../services/businessAccountApi";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Button from "../common/Button";
 import Slider from "../common/Slider";
 import { handleApiError } from "../../utils/helpers";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
+import { useNavigate } from "react-router-dom";
+import { useGetRecommendedJobsQuery } from "../../services/jobApi";
+import JobCard from "../common/JobCard";
+import Loader from "../common/Loader";
 
 type CompanyProfileBodyProps = {
   data: IBusinessAccount | undefined;
@@ -29,27 +33,32 @@ function CompanyProfileBody({
   data: companyData,
   id,
 }: CompanyProfileBodyProps) {
+  const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state.user);
-  // const { data: sixJobsData } = useGetSixJobsQuery({ id });
-  // const { data: fiveReviewsData } = useGetFiveReviewsQuery({
-  //   id: id.toString(),
-  // });
-  // const [triggerAllJobs, { data: allJobsData }] = useLazyGetAllJobsQuery();
+
+  ////////////////////////////////////  Recommended jobs  //////////////////////////////////////////////
+  const { data: jobs, isLoading: loadingRecommendedJobs } =
+    useGetRecommendedJobsQuery();
+  const recommendedJobs = useMemo(
+    () => jobs?.recommendedJobs?.slice() || [],
+    [jobs],
+  );
+
+  const fiveRandomJobs = useMemo(() => {
+    return recommendedJobs.sort(() => 0.5 - Math.random()).slice(0, 6);
+  }, [recommendedJobs]);
+
+  ////////////////////////////////////  Adding, updating and deleting review  //////////////////////////////////////////////
   const { data, refetch } = useGetBusinessReviewsQuery({
     id: id.toString(),
   });
-
   const currentReview: IReview | null =
     data?.reviews?.filter((review) => review?.account_id === user?.id)[0] ||
     null;
 
-  // const [viewAllJobs, setViewAllJobs] = useState(false);
-  // const [viewAllReviews, setViewAllReviews] = useState(false);
-
-  //////////////////////////  Adding, updating and deleting review  //////////////////////////////////////////////
   const [showEditReview, setShowEditReview] = useState(false);
   const [description, setDescription] = useState(
-    currentReview?.description || "",
+    currentReview?.review_description || "",
   );
   const [rating, setRating] = useState(currentReview?.review_rating || 1);
 
@@ -82,29 +91,48 @@ function CompanyProfileBody({
   }
 
   async function handleUpdateReview() {
+    if (description.length)
+      try {
+        const res = updateReview({
+          data: {
+            rating: Number(rating),
+            description,
+          },
+          id: currentReview?.review_id.toString() || "",
+        }).unwrap();
+
+        toast.promise(res, {
+          loading: "Updating...",
+          success: <b>Review updated successfully</b>,
+          error: <b>Could not update the review.</b>,
+        });
+        await res;
+        refetch();
+        setShowEditReview(false);
+      } catch (error) {
+        handleApiError(error);
+      }
+  }
+
+  async function handleDeleteReview() {
     try {
-      const res = updateReview({
-        data: {
-          rating: Number(rating),
-          description,
-        },
+      const deletePromise = deleteReview({
         id: currentReview?.review_id.toString() || "",
       }).unwrap();
 
-      toast.promise(res, {
-        loading: "Updating...",
-        success: <b>Review updated successfully</b>,
-        error: <b>Could not update the review.</b>,
+      toast.promise(deletePromise, {
+        loading: "Deleting...",
+        success: <b>Review deleted successfully!</b>,
+        error: <b>Could not delete the review.</b>,
       });
-
-      await res;
+      await deletePromise;
       refetch();
+      setDescription("");
+      setRating(1);
     } catch (error) {
       handleApiError(error);
     }
   }
-
-  // if (isLoading) return <Loader />;
 
   return (
     <div className="overflow-hidden">
@@ -134,10 +162,10 @@ function CompanyProfileBody({
             title="Founder"
             description={companyData?.founder}
           />
-          <CompanyProfileCard
+          {/* <CompanyProfileCard
             title="Website"
             description={companyData?.website}
-          />
+          /> */}
           <CompanyProfileCard
             title="Headquarters"
             description={companyData?.headquarter}
@@ -159,49 +187,32 @@ function CompanyProfileBody({
         </div>
       </div>
 
-      {/* Valid jobs section  */}
+      {/* Recommended jobs section  */}
       <div
         className="relative mx-auto max-w-[1000px] px-6 py-12 md:px-12"
         id="valid-jobs"
       >
+        {/* <Loader forSection={true} /> */}
         {/* Section Title */}
         <div className="flex items-center justify-between font-semibold">
-          <h2 className="text-2xl text-gray-800 md:text-3xl">Valid jobs</h2>
+          <h2 className="text-2xl text-gray-800 md:text-3xl">
+            Recommended jobs
+          </h2>
           <button
             className="space-x-2 self-end text-xl text-main"
-            // onClick={() => {
-            //   triggerAllJobs({ id });
-            //   setViewAllJobs(true);
-            // }}
+            onClick={() => navigate("/findjob")}
           >
-            <span>View all</span>
+            <span className="font-medium">find more jobs</span>
             <FontAwesomeIcon icon={faCircleRight} />
           </button>
         </div>
 
-        {/* Valid jobs */}
+        {/* Recommended jobs */}
+        {loadingRecommendedJobs && <Loader forSection={true} />}
         <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-          {/* {viewAllJobs
-            ? sixJobsData?.jobs.map((job) => (
-                <JobCard
-                  key={job.job_id}
-                  jobTitle={job.job_title}
-                  employmentType={job.job_employee_type}
-                  salaryRange={job.job_salary.toString()}
-                  companyName={job.business_name}
-                  companyLocation={job.job_location}
-                />
-              ))
-            : allJobsData?.jobs.map((job) => (
-                <JobCard
-                  key={job.job_id}
-                  jobTitle={job.job_title}
-                  employmentType={job.job_employee_type}
-                  salaryRange={job.job_salary.toString()}
-                  companyName={job.business_name}
-                  companyLocation={job.job_location}
-                />
-              ))} */}
+          {fiveRandomJobs.map((job) => (
+            <JobCard key={job.id} job={job} />
+          ))}
         </div>
       </div>
 
@@ -219,24 +230,27 @@ function CompanyProfileBody({
               // setViewAllReviews(true);
             }}
           >
-            <span>View all</span>
-            <FontAwesomeIcon icon={faCircleRight} />
+            {/* <span>View all</span>
+            <FontAwesomeIcon icon={faCircleRight} /> */}
           </button>
         </div>
 
         {/* Reviews */}
-        {/* <div className="flex w-[140rem] animate-slide space-x-10">
-          {fiveReviewsData?.reviews.map((review) => (
+        {data?.reviews.length === 0 && (
+          <p className="italic text-gray-300">No reviews</p>
+        )}
+        <div className="my-20 flex w-[140rem] animate-slide space-x-10">
+          {data?.reviews.map((review) => (
             <ReviewCard
               key={review?.review_business_id}
               userName={`${review.account_first_name} ${review.account_last_name}`}
               date={review.review_created_at}
-              text={review.description}
+              text={review.review_description}
               img={review.account_profile_picture}
               rating={review.review_rating}
             />
           ))}
-        </div> */}
+        </div>
 
         {/* Adding reviews */}
         <div className="mt-5 flex flex-col gap-5">
@@ -274,11 +288,11 @@ function CompanyProfileBody({
                 <h2 className="mb-5 text-2xl font-semibold text-gray-800 md:text-3xl">
                   Your review
                 </h2>
-                <div className="flex justify-center">
+                <div className="my-10 flex justify-center">
                   <ReviewCard
                     userName={`${currentReview.account_first_name} ${currentReview.account_last_name}`}
                     date={currentReview.review_created_at}
-                    text={currentReview.description}
+                    text={currentReview.review_description}
                     img={currentReview.account_profile_picture}
                     rating={currentReview.review_rating}
                   />
@@ -291,20 +305,7 @@ function CompanyProfileBody({
                     Edit your review
                   </Button>
                   <Button
-                    onClick={async () => {
-                      const deletePromise = deleteReview({
-                        id: currentReview.review_id.toString(),
-                      }).unwrap();
-
-                      toast.promise(deletePromise, {
-                        loading: "Deleting...",
-                        success: <b>Review deleted successfully!</b>,
-                        error: <b>Could not delete the review.</b>,
-                      });
-
-                      await deletePromise;
-                      refetch();
-                    }}
+                    onClick={handleDeleteReview}
                     className="mt-2 bg-danger-300 px-3 hover:bg-danger-200"
                   >
                     Delete your review

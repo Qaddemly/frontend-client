@@ -134,6 +134,7 @@ function ApplicationsTable() {
                         </button>
                         <a
                           href={application.resume.url}
+                         
                           className="rounded-lg border border-main px-3 py-[0.4rem] text-sm font-medium text-main hover:bg-main hover:text-white"
                         >
                           Show Resume
