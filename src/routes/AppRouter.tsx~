@@ -215,7 +215,6 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
-  { path: "/resumeBuilder/edit/1", element: <EditResume /> },
   {
     path: "*",
     element: (

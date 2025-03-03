@@ -1,0 +1,110 @@
+import FormPreviewSection from "../FormPreviewSection.tsx";
+import InputField from "../../common/InputField.tsx";
+import Input from "../../common/Input.tsx";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { faGlasses } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Button from "../../common/Button.tsx";
+
+type PersonalForm = {
+  fullName: string;
+  jobTitle: string;
+  email: string;
+  phone: string;
+  address: string;
+};
+
+function ResumePersonalForm() {
+  const { register, handleSubmit } = useForm<PersonalForm>();
+
+  const submitForm: SubmitHandler<PersonalForm> = async (data) => {
+    console.log(data);
+  };
+
+  return (
+    <FormPreviewSection>
+      <div className="w-full">
+        <div className="flex justify-between">
+          <p className="mb-10 text-xl font-semibold">Add personal details</p>
+          <p>
+            <FontAwesomeIcon icon={faGlasses} />
+            <span className="ml-1">Autofill?</span>
+          </p>
+        </div>
+        <form
+          onSubmit={handleSubmit(submitForm)}
+          className="flex flex-col gap-3"
+        >
+          <div className="flex justify-between">
+            <InputField id="fullName" label="Full name">
+              <Input
+                register={register}
+                name="fullName"
+                props={{
+                  placeholder: "John Doe",
+                  type: "text",
+                  id: "fullName",
+                }}
+              />
+            </InputField>
+
+            <InputField id="jobTitle" label="Job title">
+              <Input
+                register={register}
+                name="jobTitle"
+                props={{
+                  placeholder: "Full Stack",
+                  type: "text",
+                  id: "jobTitle",
+                }}
+              />
+            </InputField>
+          </div>
+
+          <InputField id="email" label="Email">
+            <Input
+              register={register}
+              name="email"
+              props={{
+                placeholder: "your.name@mailcom",
+                type: "text",
+                id: "email",
+              }}
+            />
+          </InputField>
+
+          <div className="flex justify-between">
+            <InputField id="phone" label="Phone">
+              <Input
+                register={register}
+                name="phone"
+                props={{
+                  placeholder: "Enter Phone",
+                  type: "text",
+                  id: "phone",
+                }}
+              />
+            </InputField>
+
+            <InputField id="address" label="Address">
+              <Input
+                register={register}
+                name="address"
+                props={{
+                  placeholder: "City,Country",
+                  type: "text",
+                  id: "address",
+                }}
+              />
+            </InputField>
+          </div>
+          <div className="self-end">
+            <Button className="px-3">Save</Button>
+          </div>
+        </form>
+      </div>
+    </FormPreviewSection>
+  );
+}
+
+export default ResumePersonalForm;

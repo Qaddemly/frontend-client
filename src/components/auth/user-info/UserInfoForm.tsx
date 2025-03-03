@@ -30,7 +30,7 @@ function UserInfoForm() {
         employment_type: EmploymentType.FullTime,
         company_name: "",
         location: Country.USA,
-        location_type: LocationType.OnSite,
+        location_type: LocationType.Onsite,
         still_working: false,
         start_date: "",
         end_date: "",

@@ -35,13 +35,7 @@ function FindJob() {
   const [currentPage, setCurrentPage] = useState(meta?.currentPage);
 
   function handleFilters() {
-    fetchJobs({
-      page: 1,
-      limit: 9,
-      locationType,
-      employmentType: selectedEmploymentTypes,
-      salary,
-    });
+    fetchJobs({ page: 1, limit: 9, locationType,employmentType: selectedEmploymentTypes, salary });
   }
 
   function handleReset() {
@@ -52,13 +46,7 @@ function FindJob() {
   }
 
   useEffect(() => {
-    fetchJobs({
-      page: 1,
-      limit: 9,
-      locationType,
-      employmentType: selectedEmploymentTypes,
-      salary,
-    });
+    fetchJobs({ page: 1, limit: 9, locationType, employmentType: selectedEmploymentTypes, salary });
   }, [fetchJobs]);
 
   if (isLoading) return <Loader />;

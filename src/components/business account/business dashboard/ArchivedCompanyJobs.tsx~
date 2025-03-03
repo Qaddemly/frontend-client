@@ -22,8 +22,8 @@ function ArchivedCompanyJobs() {
     useLazyGetAllArchivedJobsOfBusinessQuery();
   const jobs = data?.jobs.data;
   const meta = data?.jobs.meta;
-
   const [currentPage, setCurrentPage] = useState(meta?.currentPage);
+
   async function handleJobStatus(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     status: "Closed" | "Opened",

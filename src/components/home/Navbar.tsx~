@@ -53,7 +53,7 @@ function Navbar() {
               />
             </li>
             <li>
-              <NavbarLink to="/resumeBuilder" content="Build Resume" />
+              <NavbarLink to="/resumeBuilder" content="Build resume" />
             </li>
           </ul>
         </div>
@@ -79,7 +79,7 @@ function Navbar() {
                 <NavbarLink to="/findCompany" content="Find company" />
               </li>
               <li>
-                <NavbarLink to="/resumeBuilder" content="Build Resume" />
+                <NavbarLink to="/resumeBuilder" content="Resume builder" />
               </li>
               <li>
                 <Button
