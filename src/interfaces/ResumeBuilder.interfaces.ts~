@@ -15,5 +15,5 @@ export interface IResumeInfo {
     startDate: string;
     endDate: string;
     description: string;
-  }[];
+  };
 }

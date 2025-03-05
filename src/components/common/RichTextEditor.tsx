@@ -1,0 +1,45 @@
+import {
+  BtnBold,
+  BtnBulletList,
+  BtnItalic,
+  BtnLink,
+  BtnNumberedList,
+  BtnStrikeThrough,
+  BtnUnderline,
+  ContentEditableEvent,
+  Editor,
+  EditorProvider,
+  Separator,
+  Toolbar,
+} from "react-simple-wysiwyg";
+
+function RichTextEditor({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (event: ContentEditableEvent) => void;
+}) {
+  return (
+    <div>
+      <div className="flex justify-between"></div>
+      <EditorProvider>
+        <Editor value={value} onChange={(e) => onChange(e)}>
+          <Toolbar>
+            <BtnBold />
+            <BtnItalic />
+            <BtnUnderline />
+            <BtnStrikeThrough />
+            <Separator />
+            <BtnNumberedList />
+            <BtnBulletList />
+            <Separator />
+            <BtnLink />
+          </Toolbar>
+        </Editor>
+      </EditorProvider>
+    </div>
+  );
+}
+
+export default RichTextEditor;

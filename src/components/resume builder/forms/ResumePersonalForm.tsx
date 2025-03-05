@@ -1,10 +1,9 @@
-import FormPreviewSection from "../FormPreviewSection.tsx";
+import FormPreviewSection from "./FormPreviewSection.tsx";
 import InputField from "../../common/InputField.tsx";
 import Input from "../../common/Input.tsx";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { faGlasses } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../../common/Button.tsx";
+import { useResumeBuilder } from "../../../context/ResumeBuilderContext.tsx";
 
 type PersonalForm = {
   fullName: string;
@@ -15,30 +14,42 @@ type PersonalForm = {
 };
 
 function ResumePersonalForm() {
+  const { resumeInfo, setResumeInfo } = useResumeBuilder();
   const { register, handleSubmit } = useForm<PersonalForm>();
 
   const submitForm: SubmitHandler<PersonalForm> = async (data) => {
     console.log(data);
   };
 
+  function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+
+    setResumeInfo((prevInfo) => ({
+      ...(prevInfo || {}),
+      personal: {
+        ...(prevInfo.personal || {}),
+        [name]: value,
+      },
+    }));
+  }
+
   return (
-    <FormPreviewSection>
+    <FormPreviewSection
+      title="Add personal details"
+      tips={false}
+      autoFill={true}
+    >
       <div className="w-full">
-        <div className="flex justify-between">
-          <p className="mb-10 text-xl font-semibold">Add personal details</p>
-          <p>
-            <FontAwesomeIcon icon={faGlasses} />
-            <span className="ml-1">Autofill?</span>
-          </p>
-        </div>
         <form
           onSubmit={handleSubmit(submitForm)}
           className="flex flex-col gap-3"
         >
-          <div className="flex justify-between">
+          <div className="flex justify-between gap-2">
             <InputField id="fullName" label="Full name">
               <Input
                 register={register}
+                onChange={handleOnChange}
+                value={resumeInfo.personal.fullName}
                 name="fullName"
                 props={{
                   placeholder: "John Doe",
@@ -51,6 +62,8 @@ function ResumePersonalForm() {
             <InputField id="jobTitle" label="Job title">
               <Input
                 register={register}
+                onChange={handleOnChange}
+                value={resumeInfo.personal.jobTitle}
                 name="jobTitle"
                 props={{
                   placeholder: "Full Stack",
@@ -64,19 +77,23 @@ function ResumePersonalForm() {
           <InputField id="email" label="Email">
             <Input
               register={register}
+              onChange={handleOnChange}
+              value={resumeInfo.personal.email}
               name="email"
               props={{
                 placeholder: "your.name@mailcom",
-                type: "text",
+                type: "email",
                 id: "email",
               }}
             />
           </InputField>
 
-          <div className="flex justify-between">
+          <div className="flex justify-between gap-2">
             <InputField id="phone" label="Phone">
               <Input
                 register={register}
+                onChange={handleOnChange}
+                value={resumeInfo.personal.phone}
                 name="phone"
                 props={{
                   placeholder: "Enter Phone",
@@ -89,6 +106,8 @@ function ResumePersonalForm() {
             <InputField id="address" label="Address">
               <Input
                 register={register}
+                onChange={handleOnChange}
+                value={resumeInfo.personal.address}
                 name="address"
                 props={{
                   placeholder: "City,Country",

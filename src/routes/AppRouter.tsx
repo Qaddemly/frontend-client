@@ -52,6 +52,7 @@ import JobTrackerArchived from "../components/job/job tracker/JobTrackerArchived
 import ArchivedCompanyJobs from "../components/business account/business dashboard/ArchivedCompanyJobs";
 import ResumeBuilder from "../pages/ResumeBuilder.tsx";
 import EditResume from "../components/resume builder/EditResume.tsx";
+import { ResumeBuilderProvider } from "../context/ResumeBuilderContext.tsx";
 
 const router = createBrowserRouter([
   {
@@ -215,7 +216,16 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
-  { path: "/resumeBuilder/edit/1", element: <EditResume /> },
+  {
+    path: "/resumeBuilder/edit/1",
+    element: (
+      // <ProtectedRoute>
+      <ResumeBuilderProvider>
+        <EditResume />
+      </ResumeBuilderProvider>
+      // </ProtectedRoute>
+    ),
+  },
   {
     path: "*",
     element: (

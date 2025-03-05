@@ -1,0 +1,40 @@
+import Button from "../../common/Button.tsx";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEnvelope,
+  faPenToSquare,
+  faPhone,
+} from "@fortawesome/free-solid-svg-icons";
+import { useResumeBuilder } from "../../../context/ResumeBuilderContext.tsx";
+
+function ResumePersonalSection() {
+  const { resumeInfo } = useResumeBuilder();
+  const personalInfo = resumeInfo.personal;
+  return (
+    <div className="flex flex-col justify-between rounded-lg bg-white px-8 py-5 shadow-md">
+      <div className="flex w-full items-center justify-between pb-3">
+        <div>
+          <p className="text-xl font-semibold">{personalInfo.fullName}</p>
+          <p className="text-sm text-gray-300">{personalInfo.jobTitle}</p>
+        </div>
+        <Button className="flex items-center gap-2 bg-white text-gray-300 hover:bg-white">
+          <span>Edit</span>
+          <FontAwesomeIcon
+            icon={faPenToSquare}
+            className="cursor-pointer text-xl text-gray-400"
+          />
+        </Button>
+      </div>
+      <p className="flex items-center gap-1 text-gray-500">
+        <FontAwesomeIcon icon={faEnvelope} />
+        <span>{personalInfo.email}</span>
+      </p>
+      <p className="flex items-center gap-1 text-gray-500">
+        <FontAwesomeIcon icon={faPhone} />
+        <span>{personalInfo.phone}</span>
+      </p>
+    </div>
+  );
+}
+
+export default ResumePersonalSection;

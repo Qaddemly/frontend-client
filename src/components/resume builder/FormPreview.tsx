@@ -3,19 +3,26 @@ import {
   faCheck,
   faFileArrowDown,
   faPenToSquare,
+  faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import Input from "../common/Input.tsx";
-import FormPreviewSection from "./FormPreviewSection.tsx";
 import ResumePersonalForm from "./forms/ResumePersonalForm.tsx";
+import ResumeAboutmeForm from "./forms/ResumeAboutmeForm.tsx";
+import { useResumeBuilder } from "../../context/ResumeBuilderContext.tsx";
+import ResumeEucationForm from "./forms/ResumeEucationForm.tsx";
+import ResumePersonalSection from "./sections/ResumePersonalSection.tsx";
+import ResumeAboutmeSection from "./sections/ResumeAboutmeSection.tsx";
 
 function FormPreview() {
+  const { setShowAddContent } = useResumeBuilder();
   const [resumeName, setResumeName] = useState("My Resume");
   const [showEditResumeName, setShowEditResumeName] = useState(false);
+
   return (
-    <div className="flex w-1/3 flex-col gap-10">
-      <FormPreviewSection>
+    <div className="flex w-1/3 flex-col gap-10 md:w-1/2">
+      <div className="flex items-center justify-between rounded-lg bg-white px-8 py-5 shadow-md">
         {showEditResumeName ? (
           <div className="flex items-center gap-5">
             <Input
@@ -43,17 +50,35 @@ function FormPreview() {
           Download
           <FontAwesomeIcon icon={faFileArrowDown} className="text-xl" />
         </Button>
-      </FormPreviewSection>
+      </div>
 
-      <FormPreviewSection>
+      <div className="flex items-center justify-between rounded-lg bg-white px-8 py-5 shadow-md">
         <p className="text-lg font-semibold">Add your main content</p>
         <FontAwesomeIcon
           icon={faPenToSquare}
           className="cursor-pointer rounded-full bg-main p-2 text-xl text-white"
         />
-      </FormPreviewSection>
+      </div>
 
       <ResumePersonalForm />
+
+      <ResumeAboutmeForm />
+
+      <ResumeEucationForm />
+
+      <ResumePersonalSection />
+
+      <ResumeAboutmeSection />
+
+      <div className="flex justify-center">
+        <Button
+          onClick={() => setShowAddContent(true)}
+          className="space-x-2 rounded-full px-8"
+        >
+          <FontAwesomeIcon icon={faPlus} />
+          <span>Add Content</span>
+        </Button>
+      </div>
     </div>
   );
 }

@@ -90,13 +90,3 @@ input[type="number"] {
   list-style: decimal;
   padding-left: 2em;
 }
-
-.rich-text-editor ul {
-  list-style: disc;
-  padding-left: 2em;
-}
-
-.rich-text-editor ol {
-  list-style: decimal;
-  padding-left: 2em;
-}

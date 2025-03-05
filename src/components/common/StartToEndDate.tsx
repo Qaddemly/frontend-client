@@ -1,9 +1,4 @@
-import {
-  FieldValues,
-  Path,
-  useFormContext,
-  UseFormRegister,
-} from "react-hook-form";
+import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 import DatePicker from "./DatePicker";
 
 type StartToEndDateProps<T extends FieldValues> = {
@@ -21,9 +16,9 @@ function StartToEndDate<T extends FieldValues>({
   startDateDefaultValue,
   endDateDefaultValue,
 }: StartToEndDateProps<T>) {
-  const {
-    formState: { errors },
-  } = useFormContext();
+  // const {
+  //   formState: { errors },
+  // } = useFormContext();
   return (
     <>
       <label htmlFor="education" className="font-medium">
@@ -42,10 +37,10 @@ function StartToEndDate<T extends FieldValues>({
           name={endDate}
         />
       </div>
-      <p className="text-sm text-danger-300">
-        {typeof errors.startEducationDate?.message === "string" &&
-          errors.startEducationDate?.message}
-      </p>
+      {/*<p className="text-sm text-danger-300">*/}
+      {/*  {typeof errors?.startEducationDate?.message === "string" &&*/}
+      {/*    errors?.startEducationDate?.message}*/}
+      {/*</p>*/}
     </>
   );
 }

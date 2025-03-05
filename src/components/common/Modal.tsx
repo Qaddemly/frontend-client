@@ -8,7 +8,7 @@ type ModalProps = {
 function Modal({ children, setClose }: ModalProps) {
   return (
     <div className="absolute right-0 top-0 z-50 flex h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-[#000] bg-opacity-50 backdrop-blur-sm">
-      <div className="animate-fadeIn relative rounded-md bg-white shadow-md">
+      <div className="relative animate-fadeIn rounded-md bg-white shadow-md">
         <button
           type="button"
           className="bg-transparent hover:text-gray-900 absolute end-2.5 top-3 ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg text-sm"
@@ -29,7 +29,6 @@ function Modal({ children, setClose }: ModalProps) {
               d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
             />
           </svg>
-          <span className="sr-only">Close modal</span>
         </button>
         {children}
       </div>
