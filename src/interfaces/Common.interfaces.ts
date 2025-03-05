@@ -30,3 +30,9 @@ export const formSettings: FormSettings = {
   criteriaMode: "all",
   shouldFocusError: true,
 };
+
+////////////home Api //////////////////
+export interface IGetStats {
+  success: boolean;
+  count: number;
+}

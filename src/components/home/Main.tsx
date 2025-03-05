@@ -14,12 +14,58 @@ import HomeIcon from "./HomeIcon";
 import { useNavigate } from "react-router-dom";
 import { useGetRecommendedJobsQuery } from "../../services/jobApi";
 import JobCard from "../common/JobCard";
+import {
+  useGetNumberOfActiveJobsQuery,
+  useGetNumberOfBusinessesQuery,
+  useGetNumberOfNewPostedJobsQuery,
+  useGetNumberOfUsersQuery,
+} from "../../services/homeApi";
+import Loader from "../common/Loader";
 
 function Main() {
   const navigate = useNavigate();
-
-  const { data } = useGetRecommendedJobsQuery();
-
+  const { data: liveJobs, isLoading: isLoadingLive } =
+    useGetNumberOfActiveJobsQuery();
+  const { data: companies, isLoading: isLoadingCompanies } =
+    useGetNumberOfBusinessesQuery();
+  const { data: candidates, isLoading: isLoadingCandidates } =
+    useGetNumberOfUsersQuery();
+  const { data: newJobs, isLoading: isLoadingNewJobs } =
+    useGetNumberOfNewPostedJobsQuery();
+  const { data: recommended } = useGetRecommendedJobsQuery();
+  const items = [
+    {
+      icon: faBriefcase,
+      text: "Live Jobs",
+      count: liveJobs?.count,
+      isLoading: isLoadingLive,
+    },
+    {
+      icon: faBuilding,
+      text: "Companies",
+      count: companies?.count,
+      isLoading: isLoadingCompanies,
+    },
+    {
+      icon: faUsers,
+      text: "Candidates",
+      count: candidates?.count,
+      isLoading: isLoadingCandidates,
+    },
+    {
+      icon: faArrowsSpin,
+      text: "New Jobs",
+      count: newJobs?.count,
+      isLoading: isLoadingNewJobs,
+    },
+  ];
+  if (
+    isLoadingLive ||
+    isLoadingCandidates ||
+    isLoadingCompanies ||
+    isLoadingNewJobs
+  )
+    return <Loader />;
   return (
     <>
       <div className="mx-6 my-20 md:my-20">
@@ -39,12 +85,7 @@ function Main() {
       </div>
 
       <ul className="mx-6 grid gap-6 sm:grid-cols-1 md:mx-auto md:w-3/4 md:grid-cols-2 lg:grid-cols-4">
-        {[
-          { icon: faBriefcase, text: "Live Jobs" },
-          { icon: faBuilding, text: "Companies" },
-          { icon: faUsers, text: "Candidates" },
-          { icon: faArrowsSpin, text: "New Jobs" },
-        ].map((item, index) => (
+        {items.map((item, index) => (
           <li
             key={index}
             className="flex h-24 items-center justify-around rounded-md bg-white p-3 shadow-md"
@@ -54,7 +95,11 @@ function Main() {
               className="mr-3 rounded-md bg-light-secondary p-3 text-3xl text-main"
             />
             <div className="flex flex-col">
-              <span className="mr-3 font-bold"> 4,593,456</span>
+              {item.isLoading ? (
+                <Loader />
+              ) : (
+                <span className="mr-3 font-bold">{item.count}</span>
+              )}
               <span className="block text-gray-600">{item.text}</span>
             </div>
           </li>
@@ -141,7 +186,7 @@ function Main() {
 
         <div className="p-4">
           <ul className="mt-5 grid grid-cols-1 gap-5 px-3 sm:grid-cols-2 lg:grid-cols-3">
-            {data?.recommendedJobs.map((job) => (
+            {recommended?.recommendedJobs.map((job) => (
               <JobCard job={job} key={job.id} />
             ))}
           </ul>
