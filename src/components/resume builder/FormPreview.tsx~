@@ -13,15 +13,17 @@ import ResumeAboutmeForm from "./forms/ResumeAboutmeForm.tsx";
 import { useResumeBuilder } from "../../context/ResumeBuilderContext.tsx";
 import ResumeEucationForm from "./forms/ResumeEucationForm.tsx";
 import ResumePersonalSection from "./sections/ResumePersonalSection.tsx";
-import ResumeAboutmeSection from "./sections/ResumeAboutmeSection.tsx";
+import ResumeSection from "./sections/ResumeSection.tsx";
+import ResumeSkillsForm from "./forms/ResumeSkillsForm.tsx";
 
 function FormPreview() {
-  const { setShowAddContent } = useResumeBuilder();
+  const { setShowAddContent, status, setStatus, resumeInfo } =
+    useResumeBuilder();
   const [resumeName, setResumeName] = useState("My Resume");
   const [showEditResumeName, setShowEditResumeName] = useState(false);
 
   return (
-    <div className="flex w-1/3 flex-col gap-10 md:w-1/2">
+    <div className="flex w-1/3 flex-col gap-10">
       <div className="flex items-center justify-between rounded-lg bg-white px-8 py-5 shadow-md">
         {showEditResumeName ? (
           <div className="flex items-center gap-5">
@@ -52,23 +54,54 @@ function FormPreview() {
         </Button>
       </div>
 
-      <div className="flex items-center justify-between rounded-lg bg-white px-8 py-5 shadow-md">
-        <p className="text-lg font-semibold">Add your main content</p>
-        <FontAwesomeIcon
-          icon={faPenToSquare}
-          className="cursor-pointer rounded-full bg-main p-2 text-xl text-white"
-        />
-      </div>
+      {status === "start" && (
+        <div className="flex items-center justify-between rounded-lg bg-white px-8 py-5 shadow-md">
+          <p className="text-lg font-semibold">Add your main content</p>
+          <FontAwesomeIcon
+            icon={faPenToSquare}
+            className="cursor-pointer rounded-full bg-main p-2 text-xl text-white"
+            onClick={() => setStatus("personal")}
+          />
+        </div>
+      )}
 
-      <ResumePersonalForm />
+      {/*///////////////////////////////////////////  Forms  ///////////////////////////////////////////////*/}
+      {status === "personal" && <ResumePersonalForm />}
 
-      <ResumeAboutmeForm />
+      {status === "aboutme" && <ResumeAboutmeForm />}
 
-      <ResumeEucationForm />
+      {status === "education" && <ResumeEucationForm />}
 
-      <ResumePersonalSection />
+      {status==="skills"&&<ResumeSkillsForm/>}
 
-      <ResumeAboutmeSection/>
+      {/*///////////////////////////////////////////  Sections  ///////////////////////////////////////////////*/}
+      {status === "normal" && (
+        <>
+          {/* Personal Section */}
+          <ResumePersonalSection />
+
+          {/* Aboutme Section */}
+          <ResumeSection
+            title="About me"
+            titles={[`${resumeInfo.personal.aboutMe.slice(0, 50)}...`]}
+            handleEdit={() => setStatus("aboutme")}
+          />
+
+          {/* Education Section */}
+          <ResumeSection
+            title="Education"
+            titles={resumeInfo.education.map((edu) => edu.degree)}
+            handleEdit={() => setStatus("education")}
+          />
+
+          {/* Skills Section */}
+          <ResumeSection
+            title="Skills"
+            titles={resumeInfo.skills.map((skill) => skill.skill)}
+            handleEdit={() => setStatus("skills")}
+          />
+        </>
+      )}
 
       <div className="flex justify-center">
         <Button

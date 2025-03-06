@@ -23,7 +23,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useResumeBuilder } from "../../context/ResumeBuilderContext.tsx";
 
 function AddResumeContent() {
-  const { setShowAddContent } = useResumeBuilder();
+  const { setShowAddContent, setStatus } = useResumeBuilder();
   return (
     <div className="min-h-screen w-[70rem] bg-white p-10">
       <div className="mb-5 flex items-center justify-between">
@@ -41,81 +41,97 @@ function AddResumeContent() {
           icon={faUser}
           description="A brief statement summarizing your career goal and what you bring to the
         role."
+          onClick={() => setStatus("personal")}
         />
         <ResumeContentBox
           title="Education"
           icon={faUserGraduate}
           description="Displays your academic background Degree(s)."
+          onClick={() => setStatus("education")}
         />
         <ResumeContentBox
           title="Skills"
           icon={faPersonHiking}
           description="Showcases your relevant hard (technical) and soft skills."
+          onClick={() => setStatus("skills")}
         />
         <ResumeContentBox
           title="Work Experience"
           icon={faBriefcase}
           description="Highlights your professional history and achievements."
+          onClick={() => setStatus("workExperience")}
         />
         <ResumeContentBox
           title="Certifications"
           icon={faCertificate}
           description="Highlights additional qualifications that enhance your expertise."
+          onClick={() => setStatus("certifications")}
         />
         <ResumeContentBox
           title="Projects"
           icon={faListCheck}
           description="Showcases specific work or initiatives, especially useful for creative roles."
+          onClick={() => setStatus("projects")}
         />
         <ResumeContentBox
           title="Volunteering"
           icon={faHandshakeAngle}
           description="Demonstrates community involvement and transferable skills."
+          onClick={() => setStatus("volunteering")}
         />
         <ResumeContentBox
           title="Languages"
           icon={faLanguage}
           description="Highlights multilingual abilities, especially useful for international roles."
+          onClick={() => setStatus("languages")}
         />
         <ResumeContentBox
           title="Hobbies"
           icon={faBookOpen}
           description="Adds a personal touch and can showcase transferable skills or cultural fit."
+          onClick={() => setStatus("hobbies")}
         />
         <ResumeContentBox
           title="References"
           icon={faPenFancy}
           description="Provides contacts who can vouch for your skills and experience."
+          onClick={() => setStatus("references")}
         />
         <ResumeContentBox
           title="Achievements and Awards"
           icon={faMedal}
           description="Highlights accomplishments that demonstrate your excellence."
+          onClick={() => setStatus("achievements")}
         />
         <ResumeContentBox
           title="Publications"
           icon={faScroll}
           description="Showcases your written work, relevant for academic or writing-focused roles."
+          onClick={() => setStatus("publications")}
         />
         <ResumeContentBox
           title="Technical Proficiencies"
           icon={faCompassDrafting}
           description="Lists specific tools or technologies you’re skilled in (great for tech roles)."
+          onClick={() => setStatus("technicalProficiencies")}
         />
         <ResumeContentBox
           title="Training and Workshops"
           icon={faGear}
           description="Highlights additional learning experiences that enhance your skills."
+          onClick={() => setStatus("training")}
         />
         <ResumeContentBox
           title="Portfolio/ Personal Website"
           icon={faAddressCard}
           description="Provides a link to your work samples (Useful for creative or technical roles)."
+          onClick={() => setStatus("portfolio")}
         />
         <ResumeContentBox
           title="Custom"
           icon={faBrush}
           description="Create a unique section to highlight something specific."
+          onClick={() => setStatus("custom")}
         />
       </div>
     </div>

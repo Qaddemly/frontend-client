@@ -68,26 +68,16 @@ export const dummyData: IResumeInfo = {
         "Specialized in technology management and entrepreneurship. Worked on a startup incubator project.",
     },
   ],
-  // skills: [
-  //   {
-  //     id: 1,
-  //     name: "Angular",
-  //     rating: 80,
-  //   },
-  //   {
-  //     id: 1,
-  //     name: "React",
-  //     rating: 100,
-  //   },
-  //   {
-  //     id: 1,
-  //     name: "MySql",
-  //     rating: 80,
-  //   },
-  //   {
-  //     id: 1,
-  //     name: "React Native",
-  //     rating: 100,
-  //   },
-  // ],
+  skills: [
+    {
+      skill: "React js",
+      description: "Specialized in technology management and entrepreneurship",
+      level: "Expert",
+    },
+    {
+      skill: "Angular js",
+      description: "Specialized in technology management and entrepreneurship",
+      level: "Mid",
+    },
+  ],
 };

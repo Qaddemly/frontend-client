@@ -1,11 +1,15 @@
 import ResumePersonalPreview from "./preview/ResumePersonalPreview.tsx";
 import ResumeAboutmePreview from "./preview/ResumeAboutmePreview.tsx";
+import ResumeEducationPreview from "./preview/ResumeEducationPreview.tsx";
+import ResumeSkillsPreview from "./preview/ResumeSkillsPreview.tsx";
 
 function ResumePreview() {
   return (
-    <div className="h-screen w-1/2 rounded-md bg-white p-14 font-[Arial] shadow-lg">
+    <div className="min-h-screen w-1/2 rounded-md bg-white p-14 font-[Arial] shadow-lg">
       <ResumePersonalPreview />
       <ResumeAboutmePreview />
+      <ResumeEducationPreview />
+      <ResumeSkillsPreview />
     </div>
   );
 }

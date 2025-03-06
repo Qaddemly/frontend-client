@@ -16,13 +16,15 @@ import {
 function RichTextEditor({
   value,
   onChange,
+  label,
 }: {
   value: string;
   onChange: (event: ContentEditableEvent) => void;
+  label?: string;
 }) {
   return (
     <div>
-      <div className="flex justify-between"></div>
+      {label && <label className="font-medium">{label}</label>}
       <EditorProvider>
         <Editor value={value} onChange={(e) => onChange(e)}>
           <Toolbar>

@@ -16,4 +16,9 @@ export interface IResumeInfo {
     endDate: string;
     description: string;
   }[];
+  skills: {
+    skill: string;
+    description: string;
+    level: string;
+  }[];
 }

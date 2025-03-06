@@ -44,7 +44,7 @@ function FormPreviewSection<T extends FieldValues>({
 
       <div className="w-full">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex flex-col gap-5">{children}</div>
+          <div className="flex flex-col gap-10">{children}</div>
           <div className="mt-5 flex justify-between gap-3">
             <div>
               {/* handle delete */}

@@ -82,7 +82,7 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
   function handleOnChangeTextEditor(
     index: number,
     propertyName: keyof IResumeInfo,
-    e: ContentEditableEvent,
+    e: ContentEditableEvent
   ) {
     const { value } = e.target;
 
@@ -93,7 +93,7 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
         return {
           ...prevInfo,
           [propertyName]: array.map((item, i) =>
-            i === index ? { ...item, description: value } : item,
+            i === index ? { ...item, description: value } : item
           ),
         };
       }
@@ -101,6 +101,7 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
       return prevInfo;
     });
   }
+
 
   return (
     <ResumeBuilderContext.Provider

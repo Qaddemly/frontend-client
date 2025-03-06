@@ -2,7 +2,13 @@ import Button from "../../common/Button.tsx";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-function ResumeSection({ title, titles }: { title: string; titles: string[] }) {
+type ResumeSectionProps = {
+  title: string;
+  titles: string[];
+  handleEdit: React.MouseEventHandler<HTMLButtonElement>;
+};
+
+function ResumeSection({ title, titles, handleEdit }: ResumeSectionProps) {
   return (
     <div className="flex flex-col items-center justify-between rounded-lg bg-white px-8 py-5 shadow-md">
       <div className="flex w-full items-center justify-between pb-3">
@@ -14,7 +20,10 @@ function ResumeSection({ title, titles }: { title: string; titles: string[] }) {
       {titles.map((title: string) => (
         <div className="flex w-full items-center justify-between border-t border-gray-200 py-3">
           <p className="text-lg font-medium text-gray-300">{title}</p>
-          <Button className="flex items-center gap-2 bg-white text-gray-300 hover:bg-white">
+          <Button
+            onClick={handleEdit}
+            className="flex items-center gap-2 bg-white text-gray-300 hover:bg-white"
+          >
             <span>Edit</span>
             <FontAwesomeIcon
               icon={faPenToSquare}

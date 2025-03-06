@@ -1,0 +1,8 @@
+
+function ResumeEducationSection() {
+  return (
+    <div>ResumeEducationSection</div>
+  );
+}
+
+export default ResumeEducationSection;

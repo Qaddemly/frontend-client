@@ -2,6 +2,7 @@ import FormPreviewSection from "./FormPreviewSection.tsx";
 import InputField from "../../common/InputField.tsx";
 import Input from "../../common/Input.tsx";
 import { SubmitHandler, useForm } from "react-hook-form";
+import Button from "../../common/Button.tsx";
 import { useResumeBuilder } from "../../../context/ResumeBuilderContext.tsx";
 
 type PersonalForm = {
@@ -13,8 +14,8 @@ type PersonalForm = {
 };
 
 function ResumePersonalForm() {
-  const { resumeInfo, setResumeInfo } = useResumeBuilder();
-  const { register } = useForm<PersonalForm>();
+  const { resumeInfo, setResumeInfo, setStatus } = useResumeBuilder();
+  const { register, handleSubmit } = useForm<PersonalForm>();
 
   const submitForm: SubmitHandler<PersonalForm> = async (data) => {
     console.log(data);

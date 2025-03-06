@@ -99,7 +99,6 @@ function ResumeEucationForm() {
       />
 
       <RichTextEditor
-        label="Description"
         value={resumeInfo.education[0].description}
         onChange={(e) => handleOnChangeTextEditor(0, "education", e)}
       />

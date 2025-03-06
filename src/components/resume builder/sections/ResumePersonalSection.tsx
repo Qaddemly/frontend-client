@@ -8,7 +8,7 @@ import {
 import { useResumeBuilder } from "../../../context/ResumeBuilderContext.tsx";
 
 function ResumePersonalSection() {
-  const { resumeInfo } = useResumeBuilder();
+  const { resumeInfo, setStatus } = useResumeBuilder();
   const personalInfo = resumeInfo.personal;
   return (
     <div className="flex flex-col justify-between rounded-lg bg-white px-8 py-5 shadow-md">
@@ -17,7 +17,10 @@ function ResumePersonalSection() {
           <p className="text-xl font-semibold">{personalInfo.fullName}</p>
           <p className="text-sm text-gray-300">{personalInfo.jobTitle}</p>
         </div>
-        <Button className="flex items-center gap-2 bg-white text-gray-300 hover:bg-white">
+        <Button
+          onClick={() => setStatus("personal")}
+          className="flex items-center gap-2 bg-white text-gray-300 hover:bg-white"
+        >
           <span>Edit</span>
           <FontAwesomeIcon
             icon={faPenToSquare}
