@@ -6,5 +6,6 @@ export const apiSlice = createApi({
     baseUrl: "http://localhost:8000/api/v1",
     credentials: "include",
   }),
+  tagTypes: ["ArchivedJobs"],
   endpoints: () => ({}),
 });

@@ -16,8 +16,10 @@ function JobTrackerStatus({
   const stages = Object.keys(JobApplicationState);
 
   const handleChangeStatus = (index: number) => {
-    setCurrentIndex(index);
-    setShowConfirm(true);
+    if (index >= 0 && index < stages.length) {
+      setCurrentIndex(index);
+      setShowConfirm(true);
+    }
   };
   console.log(currentIndex);
   return (
