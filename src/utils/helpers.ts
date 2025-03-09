@@ -114,3 +114,20 @@ export function formatDateByYearAndMonth(dateStr: string): string {
   const date = new Date(dateStr);
   return date.toLocaleString("en-US", { month: "short", year: "numeric" });
 }
+
+export function formatLastEditTime(isoString: string): string {
+  const givenDate = new Date(isoString);
+  const currentDate = new Date();
+
+  const yearDiff = currentDate.getFullYear() - givenDate.getFullYear();
+  const monthDiff = currentDate.getMonth() - givenDate.getMonth();
+  const totalMonths = yearDiff * 12 + monthDiff;
+
+  if (totalMonths <= 0) {
+    return "edited just now";
+  } else if (totalMonths === 1) {
+    return "edited 1 month ago";
+  } else {
+    return `edited ${totalMonths} months ago`;
+  }
+}

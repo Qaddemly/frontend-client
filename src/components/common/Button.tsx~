@@ -18,7 +18,7 @@ function Button({ children, className, onClick, name, type }: AuthButtonProps) {
     <button
       type={type}
       name={name}
-      className={`${rounded?.length ? rounded : "rounded-md"} ${bg?.length ? bg : "bg-main"} ${hover?.length ? hover : "hover:bg-light-main"} ${text?.length ? text : "text-white"} py-2 font-medium ${className}`}
+      className={`${rounded?.length?rounded:"rounded-md"} ${bg?.length ? bg : "bg-main"} ${hover?.length ? hover : "hover:bg-light-main"} ${text?.length ? text : "text-white"} py-2 font-medium ${className}`}
       onClick={onClick}
     >
       {children}

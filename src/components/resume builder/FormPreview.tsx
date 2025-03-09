@@ -1,0 +1,151 @@
+import Button from "../common/Button.tsx";
+import {
+  faCheck,
+  faFileArrowDown,
+  faPenToSquare,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
+import Input from "../common/Input.tsx";
+import ResumePersonalForm from "./forms/ResumePersonalForm.tsx";
+import ResumeAboutmeForm from "./forms/ResumeAboutmeForm.tsx";
+import { useResumeBuilder } from "../../context/ResumeBuilderContext.tsx";
+import ResumePersonalSection from "./sections/ResumePersonalSection.tsx";
+import ResumeSection from "./sections/ResumeSection.tsx";
+import ResumeSkillsForm from "./forms/ResumeSkillsForm.tsx";
+import ResumeEucationForm from "./forms/ResumeEucationForm.tsx";
+
+function FormPreview() {
+  const { setShowAddContent, status, setStatus, resumeInfo } =
+    useResumeBuilder();
+  const [resumeName, setResumeName] = useState("My Resume");
+  const [showEditResumeName, setShowEditResumeName] = useState(false);
+
+  return (
+    <div className="flex w-1/3 flex-col gap-10">
+      <div className="flex items-center justify-between rounded-lg bg-white px-8 py-5 shadow-md">
+        {showEditResumeName ? (
+          <div className="flex items-center gap-5">
+            <Input
+              props={{ type: "text", id: "resumeName" }}
+              value={resumeName}
+              onChange={(e) => setResumeName(e.target.value)}
+            />
+            <FontAwesomeIcon
+              icon={faCheck}
+              className="cursor-pointer rounded-md bg-main p-2 text-lg text-white"
+              onClick={() => setShowEditResumeName(false)}
+            />
+          </div>
+        ) : (
+          <p className="flex items-center gap-3 text-2xl font-medium">
+            {resumeName}
+            <FontAwesomeIcon
+              icon={faPenToSquare}
+              className="cursor-pointer text-xl text-gray-400"
+              onClick={() => setShowEditResumeName(true)}
+            />
+          </p>
+        )}
+        <Button className="flex items-center gap-3 px-3">
+          Download
+          <FontAwesomeIcon icon={faFileArrowDown} className="text-xl" />
+        </Button>
+      </div>
+
+      {status.includes("start") && (
+        <div className="flex items-center justify-between rounded-lg bg-white px-8 py-5 shadow-md">
+          <p className="text-lg font-semibold">Add your main content</p>
+          <FontAwesomeIcon
+            icon={faPenToSquare}
+            className="cursor-pointer rounded-full bg-main p-2 text-xl text-white"
+            onClick={() => setStatus(() => ["add", "personal"])}
+          />
+        </div>
+      )}
+
+      {/*/////////////////////////////////////////// Create Forms  ///////////////////////////////////////////////*/}
+
+      {status.includes("add") && status.includes("personal") && (
+        <ResumePersonalForm mode="add" />
+      )}
+
+      {status.includes("add") && status.includes("aboutme") && (
+        <ResumeAboutmeForm mode="add" />
+      )}
+
+      {status.includes("add") && status.includes("education") && (
+        <ResumeEucationForm mode="add" />
+      )}
+
+      {status.includes("add") && status.includes("skills") && (
+        <ResumeSkillsForm />
+      )}
+
+      {/*/////////////////////////////////////////// Edit Forms  ///////////////////////////////////////////////*/}
+      {status.includes("edit") && status.includes("personal") && (
+        <ResumePersonalForm mode="edit" />
+      )}
+
+      {status.includes("edit") && status.includes("aboutme") && (
+        <ResumeAboutmeForm mode="edit" />
+      )}
+
+      {status.includes("edit") && status.includes("education") && (
+        <ResumeEucationForm mode="edit" />
+      )}
+
+      {/*///////////////////////////////////////////  Sections  ///////////////////////////////////////////////*/}
+      {status[0] === "normal" && (
+        <>
+          {/* Personal Section */}
+          {resumeInfo?.personal?.fullName?.length > 0 && (
+            <ResumePersonalSection />
+          )}
+
+          {/* Aboutme Section */}
+          {resumeInfo?.personal?.aboutMe && (
+            <ResumeSection
+              title="About me"
+              titles={[`${resumeInfo?.personal?.aboutMe.slice(0, 50)}...`]}
+              handleEdit={() => setStatus(() => ["edit", "aboutme"])}
+            />
+          )}
+
+          {/* Education Section */}
+          {resumeInfo?.education && (
+            <ResumeSection
+              title="Education"
+              titles={resumeInfo?.education?.map((edu) => edu.degree)}
+              handleEdit={() => setStatus(() => ["edit", "education"])}
+            />
+          )}
+
+          {/* Skills Section */}
+          {resumeInfo?.skills && (
+            <ResumeSection
+              title="Skills"
+              titles={resumeInfo?.skills?.map((skill) => skill.skill)}
+              handleEdit={() => setStatus(() => ["edit", "skills"])}
+            />
+          )}
+
+          {/* Experience Section */}
+        </>
+      )}
+
+      <div className="flex justify-center">
+        <Button
+          onClick={() => setShowAddContent(true)}
+          className="space-x-2 rounded-full px-8"
+        >
+          <FontAwesomeIcon icon={faPlus} />
+          <span>Add Content</span>
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+export default FormPreview;

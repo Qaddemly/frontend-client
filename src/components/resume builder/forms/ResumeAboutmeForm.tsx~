@@ -1,0 +1,48 @@
+import FormPreviewSection from "./FormPreviewSection.tsx";
+import RichTextEditor from "../../common/RichTextEditor.tsx";
+import { useResumeBuilder } from "../../../context/ResumeBuilderContext.tsx";
+import { ContentEditableEvent } from "react-simple-wysiwyg";
+import { useState } from "react";
+
+type FormMode = "add" | "edit";
+
+function ResumeAboutmeForm({ mode }: { mode: FormMode }) {
+  const { resumeInfo, setResumeInfo } = useResumeBuilder();
+
+  const [aboutme, setAboutme] = useState(
+    mode === "edit" ? resumeInfo.personal?.aboutMe : "",
+  );
+  function handleOnChange(e: ContentEditableEvent) {
+    const { value } = e.target;
+    setAboutme(value);
+    console.log(value);
+
+    setResumeInfo((prevInfo) => ({
+      ...prevInfo,
+      personal: {
+        ...prevInfo?.personal,
+        aboutMe: value,
+      },
+    }));
+  }
+
+  function submitForm() {
+    console.log("Form submitted with:", resumeInfo.personal.aboutMe);
+  }
+
+  return (
+    <FormPreviewSection
+      onSubmit={submitForm}
+      title={mode === "edit" ? "Edit About Me" : "Add About Me"}
+      mode={mode}
+      tips={true}
+      autoFill={false}
+    >
+      <div className="flex w-full flex-col">
+        <RichTextEditor value={aboutme} onChange={handleOnChange} />
+      </div>
+    </FormPreviewSection>
+  );
+}
+
+export default ResumeAboutmeForm;
