@@ -4,10 +4,57 @@ import Button from "../common/Button.tsx";
 import { useState } from "react";
 import Modal from "../common/Modal.tsx";
 import { useNavigate } from "react-router-dom";
+import {
+  useAddResumeTemplateMutation,
+  useDeleteResumeTemplateMutation,
+} from "../../services/resumeBuilderApi.ts";
+import toast from "react-hot-toast";
+import { formatLastEditTime, handleApiError } from "../../utils/helpers.ts";
+import ResumePreview from "./ResumePreview.tsx";
+import { useResumeBuilder } from "../../context/ResumeBuilderContext.tsx";
 
 function AddResume() {
+  const { resumeTemplates, setResumeTemplates } = useResumeBuilder();
   const navigate = useNavigate();
+  const [resumeName, setResumeName] = useState("");
   const [showModal, setShowModal] = useState(false);
+
+  const [addResumeTemplate] = useAddResumeTemplateMutation();
+  const [deleteResumeTemplate] = useDeleteResumeTemplateMutation();
+
+  async function handleAddResumeTemplate() {
+    try {
+      const res = addResumeTemplate().unwrap();
+      toast.promise(res, {
+        loading: "Creating resume",
+        success: "Resume created successfully",
+        error: "Could not create resume",
+      });
+      setShowModal(false);
+      const { data } = await res;
+      setResumeTemplates((prev) => [...prev, { ...data, name: resumeName }]);
+    } catch (error) {
+      handleApiError(error);
+    }
+  }
+
+  async function handleDeleteResumeTemplate(id: string) {
+    try {
+      const res = deleteResumeTemplate({ resumeTemplateId: id }).unwrap();
+      toast.promise(res, {
+        loading: "Deleting resume",
+        success: "Resume deleted successfully",
+        error: "Could not delete resume",
+      });
+      setShowModal(false);
+      setResumeTemplates((prev) =>
+        prev.filter((resume) => resume.id.toString() !== id),
+      );
+    } catch (error) {
+      handleApiError(error);
+    }
+  }
+
   return (
     <div className="flex gap-10">
       <div
@@ -26,6 +73,8 @@ function AddResume() {
               Add a title for your new resume
             </p>
             <input
+              value={resumeName}
+              onChange={(e) => setResumeName(e.target.value)}
               type="text"
               className="h-10 rounded-md border border-gray-100 px-5 py-5"
               placeholder="Ex.Full Stack Resume"
@@ -37,34 +86,36 @@ function AddResume() {
               >
                 Cancel
               </Button>
-              <Button className="px-3">Create</Button>
+              <Button onClick={handleAddResumeTemplate} className="px-3">
+                Create
+              </Button>
             </div>
           </div>
         </Modal>
       )}
 
-      <div onClick={() => navigate("/resumeBuilder/edit/1")}>
-        <div className="h-[400px] w-[18rem] cursor-pointer flex-col items-center justify-center gap-2 break-words rounded-lg bg-white p-5 text-center text-sm shadow-sm transition-all hover:scale-105 hover:shadow-md">
-          <p>
-            Lorem ipsum dolor sit amet , consectetur adipiscing elit. Sed
-            porttitor libero commodo ex viver Mauris semper libero et sapien
-            sollicitudin, vitae blandit urna pharetra. Quisque p retium tortor
-            ac felis malesuada suscipit. Curabitur sit amet condimentu m enim.
-            In nisl mi, efficitur ac enim egestas, egestas pellentesque tellus.
-            Sed aliquet placerat velit, semper semper ex ultrices ut. Quisque
-            nec consequat ligula. Nullam elementum turpis eget leo interdum.
-          </p>
-        </div>
-        <div className="mt-5 flex items-center justify-between">
-          <div>
-            <p className="text-lg font-semibold">My resume</p>
-            <p className="text-sm text-gray-300">edited 2 months ago</p>
+      {resumeTemplates?.map((resume) => (
+        <div
+          key={resume.id}
+          onClick={() => navigate(`/resumeBuilder/edit/${resume.id}`)}
+        >
+          <ResumePreview className="h-[400px] w-[18rem] cursor-pointer flex-col items-center justify-center gap-2 break-words rounded-lg bg-white p-5 text-center text-sm shadow-sm transition-all hover:scale-105 hover:shadow-md" />
+          <div className="mt-5 flex items-center justify-between">
+            <div>
+              <p className="text-lg font-semibold">{resume.name}</p>
+              <p className="text-sm text-gray-300">
+                {formatLastEditTime(resume.updated_at)}
+              </p>
+            </div>
+            <Button
+              onClick={() => handleDeleteResumeTemplate(resume.id.toString())}
+              className="border border-danger-300 bg-background px-4 text-danger-300 hover:bg-danger-300 hover:text-white"
+            >
+              Delete
+            </Button>
           </div>
-          <Button className="border border-danger-300 bg-background px-4 text-danger-300 hover:bg-danger-300 hover:text-white">
-            Delete
-          </Button>
         </div>
-      </div>
+      ))}
     </div>
   );
 }

@@ -9,16 +9,16 @@ import { useResumeBuilder } from "../../../context/ResumeBuilderContext.tsx";
 
 function ResumePersonalSection() {
   const { resumeInfo, setStatus } = useResumeBuilder();
-  const personalInfo = resumeInfo.personal;
+  const personalInfo = resumeInfo?.personal;
   return (
     <div className="flex flex-col justify-between rounded-lg bg-white px-8 py-5 shadow-md">
       <div className="flex w-full items-center justify-between pb-3">
         <div>
-          <p className="text-xl font-semibold">{personalInfo.fullName}</p>
-          <p className="text-sm text-gray-300">{personalInfo.jobTitle}</p>
+          <p className="text-xl font-semibold">{personalInfo?.fullName}</p>
+          <p className="text-sm text-gray-300">{personalInfo?.jobTitle}</p>
         </div>
         <Button
-          onClick={() => setStatus("personal")}
+          onClick={() => setStatus(() => ["edit", "personal"])}
           className="flex items-center gap-2 bg-white text-gray-300 hover:bg-white"
         >
           <span>Edit</span>
@@ -30,11 +30,11 @@ function ResumePersonalSection() {
       </div>
       <p className="flex items-center gap-1 text-gray-500">
         <FontAwesomeIcon icon={faEnvelope} />
-        <span>{personalInfo.email}</span>
+        <span>{personalInfo?.email}</span>
       </p>
       <p className="flex items-center gap-1 text-gray-500">
         <FontAwesomeIcon icon={faPhone} />
-        <span>{personalInfo.phone}</span>
+        <span>{personalInfo?.phone}</span>
       </p>
     </div>
   );

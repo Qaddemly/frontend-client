@@ -5,8 +5,11 @@ import { useResumeBuilder } from "../../../context/ResumeBuilderContext.tsx";
 import { SubmitHandler, useForm } from "react-hook-form";
 import StartToEndDate from "../../common/StartToEndDate.tsx";
 import RichTextEditor from "../../common/RichTextEditor.tsx";
+import ResumeFormButtons from "../ResumeFormButtons.tsx";
 
-type EucationlForm = {
+type FormMode = "add" | "edit";
+
+type EducationForm = {
   degree: string;
   school: string;
   country: string;
@@ -15,96 +18,114 @@ type EucationlForm = {
   endDate: string;
   description: string;
 };
-function ResumeEucationForm() {
+
+function ResumeEducationForm({ mode }: { mode: FormMode }) {
   const { resumeInfo, handleOnChange, handleOnChangeTextEditor } =
     useResumeBuilder();
-  const { register } = useForm<EucationlForm>();
+  const { register, handleSubmit } = useForm<EducationForm>();
 
-  const submitForm: SubmitHandler<EucationlForm> = async (data) => {
+  const initialEducationInfo: EducationForm = {
+    degree: "",
+    school: "",
+    country: "",
+    city: "",
+    startDate: "",
+    endDate: "",
+    description: "",
+  };
+
+  const educationData =
+    mode === "edit"
+      ? (resumeInfo?.education?.[0] ?? initialEducationInfo)
+      : initialEducationInfo;
+
+  const submitForm: SubmitHandler<EducationForm> = async (data) => {
     console.log(data);
   };
 
   return (
     <FormPreviewSection
-      onSubmit={submitForm}
-      title="Create Education"
+      title={mode === "edit" ? "Edit Education" : "Add Education"}
       autoFill={true}
       tips={true}
     >
-      <InputField id="degree" label="Degree">
-        <Input
-          register={register}
-          onChange={(e) => handleOnChange(0, "education", e)}
-          value={resumeInfo.education[0].degree}
-          name="degree"
-          props={{
-            placeholder: "Degree / Field of study",
-            type: "text",
-            id: "degree",
-          }}
-        />
-      </InputField>
-
-      <InputField id="school" label="School">
-        <Input
-          register={register}
-          onChange={(e) => handleOnChange(0, "education", e)}
-          value={resumeInfo.education[0].school}
-          name="school"
-          props={{
-            placeholder: "School / University",
-            type: "text",
-            id: "school",
-          }}
-        />
-      </InputField>
-
-      <div className="flex gap-5">
-        <InputField id="country" label="Country">
+      <form onSubmit={handleSubmit(submitForm)} className="flex flex-col gap-5">
+        <InputField id="degree" label="Degree">
           <Input
             register={register}
-            onChange={(e) => handleOnChange(0, "education", e)}
-            value={resumeInfo.education[0].country}
-            name="country"
+            onChange={(e) => handleOnChange(0, "education", e, mode)}
+            value={educationData.degree}
+            name="degree"
             props={{
-              placeholder: "Ex.Egypt",
+              placeholder: "Degree / Field of study",
               type: "text",
-              id: "country",
+              id: "degree",
             }}
           />
         </InputField>
-        <InputField id="city" label="City">
+
+        <InputField id="school" label="School">
           <Input
             register={register}
-            onChange={(e) => handleOnChange(0, "education", e)}
-            value={resumeInfo.education[0].city}
-            name="city"
+            onChange={(e) => handleOnChange(0, "education", e, mode)}
+            value={educationData.school}
+            name="school"
             props={{
-              placeholder: "Ex.cairo",
+              placeholder: "School / University",
               type: "text",
-              id: "city",
+              id: "school",
             }}
           />
         </InputField>
-      </div>
 
-      <StartToEndDate
-        register={register}
-        startDate="startDate"
-        startDateDefaultValue={resumeInfo.education[0].startDate}
-        onChangeStartDate={(e) => handleOnChange(0, "education", e)}
-        endDate="endDate"
-        endDateDefaultValue={resumeInfo.education[0].endDate}
-        onChangeEndDate={(e) => handleOnChange(0, "education", e)}
-      />
+        <div className="flex gap-5">
+          <InputField id="country" label="Country">
+            <Input
+              register={register}
+              onChange={(e) => handleOnChange(0, "education", e, mode)}
+              value={educationData.country}
+              name="country"
+              props={{
+                placeholder: "Ex. Egypt",
+                type: "text",
+                id: "country",
+              }}
+            />
+          </InputField>
+          <InputField id="city" label="City">
+            <Input
+              register={register}
+              onChange={(e) => handleOnChange(0, "education", e, mode)}
+              value={educationData.city}
+              name="city"
+              props={{
+                placeholder: "Ex. Cairo",
+                type: "text",
+                id: "city",
+              }}
+            />
+          </InputField>
+        </div>
 
-      <RichTextEditor
-        label="Description"
-        value={resumeInfo.education[0].description}
-        onChange={(e) => handleOnChangeTextEditor(0, "education", e)}
-      />
+        <StartToEndDate
+          register={register}
+          startDate="startDate"
+          startDateDefaultValue={educationData.startDate}
+          onChangeStartDate={(e) => handleOnChange(0, "education", e, mode)}
+          endDate="endDate"
+          endDateDefaultValue={educationData.endDate}
+          onChangeEndDate={(e) => handleOnChange(0, "education", e, mode)}
+        />
+
+        <RichTextEditor
+          label="Description"
+          value={educationData.description}
+          onChange={(e) => handleOnChangeTextEditor(0, "education", e)}
+        />
+        <ResumeFormButtons mode={mode} handleDelete={() => {}} />
+      </form>
     </FormPreviewSection>
   );
 }
 
-export default ResumeEucationForm;
+export default ResumeEducationForm;

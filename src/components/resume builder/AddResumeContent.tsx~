@@ -41,7 +41,7 @@ function AddResumeContent() {
           icon={faUser}
           description="A brief statement summarizing your career goal and what you bring to the
         role."
-          onClick={() => setStatus(() => ["add", "aboutme"])}
+          onClick={() => setStatus(() => ["edit", "personal"])}
         />
         <ResumeContentBox
           title="Education"

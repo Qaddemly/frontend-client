@@ -1,29 +1,21 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlasses } from "@fortawesome/free-solid-svg-icons";
-import Button from "../../common/Button.tsx";
-import { useResumeBuilder } from "../../../context/ResumeBuilderContext.tsx";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
-type FormPreviewSectionProps<T extends FieldValues> = {
+type FormPreviewSectionProps = {
   children: React.ReactNode;
   title: string;
   tips: boolean;
   autoFill: boolean;
-  onSubmit: SubmitHandler<T>;
 };
 
-function FormPreviewSection<T extends FieldValues>({
+function FormPreviewSection({
   children,
   title,
   tips,
   autoFill,
-  onSubmit,
-}: FormPreviewSectionProps<T>) {
-  const { setStatus } = useResumeBuilder();
-  const { handleSubmit } = useForm<T>();
-
+}: FormPreviewSectionProps) {
   return (
-    <div className="flex flex-col items-center justify-between rounded-lg bg-white px-8 py-5 shadow-md">
+    <div className="flex flex-col items-center justify-between rounded-lg bg-white p-8 shadow-md">
       <div className="mt-5 flex w-full justify-between">
         <p className="mb-10 text-xl font-semibold">{title}</p>
         <div className="flex flex-col">
@@ -41,30 +33,7 @@ function FormPreviewSection<T extends FieldValues>({
           )}
         </div>
       </div>
-
-      <div className="w-full">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex flex-col gap-5">{children}</div>
-          <div className="mt-5 flex justify-between gap-3">
-            <div>
-              {/* handle delete */}
-              <Button className="px-3 text-danger-300 hover:bg-danger-300 hover:text-white">
-                Delete
-              </Button>
-            </div>
-            <div className="space-x-2">
-              <Button
-                onClick={() => setStatus("normal")}
-                className="bg-white px-3 text-main hover:bg-main hover:text-white"
-              >
-                Cancel
-              </Button>
-              {/* handle save */}
-              <Button className="px-3">Save</Button>
-            </div>
-          </div>
-        </form>
-      </div>
+      {children}
     </div>
   );
 }

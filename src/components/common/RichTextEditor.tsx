@@ -19,6 +19,7 @@ function RichTextEditor({
   label,
 }: {
   value: string;
+
   onChange: (event: ContentEditableEvent) => void;
   label?: string;
 }) {

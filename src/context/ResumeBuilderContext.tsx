@@ -1,40 +1,40 @@
-import { createContext, ReactNode, useContext, useState } from "react";
-import { IResumeInfo } from "../interfaces/ResumeBuilder.interfaces.ts";
-import { dummyData } from "../data/dummy.ts";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import {
+  FormMode,
+  IResumeInfo,
+  IResumeTemplate,
+  ResumeStatus,
+} from "../interfaces/ResumeBuilder.interfaces.ts";
 import { ContentEditableEvent } from "react-simple-wysiwyg";
-
-type ResumeStatus =
-  | "start"
-  | "normal"
-  | "personal"
-  | "aboutme"
-  | "education"
-  | "skills"
-  | "workExperience"
-  | "certifications"
-  | "projects"
-  | "volunteering"
-  | "languages"
-  | "hobbies"
-  | "references"
-  | "achievements"
-  | "publications"
-  | "technicalProficiencies"
-  | "training"
-  | "portfolio"
-  | "custom";
+import {
+  useGetAllResumeEducationQuery,
+  useGetAllResumeTemplatesQuery,
+  useGetResumePersonalQuery,
+} from "../services/resumeBuilderApi.ts";
+import { useParams } from "react-router-dom";
 
 export interface ResumeBuilderContextProps {
+  resumeTemplates: IResumeTemplate[];
+  setResumeTemplates: React.Dispatch<React.SetStateAction<IResumeTemplate[]>>;
   resumeInfo: IResumeInfo;
   setResumeInfo: React.Dispatch<React.SetStateAction<IResumeInfo>>;
   showAddContent: boolean;
   setShowAddContent: React.Dispatch<React.SetStateAction<boolean>>;
-  status: ResumeStatus;
-  setStatus: React.Dispatch<React.SetStateAction<ResumeStatus>>;
+  status: ResumeStatus[];
+  setStatus: React.Dispatch<React.SetStateAction<ResumeStatus[]>>;
+  resumePersonalId: number;
+  setResumePersonalId: React.Dispatch<React.SetStateAction<number>>;
   handleOnChange: (
     index: number,
     propertyName: keyof IResumeInfo,
     e: React.ChangeEvent<HTMLInputElement>,
+    mode: FormMode,
   ) => void;
   handleOnChangeTextEditor: (
     index: number,
@@ -50,32 +50,113 @@ const ResumeBuilderContext = createContext<
 export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [resumeInfo, setResumeInfo] = useState<IResumeInfo>(dummyData);
+  const { resumeId } = useParams();
+  ///////////////////////////////////////////// Resume Template //////////////////////////////////////////////
+  const [resumeTemplates, setResumeTemplates] = useState<IResumeTemplate[]>([]);
+  const [resumeInfo, setResumeInfo] = useState<IResumeInfo>({} as IResumeInfo);
   const [showAddContent, setShowAddContent] = useState(false);
-  const [status, setStatus] = useState<ResumeStatus>(
-    (localStorage.getItem("resumeStatus") as ResumeStatus) || "start",
+  const [status, setStatus] = useState<ResumeStatus[]>(
+    JSON.parse(localStorage.getItem("resumeStatus") || '["start"]'),
   );
-  localStorage.setItem("resumeStatus", status);
+  localStorage.setItem("resumeStatus", JSON.stringify(status));
+  const { data } = useGetAllResumeTemplatesQuery();
+  const resumeTemplatesData = data?.data;
 
-  function handleOnChange(
+  ///////////////////////////////////////////// Personal //////////////////////////////////////////////
+  const [resumePersonalId, setResumePersonalId] = useState<number>(0);
+  const { data: resumePersonal } = useGetResumePersonalQuery({
+    resumeId: resumeId || "",
+    personalInfoId: resumePersonalId.toString(),
+  });
+
+  ///////////////////////////////////////////// Education //////////////////////////////////////////////
+  const {
+    data: resumeEducation,
+    isLoading,
+    isSuccess,
+  } = useGetAllResumeEducationQuery({
+    resumeId: resumeId || "",
+  });
+
+  useEffect(() => {
+    setResumeTemplates(resumeTemplatesData ?? []);
+
+    if (isLoading) {
+      console.log("Education data is still loading...");
+      return;
+    }
+
+    if (!isSuccess || !resumeEducation?.educationsContent?.length) {
+      console.warn("Education data is not available yet.", resumeEducation);
+    }
+
+    console.log("Education data loaded:", resumeEducation?.educationsContent);
+
+    setResumeInfo((prevState) => ({
+      ...prevState,
+      personal: {
+        fullName: resumePersonal?.personaInfoContent?.full_name ?? "",
+        jobTitle: resumePersonal?.personaInfoContent?.job_title ?? "",
+        email: resumePersonal?.personaInfoContent?.email ?? "",
+        phone: resumePersonal?.personaInfoContent?.phone_number ?? "",
+        address: resumePersonal?.personaInfoContent?.address ?? "",
+        aboutMe: "",
+      },
+      education: resumeEducation?.educationsContent
+        ? resumeEducation.educationsContent.map((edu) => ({
+            degree: edu.degree ?? "",
+            school: edu.school ?? "",
+            country: edu.country ?? "",
+            city: edu.city ?? "",
+            startDate: edu.start_date ?? "",
+            endDate: edu.end_date ?? "",
+            description: edu.description ?? "",
+          }))
+        : [],
+    }));
+  }, [
+    isLoading,
+    isSuccess,
+    resumeEducation,
+    resumePersonal,
+    resumeTemplatesData,
+    setResumeTemplates,
+    setResumeInfo,
+  ]);
+
+  function handleOnChange<T extends keyof IResumeInfo>(
     index: number,
-    propertyName: keyof IResumeInfo,
+    propertyName: T,
     e: React.ChangeEvent<HTMLInputElement>,
+    mode: FormMode,
   ) {
     const { name, value } = e.target;
+
     setResumeInfo((prevInfo) => {
       const array = prevInfo[propertyName];
 
-      if (Array.isArray(array)) {
-        return {
-          ...prevInfo,
-          [propertyName]: array.map((item, i) =>
-            i === index ? { ...item, [name]: value } : item,
-          ),
-        };
+      if (!Array.isArray(array)) {
+        return prevInfo;
       }
 
-      return prevInfo;
+      const updatedArray = [...array];
+
+      if (mode === "add") {
+        if (updatedArray.length === 0 || index >= updatedArray.length) {
+          const emptyItem = {} as (typeof updatedArray)[number];
+          updatedArray.push(emptyItem);
+        }
+      }
+
+      updatedArray[index] = {
+        ...updatedArray[index],
+        [name]: value,
+      };
+
+      return {
+        ...prevInfo,
+        [propertyName]: updatedArray,
+      };
     });
   }
 
@@ -105,12 +186,16 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
   return (
     <ResumeBuilderContext.Provider
       value={{
+        resumeTemplates,
+        setResumeTemplates,
         showAddContent,
         setShowAddContent,
         resumeInfo,
         setResumeInfo,
         status,
         setStatus,
+        resumePersonalId,
+        setResumePersonalId,
         handleOnChange,
         handleOnChangeTextEditor,
       }}
@@ -123,7 +208,9 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
 export const useResumeBuilder = (): ResumeBuilderContextProps => {
   const context = useContext(ResumeBuilderContext);
   if (context === undefined) {
-    throw new Error("useResumeBuilder must be used within a UserInfoProvider");
+    throw new Error(
+      "useResumeBuilder must be used within a ResumeBuilderProvider",
+    );
   }
   return context;
 };

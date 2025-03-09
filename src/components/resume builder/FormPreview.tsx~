@@ -11,7 +11,6 @@ import Input from "../common/Input.tsx";
 import ResumePersonalForm from "./forms/ResumePersonalForm.tsx";
 import ResumeAboutmeForm from "./forms/ResumeAboutmeForm.tsx";
 import { useResumeBuilder } from "../../context/ResumeBuilderContext.tsx";
-import ResumeEucationForm from "./forms/ResumeEucationForm.tsx";
 import ResumePersonalSection from "./sections/ResumePersonalSection.tsx";
 import ResumeSection from "./sections/ResumeSection.tsx";
 import ResumeSkillsForm from "./forms/ResumeSkillsForm.tsx";
@@ -54,52 +53,84 @@ function FormPreview() {
         </Button>
       </div>
 
-      {status === "start" && (
+      {status.includes("start") && (
         <div className="flex items-center justify-between rounded-lg bg-white px-8 py-5 shadow-md">
           <p className="text-lg font-semibold">Add your main content</p>
           <FontAwesomeIcon
             icon={faPenToSquare}
             className="cursor-pointer rounded-full bg-main p-2 text-xl text-white"
-            onClick={() => setStatus("personal")}
+            onClick={() => setStatus(() => ["add", "personal"])}
           />
         </div>
       )}
 
-      {/*///////////////////////////////////////////  Forms  ///////////////////////////////////////////////*/}
-      {status === "personal" && <ResumePersonalForm />}
+      {/*/////////////////////////////////////////// Create Forms  ///////////////////////////////////////////////*/}
 
-      {status === "aboutme" && <ResumeAboutmeForm />}
+      {status.includes("add") && status.includes("personal") && (
+        <ResumePersonalForm mode="add" />
+      )}
 
-      {status === "education" && <ResumeEucationForm />}
+      {status.includes("add") && status.includes("aboutme") && (
+        <ResumeAboutmeForm mode="add" />
+      )}
 
-      {status==="skills"&&<ResumeSkillsForm/>}
+      {/*{status.includes("add") && status.includes("education") && (*/}
+      {/*  <ResumeEucationForm mode="add" />*/}
+      {/*)}*/}
+
+      {status.includes("add") && status.includes("skills") && (
+        <ResumeSkillsForm />
+      )}
+
+      {/*/////////////////////////////////////////// Edit Forms  ///////////////////////////////////////////////*/}
+      {status.includes("edit") && status.includes("personal") && (
+        <ResumePersonalForm mode="edit" />
+      )}
+
+      {status.includes("edit") && status.includes("aboutme") && (
+        <ResumeAboutmeForm mode="edit" />
+      )}
+
+      {/*{status.includes("edit") && status.includes("education") && (*/}
+      {/*  <ResumeEucationForm mode="edit" />*/}
+      {/*)}*/}
 
       {/*///////////////////////////////////////////  Sections  ///////////////////////////////////////////////*/}
-      {status === "normal" && (
+      {status[0] === "normal" && (
         <>
           {/* Personal Section */}
-          <ResumePersonalSection />
+          {resumeInfo?.personal?.fullName?.length > 0 && (
+            <ResumePersonalSection />
+          )}
 
           {/* Aboutme Section */}
-          <ResumeSection
-            title="About me"
-            titles={[`${resumeInfo.personal.aboutMe.slice(0, 50)}...`]}
-            handleEdit={() => setStatus("aboutme")}
-          />
+          {resumeInfo?.personal?.aboutMe && (
+            <ResumeSection
+              title="About me"
+              titles={[`${resumeInfo?.personal?.aboutMe.slice(0, 50)}...`]}
+              handleEdit={() => setStatus(() => ["edit", "aboutme"])}
+            />
+          )}
 
           {/* Education Section */}
-          <ResumeSection
-            title="Education"
-            titles={resumeInfo.education.map((edu) => edu.degree)}
-            handleEdit={() => setStatus("education")}
-          />
+          {resumeInfo?.education && (
+            <ResumeSection
+              title="Education"
+              titles={resumeInfo?.education?.map((edu) => edu.degree)}
+              handleEdit={() => setStatus(() => ["edit", "education"])}
+            />
+          )}
 
           {/* Skills Section */}
-          <ResumeSection
-            title="Skills"
-            titles={resumeInfo.skills.map((skill) => skill.skill)}
-            handleEdit={() => setStatus("skills")}
-          />
+          {resumeInfo?.skills && (
+            <ResumeSection
+              title="Skills"
+              titles={resumeInfo?.skills?.map((skill) => skill.skill)}
+              handleEdit={() => setStatus(() => ["edit", "skills"])}
+            />
+          )}
+
+          {/* Experience Section */}
         </>
       )}
 
