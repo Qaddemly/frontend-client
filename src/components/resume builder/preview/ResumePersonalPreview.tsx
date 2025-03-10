@@ -14,11 +14,10 @@ function ResumePersonalPreview() {
       <h2 className="text-center text-sm font-normal">
         {personalInfo?.address}
       </h2>
-      <div className="flex justify-between">
-        <h2 className="text-sm font-normal">{personalInfo?.phone}</h2>
+      <div className="flex justify-center gap-5">
         <h2 className="text-sm font-normal">{personalInfo?.email}</h2>
+        <h2 className="text-sm font-normal">{personalInfo?.phone}</h2>
       </div>
-      {resumeInfo?.personal && <hr className="my-2 border-[1.5px]" />}
     </div>
   );
 }

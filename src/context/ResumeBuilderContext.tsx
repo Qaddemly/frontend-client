@@ -81,8 +81,7 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
 
   useEffect(() => {
     setResumeTemplates(resumeTemplatesData ?? []);
-
-    if (!resumePersonal || !resumeEducation) {
+    if (!resumePersonal || !resumeEducation || !resumeTemplates) {
       return;
     }
 
@@ -95,7 +94,10 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
         email: resumePersonal?.personaInfoContent?.email ?? "",
         phone: resumePersonal?.personaInfoContent?.phone_number ?? "",
         address: resumePersonal?.personaInfoContent?.address ?? "",
-        aboutMe: "",
+        aboutMe:
+          resumeTemplates.find(
+            (template) => template.id.toString() === resumeId,
+          )?.profile ?? "",
       },
       education: resumeEducation?.educationsContent
         ? resumeEducation.educationsContent.map((edu) => ({
@@ -119,7 +121,6 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
     setResumeTemplates,
     setResumeInfo,
   ]);
-
   function handleOnChange<T extends keyof IResumeInfo>(
     index: number,
     propertyName: T,

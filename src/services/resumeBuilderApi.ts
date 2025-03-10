@@ -32,7 +32,6 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
-
     ///////////////////////////////////////////// Personal //////////////////////////////////////////////
     getResumePersonal: builder.query<
       IGetResumePersonalInfoResponse,
@@ -70,6 +69,17 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
       query: ({ resumeId, personalInfoId }) => ({
         url: `${BASE_RESUME_URL}/${resumeId}/PersonalInfo/${personalInfoId}`,
         method: "DELETE",
+      }),
+    }),
+    ///////////////////////////////////////////// Profile //////////////////////////////////////////////
+    addOrEditAboutme: builder.mutation<
+      void,
+      { resumeId: string; data: { profile: string } }
+    >({
+      query: ({ resumeId, data }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/profile`,
+        method: "PUT",
+        body: data,
       }),
     }),
     ///////////////////////////////////////////// Education //////////////////////////////////////////////
@@ -131,6 +141,8 @@ export const {
   useAddResumePersonalMutation,
   useUpdateResumePersonalMutation,
   useDeleteResumePersonalMutation,
+  ///////////////////////////////////////////// Profile //////////////////////////////////////////////
+  useAddOrEditAboutmeMutation,
   ///////////////////////////////////////////// Education //////////////////////////////////////////////
   useGetAllResumeEducationQuery,
   useGetResumeEducationQuery,

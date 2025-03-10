@@ -57,6 +57,7 @@ export interface IResumeInfo {
 export interface IResumeTemplate {
   id: number;
   name: string; // this not come from back but we need it in front
+  profile: string;
   account_id: number;
   created_at: string;
   updated_at: string;

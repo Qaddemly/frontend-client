@@ -108,8 +108,9 @@ function FormPreview() {
           {/* Aboutme Section */}
           {resumeInfo?.personal?.aboutMe && (
             <ResumeSection
-              title="About me"
-              titles={[`${resumeInfo?.personal?.aboutMe.slice(0, 50)}...`]}
+              title="Profile"
+              type="aboutme"
+              titles={[`${resumeInfo?.personal?.aboutMe.slice(0, 1000)}`]}
               handleEdit={() => setStatus(() => ["edit", "aboutme"])}
             />
           )}
