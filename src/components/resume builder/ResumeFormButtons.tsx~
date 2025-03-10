@@ -2,7 +2,13 @@ import Button from "../common/Button.tsx";
 import { useResumeBuilder } from "../../context/ResumeBuilderContext.tsx";
 import { FormMode } from "../../interfaces/ResumeBuilder.interfaces.ts";
 
-function ResumeFormButtons({ mode,handleDelete }: { mode: FormMode,handleDelete:()=>void }) {
+function ResumeFormButtons({
+  mode,
+  handleDelete,
+}: {
+  mode: FormMode;
+  handleDelete: (e: React.MouseEvent<HTMLButtonElement>) => void;
+}) {
   const { setStatus } = useResumeBuilder();
   return (
     <div
@@ -11,7 +17,10 @@ function ResumeFormButtons({ mode,handleDelete }: { mode: FormMode,handleDelete:
       {mode === "edit" && (
         <div>
           {/* handle delete */}
-          <Button onClick={handleDelete} className="rounded-full px-3 text-danger-300 hover:bg-danger-300 hover:text-white">
+          <Button
+            onClick={(e) => handleDelete(e)}
+            className="rounded-full px-3 text-danger-300 hover:bg-danger-300 hover:text-white"
+          >
             Delete
           </Button>
         </div>

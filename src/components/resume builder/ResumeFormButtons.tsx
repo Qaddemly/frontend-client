@@ -7,7 +7,7 @@ function ResumeFormButtons({
   handleDelete,
 }: {
   mode: FormMode;
-  handleDelete: () => void;
+  handleDelete: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }) {
   const { setStatus } = useResumeBuilder();
   return (
@@ -18,7 +18,8 @@ function ResumeFormButtons({
         <div>
           {/* handle delete */}
           <Button
-            onClick={handleDelete}
+            type="button"
+            onClick={(e) => handleDelete(e)}
             className="rounded-full px-3 text-danger-300 hover:bg-danger-300 hover:text-white"
           >
             Delete

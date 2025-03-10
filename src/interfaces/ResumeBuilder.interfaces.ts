@@ -27,6 +27,7 @@ export type ResumeStatus =
 
 export interface IResumeInfo {
   personal: {
+    id: number;
     fullName: string;
     jobTitle: string;
     email: string;
@@ -35,6 +36,7 @@ export interface IResumeInfo {
     aboutMe: string;
   };
   education: {
+    id: number;
     degree: string;
     school: string;
     country: string;
@@ -44,6 +46,7 @@ export interface IResumeInfo {
     description: string;
   }[];
   skills: {
+    id: number;
     skill: string;
     description: string;
     level: string;

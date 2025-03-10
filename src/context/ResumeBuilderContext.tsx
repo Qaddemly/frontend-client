@@ -28,8 +28,6 @@ export interface ResumeBuilderContextProps {
   setShowAddContent: React.Dispatch<React.SetStateAction<boolean>>;
   status: ResumeStatus[];
   setStatus: React.Dispatch<React.SetStateAction<ResumeStatus[]>>;
-  resumePersonalId: number;
-  setResumePersonalId: React.Dispatch<React.SetStateAction<number>>;
   handleOnChange: (
     index: number,
     propertyName: keyof IResumeInfo,
@@ -58,15 +56,18 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
   const [status, setStatus] = useState<ResumeStatus[]>(
     JSON.parse(localStorage.getItem("resumeStatus") || '["start"]'),
   );
+  useEffect(() => {
+    if (localStorage.getItem("resumeStatus")?.includes("edit")) {
+      setStatus(["normal"]);
+    }
+  }, []);
   localStorage.setItem("resumeStatus", JSON.stringify(status));
   const { data } = useGetAllResumeTemplatesQuery();
   const resumeTemplatesData = data?.data;
 
   ///////////////////////////////////////////// Personal //////////////////////////////////////////////
-  const [resumePersonalId, setResumePersonalId] = useState<number>(0);
   const { data: resumePersonal } = useGetResumePersonalQuery({
     resumeId: resumeId || "",
-    personalInfoId: resumePersonalId.toString(),
   });
 
   ///////////////////////////////////////////// Education //////////////////////////////////////////////
@@ -81,20 +82,14 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
   useEffect(() => {
     setResumeTemplates(resumeTemplatesData ?? []);
 
-    if (isLoading) {
-      console.log("Education data is still loading...");
+    if (!resumePersonal || !resumeEducation) {
       return;
     }
-
-    if (!isSuccess || !resumeEducation?.educationsContent?.length) {
-      console.warn("Education data is not available yet.", resumeEducation);
-    }
-
-    console.log("Education data loaded:", resumeEducation?.educationsContent);
 
     setResumeInfo((prevState) => ({
       ...prevState,
       personal: {
+        id: resumePersonal?.personaInfoContent?.id ?? 0,
         fullName: resumePersonal?.personaInfoContent?.full_name ?? "",
         jobTitle: resumePersonal?.personaInfoContent?.job_title ?? "",
         email: resumePersonal?.personaInfoContent?.email ?? "",
@@ -104,6 +99,7 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
       },
       education: resumeEducation?.educationsContent
         ? resumeEducation.educationsContent.map((edu) => ({
+            id: edu.id ?? 0,
             degree: edu.degree ?? "",
             school: edu.school ?? "",
             country: edu.country ?? "",
@@ -139,19 +135,28 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
         return prevInfo;
       }
 
-      const updatedArray = [...array];
+      let updatedArray = [...array];
 
       if (mode === "add") {
-        if (updatedArray.length === 0 || index >= updatedArray.length) {
-          const emptyItem = {} as (typeof updatedArray)[number];
-          updatedArray.push(emptyItem);
+        if (index >= updatedArray.length) {
+          updatedArray = [
+            ...updatedArray,
+            { [name]: value } as (typeof updatedArray)[number],
+          ];
+        } else {
+          updatedArray[index] = {
+            ...updatedArray[index],
+            [name]: value,
+          };
+        }
+      } else if (mode === "edit") {
+        if (updatedArray[index]) {
+          updatedArray[index] = {
+            ...updatedArray[index],
+            [name]: value,
+          };
         }
       }
-
-      updatedArray[index] = {
-        ...updatedArray[index],
-        [name]: value,
-      };
 
       return {
         ...prevInfo,
@@ -194,8 +199,6 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
         setResumeInfo,
         status,
         setStatus,
-        resumePersonalId,
-        setResumePersonalId,
         handleOnChange,
         handleOnChangeTextEditor,
       }}

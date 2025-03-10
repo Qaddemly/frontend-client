@@ -54,16 +54,17 @@ function FormPreview() {
         </Button>
       </div>
 
-      {status.includes("start") && (
+      {(status[0] === "normal" && status[1] === "personal") ||
+      status.includes("start") ? (
         <div className="flex items-center justify-between rounded-lg bg-white px-8 py-5 shadow-md">
           <p className="text-lg font-semibold">Add your main content</p>
           <FontAwesomeIcon
             icon={faPenToSquare}
             className="cursor-pointer rounded-full bg-main p-2 text-xl text-white"
-            onClick={() => setStatus(() => ["add", "personal"])}
+            onClick={() => setStatus(["add", "personal"])}
           />
         </div>
-      )}
+      ) : null}
 
       {/*/////////////////////////////////////////// Create Forms  ///////////////////////////////////////////////*/}
 
@@ -80,7 +81,7 @@ function FormPreview() {
       )}
 
       {status.includes("add") && status.includes("skills") && (
-        <ResumeSkillsForm />
+        <ResumeSkillsForm mode="add" />
       )}
 
       {/*/////////////////////////////////////////// Edit Forms  ///////////////////////////////////////////////*/}

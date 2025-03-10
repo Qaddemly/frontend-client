@@ -36,10 +36,10 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
     ///////////////////////////////////////////// Personal //////////////////////////////////////////////
     getResumePersonal: builder.query<
       IGetResumePersonalInfoResponse,
-      { resumeId: string; personalInfoId: string }
+      { resumeId: string }
     >({
-      query: ({ resumeId, personalInfoId }) => ({
-        url: `${BASE_RESUME_URL}/${resumeId}/PersonalInfo/${personalInfoId}`,
+      query: ({ resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/PersonalInfo`,
         method: "GET",
       }),
     }),
