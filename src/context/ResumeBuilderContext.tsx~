@@ -113,10 +113,10 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
             start_month: 0,
             end_month: 0,
             start_date: edu.start_date ?? "",
-            end_date: edu.end_date ?? "",
+            end_date: edu.end_date ??"",
             description: edu.description ?? "",
-            school_link: "",
-            is_current: false,
+          school_link:"",
+          is_current:false,
           }))
         : [],
     }));

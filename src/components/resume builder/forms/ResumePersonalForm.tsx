@@ -162,7 +162,10 @@ function ResumePersonalForm({ mode }: { mode: FormMode }) {
       tips={false}
       autoFill={true}
     >
-      <form onSubmit={handleSubmit(submitForm)} className="flex flex-col gap-5">
+      <form
+        onSubmit={handleSubmit(submitForm)}
+        className="flex w-full flex-col gap-5"
+      >
         <div className="flex justify-between gap-2">
           <InputField errors={errors} id="fullName" label="Full name">
             <Input

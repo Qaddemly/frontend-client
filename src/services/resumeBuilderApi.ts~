@@ -7,6 +7,7 @@ import {
   IGetAllResumeTemplatesResponse,
   IGetResumeEducationResponse,
   IGetResumePersonalInfoResponse,
+  IResumeEducation,
 } from "../interfaces/ResumeBuilder.interfaces.ts";
 
 const BASE_RESUME_URL = "/resumeTemplate";

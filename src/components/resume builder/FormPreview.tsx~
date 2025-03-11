@@ -119,7 +119,7 @@ function FormPreview() {
           {resumeInfo?.education && (
             <ResumeSection
               title="Education"
-              education={resumeInfo?.education}
+              titles={resumeInfo?.education?.map((edu) => edu.degree)}
               handleEdit={() => {
                 setStatus(() => ["edit", "education"]);
               }}

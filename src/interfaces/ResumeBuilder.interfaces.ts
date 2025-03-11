@@ -25,6 +25,23 @@ export type ResumeStatus =
   | "portfolio"
   | "custom";
 
+export interface IEducationInputs {
+  id?: number;
+  degree: string;
+  school: string;
+  city: string;
+  country: string;
+  end_year: number;
+  end_month: number;
+  start_year: number;
+  start_month: number;
+  start_date?: string;
+  end_date?: string;
+  description: string;
+  school_link: string;
+  is_current: boolean;
+  [x: string]: string | number | boolean | undefined;
+}
 export interface IResumeInfo {
   personal: {
     id: number;
@@ -35,16 +52,7 @@ export interface IResumeInfo {
     address: string;
     aboutMe: string;
   };
-  education: {
-    id: number;
-    degree: string;
-    school: string;
-    country: string;
-    city: string;
-    startDate: string;
-    endDate: string;
-    description: string;
-  }[];
+  education: IEducationInputs[];
   skills: {
     id: number;
     skill: string;
@@ -56,7 +64,7 @@ export interface IResumeInfo {
 ///////////////////////////////////////////// Resume Template //////////////////////////////////////////////
 export interface IResumeTemplate {
   id: number;
-  name: string; // this not come from back but we need it in front
+  name: string;
   profile: string;
   account_id: number;
   created_at: string;
