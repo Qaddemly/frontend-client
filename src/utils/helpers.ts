@@ -110,9 +110,14 @@ export function formatBytes(bytes: number, decimals = 2): string {
   return `${(bytes / Math.pow(k, i)).toFixed(decimals)} ${sizes[i]}`;
 }
 
-export function formatDateByYearAndMonth(dateStr: string): string {
-  const date = new Date(dateStr);
-  return date.toLocaleString("en-US", { month: "short", year: "numeric" });
+export function formatDateByYearAndMonth(date: string): string {
+  if (!date) return "N/A";
+
+  const parts = date.includes("/") ? date.split("/") : date.split("-");
+  const month = parts[1];
+  const year = parts[0].length === 4 ? parts[0] : parts[2];
+  if (parts.length === 2) return parts.join("/");
+  return `${month}/${year}`;
 }
 
 export function formatLastEditTime(isoString: string): string {

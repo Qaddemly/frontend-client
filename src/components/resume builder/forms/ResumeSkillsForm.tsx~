@@ -68,6 +68,7 @@ function ResumeSkillsForm({ mode }: { mode: FormMode }) {
             error: "Could not save skill info",
           },
         );
+        setStatus(["normal"]);
       } else {
         await toast.promise(
           updateResumeSkill({

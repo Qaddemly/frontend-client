@@ -13,6 +13,7 @@ import {
 import { ContentEditableEvent } from "react-simple-wysiwyg";
 import {
   useGetAllResumeEducationQuery,
+  useGetAllResumeSkillsQuery,
   useGetAllResumeTemplatesQuery,
   useGetResumePersonalQuery,
 } from "../services/resumeBuilderApi.ts";
@@ -27,14 +28,8 @@ export interface ResumeBuilderContextProps {
   setShowAddContent: React.Dispatch<React.SetStateAction<boolean>>;
   status: ResumeStatus[];
   setStatus: React.Dispatch<React.SetStateAction<ResumeStatus[]>>;
-  currEduId: number;
-  setCurrEduId: React.Dispatch<React.SetStateAction<number>>;
-  // handleOnChange: (
-  //   index: number,
-  //   section: string,
-  //   event: React.ChangeEvent<HTMLInputElement>,
-  //   mode: "add" | "edit",
-  // ) => void;
+  currId: number;
+  setCurrId: React.Dispatch<React.SetStateAction<number>>;
   handleOnChangeTextEditor: (
     index: number,
     propertyName: keyof IResumeInfo,
@@ -63,6 +58,7 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
     }
   }, []);
   localStorage.setItem("resumeStatus", JSON.stringify(status));
+  const [currId, setCurrId] = useState(0);
   const { data } = useGetAllResumeTemplatesQuery();
   const resumeTemplatesData = data?.data;
 
@@ -79,7 +75,10 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
   } = useGetAllResumeEducationQuery({
     resumeId: resumeId || "",
   });
-  const [currEduId, setCurrEduId] = useState(0);
+  ///////////////////////////////////////////// Skills //////////////////////////////////////////////
+  const { data: resumeSkills } = useGetAllResumeSkillsQuery({
+    resumeId: resumeId || "",
+  });
 
   useEffect(() => {
     setResumeTemplates(resumeTemplatesData ?? []);
@@ -113,10 +112,18 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
             start_month: 0,
             end_month: 0,
             start_date: edu.start_date ?? "",
-            end_date: edu.end_date ??"",
+            end_date: edu.end_date ?? "",
             description: edu.description ?? "",
-          school_link:"",
-          is_current:false,
+            school_link: "",
+            is_current: false,
+          }))
+        : [],
+      skills: resumeSkills?.skillsContent
+        ? resumeSkills.skillsContent.map((skill) => ({
+            id: skill.id ?? 0,
+            name: skill.name ?? "",
+            information: skill.information ?? "",
+            level: skill.level ?? "",
           }))
         : [],
     }));
@@ -126,8 +133,8 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
     resumeEducation,
     resumePersonal,
     resumeTemplatesData,
-    currEduId,
-    setCurrEduId,
+    currId,
+    setCurrId,
     setResumeTemplates,
     setResumeInfo,
   ]);
@@ -166,8 +173,8 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
         setResumeInfo,
         status,
         setStatus,
-        setCurrEduId,
-        currEduId,
+        setCurrId,
+        currId,
 
         handleOnChangeTextEditor,
       }}

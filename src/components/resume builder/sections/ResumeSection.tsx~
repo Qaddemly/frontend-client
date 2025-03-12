@@ -4,10 +4,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type ResumeSectionProps<T> = {
   title: string;
-  items?: T[];
-  idField?: keyof T;
-  displayField?: keyof T;
-  handleEdit?: (id: T[keyof T]) => void;
+  items: T[];
+  idField: keyof T;
+  displayField: keyof T;
+  handleEdit: (id: T[keyof T]) => void;
   type?: string;
   handleEditAboutme?: React.MouseEventHandler<HTMLButtonElement>;
   titles?: string[];
@@ -47,16 +47,16 @@ function ResumeSection<T>({
             </Button>
           </div>
         ))}
-      {items?.map((item) => (
+      {items.map((item) => (
         <div
-          key={idField ? (item[idField] as string) : undefined}
+          key={item[idField] as string}
           className="flex w-full items-center justify-between border-t border-gray-200 py-3"
         >
           <p className="text-lg font-medium text-gray-300">
-            {displayField ? (item[displayField] as string) : undefined}
+            {item[displayField] as string}
           </p>
           <Button
-            onClick={() => handleEdit && idField && handleEdit(item[idField])}
+            onClick={() => handleEdit(item[idField])}
             className="flex items-center gap-2 bg-white text-gray-300 hover:bg-white"
           >
             <span>Edit</span>

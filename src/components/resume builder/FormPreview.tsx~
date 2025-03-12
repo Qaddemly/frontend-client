@@ -17,7 +17,7 @@ import ResumeSkillsForm from "./forms/ResumeSkillsForm.tsx";
 import ResumeEucationForm from "./forms/ResumeEucationForm.tsx";
 
 function FormPreview() {
-  const { setShowAddContent, status, setStatus, resumeInfo } =
+  const { setShowAddContent, status, setStatus, resumeInfo, setCurrId } =
     useResumeBuilder();
   const [resumeName, setResumeName] = useState("My Resume");
   const [showEditResumeName, setShowEditResumeName] = useState(false);
@@ -97,6 +97,9 @@ function FormPreview() {
         <ResumeEucationForm mode="edit" />
       )}
 
+      {status.includes("edit") && status.includes("skills") && (
+        <ResumeSkillsForm mode="edit" />
+      )}
       {/*///////////////////////////////////////////  Sections  ///////////////////////////////////////////////*/}
       {status[0] === "normal" && (
         <>
@@ -106,6 +109,7 @@ function FormPreview() {
           )}
 
           {/* Aboutme Section */}
+
           {resumeInfo?.personal?.aboutMe && (
             <ResumeSection
               title="Profile"
@@ -116,22 +120,34 @@ function FormPreview() {
           )}
 
           {/* Education Section */}
-          {resumeInfo?.education && (
+          {resumeInfo?.education.length > 0 && (
             <ResumeSection
               title="Education"
-              titles={resumeInfo?.education?.map((edu) => edu.degree)}
-              handleEdit={() => {
-                setStatus(() => ["edit", "education"]);
+              items={resumeInfo.education}
+              idField="id"
+              displayField="degree"
+              handleEdit={(id) => {
+                if (typeof id === "number") {
+                  setCurrId(id);
+                  setStatus(["edit", "education"]);
+                }
               }}
             />
           )}
 
           {/* Skills Section */}
-          {resumeInfo?.skills && (
+          {resumeInfo?.skills.length > 0 && (
             <ResumeSection
               title="Skills"
-              titles={resumeInfo?.skills?.map((skill) => skill.skill)}
-              handleEdit={() => setStatus(() => ["edit", "skills"])}
+              items={resumeInfo.skills}
+              idField="id"
+              displayField="name"
+              handleEdit={(id) => {
+                if (typeof id === "number") {
+                  setCurrId(id);
+                  setStatus(["edit", "skills"]);
+                }
+              }}
             />
           )}
 

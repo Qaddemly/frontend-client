@@ -82,6 +82,7 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
       school_link: "",
       is_current: false,
     };
+    console.log(educationData);
 
     try {
       if (mode === "add") {

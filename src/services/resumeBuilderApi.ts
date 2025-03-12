@@ -7,6 +7,9 @@ import {
   IGetAllResumeTemplatesResponse,
   IGetResumeEducationResponse,
   IGetResumePersonalInfoResponse,
+  IGetResumeSkillInfoResponse,
+  IGetResumeSkillsInfoResponse,
+  ISkillsInputs,
 } from "../interfaces/ResumeBuilder.interfaces.ts";
 
 const BASE_RESUME_URL = "/resumeTemplate";
@@ -133,6 +136,57 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
+    ///////////////////////////////////////////// Skills //////////////////////////////////////////////
+    getAllResumeSkills: builder.query<
+      IGetResumeSkillsInfoResponse,
+      { resumeId: string }
+    >({
+      query: ({ resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/skill`,
+        method: "GET",
+      }),
+    }),
+    getResumeSkill: builder.query<
+      IGetResumeSkillInfoResponse,
+      { resumeId: string; skillId: string }
+    >({
+      query: ({ resumeId, skillId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/skill/${skillId}`,
+        method: "GET",
+      }),
+    }),
+    addResumeSkill: builder.mutation<
+      IGetResumeSkillInfoResponse,
+      {
+        resumeId: string;
+        data: ISkillsInputs;
+      }
+    >({
+      query: ({ data, resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/skill`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    updateResumeSkill: builder.mutation<
+      IGetResumeSkillInfoResponse,
+      { resumeId: string; data: ISkillsInputs; skillId: string }
+    >({
+      query: ({ data, resumeId, skillId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/skill/${skillId}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    deleteResumeSkill: builder.mutation<
+      void,
+      { resumeId: string; skillId: string }
+    >({
+      query: ({ resumeId, skillId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/skill/${skillId}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -154,4 +208,10 @@ export const {
   useAddResumeEducationMutation,
   useUpdateResumeEducationMutation,
   useDeleteResumeEducationMutation,
+  ///////////////////////////////////////////// Skills //////////////////////////////////////////////
+  useGetAllResumeSkillsQuery,
+  useGetResumeSkillQuery,
+  useAddResumeSkillMutation,
+  useUpdateResumeSkillMutation,
+  useDeleteResumeSkillMutation,
 } = resumeBuilderApi;

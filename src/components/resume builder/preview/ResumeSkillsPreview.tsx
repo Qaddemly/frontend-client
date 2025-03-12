@@ -16,10 +16,13 @@ function ResumeSkillsPreview() {
         {skillInfo?.map((skill) => (
           <div className="">
             <p className="text-sm">
-              <span className="font-semibold">{skill.skill}</span> -{" "}
+              <span className="font-semibold">{skill.name}</span> -{" "}
               {skill.level}
             </p>
-            <p>{skill.description}</p>
+            <p
+              className="rich-text-editor"
+              dangerouslySetInnerHTML={{ __html: skill.information }}
+            ></p>
           </div>
         ))}
       </div>

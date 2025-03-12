@@ -1,4 +1,5 @@
 import { useResumeBuilder } from "../../../context/ResumeBuilderContext.tsx";
+import { formatDateByYearAndMonth } from "../../../utils/helpers.ts";
 
 function ResumeEducationPreview() {
   const { resumeInfo } = useResumeBuilder();
@@ -21,8 +22,8 @@ function ResumeEducationPreview() {
               </p>
               <p className="text-xs italic">
                 <p className="text-xs italic">
-                  {edu.start_date ?? 1999} -{" "}
-                  {edu.end_date ?? new Date().getFullYear()}
+                  {formatDateByYearAndMonth(edu.start_date || "")} -{" "}
+                  {formatDateByYearAndMonth(edu.end_date || "")}
                 </p>
               </p>
             </div>
