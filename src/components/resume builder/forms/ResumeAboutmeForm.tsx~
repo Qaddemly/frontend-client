@@ -5,9 +5,8 @@ import { ContentEditableEvent } from "react-simple-wysiwyg";
 import { FormEvent, useState } from "react";
 import ResumeFormButtons from "../ResumeFormButtons.tsx";
 import { useAddOrEditAboutmeMutation } from "../../../services/resumeBuilderApi.ts";
-import { handleApiError } from "../../../utils/helpers.ts";
+import { handleApiError, handleResumeAction } from "../../../utils/helpers.ts";
 import { useParams } from "react-router-dom";
-import toast from "react-hot-toast";
 
 type FormMode = "add" | "edit";
 
@@ -36,19 +35,14 @@ function ResumeAboutmeForm({ mode }: { mode: FormMode }) {
   async function submitForm(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      const res = addOrEditAboutme({
-        resumeId: resumeId || "",
-        data: { profile: aboutme },
-      });
-      toast.promise(res, {
-        loading: mode === "add" ? "Saving..." : "Updating...",
-        success:
-          mode === "add"
-            ? "Profile created successfully"
-            : "About Me updated successfully",
-        error: "Failed to save About Me",
-      });
-      await res;
+      await handleResumeAction(
+        () =>
+          addOrEditAboutme({
+            resumeId: resumeId || "",
+            data: { profile: aboutme },
+          }).unwrap(),
+        mode,
+      );
       setStatus(["normal"]);
     } catch (error) {
       handleApiError(error);
@@ -57,7 +51,7 @@ function ResumeAboutmeForm({ mode }: { mode: FormMode }) {
 
   return (
     <FormPreviewSection
-      title={mode === "edit" ? "Edit About Me" : "Add About Me"}
+      title={mode === "edit" ? "Edit Profile" : "Add Profile"}
       tips={true}
       autoFill={false}
     >
@@ -74,6 +68,9 @@ function ResumeAboutmeForm({ mode }: { mode: FormMode }) {
                 aboutMe: "",
               },
             }));
+          }}
+          handleCancel={()=>{
+            
           }}
         />
       </form>

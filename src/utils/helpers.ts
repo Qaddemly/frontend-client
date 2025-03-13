@@ -1,5 +1,6 @@
 import toast from "react-hot-toast";
 import { IError } from "../interfaces/Common.interfaces";
+import { FormMode } from "../interfaces/ResumeBuilder.interfaces.ts";
 
 export const getCurrentDate = () => {
   const date = new Date();
@@ -134,5 +135,33 @@ export function formatLastEditTime(isoString: string): string {
     return "edited 1 month ago";
   } else {
     return `edited ${totalMonths} months ago`;
+  }
+}
+
+export async function handleResumeAction(
+  actionFunction: () => Promise<unknown>,
+  mode: FormMode | "delete",
+) {
+  try {
+    if (mode === "add")
+      await toast.promise(actionFunction(), {
+        loading: "Adding...",
+        success: "Added successfully!",
+        error: "Could not save.",
+      });
+    else if (mode === "edit")
+      await toast.promise(actionFunction(), {
+        loading: "Updating...",
+        success: "Updated successfully!",
+        error: "Could not save.",
+      });
+    else
+      await toast.promise(actionFunction(), {
+        loading: "Deleting...",
+        success: "Deleted successfully!",
+        error: "Could not delete.",
+      });
+  } catch (e) {
+    console.log(e);
   }
 }

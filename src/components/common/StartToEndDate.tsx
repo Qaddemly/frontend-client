@@ -2,7 +2,7 @@ import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 import DatePicker from "./DatePicker";
 
 type StartToEndDateProps<T extends FieldValues> = {
-  register: UseFormRegister<T>;
+  register?: UseFormRegister<T>;
   startDate: Path<T>;
   endDate: Path<T>;
   startDateDefaultValue?: string;

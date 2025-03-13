@@ -2,27 +2,29 @@ import { useResumeBuilder } from "../../../context/ResumeBuilderContext.tsx";
 import FormPreviewSection from "./FormPreviewSection.tsx";
 import InputField from "../../common/InputField.tsx";
 import Input from "../../common/Input.tsx";
-import { SubmitHandler, useForm } from "react-hook-form";
 import StartToEndDate from "../../common/StartToEndDate.tsx";
 import RichTextEditor from "../../common/RichTextEditor.tsx";
 import ResumeFormButtons from "../ResumeFormButtons.tsx";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { ContentEditableEvent } from "react-simple-wysiwyg";
 import {
   useAddResumeEducationMutation,
   useDeleteResumeEducationMutation,
+  useGetAllResumeEducationQuery,
   useUpdateResumeEducationMutation,
 } from "../../../services/resumeBuilderApi.ts";
-import { handleApiError } from "../../../utils/helpers.ts";
+import { handleApiError, handleResumeAction } from "../../../utils/helpers.ts";
 import { useParams } from "react-router-dom";
-import toast from "react-hot-toast";
-import { IEducationInputs } from "../../../interfaces/ResumeBuilder.interfaces.ts";
 
 type FormMode = "add" | "edit";
 
 function ResumeEducationForm({ mode }: { mode: FormMode }) {
   const { resumeId } = useParams();
   const { currId, resumeInfo, setResumeInfo, setStatus } = useResumeBuilder();
+
+  const { refetch } = useGetAllResumeEducationQuery({
+    resumeId: resumeId || "",
+  });
   const [addResumeEducation] = useAddResumeEducationMutation();
   const [updateResumeEducation] = useUpdateResumeEducationMutation();
   const [deleteResumePersonal] = useDeleteResumeEducationMutation();
@@ -66,18 +68,18 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
       : "",
   );
 
-  const { register, handleSubmit } = useForm<IEducationInputs>();
+  const submitForm = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  const submitForm: SubmitHandler<IEducationInputs> = async (data) => {
     const educationData = {
-      degree: data.degree,
-      school: data.school,
-      city: data.city,
-      country: data.country,
-      start_year: Number(data.start_date?.split("-")[0]),
-      start_month: Number(data.start_date?.split("-")[1]),
-      end_year: Number(data.end_date?.split("-")[0]),
-      end_month: Number(data.end_date?.split("-")[1]),
+      degree: degree,
+      school: school,
+      city: city,
+      country: country,
+      start_year: Number(startDate?.split("-")[0]),
+      start_month: Number(startDate?.split("-")[1]),
+      end_year: Number(endDate?.split("-")[0]),
+      end_month: Number(endDate?.split("-")[1]),
       description: description,
       school_link: "",
       is_current: false,
@@ -85,29 +87,25 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
 
     try {
       if (mode === "add") {
-        await toast.promise(
-          addResumeEducation({
-            data: educationData,
-            resumeId: resumeId || "",
-          }).unwrap(),
-          {
-            loading: "Adding...",
-            success: "Added education info successfully",
-            error: "Could not save education info",
-          },
+        await handleResumeAction(
+          () =>
+            addResumeEducation({
+              data: educationData,
+              resumeId: resumeId || "",
+            }).unwrap(),
+          mode,
         );
+        setStatus(["normal"]);
+        refetch();
       } else {
-        await toast.promise(
-          updateResumeEducation({
-            data: educationData,
-            resumeId: resumeId || "",
-            educationId: currId.toString() || "",
-          }).unwrap(),
-          {
-            loading: "Updating...",
-            success: "Updated education info successfully",
-            error: "Could not update education info",
-          },
+        await handleResumeAction(
+          () =>
+            updateResumeEducation({
+              data: educationData,
+              resumeId: resumeId || "",
+              educationId: currId.toString() || "",
+            }).unwrap(),
+          mode,
         );
       }
     } catch (error) {
@@ -115,9 +113,12 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
     }
   };
 
-  function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = e.target;
-    switch (name) {
+  function handleOnChange(
+    e: React.ChangeEvent<HTMLInputElement> | ContentEditableEvent,
+    field: string,
+  ) {
+    const value = "target" in e ? e.target.value : e;
+    switch (field) {
       case "degree":
         setDegree(value);
         break;
@@ -142,14 +143,16 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
       default:
         break;
     }
+
     setResumeInfo((prevInfo) => {
       const updatedArray = [...prevInfo.education];
+
       if (mode === "add") {
-        const existingEdu = updatedArray.find((edu) => edu.id === 303030);
-        if (existingEdu) {
+        const existingEducation = updatedArray.find((edu) => edu.id === 303030);
+        if (existingEducation) {
           updatedArray[resumeInfo?.education?.length - 1] = {
             ...updatedArray[resumeInfo?.education?.length - 1],
-            [name]: value,
+            [field]: value,
           };
         } else {
           updatedArray.push({
@@ -162,7 +165,7 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
             start_month: 0,
             end_year: 0,
             end_month: 0,
-            description: value,
+            description: "",
             school_link: "",
             is_current: false,
           });
@@ -171,7 +174,7 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
         if (updatedArray[indexOfCurrEdu]) {
           updatedArray[indexOfCurrEdu] = {
             ...updatedArray[indexOfCurrEdu],
-            [name]: value,
+            [field]: value,
           };
         }
       }
@@ -182,61 +185,17 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
     });
   }
 
-  function handleOnChangeTextEditor(e: ContentEditableEvent) {
-    const { value } = e.target;
-    setDescription(value);
-    setResumeInfo((prevInfo) => {
-      const updatedArray = [...prevInfo.education];
-      if (mode === "add") {
-        const existingEdu = updatedArray.find((edu) => edu.id === 303030);
-        if (existingEdu) {
-          updatedArray[resumeInfo?.education?.length - 1] = {
-            ...updatedArray[resumeInfo?.education?.length - 1],
-            description: value,
-          };
-        } else {
-          updatedArray.push({
-            id: 303030,
-            degree: "",
-            school: "",
-            country: "",
-            city: "",
-            start_year: 0,
-            start_month: 0,
-            end_year: 0,
-            end_month: 0,
-            description: value,
-            school_link: "",
-            is_current: false,
-          });
-        }
-      } else if (mode === "edit") {
-        if (updatedArray[indexOfCurrEdu]) {
-          updatedArray[indexOfCurrEdu] = {
-            ...updatedArray[indexOfCurrEdu],
-            description: value,
-          };
-        }
-      }
-      return {
-        ...prevInfo,
-        education: updatedArray,
-      };
-    });
-  }
-
-  function handleDelete(e: React.MouseEvent<HTMLButtonElement>) {
+  async function handleDelete(e: React.MouseEvent<HTMLButtonElement>) {
     e.stopPropagation();
     try {
-      const res = deleteResumePersonal({
-        resumeId: resumeId || "",
-        educationId: currId.toString() || "",
-      }).unwrap();
-      toast.promise(res, {
-        loading: "Deleting",
-        success: "Deleted education info successfully",
-        error: "Could not delete education info",
-      });
+      await handleResumeAction(
+        () =>
+          deleteResumePersonal({
+            resumeId: resumeId || "",
+            educationId: currId.toString() || "",
+          }).unwrap(),
+        "delete",
+      );
       setStatus(["normal"]);
       setResumeInfo((prevInfo) => {
         const updatedArray = prevInfo.education.filter(
@@ -259,13 +218,12 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
       tips={true}
     >
       <form
-        onSubmit={handleSubmit(submitForm)}
+        onSubmit={(e) => submitForm(e)}
         className="flex w-full flex-col gap-5"
       >
         <InputField id="degree" label="Degree">
           <Input
-            register={register}
-            onChange={(e) => handleOnChange(e)}
+            onChange={(e) => handleOnChange(e, "degree")}
             value={degree}
             name="degree"
             props={{
@@ -278,8 +236,7 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
 
         <InputField id="school" label="School">
           <Input
-            register={register}
-            onChange={(e) => handleOnChange(e)}
+            onChange={(e) => handleOnChange(e, "school")}
             value={school}
             name="school"
             props={{
@@ -293,8 +250,7 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
         <div className="flex gap-5">
           <InputField id="country" label="Country">
             <Input
-              register={register}
-              onChange={(e) => handleOnChange(e)}
+              onChange={(e) => handleOnChange(e, "country")}
               value={country}
               name="country"
               props={{
@@ -306,8 +262,7 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
           </InputField>
           <InputField id="city" label="City">
             <Input
-              register={register}
-              onChange={(e) => handleOnChange(e)}
+              onChange={(e) => handleOnChange(e, "city")}
               value={city}
               name="city"
               props={{
@@ -320,21 +275,34 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
         </div>
 
         <StartToEndDate
-          register={register}
           startDate="start_date"
           startDateDefaultValue={startDate?.toString()}
-          onChangeStartDate={(e) => handleOnChange(e)}
+          onChangeStartDate={(e) => handleOnChange(e, "endDate")}
           endDate="end_date"
-          onChangeEndDate={(e) => handleOnChange(e)}
+          onChangeEndDate={(e) => handleOnChange(e, "startDate")}
           endDateDefaultValue={endDate?.toString()}
         />
 
         <RichTextEditor
           label="Description"
           value={description}
-          onChange={(e) => handleOnChangeTextEditor(e)}
+          onChange={(e) => handleOnChange(e, "description")}
         />
-        <ResumeFormButtons mode={mode} handleDelete={(e) => handleDelete(e)} />
+        <ResumeFormButtons
+          mode={mode}
+          handleDelete={(e) => handleDelete(e)}
+          handleCancel={() => {
+            setResumeInfo((prevInfo) => {
+              const updatedArray = prevInfo.education.filter(
+                (edu) => edu.id !== 303030,
+              );
+              return {
+                ...prevInfo,
+                education: updatedArray,
+              };
+            });
+          }}
+        />
       </form>
     </FormPreviewSection>
   );

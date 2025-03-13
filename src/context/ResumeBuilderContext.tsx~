@@ -12,6 +12,7 @@ import {
 } from "../interfaces/ResumeBuilder.interfaces.ts";
 import { ContentEditableEvent } from "react-simple-wysiwyg";
 import {
+  useGetAllResumeCertificatesQuery,
   useGetAllResumeEducationQuery,
   useGetAllResumeSkillsQuery,
   useGetAllResumeTemplatesQuery,
@@ -30,11 +31,6 @@ export interface ResumeBuilderContextProps {
   setStatus: React.Dispatch<React.SetStateAction<ResumeStatus[]>>;
   currId: number;
   setCurrId: React.Dispatch<React.SetStateAction<number>>;
-  handleOnChangeTextEditor: (
-    index: number,
-    propertyName: keyof IResumeInfo,
-    e: ContentEditableEvent,
-  ) => void;
 }
 
 const ResumeBuilderContext = createContext<
@@ -77,6 +73,10 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
   });
   ///////////////////////////////////////////// Skills //////////////////////////////////////////////
   const { data: resumeSkills } = useGetAllResumeSkillsQuery({
+    resumeId: resumeId || "",
+  });
+  ///////////////////////////////////////////// Certificates //////////////////////////////////////////////
+  const { data: resumeCertificates } = useGetAllResumeCertificatesQuery({
     resumeId: resumeId || "",
   });
 
@@ -126,41 +126,28 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
             level: skill.level ?? "",
           }))
         : [],
+      certificates: resumeCertificates?.certificatesContent
+        ? resumeCertificates.certificatesContent.map((certificate) => ({
+            id: certificate.id ?? 0,
+            certificate: certificate.certificate ?? "",
+            certificate_url: certificate.certificate_url ?? "",
+            additional_information: certificate.additional_information ?? "",
+          }))
+        : [],
     }));
   }, [
     isLoading,
     isSuccess,
+    resumeTemplatesData,
     resumeEducation,
     resumePersonal,
-    resumeTemplatesData,
+    resumeSkills,
+    resumeCertificates,
     currId,
     setCurrId,
     setResumeTemplates,
     setResumeInfo,
   ]);
-
-  function handleOnChangeTextEditor(
-    index: number,
-    propertyName: keyof IResumeInfo,
-    e: ContentEditableEvent,
-  ) {
-    const { value } = e.target;
-
-    setResumeInfo((prevInfo) => {
-      const array = prevInfo[propertyName];
-
-      if (Array.isArray(array)) {
-        return {
-          ...prevInfo,
-          [propertyName]: array.map((item, i) =>
-            i === index ? { ...item, description: value } : item,
-          ),
-        };
-      }
-
-      return prevInfo;
-    });
-  }
 
   return (
     <ResumeBuilderContext.Provider
@@ -175,8 +162,6 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
         setStatus,
         setCurrId,
         currId,
-
-        handleOnChangeTextEditor,
       }}
     >
       {children}

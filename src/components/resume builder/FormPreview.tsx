@@ -15,6 +15,7 @@ import ResumePersonalSection from "./sections/ResumePersonalSection.tsx";
 import ResumeSection from "./sections/ResumeSection.tsx";
 import ResumeSkillsForm from "./forms/ResumeSkillsForm.tsx";
 import ResumeEucationForm from "./forms/ResumeEucationForm.tsx";
+import ResumeCertificatesForm from "./forms/ResumeCertificatesForm.tsx";
 
 function FormPreview() {
   const { setShowAddContent, status, setStatus, resumeInfo, setCurrId } =
@@ -84,6 +85,9 @@ function FormPreview() {
         <ResumeSkillsForm mode="add" />
       )}
 
+      {status.includes("add") && status.includes("certifications") && (
+        <ResumeCertificatesForm mode="add" />
+      )}
       {/*/////////////////////////////////////////// Edit Forms  ///////////////////////////////////////////////*/}
       {status.includes("edit") && status.includes("personal") && (
         <ResumePersonalForm mode="edit" />
@@ -100,6 +104,10 @@ function FormPreview() {
       {status.includes("edit") && status.includes("skills") && (
         <ResumeSkillsForm mode="edit" />
       )}
+
+      {status.includes("edit") && status.includes("certifications") && (
+        <ResumeCertificatesForm mode="edit" />
+      )}
       {/*///////////////////////////////////////////  Sections  ///////////////////////////////////////////////*/}
       {status[0] === "normal" && (
         <>
@@ -109,13 +117,12 @@ function FormPreview() {
           )}
 
           {/* Aboutme Section */}
-
           {resumeInfo?.personal?.aboutMe && (
             <ResumeSection
               title="Profile"
               type="aboutme"
               titles={[`${resumeInfo?.personal?.aboutMe.slice(0, 1000)}`]}
-              handleEdit={() => setStatus(() => ["edit", "aboutme"])}
+              handleEditAboutme={() => setStatus(() => ["edit", "aboutme"])}
             />
           )}
 
@@ -152,6 +159,21 @@ function FormPreview() {
           )}
 
           {/* Experience Section */}
+          {/* Certificates Section */}
+          {resumeInfo?.certificates?.length > 0 && (
+            <ResumeSection
+              title="Certificates"
+              items={resumeInfo.certificates}
+              idField="id"
+              displayField="certificate"
+              handleEdit={(id) => {
+                if (typeof id === "number") {
+                  setCurrId(id);
+                  setStatus(["edit", "certifications"]);
+                }
+              }}
+            />
+          )}
         </>
       )}
 

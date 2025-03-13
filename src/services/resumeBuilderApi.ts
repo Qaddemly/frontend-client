@@ -2,9 +2,12 @@ import { apiSlice } from "./apiSlice.ts";
 import {
   IAddPersonalInfoResponse,
   IAddResumeTemplateResopnse,
+  ICertificatesInputs,
   IEducationInputs,
   IGetAllResumeEducationResponse,
   IGetAllResumeTemplatesResponse,
+  IGetResumeCertificateInfoResponse,
+  IGetResumeCertificatesInfoResponse,
   IGetResumeEducationResponse,
   IGetResumePersonalInfoResponse,
   IGetResumeSkillInfoResponse,
@@ -187,6 +190,57 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
+    ///////////////////////////////////////////// Certificates //////////////////////////////////////////////
+    getAllResumeCertificates: builder.query<
+      IGetResumeCertificatesInfoResponse,
+      { resumeId: string }
+    >({
+      query: ({ resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/certificate`,
+        method: "GET",
+      }),
+    }),
+    getResumeCertificate: builder.query<
+      IGetResumeCertificateInfoResponse,
+      { resumeId: string; certificateId: string }
+    >({
+      query: ({ resumeId, certificateId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/certificate/${certificateId}`,
+        method: "GET",
+      }),
+    }),
+    addResumeCertificate: builder.mutation<
+      IGetResumeCertificateInfoResponse,
+      {
+        resumeId: string;
+        data: ICertificatesInputs;
+      }
+    >({
+      query: ({ data, resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/certificate`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    updateResumeCertificate: builder.mutation<
+      IGetResumeCertificateInfoResponse,
+      { resumeId: string; data: ICertificatesInputs; certificateId: string }
+    >({
+      query: ({ data, resumeId, certificateId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/certificate/${certificateId}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    deleteResumeCertificate: builder.mutation<
+      void,
+      { resumeId: string; certificateId: string }
+    >({
+      query: ({ resumeId, certificateId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/certificate/${certificateId}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -214,4 +268,10 @@ export const {
   useAddResumeSkillMutation,
   useUpdateResumeSkillMutation,
   useDeleteResumeSkillMutation,
+  ///////////////////////////////////////////// Certificates //////////////////////////////////////////////
+  useGetAllResumeCertificatesQuery,
+  useGetResumeCertificateQuery,
+  useAddResumeCertificateMutation,
+  useUpdateResumeCertificateMutation,
+  useDeleteResumeCertificateMutation,
 } = resumeBuilderApi;
