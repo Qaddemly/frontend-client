@@ -13,6 +13,7 @@ import {
   Toolbar,
 } from "react-simple-wysiwyg";
 
+
 function RichTextEditor({
   value,
   onChange,

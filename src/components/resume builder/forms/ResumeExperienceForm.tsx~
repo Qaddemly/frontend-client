@@ -1,87 +1,86 @@
-import { useResumeBuilder } from "../../../context/ResumeBuilderContext.tsx";
 import FormPreviewSection from "./FormPreviewSection.tsx";
 import InputField from "../../common/InputField.tsx";
 import Input from "../../common/Input.tsx";
-import StartToEndDate from "../../common/StartToEndDate.tsx";
 import RichTextEditor from "../../common/RichTextEditor.tsx";
 import ResumeFormButtons from "../ResumeFormButtons.tsx";
-import { FormEvent, useState } from "react";
-import { ContentEditableEvent } from "react-simple-wysiwyg";
 import {
-  useAddResumeEducationMutation,
-  useDeleteResumeEducationMutation,
-  useGetAllResumeEducationQuery,
-  useUpdateResumeEducationMutation,
-} from "../../../services/resumeBuilderApi.ts";
-import { handleApiError, handleResumeAction } from "../../../utils/helpers.ts";
+  FormMode,
+  IExperienceInputs,
+} from "../../../interfaces/ResumeBuilder.interfaces.ts";
+import { useResumeBuilder } from "../../../context/ResumeBuilderContext.tsx";
 import { useParams } from "react-router-dom";
+import { SubmitHandler, useForm } from "react-hook-form";
+import {
+  useAddResumeExperienceMutation,
+  useDeleteResumeExperienceMutation,
+  useGetAllResumeExperienceQuery,
+  useUpdateResumeExperienceMutation,
+} from "../../../services/resumeBuilderApi.ts";
+import { useState } from "react";
+import { handleApiError, handleResumeAction } from "../../../utils/helpers.ts";
+import { ContentEditableEvent } from "react-simple-wysiwyg";
+import StartToEndDate from "../../common/StartToEndDate.tsx";
 
-type FormMode = "add" | "edit";
-
-function ResumeEducationForm({ mode }: { mode: FormMode }) {
+function ResumeExperienceForm({ mode }: { mode: FormMode }) {
+  const { setStatus, resumeInfo, setResumeInfo, currId } = useResumeBuilder();
   const { resumeId } = useParams();
-  const { currId, resumeInfo, setResumeInfo, setStatus } = useResumeBuilder();
+  const { register, handleSubmit } = useForm<IExperienceInputs>();
+  const indexOfCurrExp = resumeInfo?.experience?.findIndex(
+    (exp) => exp?.id === currId,
+  );
 
-  const { refetch } = useGetAllResumeEducationQuery({
+  const { refetch } = useGetAllResumeExperienceQuery({
     resumeId: resumeId || "",
   });
-  const [addResumeEducation] = useAddResumeEducationMutation();
-  const [updateResumeEducation] = useUpdateResumeEducationMutation();
-  const [deleteResumePersonal] = useDeleteResumeEducationMutation();
+  const [addResumeExperience] = useAddResumeExperienceMutation();
+  const [updateResumeExperience] = useUpdateResumeExperienceMutation();
+  const [deleteResumeExperience] = useDeleteResumeExperienceMutation();
 
-  const indexOfCurrEdu = resumeInfo?.education?.findIndex(
-    (edu) => edu?.id === currId,
-  );
-  const [degree, setDegree] = useState(
-    mode === "edit" && resumeInfo?.education?.[indexOfCurrEdu]?.degree
-      ? resumeInfo.education[indexOfCurrEdu].degree
+  const [jobTitle, setJobTitle] = useState(
+    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.name
+      ? resumeInfo.experience[indexOfCurrExp].job_title
       : "",
   );
-  const [school, setSchool] = useState(
-    mode === "edit" && resumeInfo?.education?.[indexOfCurrEdu]?.school
-      ? resumeInfo.education[indexOfCurrEdu].school
+  const [company, setCompany] = useState(
+    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.information
+      ? resumeInfo.experience[indexOfCurrExp].company_name
       : "",
   );
   const [country, setCountry] = useState(
-    mode === "edit" && resumeInfo?.education?.[indexOfCurrEdu]?.country
-      ? resumeInfo.education[indexOfCurrEdu].country
+    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.level
+      ? resumeInfo.experience[indexOfCurrExp].country
       : "",
   );
   const [city, setCity] = useState(
-    mode === "edit" && resumeInfo?.education?.[indexOfCurrEdu]?.city
-      ? resumeInfo.education[indexOfCurrEdu].city
+    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.level
+      ? resumeInfo.experience[indexOfCurrExp].city
       : "",
   );
   const [startDate, setStartDate] = useState(
-    mode === "edit" && resumeInfo?.education?.[indexOfCurrEdu]?.start_date
-      ? resumeInfo.education[indexOfCurrEdu].start_date
+    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.level
+      ? resumeInfo.experience[indexOfCurrExp].start_date
       : "",
   );
   const [endDate, setEndDate] = useState(
-    mode === "edit" && resumeInfo?.education?.[indexOfCurrEdu]?.end_date
-      ? resumeInfo.education[indexOfCurrEdu].end_date
+    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.level
+      ? resumeInfo.experience[indexOfCurrExp].end_date
       : "",
   );
   const [description, setDescription] = useState(
-    mode === "edit" && resumeInfo?.education?.[indexOfCurrEdu]?.description
-      ? resumeInfo.education[indexOfCurrEdu].description
+    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.level
+      ? resumeInfo.experience[indexOfCurrExp].description
       : "",
   );
 
-  const submitForm = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const educationData = {
-      degree: degree,
-      school: school,
-      city: city,
+  const submitForm: SubmitHandler<IExperienceInputs> = async () => {
+    const experienceData = {
+      job_title: jobTitle,
+      company_name: company,
       country: country,
-      start_year: Number(startDate?.split("-")[0]),
-      start_month: Number(startDate?.split("-")[1]),
-      end_year: Number(endDate?.split("-")[0]),
-      end_month: Number(endDate?.split("-")[1]),
+      city: city,
+      start_date: startDate,
+      end_date: endDate,
       description: description,
-      school_link: "",
       is_current: false,
     };
 
@@ -89,21 +88,21 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
       if (mode === "add") {
         await handleResumeAction(
           () =>
-            addResumeEducation({
-              data: educationData,
+            addResumeExperience({
+              data: experienceData,
               resumeId: resumeId || "",
             }).unwrap(),
           mode,
         );
-        setStatus(["normal"]);
         refetch();
+        setStatus(["normal"]);
       } else {
         await handleResumeAction(
           () =>
-            updateResumeEducation({
-              data: educationData,
+            updateResumeExperience({
+              data: experienceData,
               resumeId: resumeId || "",
-              id: currId.toString() || "",
+              experienceId: currId.toString() || "",
             }).unwrap(),
           mode,
         );
@@ -119,11 +118,11 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
   ) {
     const value = "target" in e ? e.target.value : e;
     switch (field) {
-      case "degree":
-        setDegree(value);
+      case "jobTitle":
+        setJobTitle(value);
         break;
-      case "school":
-        setSchool(value);
+      case "company":
+        setCompany(value);
         break;
       case "country":
         setCountry(value);
@@ -145,42 +144,40 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
     }
 
     setResumeInfo((prevInfo) => {
-      const updatedArray = [...prevInfo.education];
+      const updatedArray = [...prevInfo.experience];
 
       if (mode === "add") {
-        const existingEducation = updatedArray.find((edu) => edu.id === 303030);
-        if (existingEducation) {
-          updatedArray[resumeInfo?.education?.length - 1] = {
-            ...updatedArray[resumeInfo?.education?.length - 1],
+        const existingExp = updatedArray.find((exp) => exp.id === 303030);
+        if (existingExp) {
+          updatedArray[resumeInfo?.experience?.length - 1] = {
+            ...updatedArray[resumeInfo?.experience?.length - 1],
             [field]: value,
           };
         } else {
           updatedArray.push({
             id: 303030,
-            degree: "",
-            school: "",
+            job_title: "",
+            company_name: "",
             country: "",
             city: "",
-            start_year: 0,
-            start_month: 0,
-            end_year: 0,
-            end_month: 0,
+            start_date: "",
+            end_date: "",
             description: "",
-            school_link: "",
             is_current: false,
           });
         }
       } else if (mode === "edit") {
-        if (updatedArray[indexOfCurrEdu]) {
-          updatedArray[indexOfCurrEdu] = {
-            ...updatedArray[indexOfCurrEdu],
+        if (updatedArray[indexOfCurrExp]) {
+          updatedArray[indexOfCurrExp] = {
+            ...updatedArray[indexOfCurrExp],
             [field]: value,
           };
         }
       }
+
       return {
         ...prevInfo,
-        education: updatedArray,
+        experience: updatedArray,
       };
     });
   }
@@ -190,20 +187,20 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
     try {
       await handleResumeAction(
         () =>
-          deleteResumePersonal({
+          deleteResumeExperience({
             resumeId: resumeId || "",
-            id: currId.toString() || "",
+            experienceId: currId.toString() || "",
           }).unwrap(),
         "delete",
       );
       setStatus(["normal"]);
       setResumeInfo((prevInfo) => {
-        const updatedArray = prevInfo.education.filter(
-          (edu) => edu.id !== currId,
+        const updatedArray = prevInfo.experience.filter(
+          (exp) => exp.id !== currId,
         );
         return {
           ...prevInfo,
-          education: updatedArray,
+          experience: updatedArray,
         };
       });
     } catch (error) {
@@ -213,36 +210,38 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
 
   return (
     <FormPreviewSection
-      title={mode === "edit" ? "Edit Education" : "Add Education"}
-      autoFill={true}
+      title={mode === "add" ? "Add Experience" : "Edit Experience"}
       tips={true}
+      autoFill={true}
     >
       <form
-        onSubmit={(e) => submitForm(e)}
+        onSubmit={handleSubmit(submitForm)}
         className="flex w-full flex-col gap-5"
       >
-        <InputField id="degree" label="Degree">
+        <InputField id="jobTitle" label="Job title">
           <Input
-            onChange={(e) => handleOnChange(e, "degree")}
-            value={degree}
-            name="degree"
+            register={register}
+            onChange={(e) => handleOnChange(e, "jobTitle")}
+            value={jobTitle}
+            name="jobTitle"
             props={{
-              placeholder: "Degree / Field of study",
+              placeholder: "Enter job title",
               type: "text",
-              id: "degree",
+              id: "jobTitle",
             }}
           />
         </InputField>
 
-        <InputField id="school" label="School">
+        <InputField id="company" label="Employer">
           <Input
-            onChange={(e) => handleOnChange(e, "school")}
-            value={school}
-            name="school"
+            register={register}
+            onChange={(e) => handleOnChange(e, "company")}
+            value={company}
+            name="company"
             props={{
-              placeholder: "School / University",
+              placeholder: "Enter employer",
               type: "text",
-              id: "school",
+              id: "company",
             }}
           />
         </InputField>
@@ -288,17 +287,18 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
           value={description}
           onChange={(e) => handleOnChange(e, "description")}
         />
+
         <ResumeFormButtons
           mode={mode}
           handleDelete={(e) => handleDelete(e)}
           handleCancel={() => {
             setResumeInfo((prevInfo) => {
-              const updatedArray = prevInfo.education.filter(
-                (edu) => edu.id !== 303030,
+              const updatedArray = prevInfo.experience.filter(
+                (exp) => exp.id !== 303030,
               );
               return {
                 ...prevInfo,
-                education: updatedArray,
+                experience: updatedArray,
               };
             });
           }}
@@ -308,4 +308,4 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
   );
 }
 
-export default ResumeEducationForm;
+export default ResumeExperienceForm;

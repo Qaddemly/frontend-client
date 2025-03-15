@@ -221,13 +221,11 @@ const router = createBrowserRouter([
   {
     path: "/resumeBuilder/edit/:resumeId",
     element: (
-      // <ProtectedRoute>
-
-      <ResumeBuilderProvider>
-        <EditResume />
-      </ResumeBuilderProvider>
-
-      // </ProtectedRoute>
+      <ProtectedRoute>
+        <ResumeBuilderProvider>
+          <EditResume />
+        </ResumeBuilderProvider>
+      </ProtectedRoute>
     ),
   },
   {

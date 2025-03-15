@@ -37,7 +37,7 @@ export interface IResumeInfo {
   };
   education: IEducationInputs[];
   skills: ISkillsInputs[];
-  experience: IExperienceInputs[];
+  experience:IExperienceInputs[]
   certificates: ICertificatesInputs[];
 }
 

@@ -6,14 +6,15 @@ import {
   useState,
 } from "react";
 import {
-  FormMode,
   IResumeInfo,
   IResumeTemplate,
   ResumeStatus,
 } from "../interfaces/ResumeBuilder.interfaces.ts";
-import { ContentEditableEvent } from "react-simple-wysiwyg";
 import {
+  useGetAllResumeCertificatesQuery,
   useGetAllResumeEducationQuery,
+  useGetAllResumeExperienceQuery,
+  useGetAllResumeSkillsQuery,
   useGetAllResumeTemplatesQuery,
   useGetResumePersonalQuery,
 } from "../services/resumeBuilderApi.ts";
@@ -28,19 +29,8 @@ export interface ResumeBuilderContextProps {
   setShowAddContent: React.Dispatch<React.SetStateAction<boolean>>;
   status: ResumeStatus[];
   setStatus: React.Dispatch<React.SetStateAction<ResumeStatus[]>>;
-  resumePersonalId: number;
-  setResumePersonalId: React.Dispatch<React.SetStateAction<number>>;
-  handleOnChange: (
-    index: number,
-    propertyName: keyof IResumeInfo,
-    e: React.ChangeEvent<HTMLInputElement>,
-    mode: FormMode,
-  ) => void;
-  handleOnChangeTextEditor: (
-    index: number,
-    propertyName: keyof IResumeInfo,
-    e: ContentEditableEvent,
-  ) => void;
+  currId: number;
+  setCurrId: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const ResumeBuilderContext = createContext<
@@ -58,15 +48,19 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
   const [status, setStatus] = useState<ResumeStatus[]>(
     JSON.parse(localStorage.getItem("resumeStatus") || '["start"]'),
   );
+  useEffect(() => {
+    if (localStorage.getItem("resumeStatus")?.includes("edit")) {
+      setStatus(["normal"]);
+    }
+  }, []);
   localStorage.setItem("resumeStatus", JSON.stringify(status));
+  const [currId, setCurrId] = useState(0);
   const { data } = useGetAllResumeTemplatesQuery();
   const resumeTemplatesData = data?.data;
 
   ///////////////////////////////////////////// Personal //////////////////////////////////////////////
-  const [resumePersonalId, setResumePersonalId] = useState<number>(0);
   const { data: resumePersonal } = useGetResumePersonalQuery({
     resumeId: resumeId || "",
-    personalInfoId: resumePersonalId.toString(),
   });
 
   ///////////////////////////////////////////// Education //////////////////////////////////////////////
@@ -77,111 +71,101 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
   } = useGetAllResumeEducationQuery({
     resumeId: resumeId || "",
   });
+  ///////////////////////////////////////////// Experience //////////////////////////////////////////////
+  const { data: resumeExperience } = useGetAllResumeExperienceQuery({
+    resumeId: resumeId || "",
+  });
+  ///////////////////////////////////////////// Skills //////////////////////////////////////////////
+  const { data: resumeSkills } = useGetAllResumeSkillsQuery({
+    resumeId: resumeId || "",
+  });
+  ///////////////////////////////////////////// Certificates //////////////////////////////////////////////
+  const { data: resumeCertificates } = useGetAllResumeCertificatesQuery({
+    resumeId: resumeId || "",
+  });
 
   useEffect(() => {
     setResumeTemplates(resumeTemplatesData ?? []);
-
-    if (isLoading) {
-      console.log("Education data is still loading...");
+    if (!resumePersonal || !resumeEducation || !resumeTemplates) {
       return;
     }
-
-    if (!isSuccess || !resumeEducation?.educationsContent?.length) {
-      console.warn("Education data is not available yet.", resumeEducation);
-    }
-
-    console.log("Education data loaded:", resumeEducation?.educationsContent);
 
     setResumeInfo((prevState) => ({
       ...prevState,
       personal: {
+        id: resumePersonal?.personaInfoContent?.id ?? 0,
         fullName: resumePersonal?.personaInfoContent?.full_name ?? "",
         jobTitle: resumePersonal?.personaInfoContent?.job_title ?? "",
         email: resumePersonal?.personaInfoContent?.email ?? "",
         phone: resumePersonal?.personaInfoContent?.phone_number ?? "",
         address: resumePersonal?.personaInfoContent?.address ?? "",
-        aboutMe: "",
+        aboutMe:
+          resumeTemplates.find(
+            (template) => template.id.toString() === resumeId,
+          )?.profile ?? "",
       },
       education: resumeEducation?.educationsContent
         ? resumeEducation.educationsContent.map((edu) => ({
+            id: edu.id ?? 0,
             degree: edu.degree ?? "",
             school: edu.school ?? "",
             country: edu.country ?? "",
             city: edu.city ?? "",
-            startDate: edu.start_date ?? "",
-            endDate: edu.end_date ?? "",
+            start_year: 0,
+            end_year: 0,
+            start_month: 0,
+            end_month: 0,
+            start_date: edu.start_date ?? "",
+            end_date: edu.end_date ?? "",
             description: edu.description ?? "",
+            school_link: "",
+            is_current: false,
+          }))
+        : [],
+      experience: resumeExperience?.data
+        ? resumeExperience.data.map((experience) => ({
+            id: experience.id ?? 0,
+            job_title: experience.job_title ?? "",
+            company_name: experience.company_name ?? "",
+            city: experience.city ?? "",
+            country: experience.country ?? "",
+            start_date: experience.start_date ?? "",
+            end_date: experience.end_date ?? "",
+            description: experience.description ?? "",
+            is_current: false,
+          }))
+        : [],
+      skills: resumeSkills?.skillsContent
+        ? resumeSkills.skillsContent.map((skill) => ({
+            id: skill.id ?? 0,
+            name: skill.name ?? "",
+            information: skill.information ?? "",
+            level: skill.level ?? "",
+          }))
+        : [],
+      certificates: resumeCertificates?.certificatesContent
+        ? resumeCertificates.certificatesContent.map((certificate) => ({
+            id: certificate.id ?? 0,
+            certificate: certificate.certificate ?? "",
+            certificate_url: certificate.certificate_url ?? "",
+            additional_information: certificate.additional_information ?? "",
           }))
         : [],
     }));
   }, [
     isLoading,
     isSuccess,
-    resumeEducation,
-    resumePersonal,
     resumeTemplatesData,
+    resumePersonal,
+    resumeEducation,
+    resumeExperience,
+    resumeSkills,
+    resumeCertificates,
+    currId,
+    setCurrId,
     setResumeTemplates,
     setResumeInfo,
   ]);
-
-  function handleOnChange<T extends keyof IResumeInfo>(
-    index: number,
-    propertyName: T,
-    e: React.ChangeEvent<HTMLInputElement>,
-    mode: FormMode,
-  ) {
-    const { name, value } = e.target;
-
-    setResumeInfo((prevInfo) => {
-      const array = prevInfo[propertyName];
-
-      if (!Array.isArray(array)) {
-        return prevInfo;
-      }
-
-      const updatedArray = [...array];
-
-      if (mode === "add") {
-        if (updatedArray.length === 0 || index >= updatedArray.length) {
-          const emptyItem = {} as (typeof updatedArray)[number];
-          updatedArray.push(emptyItem);
-        }
-      }
-
-      updatedArray[index] = {
-        ...updatedArray[index],
-        [name]: value,
-      };
-
-      return {
-        ...prevInfo,
-        [propertyName]: updatedArray,
-      };
-    });
-  }
-
-  function handleOnChangeTextEditor(
-    index: number,
-    propertyName: keyof IResumeInfo,
-    e: ContentEditableEvent,
-  ) {
-    const { value } = e.target;
-
-    setResumeInfo((prevInfo) => {
-      const array = prevInfo[propertyName];
-
-      if (Array.isArray(array)) {
-        return {
-          ...prevInfo,
-          [propertyName]: array.map((item, i) =>
-            i === index ? { ...item, description: value } : item,
-          ),
-        };
-      }
-
-      return prevInfo;
-    });
-  }
 
   return (
     <ResumeBuilderContext.Provider
@@ -194,10 +178,8 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
         setResumeInfo,
         status,
         setStatus,
-        resumePersonalId,
-        setResumePersonalId,
-        handleOnChange,
-        handleOnChangeTextEditor,
+        setCurrId,
+        currId,
       }}
     >
       {children}

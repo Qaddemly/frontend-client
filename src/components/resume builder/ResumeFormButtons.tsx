@@ -5,9 +5,11 @@ import { FormMode } from "../../interfaces/ResumeBuilder.interfaces.ts";
 function ResumeFormButtons({
   mode,
   handleDelete,
+  handleCancel,
 }: {
   mode: FormMode;
-  handleDelete: () => void;
+  handleDelete: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  handleCancel: () => void;
 }) {
   const { setStatus } = useResumeBuilder();
   return (
@@ -18,7 +20,8 @@ function ResumeFormButtons({
         <div>
           {/* handle delete */}
           <Button
-            onClick={handleDelete}
+            type="button"
+            onClick={(e) => handleDelete(e)}
             className="rounded-full px-3 text-danger-300 hover:bg-danger-300 hover:text-white"
           >
             Delete
@@ -27,7 +30,11 @@ function ResumeFormButtons({
       )}
       <div className="space-x-2">
         <Button
-          onClick={() => setStatus(() => ["normal"])}
+          type="button"
+          onClick={() => {
+            handleCancel();
+            setStatus(() => ["normal"]);
+          }}
           className="rounded-full bg-white px-3 text-main hover:bg-main hover:text-white"
         >
           Cancel

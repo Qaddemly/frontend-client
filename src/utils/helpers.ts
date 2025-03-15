@@ -1,5 +1,6 @@
 import toast from "react-hot-toast";
 import { IError } from "../interfaces/Common.interfaces";
+import { FormMode } from "../interfaces/ResumeBuilder.interfaces.ts";
 
 export const getCurrentDate = () => {
   const date = new Date();
@@ -110,9 +111,14 @@ export function formatBytes(bytes: number, decimals = 2): string {
   return `${(bytes / Math.pow(k, i)).toFixed(decimals)} ${sizes[i]}`;
 }
 
-export function formatDateByYearAndMonth(dateStr: string): string {
-  const date = new Date(dateStr);
-  return date.toLocaleString("en-US", { month: "short", year: "numeric" });
+export function formatDateByYearAndMonth(date: string): string {
+  if (!date) return "N/A";
+
+  const parts = date.includes("/") ? date.split("/") : date.split("-");
+  const month = parts[1];
+  const year = parts[0].length === 4 ? parts[0] : parts[2];
+  if (parts.length === 2) return parts.join("/");
+  return `${month}/${year}`;
 }
 
 export function formatLastEditTime(isoString: string): string {
@@ -129,5 +135,33 @@ export function formatLastEditTime(isoString: string): string {
     return "edited 1 month ago";
   } else {
     return `edited ${totalMonths} months ago`;
+  }
+}
+
+export async function handleResumeAction(
+  actionFunction: () => Promise<unknown>,
+  mode: FormMode | "delete",
+) {
+  try {
+    if (mode === "add")
+      await toast.promise(actionFunction(), {
+        loading: "Adding...",
+        success: "Added successfully!",
+        error: "Could not save.",
+      });
+    else if (mode === "edit")
+      await toast.promise(actionFunction(), {
+        loading: "Updating...",
+        success: "Updated successfully!",
+        error: "Could not save.",
+      });
+    else
+      await toast.promise(actionFunction(), {
+        loading: "Deleting...",
+        success: "Deleted successfully!",
+        error: "Could not delete.",
+      });
+  } catch (e) {
+    console.log(e);
   }
 }

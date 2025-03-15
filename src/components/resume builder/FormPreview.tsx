@@ -15,9 +15,11 @@ import ResumePersonalSection from "./sections/ResumePersonalSection.tsx";
 import ResumeSection from "./sections/ResumeSection.tsx";
 import ResumeSkillsForm from "./forms/ResumeSkillsForm.tsx";
 import ResumeEucationForm from "./forms/ResumeEucationForm.tsx";
+import ResumeCertificatesForm from "./forms/ResumeCertificatesForm.tsx";
+import ResumeExperienceForm from "./forms/ResumeExperienceForm.tsx";
 
 function FormPreview() {
-  const { setShowAddContent, status, setStatus, resumeInfo } =
+  const { setShowAddContent, status, setStatus, resumeInfo, setCurrId } =
     useResumeBuilder();
   const [resumeName, setResumeName] = useState("My Resume");
   const [showEditResumeName, setShowEditResumeName] = useState(false);
@@ -54,16 +56,17 @@ function FormPreview() {
         </Button>
       </div>
 
-      {status.includes("start") && (
+      {(status[0] === "normal" && status[1] === "personal") ||
+      status.includes("start") ? (
         <div className="flex items-center justify-between rounded-lg bg-white px-8 py-5 shadow-md">
           <p className="text-lg font-semibold">Add your main content</p>
           <FontAwesomeIcon
             icon={faPenToSquare}
             className="cursor-pointer rounded-full bg-main p-2 text-xl text-white"
-            onClick={() => setStatus(() => ["add", "personal"])}
+            onClick={() => setStatus(["add", "personal"])}
           />
         </div>
-      )}
+      ) : null}
 
       {/*/////////////////////////////////////////// Create Forms  ///////////////////////////////////////////////*/}
 
@@ -79,10 +82,17 @@ function FormPreview() {
         <ResumeEucationForm mode="add" />
       )}
 
-      {status.includes("add") && status.includes("skills") && (
-        <ResumeSkillsForm />
+      {status.includes("add") && status.includes("workExperience") && (
+        <ResumeExperienceForm mode="add" />
       )}
 
+      {status.includes("add") && status.includes("skills") && (
+        <ResumeSkillsForm mode="add" />
+      )}
+
+      {status.includes("add") && status.includes("certifications") && (
+        <ResumeCertificatesForm mode="add" />
+      )}
       {/*/////////////////////////////////////////// Edit Forms  ///////////////////////////////////////////////*/}
       {status.includes("edit") && status.includes("personal") && (
         <ResumePersonalForm mode="edit" />
@@ -96,6 +106,17 @@ function FormPreview() {
         <ResumeEucationForm mode="edit" />
       )}
 
+      {status.includes("edit") && status.includes("workExperience") && (
+        <ResumeExperienceForm mode="edit" />
+      )}
+
+      {status.includes("edit") && status.includes("skills") && (
+        <ResumeSkillsForm mode="edit" />
+      )}
+
+      {status.includes("edit") && status.includes("certifications") && (
+        <ResumeCertificatesForm mode="edit" />
+      )}
       {/*///////////////////////////////////////////  Sections  ///////////////////////////////////////////////*/}
       {status[0] === "normal" && (
         <>
@@ -107,31 +128,76 @@ function FormPreview() {
           {/* Aboutme Section */}
           {resumeInfo?.personal?.aboutMe && (
             <ResumeSection
-              title="About me"
-              titles={[`${resumeInfo?.personal?.aboutMe.slice(0, 50)}...`]}
-              handleEdit={() => setStatus(() => ["edit", "aboutme"])}
+              title="Profile"
+              type="aboutme"
+              titles={[`${resumeInfo?.personal?.aboutMe.slice(0, 1000)}`]}
+              handleEditAboutme={() => setStatus(() => ["edit", "aboutme"])}
             />
           )}
 
           {/* Education Section */}
-          {resumeInfo?.education && (
+          {resumeInfo?.education?.length > 0 && (
             <ResumeSection
               title="Education"
-              titles={resumeInfo?.education?.map((edu) => edu.degree)}
-              handleEdit={() => setStatus(() => ["edit", "education"])}
-            />
-          )}
-
-          {/* Skills Section */}
-          {resumeInfo?.skills && (
-            <ResumeSection
-              title="Skills"
-              titles={resumeInfo?.skills?.map((skill) => skill.skill)}
-              handleEdit={() => setStatus(() => ["edit", "skills"])}
+              items={resumeInfo.education}
+              idField="id"
+              displayField="degree"
+              handleEdit={(id) => {
+                if (typeof id === "number") {
+                  setCurrId(id);
+                  setStatus(["edit", "education"]);
+                }
+              }}
             />
           )}
 
           {/* Experience Section */}
+          {resumeInfo?.experience?.length > 0 && (
+            <ResumeSection
+              title="Experience"
+              items={resumeInfo.experience}
+              idField="id"
+              displayField="experience"
+              handleEdit={(id) => {
+                if (typeof id === "number") {
+                  setCurrId(id);
+                  setStatus(["edit", "workExperience"]);
+                }
+              }}
+            />
+          )}
+
+          {/* Skills Section */}
+          {resumeInfo?.skills?.length > 0 && (
+            <ResumeSection
+              title="Skills"
+              items={resumeInfo.skills}
+              idField="id"
+              displayField="name"
+              handleEdit={(id) => {
+                if (typeof id === "number") {
+                  setCurrId(id);
+                  setStatus(["edit", "skills"]);
+                }
+              }}
+            />
+          )}
+
+          {/* Certificates Section */}
+          {resumeInfo?.certificates?.length > 0 && (
+            <ResumeSection
+              title="Certificates"
+              items={resumeInfo.certificates}
+              idField="id"
+              displayField="certificate"
+              handleEdit={(id) => {
+                if (typeof id === "number") {
+                  setCurrId(id);
+                  setStatus(["edit", "certifications"]);
+                }
+              }}
+            />
+          )}
         </>
       )}
 

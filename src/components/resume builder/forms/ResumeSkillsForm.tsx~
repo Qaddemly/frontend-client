@@ -74,7 +74,7 @@ function ResumeSkillsForm({ mode }: { mode: FormMode }) {
             updateResumeSkill({
               data: skillsData,
               resumeId: resumeId || "",
-              skillId: currId.toString() || "",
+              id: currId.toString() || "",
             }).unwrap(),
           mode,
         );
@@ -134,7 +134,7 @@ function ResumeSkillsForm({ mode }: { mode: FormMode }) {
         () =>
           deleteResumeSkill({
             resumeId: resumeId || "",
-            skillId: currId.toString() || "",
+            id: currId.toString() || "",
           }).unwrap(),
         "delete",
       );

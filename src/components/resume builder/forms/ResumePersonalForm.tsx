@@ -9,10 +9,14 @@ import ResumeFormButtons from "../ResumeFormButtons.tsx";
 import {
   useAddResumePersonalMutation,
   useDeleteResumePersonalMutation,
+  useGetResumePersonalQuery,
   useUpdateResumePersonalMutation,
 } from "../../../services/resumeBuilderApi.ts";
-import toast from "react-hot-toast";
-import { createFormData, handleApiError } from "../../../utils/helpers.ts";
+import {
+  createFormData,
+  handleApiError,
+  handleResumeAction,
+} from "../../../utils/helpers.ts";
 import { useParams } from "react-router-dom";
 
 type PersonalForm = {
@@ -25,19 +29,14 @@ type PersonalForm = {
 
 function ResumePersonalForm({ mode }: { mode: FormMode }) {
   const { resumeId } = useParams();
-  const {
-    resumeInfo,
-    setResumeInfo,
-    setStatus,
-    setResumePersonalId,
-    resumePersonalId,
-  } = useResumeBuilder();
+  const { resumeInfo, setResumeInfo, setStatus } = useResumeBuilder();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<PersonalForm>();
 
+  const { refetch } = useGetResumePersonalQuery({ resumeId: resumeId || "" });
   const [addResumePersonal] = useAddResumePersonalMutation();
   const [updateResumePersonal] = useUpdateResumePersonalMutation();
   const [deleteResumePersonal] = useDeleteResumePersonalMutation();
@@ -66,62 +65,60 @@ function ResumePersonalForm({ mode }: { mode: FormMode }) {
       address: data.address,
     };
 
-    if (personalData?.full_name && mode === "add") {
-      const personalFormData = createFormData(personalData);
-      try {
-        const res = addResumePersonal({
-          data: personalFormData,
-          resumeId: resumeId || "",
-        }).unwrap();
-        toast.promise(res, {
-          loading: "Saving",
-          success: "Added personal info successfully",
-          error: "Could not save personal info",
-        });
-        await res.then((data) =>
-          setResumePersonalId(data.personaInfoContent.id),
+    const personalFormData = createFormData(personalData);
+
+    try {
+      if (mode === "add") {
+        await handleResumeAction(
+          () =>
+            addResumePersonal({
+              data: personalFormData,
+              resumeId: resumeId || "",
+            }).unwrap(),
+          mode,
         );
-
-        setStatus(() => ["normal"]);
-      } catch (error) {
-        handleApiError(error);
+      } else {
+        await handleResumeAction(
+          () =>
+            updateResumePersonal({
+              data: personalFormData,
+              resumeId: resumeId || "",
+              personalInfoId: resumeInfo?.personal?.id.toString() || "",
+            }).unwrap(),
+          mode,
+        );
       }
-    }
-
-    if (mode === "edit") {
-      const personalFormData = createFormData(personalData);
-      try {
-        const res = updateResumePersonal({
-          data: personalFormData,
-          resumeId: resumeId || "",
-          personalInfoId: resumePersonalId.toString(),
-        }).unwrap();
-        toast.promise(res, {
-          loading: "Updating",
-          success: "Update personal info successfully",
-          error: "Could not update personal info",
-        });
-        await res;
-        setStatus(() => ["normal"]);
-      } catch (error) {
-        handleApiError(error);
-      }
+      setStatus(() => ["normal"]);
+      refetch();
+    } catch (error) {
+      handleApiError(error);
     }
   };
 
-  async function handleDeletePersonal() {
+  async function handleDeletePersonal(e: React.MouseEvent<HTMLButtonElement>) {
+    e.stopPropagation();
     try {
-      const res = deleteResumePersonal({
-        resumeId: resumeId || "",
-        personalInfoId: resumePersonalId.toString(),
-      }).unwrap();
-      toast.promise(res, {
-        loading: "Deleting",
-        success: "Deleted personal info successfully",
-        error: "Could not delete personal info",
-      });
-      await res;
-      setStatus(() => ["normal"]);
+      await handleResumeAction(
+        () =>
+          deleteResumePersonal({
+            resumeId: resumeId || "",
+            personalInfoId: resumeInfo?.personal?.id.toString() || "",
+          }).unwrap(),
+        "delete",
+      );
+      setStatus(() => ["normal", "personal"]);
+      setResumeInfo((prevInfo) => ({
+        ...prevInfo,
+        personal: {
+          id: 0,
+          fullName: "",
+          jobTitle: "",
+          email: "",
+          phone: "",
+          address: "",
+          aboutMe: "",
+        },
+      }));
     } catch (error) {
       handleApiError(error);
     }
@@ -145,7 +142,10 @@ function ResumePersonalForm({ mode }: { mode: FormMode }) {
       tips={false}
       autoFill={true}
     >
-      <form onSubmit={handleSubmit(submitForm)} className="flex flex-col gap-5">
+      <form
+        onSubmit={handleSubmit(submitForm)}
+        className="flex w-full flex-col gap-5"
+      >
         <div className="flex justify-between gap-2">
           <InputField errors={errors} id="fullName" label="Full name">
             <Input
@@ -220,7 +220,11 @@ function ResumePersonalForm({ mode }: { mode: FormMode }) {
             />
           </InputField>
         </div>
-        <ResumeFormButtons mode={mode} handleDelete={handleDeletePersonal} />
+        <ResumeFormButtons
+          mode={mode}
+          handleDelete={(e) => handleDeletePersonal(e)}
+          handleCancel={() => {}}
+        />
       </form>
     </FormPreviewSection>
   );
