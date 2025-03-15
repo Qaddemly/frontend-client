@@ -17,6 +17,7 @@ import ResumeSkillsForm from "./forms/ResumeSkillsForm.tsx";
 import ResumeEucationForm from "./forms/ResumeEucationForm.tsx";
 import ResumeCertificatesForm from "./forms/ResumeCertificatesForm.tsx";
 import ResumeExperienceForm from "./forms/ResumeExperienceForm.tsx";
+import ResumeProjectForm from "./forms/ResumeProjectForm.tsx";
 
 function FormPreview() {
   const { setShowAddContent, status, setStatus, resumeInfo, setCurrId } =
@@ -55,7 +56,6 @@ function FormPreview() {
           <FontAwesomeIcon icon={faFileArrowDown} className="text-xl" />
         </Button>
       </div>
-
       {(status[0] === "normal" && status[1] === "personal") ||
       status.includes("start") ? (
         <div className="flex items-center justify-between rounded-lg bg-white px-8 py-5 shadow-md">
@@ -67,55 +67,50 @@ function FormPreview() {
           />
         </div>
       ) : null}
-
       {/*/////////////////////////////////////////// Create Forms  ///////////////////////////////////////////////*/}
-
       {status.includes("add") && status.includes("personal") && (
         <ResumePersonalForm mode="add" />
       )}
-
       {status.includes("add") && status.includes("aboutme") && (
         <ResumeAboutmeForm mode="add" />
       )}
-
       {status.includes("add") && status.includes("education") && (
         <ResumeEucationForm mode="add" />
       )}
-
       {status.includes("add") && status.includes("workExperience") && (
         <ResumeExperienceForm mode="add" />
       )}
-
       {status.includes("add") && status.includes("skills") && (
         <ResumeSkillsForm mode="add" />
       )}
-
       {status.includes("add") && status.includes("certifications") && (
         <ResumeCertificatesForm mode="add" />
+      )}
+
+      {status.includes("add") && status.includes("projects") && (
+        <ResumeProjectForm mode="add" />
       )}
       {/*/////////////////////////////////////////// Edit Forms  ///////////////////////////////////////////////*/}
       {status.includes("edit") && status.includes("personal") && (
         <ResumePersonalForm mode="edit" />
       )}
-
       {status.includes("edit") && status.includes("aboutme") && (
         <ResumeAboutmeForm mode="edit" />
       )}
-
       {status.includes("edit") && status.includes("education") && (
         <ResumeEucationForm mode="edit" />
       )}
-
       {status.includes("edit") && status.includes("workExperience") && (
         <ResumeExperienceForm mode="edit" />
       )}
-
       {status.includes("edit") && status.includes("skills") && (
         <ResumeSkillsForm mode="edit" />
       )}
-
       {status.includes("edit") && status.includes("certifications") && (
         <ResumeCertificatesForm mode="edit" />
+      )}
+      {status.includes("edit") && status.includes("projects") && (
+        <ResumeProjectForm mode="edit" />
       )}
       {/*///////////////////////////////////////////  Sections  ///////////////////////////////////////////////*/}
       {status[0] === "normal" && (
@@ -198,9 +193,24 @@ function FormPreview() {
               }}
             />
           )}
+
+          {/* Projects Section */}
+          {resumeInfo?.projects?.length > 0 && (
+            <ResumeSection
+              title="Projects"
+              items={resumeInfo.projects}
+              idField="id"
+              displayField="title"
+              handleEdit={(id) => {
+                if (typeof id === "number") {
+                  setCurrId(id);
+                  setStatus(["edit", "projects"]);
+                }
+              }}
+            />
+          )}
         </>
       )}
-
       <div className="flex justify-center">
         <Button
           onClick={() => setShowAddContent(true)}

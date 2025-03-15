@@ -4,6 +4,7 @@ import ResumeEducationPreview from "./preview/ResumeEducationPreview.tsx";
 import ResumeSkillsPreview from "./preview/ResumeSkillsPreview.tsx";
 import ResumeCertificatesPreview from "./preview/ResumeCertificatesPreview.tsx";
 import ResumeExperiencePreview from "./preview/ResumeExperiencePreview.tsx";
+import ResumeProjectsPreview from "./preview/ResumeProjectsPreview.tsx";
 
 function ResumePreview({ className }: { className?: string }) {
   const width = className?.split(" ").find((x) => x.match("w-"));
@@ -18,6 +19,7 @@ function ResumePreview({ className }: { className?: string }) {
       <ResumeExperiencePreview />
       <ResumeSkillsPreview />
       <ResumeCertificatesPreview />
+      <ResumeProjectsPreview />
     </div>
   );
 }

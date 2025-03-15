@@ -13,8 +13,11 @@ import {
   IGetResumeExperienceInfoResponse,
   IGetResumeExperiencesInfoResponse,
   IGetResumePersonalInfoResponse,
+  IGetResumeProjectInfoResponse,
+  IGetResumeProjectsInfoResponse,
   IGetResumeSkillInfoResponse,
   IGetResumeSkillsInfoResponse,
+  IProjectsInputs,
   ISkillsInputs,
 } from "../interfaces/ResumeBuilder.interfaces.ts";
 
@@ -296,6 +299,57 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
+    ///////////////////////////////////////////// Projects //////////////////////////////////////////////
+    getAllResumeProjects: builder.query<
+      IGetResumeProjectsInfoResponse,
+      { resumeId: string }
+    >({
+      query: ({ resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/project`,
+        method: "GET",
+      }),
+    }),
+    getResumeProject: builder.query<
+      IGetResumeProjectInfoResponse,
+      { resumeId: string; projectId: string }
+    >({
+      query: ({ resumeId, projectId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/project/${projectId}`,
+        method: "GET",
+      }),
+    }),
+    addResumeProject: builder.mutation<
+      IGetResumeProjectInfoResponse,
+      {
+        resumeId: string;
+        data: IProjectsInputs;
+      }
+    >({
+      query: ({ data, resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/project`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    updateResumeProject: builder.mutation<
+      IGetResumeProjectInfoResponse,
+      { resumeId: string; data: IProjectsInputs; projectId: string }
+    >({
+      query: ({ data, resumeId, projectId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/project/${projectId}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    deleteResumeProject: builder.mutation<
+      void,
+      { resumeId: string; projectId: string }
+    >({
+      query: ({ resumeId, projectId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/project/${projectId}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -335,4 +389,10 @@ export const {
   useAddResumeCertificateMutation,
   useUpdateResumeCertificateMutation,
   useDeleteResumeCertificateMutation,
+  ///////////////////////////////////////////// Projects //////////////////////////////////////////////
+  useGetAllResumeProjectsQuery,
+  useGetResumeProjectQuery,
+  useAddResumeProjectMutation,
+  useUpdateResumeProjectMutation,
+  useDeleteResumeProjectMutation,
 } = resumeBuilderApi;

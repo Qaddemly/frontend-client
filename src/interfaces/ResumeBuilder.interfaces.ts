@@ -39,6 +39,7 @@ export interface IResumeInfo {
   skills: ISkillsInputs[];
   experience: IExperienceInputs[];
   certificates: ICertificatesInputs[];
+  projects: IProjectsInputs[];
 }
 
 ///////////////////////////////////////////// Resume Template //////////////////////////////////////////////
@@ -155,6 +156,22 @@ export interface ICertificatesInputs {
 export interface IResumeCertificate extends ICertificatesInputs {
   resumeTemplate: IResumeTemplate;
 }
+///////////////////////////////////////////// Projects //////////////////////////////////////////////
+export interface IProjectsInputs {
+  id?: number;
+  title: string;
+  subtitle: string;
+  project_link: string;
+  start_date: string;
+  end_date: string;
+  description: string;
+  is_current: boolean;
+  [x: string]: string | number | boolean | undefined | IResumeTemplate;
+}
+
+export interface IResumeProjects extends IProjectsInputs {
+  resumeTemplate: IResumeTemplate;
+}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////// Personal Api Response //////////////////////////////////////////////
 export interface IGetResumePersonalInfoResponse {
@@ -206,4 +223,14 @@ export interface IGetResumeCertificatesInfoResponse {
 export interface IGetResumeCertificateInfoResponse {
   success: boolean;
   certificateContent: IResumeCertificate;
+}
+///////////////////////////////////////////// Projects Api Response //////////////////////////////////////////////
+export interface IGetResumeProjectsInfoResponse {
+  success: boolean;
+  projectsContent: IResumeProjects[];
+}
+
+export interface IGetResumeProjectInfoResponse {
+  success: boolean;
+  projectContent: IResumeProjects;
 }

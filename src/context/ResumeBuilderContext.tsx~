@@ -165,7 +165,7 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
             start_date: project.start_date ?? "",
             end_date: project.end_date ?? "",
             description: project.description ?? "",
-            is_current: false,
+          is_current:false,
           }))
         : [],
     }));
