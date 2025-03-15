@@ -157,7 +157,7 @@ function FormPreview() {
               title="Experience"
               items={resumeInfo.experience}
               idField="id"
-              displayField="experience"
+              displayField="job_title"
               handleEdit={(id) => {
                 if (typeof id === "number") {
                   setCurrId(id);

@@ -37,37 +37,37 @@ function ResumeExperienceForm({ mode }: { mode: FormMode }) {
   const [deleteResumeExperience] = useDeleteResumeExperienceMutation();
 
   const [jobTitle, setJobTitle] = useState(
-    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.name
+    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.job_title
       ? resumeInfo.experience[indexOfCurrExp].job_title
       : "",
   );
   const [company, setCompany] = useState(
-    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.information
+    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.company_name
       ? resumeInfo.experience[indexOfCurrExp].company_name
       : "",
   );
   const [country, setCountry] = useState(
-    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.level
+    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.country
       ? resumeInfo.experience[indexOfCurrExp].country
       : "",
   );
   const [city, setCity] = useState(
-    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.level
+    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.city
       ? resumeInfo.experience[indexOfCurrExp].city
       : "",
   );
   const [startDate, setStartDate] = useState(
-    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.level
+    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.start_date
       ? resumeInfo.experience[indexOfCurrExp].start_date
       : "",
   );
   const [endDate, setEndDate] = useState(
-    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.level
+    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.end_date
       ? resumeInfo.experience[indexOfCurrExp].end_date
       : "",
   );
   const [description, setDescription] = useState(
-    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.level
+    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.description
       ? resumeInfo.experience[indexOfCurrExp].description
       : "",
   );
@@ -130,10 +130,10 @@ function ResumeExperienceForm({ mode }: { mode: FormMode }) {
       case "city":
         setCity(value);
         break;
-      case "startDate":
+      case "start_date":
         setStartDate(value);
         break;
-      case "endDate":
+      case "end_date":
         setEndDate(value);
         break;
       case "description":
@@ -276,9 +276,9 @@ function ResumeExperienceForm({ mode }: { mode: FormMode }) {
         <StartToEndDate
           startDate="start_date"
           startDateDefaultValue={startDate?.toString()}
-          onChangeStartDate={(e) => handleOnChange(e, "endDate")}
+          onChangeStartDate={(e) => handleOnChange(e, "end_date")}
           endDate="end_date"
-          onChangeEndDate={(e) => handleOnChange(e, "startDate")}
+          onChangeEndDate={(e) => handleOnChange(e, "start_date")}
           endDateDefaultValue={endDate?.toString()}
         />
 

@@ -131,10 +131,10 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
       case "city":
         setCity(value);
         break;
-      case "startDate":
+      case "start_date":
         setStartDate(value);
         break;
-      case "endDate":
+      case "end_date":
         setEndDate(value);
         break;
       case "description":
@@ -277,9 +277,9 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
         <StartToEndDate
           startDate="start_date"
           startDateDefaultValue={startDate?.toString()}
-          onChangeStartDate={(e) => handleOnChange(e, "endDate")}
+          onChangeStartDate={(e) => handleOnChange(e, "end_date")}
           endDate="end_date"
-          onChangeEndDate={(e) => handleOnChange(e, "startDate")}
+          onChangeEndDate={(e) => handleOnChange(e, "start_date")}
           endDateDefaultValue={endDate?.toString()}
         />
 
