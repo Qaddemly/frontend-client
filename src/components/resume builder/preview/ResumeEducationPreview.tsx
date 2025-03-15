@@ -8,7 +8,7 @@ function ResumeEducationPreview() {
     <div className="mt-5 text-sm">
       {educationInfo?.length > 0 && (
         <>
-          <p className="text-lg font-medium">Edcuation</p>
+          <p className="text-lg font-medium">Education</p>
           <hr className="mb-2 border-[1.5px]" />
         </>
       )}

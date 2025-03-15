@@ -16,7 +16,6 @@ import ResumeSection from "./sections/ResumeSection.tsx";
 import ResumeSkillsForm from "./forms/ResumeSkillsForm.tsx";
 import ResumeEucationForm from "./forms/ResumeEucationForm.tsx";
 import ResumeCertificatesForm from "./forms/ResumeCertificatesForm.tsx";
-import ResumeExperienceForm from "./forms/ResumeExperienceForm.tsx";
 
 function FormPreview() {
   const { setShowAddContent, status, setStatus, resumeInfo, setCurrId } =
@@ -82,10 +81,6 @@ function FormPreview() {
         <ResumeEucationForm mode="add" />
       )}
 
-      {status.includes("add") && status.includes("workExperience") && (
-        <ResumeExperienceForm mode="add" />
-      )}
-
       {status.includes("add") && status.includes("skills") && (
         <ResumeSkillsForm mode="add" />
       )}
@@ -104,10 +99,6 @@ function FormPreview() {
 
       {status.includes("edit") && status.includes("education") && (
         <ResumeEucationForm mode="edit" />
-      )}
-
-      {status.includes("edit") && status.includes("workExperience") && (
-        <ResumeExperienceForm mode="edit" />
       )}
 
       {status.includes("edit") && status.includes("skills") && (

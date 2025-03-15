@@ -17,6 +17,13 @@ import {
   IGetResumeSkillsInfoResponse,
   ISkillsInputs,
 } from "../interfaces/ResumeBuilder.interfaces.ts";
+import {
+  BaseQueryFn,
+  EndpointBuilder,
+  FetchArgs,
+  FetchBaseQueryError,
+  FetchBaseQueryMeta,
+} from "@reduxjs/toolkit/query";
 
 const BASE_RESUME_URL = "/resumeTemplate";
 

@@ -13,6 +13,7 @@ import {
 import {
   useGetAllResumeCertificatesQuery,
   useGetAllResumeEducationQuery,
+  useGetAllResumeExperienceQuery,
   useGetAllResumeSkillsQuery,
   useGetAllResumeTemplatesQuery,
   useGetResumePersonalQuery,
@@ -70,6 +71,10 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
   } = useGetAllResumeEducationQuery({
     resumeId: resumeId || "",
   });
+  ///////////////////////////////////////////// Experience //////////////////////////////////////////////
+  const { data: resumeExperience } = useGetAllResumeExperienceQuery({
+    resumeId: resumeId || "",
+  });
   ///////////////////////////////////////////// Skills //////////////////////////////////////////////
   const { data: resumeSkills } = useGetAllResumeSkillsQuery({
     resumeId: resumeId || "",
@@ -117,6 +122,19 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
             is_current: false,
           }))
         : [],
+      experience: resumeExperience?.data
+        ? resumeExperience.data.map((experience) => ({
+            id: experience.id ?? 0,
+            job_title: experience.job_title ?? "",
+            company_name: experience.company_name ?? "",
+            city: experience.city ?? "",
+            country: experience.country ?? "",
+            start_date: experience.start_date ?? "",
+            end_date: experience.end_date ?? "",
+            description: experience.description ?? "",
+            is_current: false,
+          }))
+        : [],
       skills: resumeSkills?.skillsContent
         ? resumeSkills.skillsContent.map((skill) => ({
             id: skill.id ?? 0,
@@ -138,8 +156,9 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
     isLoading,
     isSuccess,
     resumeTemplatesData,
-    resumeEducation,
     resumePersonal,
+    resumeEducation,
+    resumeExperience,
     resumeSkills,
     resumeCertificates,
     currId,

@@ -74,7 +74,7 @@ function ResumeSkillsForm({ mode }: { mode: FormMode }) {
             updateResumeSkill({
               data: skillsData,
               resumeId: resumeId || "",
-              skillId: currId.toString() || "",
+              id: currId.toString() || "",
             }).unwrap(),
           mode,
         );
@@ -84,7 +84,7 @@ function ResumeSkillsForm({ mode }: { mode: FormMode }) {
     }
   };
 
-  function handleFieldChange(
+  function handleOnChange(
     e: React.ChangeEvent<HTMLInputElement> | ContentEditableEvent,
     field: string,
   ) {
@@ -134,7 +134,7 @@ function ResumeSkillsForm({ mode }: { mode: FormMode }) {
         () =>
           deleteResumeSkill({
             resumeId: resumeId || "",
-            skillId: currId.toString() || "",
+            id: currId.toString() || "",
           }).unwrap(),
         "delete",
       );
@@ -166,7 +166,7 @@ function ResumeSkillsForm({ mode }: { mode: FormMode }) {
         <InputField id="skill" label="Skill">
           <Input
             register={register}
-            onChange={(e) => handleFieldChange(e, "name")}
+            onChange={(e) => handleOnChange(e, "name")}
             value={name}
             name="name"
             props={{
@@ -180,13 +180,13 @@ function ResumeSkillsForm({ mode }: { mode: FormMode }) {
         <RichTextEditor
           label="Description/Sub-skill"
           value={information}
-          onChange={(e) => handleFieldChange(e, "information")}
+          onChange={(e) => handleOnChange(e, "information")}
         />
 
         <InputField id="level" label="Skill level">
           <Input
             register={register}
-            onChange={(e) => handleFieldChange(e, "level")}
+            onChange={(e) => handleOnChange(e, "level")}
             value={level}
             name="level"
             props={{
@@ -196,7 +196,21 @@ function ResumeSkillsForm({ mode }: { mode: FormMode }) {
             }}
           />
         </InputField>
-        <ResumeFormButtons mode={mode} handleDelete={(e) => handleDelete(e)} />
+        <ResumeFormButtons
+          mode={mode}
+          handleDelete={(e) => handleDelete(e)}
+          handleCancel={() => {
+            setResumeInfo((prevInfo) => {
+              const updatedArray = prevInfo.skills.filter(
+                (skill) => skill.id !== 303030,
+              );
+              return {
+                ...prevInfo,
+                skills: updatedArray,
+              };
+            });
+          }}
+        />
       </form>
     </FormPreviewSection>
   );

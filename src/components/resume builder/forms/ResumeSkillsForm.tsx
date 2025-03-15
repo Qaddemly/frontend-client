@@ -196,7 +196,21 @@ function ResumeSkillsForm({ mode }: { mode: FormMode }) {
             }}
           />
         </InputField>
-        <ResumeFormButtons mode={mode} handleDelete={(e) => handleDelete(e)} />
+        <ResumeFormButtons
+          mode={mode}
+          handleDelete={(e) => handleDelete(e)}
+          handleCancel={() => {
+            setResumeInfo((prevInfo) => {
+              const updatedArray = prevInfo.skills.filter(
+                (skill) => skill.id !== 303030,
+              );
+              return {
+                ...prevInfo,
+                skills: updatedArray,
+              };
+            });
+          }}
+        />
       </form>
     </FormPreviewSection>
   );
