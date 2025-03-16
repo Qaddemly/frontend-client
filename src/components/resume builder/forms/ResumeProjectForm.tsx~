@@ -265,9 +265,9 @@ function ResumeProjectForm({ mode }: { mode: FormMode }) {
         <StartToEndDate
           startDate="start_date"
           startDateDefaultValue={startDate?.toString()}
-          onChangeStartDate={(e) => handleOnChange(e, "start_date")}
+          onChangeStartDate={(e) => handleOnChange(e, "end_date")}
           endDate="end_date"
-          onChangeEndDate={(e) => handleOnChange(e, "end_date")}
+          onChangeEndDate={(e) => handleOnChange(e, "start_date")}
           endDateDefaultValue={endDate?.toString()}
         />
 

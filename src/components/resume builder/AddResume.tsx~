@@ -99,7 +99,7 @@ function AddResume() {
           key={resume.id}
           onClick={() => navigate(`/resumeBuilder/edit/${resume.id}`)}
         >
-          <ResumePreview className="h-[400px] w-[18rem] cursor-pointer flex-col items-center justify-center gap-2 break-words rounded-lg bg-white p-5 text-center text-[1px] shadow-sm transition-all hover:scale-105 hover:shadow-md" />
+          <ResumePreview className="h-[400px] w-[18rem] cursor-pointer flex-col items-center justify-center gap-2 break-words rounded-lg bg-white p-5 text-center text-xs shadow-sm transition-all hover:scale-105 hover:shadow-md" />
           <div className="mt-5 flex items-center justify-between">
             <div>
               <p className="text-lg font-semibold">{resume.name}</p>

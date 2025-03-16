@@ -27,11 +27,8 @@ function ResumeProjectsPreview() {
                 </p>
               </p>
             </div>
-            <div className="rich-text-editor flex justify-between">
-              <p
-                dangerouslySetInnerHTML={{ __html: project.description }}
-                className="w-[30rem]"
-              ></p>
+            <div className="rich-text-editor w-full break-words">
+              <p dangerouslySetInnerHTML={{ __html: project.description }}></p>
             </div>
           </div>
         ))}

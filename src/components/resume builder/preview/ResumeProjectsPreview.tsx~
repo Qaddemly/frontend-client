@@ -8,7 +8,7 @@ function ResumeProjectsPreview() {
     <div className="mt-5 text-sm">
       {ProjectsInfo?.length > 0 && (
         <>
-          <p className="text-lg font-medium">Experience</p>
+          <p className="text-lg font-medium">Projects</p>
           <hr className="mb-2 border-[1.5px]" />
         </>
       )}
@@ -27,11 +27,8 @@ function ResumeProjectsPreview() {
                 </p>
               </p>
             </div>
-            <div className="rich-text-editor flex justify-between">
-              <p
-                dangerouslySetInnerHTML={{ __html: project.description }}
-                className="w-[30rem]"
-              ></p>
+            <div className="rich-text-editor w-[30rem] break-words">
+              <p dangerouslySetInnerHTML={{ __html: project.description }}></p>
             </div>
           </div>
         ))}

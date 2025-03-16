@@ -27,7 +27,7 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
   });
   const [addResumeEducation] = useAddResumeEducationMutation();
   const [updateResumeEducation] = useUpdateResumeEducationMutation();
-  const [deleteResumePersonal] = useDeleteResumeEducationMutation();
+  const [deleteResumeEducation] = useDeleteResumeEducationMutation();
 
   const indexOfCurrEdu = resumeInfo?.education?.findIndex(
     (edu) => edu?.id === currId,
@@ -190,7 +190,7 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
     try {
       await handleResumeAction(
         () =>
-          deleteResumePersonal({
+          deleteResumeEducation({
             resumeId: resumeId || "",
             educationId: currId.toString() || "",
           }).unwrap(),

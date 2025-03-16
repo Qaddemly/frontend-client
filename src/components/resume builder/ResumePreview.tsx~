@@ -19,8 +19,8 @@ const components = [
 
 function ResumePreview({ className }: { className?: string }) {
   const width = className?.split(" ").find((x) => x.match("w-"));
-  // const height = className?.split(" ").find((x) => x.match("h-"));
-  // const text = className?.split(" ").find((x) => x.match("text-"));
+  const height = className?.split(" ").find((x) => x.match("h-"));
+  const text = className?.split(" ").find((x) => x.match("text-"));
   const [sections, setSections] = useState<[number, number][]>([
     [0, components.length],
   ]);
