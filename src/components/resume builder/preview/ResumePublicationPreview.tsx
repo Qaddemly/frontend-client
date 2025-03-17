@@ -14,7 +14,7 @@ function ResumePublicationPreview() {
       )}
       <div className="flex flex-col gap-3">
         {publicationInfo?.map((publication) => (
-          <div>
+          <div key={publication.id}>
             <div className="flex w-full justify-between">
               <p className="text-sm">
                 <span className="font-semibold">{publication.title}</span>,{" "}

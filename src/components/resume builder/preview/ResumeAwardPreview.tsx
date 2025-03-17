@@ -14,7 +14,7 @@ function ResumeAwardPreview() {
       )}
       <div className="flex flex-col gap-3">
         {awardInfo?.map((award) => (
-          <div>
+          <div key={award.id}>
             <div className="flex w-full justify-between">
               <p className="text-sm">
                 <span className="font-semibold">{award.award}</span>,{" "}
