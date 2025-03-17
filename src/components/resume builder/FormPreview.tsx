@@ -17,6 +17,8 @@ import ResumeSkillsForm from "./forms/ResumeSkillsForm.tsx";
 import ResumeEucationForm from "./forms/ResumeEucationForm.tsx";
 import ResumeCertificatesForm from "./forms/ResumeCertificatesForm.tsx";
 import ResumeExperienceForm from "./forms/ResumeExperienceForm.tsx";
+import ResumeAwardsForm from "./forms/ResumeAwardsForm.tsx";
+import ResumePublicationsForm from "./forms/ResumePublicationsForm.tsx";
 
 function FormPreview() {
   const { setShowAddContent, status, setStatus, resumeInfo, setCurrId } =
@@ -93,6 +95,14 @@ function FormPreview() {
       {status.includes("add") && status.includes("certifications") && (
         <ResumeCertificatesForm mode="add" />
       )}
+
+      {status.includes("add") && status.includes("achievements") && (
+        <ResumeAwardsForm mode="add" />
+      )}
+
+      {status.includes("add") && status.includes("publications") && (
+        <ResumePublicationsForm mode="add" />
+      )}
       {/*/////////////////////////////////////////// Edit Forms  ///////////////////////////////////////////////*/}
       {status.includes("edit") && status.includes("personal") && (
         <ResumePersonalForm mode="edit" />
@@ -116,6 +126,14 @@ function FormPreview() {
 
       {status.includes("edit") && status.includes("certifications") && (
         <ResumeCertificatesForm mode="edit" />
+      )}
+
+      {status.includes("edit") && status.includes("achievements") && (
+        <ResumeAwardsForm mode="edit" />
+      )}
+
+      {status.includes("edit") && status.includes("publications") && (
+        <ResumePublicationsForm mode="edit" />
       )}
       {/*///////////////////////////////////////////  Sections  ///////////////////////////////////////////////*/}
       {status[0] === "normal" && (
@@ -194,6 +212,36 @@ function FormPreview() {
                 if (typeof id === "number") {
                   setCurrId(id);
                   setStatus(["edit", "certifications"]);
+                }
+              }}
+            />
+          )}
+          {/* Achievements and Awards Section */}
+          {resumeInfo?.awards?.length > 0 && (
+            <ResumeSection
+              title="Achievements and Awards"
+              items={resumeInfo.awards}
+              idField="id"
+              displayField="award"
+              handleEdit={(id) => {
+                if (typeof id === "number") {
+                  setCurrId(id);
+                  setStatus(["edit", "achievements"]);
+                }
+              }}
+            />
+          )}
+          {/* Publications Section */}
+          {resumeInfo?.publications?.length > 0 && (
+            <ResumeSection
+              title="Publications"
+              items={resumeInfo.publications}
+              idField="id"
+              displayField="title"
+              handleEdit={(id) => {
+                if (typeof id === "number") {
+                  setCurrId(id);
+                  setStatus(["edit", "publications"]);
                 }
               }}
             />
