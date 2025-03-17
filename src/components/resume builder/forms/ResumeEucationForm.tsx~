@@ -15,8 +15,7 @@ import {
 } from "../../../services/resumeBuilderApi.ts";
 import { handleApiError, handleResumeAction } from "../../../utils/helpers.ts";
 import { useParams } from "react-router-dom";
-
-type FormMode = "add" | "edit";
+import { FormMode } from "../../../interfaces/ResumeBuilder.interfaces.ts";
 
 function ResumeEducationForm({ mode }: { mode: FormMode }) {
   const { resumeId } = useParams();
@@ -27,7 +26,7 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
   });
   const [addResumeEducation] = useAddResumeEducationMutation();
   const [updateResumeEducation] = useUpdateResumeEducationMutation();
-  const [deleteResumePersonal] = useDeleteResumeEducationMutation();
+  const [deleteResumeEducation] = useDeleteResumeEducationMutation();
 
   const indexOfCurrEdu = resumeInfo?.education?.findIndex(
     (edu) => edu?.id === currId,
@@ -103,7 +102,7 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
             updateResumeEducation({
               data: educationData,
               resumeId: resumeId || "",
-              id: currId.toString() || "",
+              educationId: currId.toString() || "",
             }).unwrap(),
           mode,
         );
@@ -131,10 +130,10 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
       case "city":
         setCity(value);
         break;
-      case "startDate":
+      case "start_date":
         setStartDate(value);
         break;
-      case "endDate":
+      case "end_date":
         setEndDate(value);
         break;
       case "description":
@@ -190,9 +189,9 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
     try {
       await handleResumeAction(
         () =>
-          deleteResumePersonal({
+          deleteResumeEducation({
             resumeId: resumeId || "",
-            id: currId.toString() || "",
+            educationId: currId.toString() || "",
           }).unwrap(),
         "delete",
       );
@@ -277,9 +276,9 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
         <StartToEndDate
           startDate="start_date"
           startDateDefaultValue={startDate?.toString()}
-          onChangeStartDate={(e) => handleOnChange(e, "endDate")}
+          onChangeStartDate={(e) => handleOnChange(e, "start_date")}
           endDate="end_date"
-          onChangeEndDate={(e) => handleOnChange(e, "startDate")}
+          onChangeEndDate={(e) => handleOnChange(e, "end_date")}
           endDateDefaultValue={endDate?.toString()}
         />
 
@@ -293,7 +292,7 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
           handleDelete={(e) => handleDelete(e)}
           handleCancel={() => {
             setResumeInfo((prevInfo) => {
-              const updatedArray = prevInfo.education.filter(
+              const updatedArray = prevInfo?.education?.filter(
                 (edu) => edu.id !== 303030,
               );
               return {

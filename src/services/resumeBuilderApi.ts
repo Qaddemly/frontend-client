@@ -3,18 +3,24 @@ import {
   IAddPersonalInfoResponse,
   IAddResumeTemplateResopnse,
   ICertificatesInputs,
+  ICustomInputs,
   IEducationInputs,
   IExperienceInputs,
+  IGetAllResumeCustomInfoResponse,
   IGetAllResumeEducationResponse,
   IGetAllResumeTemplatesResponse,
   IGetResumeCertificateInfoResponse,
   IGetResumeCertificatesInfoResponse,
+  IGetResumeCustomInfoResponse,
   IGetResumeEducationResponse,
   IGetResumeExperienceInfoResponse,
   IGetResumeExperiencesInfoResponse,
   IGetResumePersonalInfoResponse,
+  IGetResumeProjectInfoResponse,
+  IGetResumeProjectsInfoResponse,
   IGetResumeSkillInfoResponse,
   IGetResumeSkillsInfoResponse,
+  IProjectsInputs,
   ISkillsInputs,
   IGetResumeAwardsInfoResponse,
   IGetResumeAwardInfoResponse,
@@ -29,10 +35,14 @@ const BASE_RESUME_URL = "/resumeTemplate";
 export const resumeBuilderApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     ///////////////////////////////////////////// Resume Template //////////////////////////////////////////////
-    addResumeTemplate: builder.mutation<IAddResumeTemplateResopnse, void>({
-      query: () => ({
+    addResumeTemplate: builder.mutation<
+      IAddResumeTemplateResopnse,
+      { data: { name: string } }
+    >({
+      query: ({ data }) => ({
         url: `${BASE_RESUME_URL}`,
         method: "POST",
+        body: data,
       }),
     }),
     getAllResumeTemplates: builder.query<IGetAllResumeTemplatesResponse, void>({
@@ -302,6 +312,34 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
+    ///////////////////////////////////////////// Projects //////////////////////////////////////////////
+    getAllResumeProjects: builder.query<
+      IGetResumeProjectsInfoResponse,
+      { resumeId: string }
+    >({
+      query: ({ resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/project`,
+        method: "GET",
+      }),
+    }),
+    getResumeProject: builder.query<
+      IGetResumeProjectInfoResponse,
+      { resumeId: string; projectId: string }
+    >({
+      query: ({ resumeId, projectId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/project/${projectId}`,
+        method: "GET",
+      }),
+    }),
+    addResumeProject: builder.mutation<
+      IGetResumeProjectInfoResponse,
+      {
+        resumeId: string;
+        data: IProjectsInputs;
+      }
+    >({
+      query: ({ data, resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/project`,
     ///////////////////////////////////////////// Awards //////////////////////////////////////////////
     getAllResumeAwards: builder.query<
       IGetResumeAwardsInfoResponse,
@@ -334,6 +372,12 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    updateResumeProject: builder.mutation<
+      IGetResumeProjectInfoResponse,
+      { resumeId: string; data: IProjectsInputs; projectId: string }
+    >({
+      query: ({ data, resumeId, projectId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/project/${projectId}`,
     updateResumeAward: builder.mutation<
       IGetResumeAwardInfoResponse,
       { resumeId: string; data: IAwardsInputs; awardId: string }
@@ -344,6 +388,43 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    deleteResumeProject: builder.mutation<
+      void,
+      { resumeId: string; projectId: string }
+    >({
+      query: ({ resumeId, projectId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/project/${projectId}`,
+        method: "DELETE",
+      }),
+    }),
+    ///////////////////////////////////////////// Custom //////////////////////////////////////////////
+    getAllResumeCustom: builder.query<
+      IGetAllResumeCustomInfoResponse,
+      { resumeId: string }
+    >({
+      query: ({ resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/customSection`,
+        method: "GET",
+      }),
+    }),
+    getResumeCustom: builder.query<
+      IGetResumeCustomInfoResponse,
+      { resumeId: string; customId: string }
+    >({
+      query: ({ resumeId, customId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/customSection/${customId}`,
+        method: "GET",
+      }),
+    }),
+    addResumeCustom: builder.mutation<
+      IGetResumeCustomInfoResponse,
+      {
+        resumeId: string;
+        data: ICustomInputs;
+      }
+    >({
+      query: ({ data, resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/customSection`,
     deleteResumeAward: builder.mutation<
       void,
       { resumeId: string; awardId: string }
@@ -385,6 +466,12 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    updateResumeCustom: builder.mutation<
+      IGetResumeCustomInfoResponse,
+      { resumeId: string; data: ICustomInputs; customId: string }
+    >({
+      query: ({ data, resumeId, customId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/customSection/${customId}`,
     updateResumePublication: builder.mutation<
       IGetResumePublicationInfoResponse,
       { resumeId: string; data: IPublicationsInputs; publicationId: string }
@@ -395,6 +482,12 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    deleteResumeCustom: builder.mutation<
+      void,
+      { resumeId: string; customId: string }
+    >({
+      query: ({ resumeId, customId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/customSection/${customId}`,
     deleteResumePublication: builder.mutation<
       void,
       { resumeId: string; publicationId: string }
@@ -443,6 +536,18 @@ export const {
   useAddResumeCertificateMutation,
   useUpdateResumeCertificateMutation,
   useDeleteResumeCertificateMutation,
+  ///////////////////////////////////////////// Projects //////////////////////////////////////////////
+  useGetAllResumeProjectsQuery,
+  useGetResumeProjectQuery,
+  useAddResumeProjectMutation,
+  useUpdateResumeProjectMutation,
+  useDeleteResumeProjectMutation,
+  ///////////////////////////////////////////// Custom //////////////////////////////////////////////
+  useGetAllResumeCustomQuery,
+  useGetResumeCustomQuery,
+  useAddResumeCustomMutation,
+  useUpdateResumeCustomMutation,
+  useDeleteResumeCustomMutation,
   ///////////////////////////////////////////// Awards //////////////////////////////////////////////
   useAddResumeAwardMutation,
   useGetAllResumeAwardsQuery,

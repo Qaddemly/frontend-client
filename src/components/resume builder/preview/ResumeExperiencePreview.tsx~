@@ -30,7 +30,7 @@ function ResumeExperiencePreview() {
             <div className="rich-text-editor flex justify-between">
               <p
                 dangerouslySetInnerHTML={{ __html: exp.description }}
-                className="w-[30rem] break-words"
+                className="w-[30rem]"
               ></p>
               <p className="italic">
                 {exp.city}, {exp.country}
