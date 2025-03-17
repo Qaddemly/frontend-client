@@ -40,7 +40,7 @@ export interface IResumeInfo {
   experience: IExperienceInputs[];
   certificates: ICertificatesInputs[];
   projects: IProjectsInputs[];
-  custom:ICustomInputs[];
+  custom: ICustomInputs[];
 }
 
 ///////////////////////////////////////////// Resume Template //////////////////////////////////////////////

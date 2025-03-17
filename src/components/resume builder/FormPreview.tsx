@@ -1,13 +1,12 @@
 import Button from "../common/Button.tsx";
 import {
-  faCheck,
+  // faCheck,
   faFileArrowDown,
   faPenToSquare,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
-import Input from "../common/Input.tsx";
+
 import ResumePersonalForm from "./forms/ResumePersonalForm.tsx";
 import ResumeAboutmeForm from "./forms/ResumeAboutmeForm.tsx";
 import { useResumeBuilder } from "../../context/ResumeBuilderContext.tsx";
@@ -19,39 +18,51 @@ import ResumeCertificatesForm from "./forms/ResumeCertificatesForm.tsx";
 import ResumeExperienceForm from "./forms/ResumeExperienceForm.tsx";
 import ResumeProjectForm from "./forms/ResumeProjectForm.tsx";
 import ResumeCustomForm from "./forms/ResumeCustomForm.tsx";
+import { useParams } from "react-router-dom";
 
 function FormPreview() {
-  const { setShowAddContent, status, setStatus, resumeInfo, setCurrId } =
-    useResumeBuilder();
-  const [resumeName, setResumeName] = useState("My Resume");
-  const [showEditResumeName, setShowEditResumeName] = useState(false);
+  const {
+    setShowAddContent,
+    status,
+    setStatus,
+    resumeInfo,
+    setCurrId,
+    resumeTemplates,
+  } = useResumeBuilder();
+  const { resumeId } = useParams();
+  const currentResumeTemplate = resumeTemplates?.filter(
+    (resume) => resume.id === Number(resumeId),
+  );
+  // Edit resume name need handle from backend
+  // const [resumeName, setResumeName] = useState(currentResumeTemplate[0].name);
+  // const [showEditResumeName, setShowEditResumeName] = useState(false);
 
   return (
     <div className="flex w-1/3 flex-col gap-10">
       <div className="flex items-center justify-between rounded-lg bg-white px-8 py-5 shadow-md">
-        {showEditResumeName ? (
-          <div className="flex items-center gap-5">
-            <Input
-              props={{ type: "text", id: "resumeName" }}
-              value={resumeName}
-              onChange={(e) => setResumeName(e.target.value)}
-            />
-            <FontAwesomeIcon
-              icon={faCheck}
-              className="cursor-pointer rounded-md bg-main p-2 text-lg text-white"
-              onClick={() => setShowEditResumeName(false)}
-            />
-          </div>
-        ) : (
-          <p className="flex items-center gap-3 text-2xl font-medium">
-            {resumeName}
-            <FontAwesomeIcon
-              icon={faPenToSquare}
-              className="cursor-pointer text-xl text-gray-400"
-              onClick={() => setShowEditResumeName(true)}
-            />
-          </p>
-        )}
+        {/*{showEditResumeName ? (*/}
+        {/*  <div className="flex items-center gap-5">*/}
+        {/*    <Input*/}
+        {/*      props={{ type: "text", id: "resumeName" }}*/}
+        {/*      value={resumeName}*/}
+        {/*      onChange={(e) => setResumeName(e.target.value)}*/}
+        {/*    />*/}
+        {/*    <FontAwesomeIcon*/}
+        {/*      icon={faCheck}*/}
+        {/*      className="cursor-pointer rounded-md bg-main p-2 text-lg text-white"*/}
+        {/*      onClick={() => setShowEditResumeName(false)}*/}
+        {/*    />*/}
+        {/*  </div>*/}
+        {/*) : (*/}
+        {/*)}*/}
+        <p className="flex items-center gap-3 text-2xl font-medium">
+          {currentResumeTemplate[0]?.name}
+          {/*<FontAwesomeIcon*/}
+          {/*  icon={faPenToSquare}*/}
+          {/*  className="cursor-pointer text-xl text-gray-400"*/}
+          {/*  onClick={() => setShowEditResumeName(true)}*/}
+          {/*/>*/}
+        </p>
         <Button className="flex items-center gap-3 px-3">
           Download
           <FontAwesomeIcon icon={faFileArrowDown} className="text-xl" />

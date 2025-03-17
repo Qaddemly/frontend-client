@@ -6,6 +6,7 @@ import {
   useState,
 } from "react";
 import {
+  IGetResumePersonalInfoResponse,
   IResumeInfo,
   IResumeTemplate,
   ResumeStatus,
@@ -21,6 +22,7 @@ import {
   useGetResumePersonalQuery,
 } from "../services/resumeBuilderApi.ts";
 import { useParams } from "react-router-dom";
+import { skipToken } from "@reduxjs/toolkit/query";
 
 export interface ResumeBuilderContextProps {
   resumeTemplates: IResumeTemplate[];
@@ -61,38 +63,73 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
   const resumeTemplatesData = data?.data;
 
   ///////////////////////////////////////////// Personal //////////////////////////////////////////////
-  const { data: resumePersonal } = useGetResumePersonalQuery({
-    resumeId: resumeId || "",
-  });
+  const { data: resumePersonalData, isError } = useGetResumePersonalQuery(
+    resumeId && !status.includes("addResume") ? { resumeId } : skipToken,
+  );
+  const [resumePersonal, setResumePersonal] = useState<
+    IGetResumePersonalInfoResponse | undefined
+  >(undefined);
 
+  useEffect(() => {
+    if (isError) {
+      setResumePersonal({
+        success: false,
+        personaInfoContent: {
+          id: 0,
+          full_name: "",
+          job_title: "",
+          email: "",
+          phone_number: "",
+          address: "",
+          personal_information: {
+            date_of_birth: "",
+            gender: "",
+            id: "",
+            nationality: "",
+          },
+          picture: "",
+          links: {
+            gitHub: "",
+            faceBook: "",
+            website: "",
+          },
+          created_at: "",
+          updated_at: "",
+          resumeTemplate: {} as IResumeTemplate,
+        },
+      });
+    } else {
+      setResumePersonal(resumePersonalData);
+    }
+  }, [isError, resumePersonalData]);
   ///////////////////////////////////////////// Education //////////////////////////////////////////////
   const {
     data: resumeEducation,
     isLoading,
     isSuccess,
-  } = useGetAllResumeEducationQuery({
-    resumeId: resumeId || "",
-  });
+  } = useGetAllResumeEducationQuery(
+    resumeId && !status.includes("addResume") ? { resumeId } : skipToken,
+  );
   ///////////////////////////////////////////// Experience //////////////////////////////////////////////
-  const { data: resumeExperience } = useGetAllResumeExperienceQuery({
-    resumeId: resumeId || "",
-  });
+  const { data: resumeExperience } = useGetAllResumeExperienceQuery(
+    resumeId && !status.includes("addResume") ? { resumeId } : skipToken,
+  );
   ///////////////////////////////////////////// Skills //////////////////////////////////////////////
-  const { data: resumeSkills } = useGetAllResumeSkillsQuery({
-    resumeId: resumeId || "",
-  });
+  const { data: resumeSkills } = useGetAllResumeSkillsQuery(
+    resumeId && !status.includes("addResume") ? { resumeId } : skipToken,
+  );
   ///////////////////////////////////////////// Certificates //////////////////////////////////////////////
-  const { data: resumeCertificates } = useGetAllResumeCertificatesQuery({
-    resumeId: resumeId || "",
-  });
+  const { data: resumeCertificates } = useGetAllResumeCertificatesQuery(
+    resumeId && !status.includes("addResume") ? { resumeId } : skipToken,
+  );
   ///////////////////////////////////////////// Projects //////////////////////////////////////////////
-  const { data: resumeProjects } = useGetAllResumeProjectsQuery({
-    resumeId: resumeId || "",
-  });
+  const { data: resumeProjects } = useGetAllResumeProjectsQuery(
+    resumeId && !status.includes("addResume") ? { resumeId } : skipToken,
+  );
   ///////////////////////////////////////////// Custom //////////////////////////////////////////////
-  const { data: resumeCustoms } = useGetAllResumeCustomQuery({
-    resumeId: resumeId || "",
-  });
+  const { data: resumeCustoms } = useGetAllResumeCustomQuery(
+    resumeId && !status.includes("addResume") ? { resumeId } : skipToken,
+  );
 
   useEffect(() => {
     setResumeTemplates(resumeTemplatesData ?? []);
@@ -100,94 +137,96 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
       return;
     }
 
-    setResumeInfo((prevState) => ({
-      ...prevState,
-      personal: {
-        id: resumePersonal?.personaInfoContent?.id ?? 0,
-        fullName: resumePersonal?.personaInfoContent?.full_name ?? "",
-        jobTitle: resumePersonal?.personaInfoContent?.job_title ?? "",
-        email: resumePersonal?.personaInfoContent?.email ?? "",
-        phone: resumePersonal?.personaInfoContent?.phone_number ?? "",
-        address: resumePersonal?.personaInfoContent?.address ?? "",
-        aboutMe:
-          resumeTemplates.find(
-            (template) => template.id.toString() === resumeId,
-          )?.profile ?? "",
-      },
-      education: resumeEducation?.educationsContent
-        ? resumeEducation.educationsContent.map((edu) => ({
-            id: edu.id ?? 0,
-            degree: edu.degree ?? "",
-            school: edu.school ?? "",
-            country: edu.country ?? "",
-            city: edu.city ?? "",
-            start_year: 0,
-            end_year: 0,
-            start_month: 0,
-            end_month: 0,
-            start_date: edu.start_date ?? "",
-            end_date: edu.end_date ?? "",
-            description: edu.description ?? "",
-            school_link: "",
-            is_current: false,
-          }))
-        : [],
-      experience: resumeExperience?.data
-        ? resumeExperience.data.map((experience) => ({
-            id: experience.id ?? 0,
-            job_title: experience.job_title ?? "",
-            company_name: experience.company_name ?? "",
-            city: experience.city ?? "",
-            country: experience.country ?? "",
-            start_date: experience.start_date ?? "",
-            end_date: experience.end_date ?? "",
-            description: experience.description ?? "",
-            is_current: false,
-          }))
-        : [],
-      skills: resumeSkills?.skillsContent
-        ? resumeSkills.skillsContent.map((skill) => ({
-            id: skill.id ?? 0,
-            name: skill.name ?? "",
-            information: skill.information ?? "",
-            level: skill.level ?? "",
-          }))
-        : [],
-      certificates: resumeCertificates?.certificatesContent
-        ? resumeCertificates.certificatesContent.map((certificate) => ({
-            id: certificate.id ?? 0,
-            certificate: certificate.certificate ?? "",
-            certificate_url: certificate.certificate_url ?? "",
-            additional_information: certificate.additional_information ?? "",
-          }))
-        : [],
-      projects: resumeProjects?.projectsContent
-        ? resumeProjects.projectsContent.map((project) => ({
-            id: project.id ?? 0,
-            title: project.title ?? "",
-            subtitle: project.subtitle ?? "",
-            project_link: project.project_link ?? "",
-            start_date: project.start_date ?? "",
-            end_date: project.end_date ?? "",
-            description: project.description ?? "",
-            is_current: false,
-          }))
-        : [],
-      custom: resumeCustoms?.data
-        ? resumeCustoms.data.map((custom) => ({
-            id: custom.id ?? 0,
-            section_name: custom.section_name ?? "",
-            title: custom.title ?? "",
-            subtitle: custom.subtitle ?? "",
-            city: custom.city ?? "",
-            country: custom.country ?? "",
-            start_date: custom.start_date ?? "",
-            end_date: custom.end_date ?? "",
-            description: custom.description ?? "",
-            is_current: false,
-          }))
-        : [],
-    }));
+    setResumeInfo((prevState) => {
+      return {
+        ...prevState,
+        personal: {
+          id: resumePersonal?.personaInfoContent?.id ?? 0,
+          fullName: resumePersonal?.personaInfoContent?.full_name ?? "",
+          jobTitle: resumePersonal?.personaInfoContent?.job_title ?? "",
+          email: resumePersonal?.personaInfoContent?.email ?? "",
+          phone: resumePersonal?.personaInfoContent?.phone_number ?? "",
+          address: resumePersonal?.personaInfoContent?.address ?? "",
+          aboutMe:
+            resumeTemplates.find(
+              (template) => template.id.toString() === resumeId,
+            )?.profile ?? "",
+        },
+        education: resumeEducation?.educationsContent
+          ? resumeEducation.educationsContent.map((edu) => ({
+              id: edu.id ?? 0,
+              degree: edu.degree ?? "",
+              school: edu.school ?? "",
+              country: edu.country ?? "",
+              city: edu.city ?? "",
+              start_year: 0,
+              end_year: 0,
+              start_month: 0,
+              end_month: 0,
+              start_date: edu.start_date ?? "",
+              end_date: edu.end_date ?? "",
+              description: edu.description ?? "",
+              school_link: "",
+              is_current: false,
+            }))
+          : [],
+        experience: resumeExperience?.data
+          ? resumeExperience.data.map((experience) => ({
+              id: experience.id ?? 0,
+              job_title: experience.job_title ?? "",
+              company_name: experience.company_name ?? "",
+              city: experience.city ?? "",
+              country: experience.country ?? "",
+              start_date: experience.start_date ?? "",
+              end_date: experience.end_date ?? "",
+              description: experience.description ?? "",
+              is_current: false,
+            }))
+          : [],
+        skills: resumeSkills?.skillsContent
+          ? resumeSkills.skillsContent.map((skill) => ({
+              id: skill.id ?? 0,
+              name: skill.name ?? "",
+              information: skill.information ?? "",
+              level: skill.level ?? "",
+            }))
+          : [],
+        certificates: resumeCertificates?.certificatesContent
+          ? resumeCertificates.certificatesContent.map((certificate) => ({
+              id: certificate.id ?? 0,
+              certificate: certificate.certificate ?? "",
+              certificate_url: certificate.certificate_url ?? "",
+              additional_information: certificate.additional_information ?? "",
+            }))
+          : [],
+        projects: resumeProjects?.projectsContent
+          ? resumeProjects.projectsContent.map((project) => ({
+              id: project.id ?? 0,
+              title: project.title ?? "",
+              subtitle: project.subtitle ?? "",
+              project_link: project.project_link ?? "",
+              start_date: project.start_date ?? "",
+              end_date: project.end_date ?? "",
+              description: project.description ?? "",
+              is_current: false,
+            }))
+          : [],
+        custom: resumeCustoms?.data
+          ? resumeCustoms.data.map((custom) => ({
+              id: custom.id ?? 0,
+              section_name: custom.section_name ?? "",
+              title: custom.title ?? "",
+              subtitle: custom.subtitle ?? "",
+              city: custom.city ?? "",
+              country: custom.country ?? "",
+              start_date: custom.start_date ?? "",
+              end_date: custom.end_date ?? "",
+              description: custom.description ?? "",
+              is_current: false,
+            }))
+          : [],
+      };
+    });
   }, [
     isLoading,
     isSuccess,

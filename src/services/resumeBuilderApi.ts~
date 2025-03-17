@@ -31,7 +31,7 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
     ///////////////////////////////////////////// Resume Template //////////////////////////////////////////////
     addResumeTemplate: builder.mutation<
       IAddResumeTemplateResopnse,
-      { data: { name: string } }
+      { data:{name: string }}
     >({
       query: ({ data }) => ({
         url: `${BASE_RESUME_URL}`,

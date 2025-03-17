@@ -6,6 +6,7 @@ import AddResumeContent from "./AddResumeContent.tsx";
 
 function EditResume() {
   const { showAddContent } = useResumeBuilder();
+
   return (
     <ResumeBuilderLayout>
       <div className="flex justify-center gap-[10rem]">

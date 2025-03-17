@@ -3,6 +3,7 @@ import { IResponse } from "./Common.interfaces.ts";
 export type FormMode = "add" | "edit";
 
 export type ResumeStatus =
+  | "addResume"
   | "start"
   | "normal"
   | "add"

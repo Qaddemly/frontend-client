@@ -1,7 +1,7 @@
 import { faSquarePlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../common/Button.tsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../common/Modal.tsx";
 import { useNavigate } from "react-router-dom";
 import {
@@ -14,25 +14,29 @@ import ResumePreview from "./ResumePreview.tsx";
 import { useResumeBuilder } from "../../context/ResumeBuilderContext.tsx";
 
 function AddResume() {
-  const { resumeTemplates, setResumeTemplates } = useResumeBuilder();
+  const { resumeTemplates, setResumeTemplates, setStatus } = useResumeBuilder();
   const navigate = useNavigate();
   const [resumeName, setResumeName] = useState("");
   const [showModal, setShowModal] = useState(false);
-
   const [addResumeTemplate] = useAddResumeTemplateMutation();
   const [deleteResumeTemplate] = useDeleteResumeTemplateMutation();
+  const isResumeBuilderUrl = location.href.includes("resumeBuilder");
+
+  useEffect(() => {
+    if (isResumeBuilderUrl) setStatus(["addResume"]);
+  }, [isResumeBuilderUrl, setStatus]);
 
   async function handleAddResumeTemplate() {
     try {
-      const res = addResumeTemplate().unwrap();
-      toast.promise(res, {
+      const res = addResumeTemplate({ data: { name: resumeName } }).unwrap();
+      await toast.promise(res, {
         loading: "Creating resume",
         success: "Resume created successfully",
         error: "Could not create resume",
       });
       setShowModal(false);
       const { data } = await res;
-      setResumeTemplates((prev) => [...prev, { ...data, name: resumeName }]);
+      setResumeTemplates((prev) => [...prev, { ...data }]);
     } catch (error) {
       handleApiError(error);
     }
@@ -41,7 +45,7 @@ function AddResume() {
   async function handleDeleteResumeTemplate(id: string) {
     try {
       const res = deleteResumeTemplate({ resumeTemplateId: id }).unwrap();
-      toast.promise(res, {
+      await toast.promise(res, {
         loading: "Deleting resume",
         success: "Resume deleted successfully",
         error: "Could not delete resume",
@@ -97,9 +101,14 @@ function AddResume() {
       {resumeTemplates?.map((resume) => (
         <div
           key={resume.id}
-          onClick={() => navigate(`/resumeBuilder/edit/${resume.id}`)}
+          onClick={() => {
+            navigate(`/resumeBuilder/edit/${resume.id}`);
+            if (resume?.profile === null)
+                  setStatus(["start"]);
+                else setStatus( ["normal"]);
+          }}
         >
-          <ResumePreview className="h-[400px] w-[18rem] cursor-pointer flex-col items-center justify-center gap-2 break-words rounded-lg bg-white p-5 text-center text-xs shadow-sm transition-all hover:scale-105 hover:shadow-md" />
+          <ResumePreview className="h-[400px] w-[18rem] cursor-pointer flex-col items-center justify-center gap-2 break-words rounded-lg bg-white p-5 text-center text-[1px] shadow-sm transition-all hover:scale-105 hover:shadow-md" />
           <div className="mt-5 flex items-center justify-between">
             <div>
               <p className="text-lg font-semibold">{resume.name}</p>
@@ -108,7 +117,10 @@ function AddResume() {
               </p>
             </div>
             <Button
-              onClick={() => handleDeleteResumeTemplate(resume.id.toString())}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDeleteResumeTemplate(resume.id.toString());
+              }}
               className="border border-danger-300 bg-background px-4 text-danger-300 hover:bg-danger-300 hover:text-white"
             >
               Delete
