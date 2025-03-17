@@ -39,6 +39,8 @@ export interface IResumeInfo {
   skills: ISkillsInputs[];
   experience: IExperienceInputs[];
   certificates: ICertificatesInputs[];
+  awards: IAwardsInputs[];
+  publications: IPublicationsInputs[];
 }
 
 ///////////////////////////////////////////// Resume Template //////////////////////////////////////////////
@@ -155,6 +157,36 @@ export interface ICertificatesInputs {
 export interface IResumeCertificate extends ICertificatesInputs {
   resumeTemplate: IResumeTemplate;
 }
+
+///////////////////////////////////////////// Awards //////////////////////////////////////////////
+export interface IAwardsInputs {
+  id?: number;
+  award: string;
+  award_url: string;
+  issuer: string;
+  date: string;
+  description: string;
+  [x: string]: string | number | boolean | undefined | IResumeTemplate;
+}
+
+export interface IResumeAward extends IAwardsInputs {
+  resumeTemplate: IResumeTemplate;
+}
+
+///////////////////////////////////////////// Publications //////////////////////////////////////////////
+export interface IPublicationsInputs {
+  id?: number;
+  title: string;
+  publication_url: string;
+  publisher: string;
+  date: string;
+  description: string;
+  [x: string]: string | number | boolean | undefined | IResumeTemplate;
+}
+
+export interface IResumePublication extends IPublicationsInputs {
+  resumeTemplate: IResumeTemplate;
+}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////// Personal Api Response //////////////////////////////////////////////
 export interface IGetResumePersonalInfoResponse {
@@ -206,4 +238,26 @@ export interface IGetResumeCertificatesInfoResponse {
 export interface IGetResumeCertificateInfoResponse {
   success: boolean;
   certificateContent: IResumeCertificate;
+}
+
+///////////////////////////////////////////// Awards Api Response //////////////////////////////////////////////
+export interface IGetResumeAwardsInfoResponse {
+  success: boolean;
+  awardsContent: IResumeAward[];
+}
+
+export interface IGetResumeAwardInfoResponse {
+  success: boolean;
+  awardContent: IResumeAward;
+}
+
+///////////////////////////////////////////// Publications Api Response //////////////////////////////////////////////
+export interface IGetResumePublicationsInfoResponse {
+  success: boolean;
+  publicationsContent: IResumePublication[];
+}
+
+export interface IGetResumePublicationInfoResponse {
+  success: boolean;
+  publicationsContent: IResumePublication;
 }

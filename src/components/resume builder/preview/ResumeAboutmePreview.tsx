@@ -5,7 +5,7 @@ function ResumeAboutmePreview() {
   const personalInfo = resumeInfo?.personal;
   return (
     <div>
-      {personalInfo?.aboutMe.length > 0 && (
+      {personalInfo?.aboutMe?.length > 0 && (
         <>
           <p className="text-lg font-medium">Profile</p>
           <hr className="mb-2 border-[1.5px]" />
