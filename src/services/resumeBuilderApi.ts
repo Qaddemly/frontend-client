@@ -22,6 +22,12 @@ import {
   IGetResumeSkillsInfoResponse,
   IProjectsInputs,
   ISkillsInputs,
+  IGetResumeAwardsInfoResponse,
+  IGetResumeAwardInfoResponse,
+  IAwardsInputs,
+  IGetResumePublicationsInfoResponse,
+  IGetResumePublicationInfoResponse,
+  IPublicationsInputs,
 } from "../interfaces/ResumeBuilder.interfaces.ts";
 
 const BASE_RESUME_URL = "/resumeTemplate";
@@ -334,6 +340,34 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
     >({
       query: ({ data, resumeId }) => ({
         url: `${BASE_RESUME_URL}/${resumeId}/project`,
+    ///////////////////////////////////////////// Awards //////////////////////////////////////////////
+    getAllResumeAwards: builder.query<
+      IGetResumeAwardsInfoResponse,
+      { resumeId: string }
+    >({
+      query: ({ resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/award`,
+        method: "GET",
+      }),
+    }),
+    getResumeAward: builder.query<
+      IGetResumeAwardInfoResponse,
+      { resumeId: string; awardId: string }
+    >({
+      query: ({ resumeId, awardId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/award/${awardId}`,
+        method: "GET",
+      }),
+    }),
+    addResumeAward: builder.mutation<
+      IGetResumeAwardInfoResponse,
+      {
+        resumeId: string;
+        data: IAwardsInputs;
+      }
+    >({
+      query: ({ data, resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/award`,
         method: "POST",
         body: data,
       }),
@@ -344,6 +378,12 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
     >({
       query: ({ data, resumeId, projectId }) => ({
         url: `${BASE_RESUME_URL}/${resumeId}/project/${projectId}`,
+    updateResumeAward: builder.mutation<
+      IGetResumeAwardInfoResponse,
+      { resumeId: string; data: IAwardsInputs; awardId: string }
+    >({
+      query: ({ data, resumeId, awardId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/award/${awardId}`,
         method: "PUT",
         body: data,
       }),
@@ -385,6 +425,43 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
     >({
       query: ({ data, resumeId }) => ({
         url: `${BASE_RESUME_URL}/${resumeId}/customSection`,
+    deleteResumeAward: builder.mutation<
+      void,
+      { resumeId: string; awardId: string }
+    >({
+      query: ({ resumeId, awardId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/award/${awardId}`,
+        method: "DELETE",
+      }),
+    }),
+    ///////////////////////////////////////////// Publications //////////////////////////////////////////////
+    getAllResumePublications: builder.query<
+      IGetResumePublicationsInfoResponse,
+      { resumeId: string }
+    >({
+      query: ({ resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/publication`,
+        method: "GET",
+      }),
+    }),
+    getResumePublication: builder.query<
+      IGetResumePublicationInfoResponse,
+      { resumeId: string; publicationId: string }
+    >({
+      query: ({ resumeId, publicationId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/award/${publicationId}`,
+        method: "GET",
+      }),
+    }),
+    addResumePublication: builder.mutation<
+      IGetResumePublicationInfoResponse,
+      {
+        resumeId: string;
+        data: IPublicationsInputs;
+      }
+    >({
+      query: ({ data, resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/publication`,
         method: "POST",
         body: data,
       }),
@@ -395,6 +472,12 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
     >({
       query: ({ data, resumeId, customId }) => ({
         url: `${BASE_RESUME_URL}/${resumeId}/customSection/${customId}`,
+    updateResumePublication: builder.mutation<
+      IGetResumePublicationInfoResponse,
+      { resumeId: string; data: IPublicationsInputs; publicationId: string }
+    >({
+      query: ({ data, resumeId, publicationId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/award/${publicationId}`,
         method: "PUT",
         body: data,
       }),
@@ -405,6 +488,12 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
     >({
       query: ({ resumeId, customId }) => ({
         url: `${BASE_RESUME_URL}/${resumeId}/customSection/${customId}`,
+    deleteResumePublication: builder.mutation<
+      void,
+      { resumeId: string; publicationId: string }
+    >({
+      query: ({ resumeId, publicationId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/award/${publicationId}`,
         method: "DELETE",
       }),
     }),
@@ -459,4 +548,16 @@ export const {
   useAddResumeCustomMutation,
   useUpdateResumeCustomMutation,
   useDeleteResumeCustomMutation,
+  ///////////////////////////////////////////// Awards //////////////////////////////////////////////
+  useAddResumeAwardMutation,
+  useGetAllResumeAwardsQuery,
+  useGetResumeAwardQuery,
+  useUpdateResumeAwardMutation,
+  useDeleteResumeAwardMutation,
+  ///////////////////////////////////////////// Publications //////////////////////////////////////////////
+  useAddResumePublicationMutation,
+  useGetAllResumePublicationsQuery,
+  useGetResumePublicationQuery,
+  useUpdateResumePublicationMutation,
+  useDeleteResumePublicationMutation,
 } = resumeBuilderApi;

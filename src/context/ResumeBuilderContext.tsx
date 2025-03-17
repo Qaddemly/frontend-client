@@ -12,6 +12,8 @@ import {
   ResumeStatus,
 } from "../interfaces/ResumeBuilder.interfaces.ts";
 import {
+  useGetAllResumeAwardsQuery,
+  useGetAllResumePublicationsQuery,
   useGetAllResumeCertificatesQuery,
   useGetAllResumeCustomQuery,
   useGetAllResumeEducationQuery,
@@ -130,6 +132,17 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
   const { data: resumeCustoms } = useGetAllResumeCustomQuery(
     resumeId && !status.includes("addResume") ? { resumeId } : skipToken,
   );
+  const { data: resumeCertificates } = useGetAllResumeCertificatesQuery({
+    resumeId: resumeId || "",
+  });
+  ///////////////////////////////////////////// Awards //////////////////////////////////////////////
+  const { data: resumeAwards } = useGetAllResumeAwardsQuery({
+    resumeId: resumeId || "",
+  });
+  ///////////////////////////////////////////// Publications //////////////////////////////////////////////
+  const { data: resumePublications } = useGetAllResumePublicationsQuery({
+    resumeId: resumeId || "",
+  });
 
   useEffect(() => {
     setResumeTemplates(resumeTemplatesData ?? []);
@@ -225,6 +238,26 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
               is_current: false,
             }))
           : [],
+         awards: resumeAwards?.awardsContent
+        ? resumeAwards.awardsContent.map((award) => ({
+            id: award.id ?? 0,
+            award: award.award ?? "",
+            award_url: award.award_url ?? "",
+            issuer: award.issuer ?? "",
+            date: award.date ?? "",
+            description: award.description ?? "",
+          }))
+        : [],
+      publications: resumePublications?.publicationsContent
+        ? resumePublications.publicationsContent.map((publication) => ({
+            id: publication.id ?? 0,
+            title: publication.title ?? "",
+            publication_url: publication.publication_url ?? "",
+            publisher: publication.publisher ?? "",
+            date: publication.date ?? "",
+            description: publication.description ?? "",
+          }))
+        : [],
       };
     });
   }, [
@@ -242,6 +275,8 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
     setCurrId,
     setResumeTemplates,
     setResumeInfo,
+    resumeAwards,
+    resumePublications,
   ]);
 
   return (

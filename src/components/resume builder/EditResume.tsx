@@ -9,16 +9,16 @@ function EditResume() {
 
   return (
     <ResumeBuilderLayout>
-      <div className="flex justify-center gap-[10rem]">
+      <div className="m-auto">
         {showAddContent ? (
-          <div className="min-h-screen min-w-[60rem]">
-            <AddResumeContent />
-          </div>
+          // <div className="min-h-screen min-w-[60rem]">
+          // </div>
+          <AddResumeContent />
         ) : (
-          <>
+          <div className="flex justify-evenly">
             <FormPreview />
             <ResumePreview />
-          </>
+          </div>
         )}
       </div>
     </ResumeBuilderLayout>

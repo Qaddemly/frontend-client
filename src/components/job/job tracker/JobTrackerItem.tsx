@@ -21,11 +21,16 @@ import {
   JobApplicationStateIndex,
 } from "../../../enums/index.enums";
 import { useGetBusinessAccountInfoQuery } from "../../../services/businessAccountApi";
+import { useArchiveJobApplicationMutation } from "../../../services/jobApi";
 
 type JobTrackerItemProps = {
   userType: "business" | "user";
   archive?: boolean;
   jobApplication?: IJobApplication;
+};
+type ArchiveButtonProps = {
+  jobId: string;
+  isArchived: boolean;
 };
 
 function JobTrackerItem({
@@ -71,109 +76,135 @@ function JobTrackerItem({
     }
   }
 
-  //////////////////////////// For User ///////////////////////////
-  // const [archiveJobApplication, { isLoading: isLoading2 }] =
-  //   useArchiveJobApplicationMutation();
+  const ArchiveButton: React.FC<ArchiveButtonProps> = ({
+    jobId,
+    isArchived,
+  }) => {
+    const [archiveJobApplication] = useArchiveJobApplicationMutation();
 
-  // async function handleArchiveJobApplication() {
-  //   try {
-  //     await archiveJobApplication({ id: "1", archive: true }).unwrap();
-  //     toast.success("Job application archived successfully");
-  //   } catch (error) {
-  //     handleApiError(error);
-  //   }
-  // }
+    const handleArchive = async () => {
+      try {
+        await archiveJobApplication({
+          id: jobId,
+          archive: !isArchived,
+        }).unwrap();
+        console.log("Archived has successfully");
+      } catch (error) {
+        handleApiError(error);
+      }
+    };
+    console.log(ArchiveButton);
+    //////////////////////////// For User ///////////////////////////
+    // const [archiveJobApplication, { isLoading: isLoading2 }] =
+    //   useArchiveJobApplicationMutation();
 
-  // useEffect(() => {
-  //   businessesAccounts.userBusinessesAccounts.map((business) => {
-  //     console.log(business.id);
-  //     console.log(jobApplication?.job.business_id);
+    // async function handleArchiveJobApplication() {
+    //   try {
+    //     await archiveJobApplication({ id: "1", archive: true }).unwrap();
+    //     toast.success("Job application archived successfully");
+    //   } catch (error) {
+    //     handleApiError(error);
+    //   }
+    // }
 
-  //     if (jobApplication?.job.business_id === business.id)
-  //       setCurrentBusinessId(business.id.toString());
-  //   });
-  // }, [businessesAccounts.userBusinessesAccounts, jobApplication]);
-  const { data } = useGetBusinessAccountInfoQuery({
-    id: jobApplication?.job.business_id.toString() || "",
-  });
+    // useEffect(() => {
+    //   businessesAccounts.userBusinessesAccounts.map((business) => {
+    //     console.log(business.id);
+    //     console.log(jobApplication?.job.business_id);
 
-  if (isLoading1) return <Loader />;
+    //     if (jobApplication?.job.business_id === business.id)
+    //       setCurrentBusinessId(business.id.toString());
+    //   });
+    // }, [businessesAccounts.userBusinessesAccounts, jobApplication]);
+    const { data } = useGetBusinessAccountInfoQuery({
+      id: jobApplication?.job.business_id.toString() || "",
+    });
 
-  return (
-    <div className="mt-4 flex items-center gap-5 rounded-md bg-white p-5 shadow-md">
-      <div className="flex w-full gap-5">
-        <div className="w-fit rounded-md bg-gray-200 p-5">
-          {userType === "user" ? (
-            <GoogleLogo className="h-12 w-12" />
-          ) : user?.profile_picture ? (
-            <img
-              src={user.profile_picture}
-              alt="profile photo"
-              className="h-20 w-20 rounded-md object-cover"
-            />
-          ) : (
-            <FontAwesomeIcon icon={faUser} className="text-5xl" />
-          )}
+    if (isLoading1) return <Loader />;
+
+    return (
+      <div className="mt-4 flex items-center gap-5 rounded-md bg-white p-5 shadow-md">
+        <div className="flex w-full gap-5">
+          <div className="w-fit rounded-md bg-gray-200 p-5">
+            {userType === "user" ? (
+              <GoogleLogo className="h-12 w-12" />
+            ) : user?.profile_picture ? (
+              <img
+                src={user.profile_picture}
+                alt="profile photo"
+                className="h-20 w-20 rounded-md object-cover"
+              />
+            ) : (
+              <FontAwesomeIcon icon={faUser} className="text-5xl" />
+            )}
+          </div>
+
+          <div className="flex flex-col gap-1">
+            {userType === "user" ? (
+              <>
+                <div className="text-lg font-semibold">
+                  {jobApplication?.job.title}
+                </div>
+                <div className="flex items-center gap-2 text-gray-500">
+                  <FontAwesomeIcon icon={faBuilding} />
+                  <p>{data?.business.name}.</p>
+                </div>
+                <div className="flex items-center gap-2 text-gray-500">
+                  <FontAwesomeIcon icon={faLocationDot} />
+                  <p>{data?.business.location_type}</p>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="text-lg font-semibold">
+                  {user?.first_name} {user?.last_name}
+                </div>
+                <div className="flex items-center gap-2 text-gray-500">
+                  <FontAwesomeIcon icon={faEnvelope} />
+                  <p>{user?.email}</p>
+                </div>
+                <div className="flex items-center gap-2 text-gray-500">
+                  <FontAwesomeIcon icon={faPhone} />
+                  <p>
+                    +{user?.phone.country_code} {user?.phone.number}
+                  </p>
+                </div>
+              </>
+            )}
+          </div>
         </div>
 
-        <div className="flex flex-col gap-1">
+        <JobTrackerStatus
+          currentIndex={currentIndex - 1}
+          setCurrentIndex={setCurrentIndex}
+          userType={userType}
+          setShowConfirm={setShowConfirm}
+        />
+
+        <div>
           {userType === "user" ? (
             <>
-              <div className="text-lg font-semibold">
-                {jobApplication?.job.title}
-              </div>
-              <div className="flex items-center gap-2 text-gray-500">
-                <FontAwesomeIcon icon={faBuilding} />
-                <p>{data?.business.name}.</p>
-              </div>
-              <div className="flex items-center gap-2 text-gray-500">
-                <FontAwesomeIcon icon={faLocationDot} />
-                <p>{data?.business.location_type}</p>
-              </div>
+              <Button onClick={handleArchive}>
+                {isArchived ? "Unarchive" : "Archive"}
+              </Button>
             </>
           ) : (
-            <>
-              <div className="text-lg font-semibold">
-                {user?.first_name} {user?.last_name}
-              </div>
-              <div className="flex items-center gap-2 text-gray-500">
-                <FontAwesomeIcon icon={faEnvelope} />
-                <p>{user?.email}</p>
-              </div>
-              <div className="flex items-center gap-2 text-gray-500">
-                <FontAwesomeIcon icon={faPhone} />
-                <p>
-                  +{user?.phone.country_code} {user?.phone.number}
-                </p>
-              </div>
-            </>
+            // <Button onClick={handleArchiveJobApplication} className="px-3">
+            //   {archive ? "Archive" : "Unarchive"}
+            // </Button>
+            showConfirm && (
+              <Button
+                onClick={handleUpdateJobApplicationStatus}
+                className="px-3"
+              >
+                Confirm
+              </Button>
+            )
           )}
         </div>
       </div>
-
-      <JobTrackerStatus
-        currentIndex={currentIndex - 1}
-        setCurrentIndex={setCurrentIndex}
-        userType={userType}
-        setShowConfirm={setShowConfirm}
-      />
-
-      <div>
-        {userType === "user" ? (
-          <></>
-        ) : (
-          // <Button onClick={handleArchiveJobApplication} className="px-3">
-          //   {archive ? "Archive" : "Unarchive"}
-          // </Button>
-          showConfirm && (
-            <Button onClick={handleUpdateJobApplicationStatus} className="px-3">
-              Confirm
-            </Button>
-          )
-        )}
-      </div>
-    </div>
-  );
+    );
+  };
 }
 
 export default JobTrackerItem;

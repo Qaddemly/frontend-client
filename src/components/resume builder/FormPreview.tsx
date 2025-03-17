@@ -19,6 +19,9 @@ import ResumeExperienceForm from "./forms/ResumeExperienceForm.tsx";
 import ResumeProjectForm from "./forms/ResumeProjectForm.tsx";
 import ResumeCustomForm from "./forms/ResumeCustomForm.tsx";
 import { useParams } from "react-router-dom";
+import ResumeAwardsForm from "./forms/ResumeAwardsForm.tsx";
+import ResumePublicationsForm from "./forms/ResumePublicationsForm.tsx";
+
 
 function FormPreview() {
   const {
@@ -103,6 +106,12 @@ function FormPreview() {
       )}
       {status.includes("add") && status.includes("custom") && (
         <ResumeCustomForm mode="add" />
+       )}
+      {status.includes("add") && status.includes("achievements") && (
+        <ResumeAwardsForm mode="add" />
+      )}
+      {status.includes("add") && status.includes("publications") && (
+        <ResumePublicationsForm mode="add" />
       )}
       {/*/////////////////////////////////////////// Edit Forms  ///////////////////////////////////////////////*/}
       {status.includes("edit") && status.includes("personal") && (
@@ -128,6 +137,12 @@ function FormPreview() {
       )}
       {status.includes("edit") && status.includes("custom") && (
         <ResumeCustomForm mode="edit" />
+        )}
+      {status.includes("edit") && status.includes("achievements") && (
+        <ResumeAwardsForm mode="edit" />
+      )}
+      {status.includes("edit") && status.includes("publications") && (
+        <ResumePublicationsForm mode="edit" />
       )}
       {/*///////////////////////////////////////////  Sections  ///////////////////////////////////////////////*/}
       {status[0] === "normal" && (
@@ -232,6 +247,32 @@ function FormPreview() {
                 if (typeof id === "number") {
                   setCurrId(id);
                   setStatus(["edit", "custom"]);
+          {/* Achievements and Awards Section */}
+          {resumeInfo?.awards?.length > 0 && (
+            <ResumeSection
+              title="Achievements and Awards"
+              items={resumeInfo.awards}
+              idField="id"
+              displayField="award"
+              handleEdit={(id) => {
+                if (typeof id === "number") {
+                  setCurrId(id);
+                  setStatus(["edit", "achievements"]);
+                }
+              }}
+            />
+          )}
+          {/* Publications Section */}
+          {resumeInfo?.publications?.length > 0 && (
+            <ResumeSection
+              title="Publications"
+              items={resumeInfo.publications}
+              idField="id"
+              displayField="title"
+              handleEdit={(id) => {
+                if (typeof id === "number") {
+                  setCurrId(id);
+                  setStatus(["edit", "publications"]);
                 }
               }}
             />

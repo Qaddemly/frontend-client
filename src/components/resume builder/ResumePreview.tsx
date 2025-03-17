@@ -7,6 +7,8 @@ import ResumeCertificatesPreview from "./preview/ResumeCertificatesPreview.tsx";
 import ResumeExperiencePreview from "./preview/ResumeExperiencePreview.tsx";
 import ResumeProjectsPreview from "./preview/ResumeProjectsPreview.tsx";
 import ResumeCustomPreview from "./preview/ResumeCustomPreview.tsx";
+import ResumeAwardPreview from "./preview/ResumeAwardPreview.tsx";
+import ResumePublicationPreview from "./preview/ResumepublicationPreview.tsx";
 
 const components = [
   ResumePersonalPreview,
@@ -17,7 +19,10 @@ const components = [
   ResumeCertificatesPreview,
   ResumeProjectsPreview,
   ResumeCustomPreview,
+  ResumeAwardPreview,
+  ResumePublicationPreview
 ];
+
 
 function ResumePreview({ className }: { className?: string }) {
   const width = className?.split(" ").find((x) => x.match("w-"));
