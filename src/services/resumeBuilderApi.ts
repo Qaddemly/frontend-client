@@ -3,12 +3,15 @@ import {
   IAddPersonalInfoResponse,
   IAddResumeTemplateResopnse,
   ICertificatesInputs,
+  ICustomInputs,
   IEducationInputs,
   IExperienceInputs,
+  IGetAllResumeCustomInfoResponse,
   IGetAllResumeEducationResponse,
   IGetAllResumeTemplatesResponse,
   IGetResumeCertificateInfoResponse,
   IGetResumeCertificatesInfoResponse,
+  IGetResumeCustomInfoResponse,
   IGetResumeEducationResponse,
   IGetResumeExperienceInfoResponse,
   IGetResumeExperiencesInfoResponse,
@@ -350,6 +353,57 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
+    ///////////////////////////////////////////// Custom //////////////////////////////////////////////
+    getAllResumeCustom: builder.query<
+      IGetAllResumeCustomInfoResponse,
+      { resumeId: string }
+    >({
+      query: ({ resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/customSection`,
+        method: "GET",
+      }),
+    }),
+    getResumeCustom: builder.query<
+      IGetResumeCustomInfoResponse,
+      { resumeId: string; customId: string }
+    >({
+      query: ({ resumeId, customId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/customSection/${customId}`,
+        method: "GET",
+      }),
+    }),
+    addResumeCustom: builder.mutation<
+      IGetResumeCustomInfoResponse,
+      {
+        resumeId: string;
+        data: ICustomInputs;
+      }
+    >({
+      query: ({ data, resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/customSection`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    updateResumeCustom: builder.mutation<
+      IGetResumeCustomInfoResponse,
+      { resumeId: string; data: ICustomInputs; customId: string }
+    >({
+      query: ({ data, resumeId, customId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/customSection/${customId}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    deleteResumeCustom: builder.mutation<
+      void,
+      { resumeId: string; customId: string }
+    >({
+      query: ({ resumeId, customId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/customSection/${customId}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -395,4 +449,10 @@ export const {
   useAddResumeProjectMutation,
   useUpdateResumeProjectMutation,
   useDeleteResumeProjectMutation,
+  ///////////////////////////////////////////// Custom //////////////////////////////////////////////
+  useGetAllResumeCustomQuery,
+  useGetResumeCustomQuery,
+  useAddResumeCustomMutation,
+  useUpdateResumeCustomMutation,
+  useDeleteResumeCustomMutation,
 } = resumeBuilderApi;

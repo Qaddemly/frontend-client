@@ -211,9 +211,9 @@ function FormPreview() {
           )}
 
           {/* Custom Section */}
-          {resumeInfo?.custom?.length > 0 && (
+          {resumeInfo?.custom?.map((custom) => (
             <ResumeSection
-              title="Custom sections"
+              title={custom.section_name}
               items={resumeInfo.custom}
               idField="id"
               displayField="section_name"
@@ -224,7 +224,7 @@ function FormPreview() {
                 }
               }}
             />
-          )}
+          ))}
         </>
       )}
       <div className="flex justify-center">

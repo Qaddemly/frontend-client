@@ -12,6 +12,7 @@ import {
 } from "../interfaces/ResumeBuilder.interfaces.ts";
 import {
   useGetAllResumeCertificatesQuery,
+  useGetAllResumeCustomQuery,
   useGetAllResumeEducationQuery,
   useGetAllResumeExperienceQuery,
   useGetAllResumeProjectsQuery,
@@ -86,6 +87,10 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
   });
   ///////////////////////////////////////////// Projects //////////////////////////////////////////////
   const { data: resumeProjects } = useGetAllResumeProjectsQuery({
+    resumeId: resumeId || "",
+  });
+  ///////////////////////////////////////////// Custom //////////////////////////////////////////////
+  const { data: resumeCustoms } = useGetAllResumeCustomQuery({
     resumeId: resumeId || "",
   });
 
@@ -168,6 +173,20 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
             is_current: false,
           }))
         : [],
+      custom: resumeCustoms?.data
+        ? resumeCustoms.data.map((custom) => ({
+            id: custom.id ?? 0,
+            section_name: custom.section_name ?? "",
+            title: custom.title ?? "",
+            subtitle: custom.subtitle ?? "",
+            city: custom.city ?? "",
+            country: custom.country ?? "",
+            start_date: custom.start_date ?? "",
+            end_date: custom.end_date ?? "",
+            description: custom.description ?? "",
+            is_current: false,
+          }))
+        : [],
     }));
   }, [
     isLoading,
@@ -179,6 +198,7 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
     resumeSkills,
     resumeCertificates,
     resumeProjects,
+    resumeCustoms,
     currId,
     setCurrId,
     setResumeTemplates,

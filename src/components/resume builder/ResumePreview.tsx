@@ -6,6 +6,7 @@ import ResumeSkillsPreview from "./preview/ResumeSkillsPreview.tsx";
 import ResumeCertificatesPreview from "./preview/ResumeCertificatesPreview.tsx";
 import ResumeExperiencePreview from "./preview/ResumeExperiencePreview.tsx";
 import ResumeProjectsPreview from "./preview/ResumeProjectsPreview.tsx";
+import ResumeCustomPreview from "./preview/ResumeCustomPreview.tsx";
 
 const components = [
   ResumePersonalPreview,
@@ -15,6 +16,7 @@ const components = [
   ResumeSkillsPreview,
   ResumeCertificatesPreview,
   ResumeProjectsPreview,
+  ResumeCustomPreview,
 ];
 
 function ResumePreview({ className }: { className?: string }) {
