@@ -22,7 +22,6 @@ import { useParams } from "react-router-dom";
 import ResumeAwardsForm from "./forms/ResumeAwardsForm.tsx";
 import ResumePublicationsForm from "./forms/ResumePublicationsForm.tsx";
 
-
 function FormPreview() {
   const {
     setShowAddContent,
@@ -106,7 +105,7 @@ function FormPreview() {
       )}
       {status.includes("add") && status.includes("custom") && (
         <ResumeCustomForm mode="add" />
-       )}
+      )}
       {status.includes("add") && status.includes("achievements") && (
         <ResumeAwardsForm mode="add" />
       )}
@@ -137,7 +136,7 @@ function FormPreview() {
       )}
       {status.includes("edit") && status.includes("custom") && (
         <ResumeCustomForm mode="edit" />
-        )}
+      )}
       {status.includes("edit") && status.includes("achievements") && (
         <ResumeAwardsForm mode="edit" />
       )}
@@ -247,6 +246,10 @@ function FormPreview() {
                 if (typeof id === "number") {
                   setCurrId(id);
                   setStatus(["edit", "custom"]);
+                }
+              }}
+            />
+          )}
           {/* Achievements and Awards Section */}
           {resumeInfo?.awards?.length > 0 && (
             <ResumeSection

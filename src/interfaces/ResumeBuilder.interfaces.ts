@@ -191,7 +191,8 @@ export interface ICustomInputs {
   [x: string]: string | number | boolean | undefined | IResumeTemplate;
 }
 export interface IResumeCustom extends ICustomInputs {
-=======
+  resumeTemplate: IResumeTemplate;
+}
 
 ///////////////////////////////////////////// Awards //////////////////////////////////////////////
 export interface IAwardsInputs {
@@ -293,7 +294,7 @@ export interface IGetAllResumeCustomInfoResponse {
 export interface IGetResumeCustomInfoResponse {
   success: boolean;
   data: IResumeCustom;
-
+}
 ///////////////////////////////////////////// Awards Api Response //////////////////////////////////////////////
 export interface IGetResumeAwardsInfoResponse {
   success: boolean;
