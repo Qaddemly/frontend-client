@@ -127,9 +127,8 @@ export const jobApi = apiSlice.injectEndpoints({
         url: `user/jobApplication/archived/${id}?archive=${archive}`,
         method: "PUT",
       }),
-      invalidatesTags: [{ type: "ArchivedJobs" }],
     }),
-    getOneJobDetails: builder.query<
+    getOneJobApplication: builder.query<
       IGetJobApplicationsResponse,
       { id: string }
     >({
@@ -146,7 +145,6 @@ export const jobApi = apiSlice.injectEndpoints({
         url: "user/jobApplication/archived/all",
         method: "GET",
       }),
-      providesTags: [{ type: "ArchivedJobs" }],
     }),
     getRecommendedJobs: builder.query<IGetRecommendedJobs, void>({
       query: () => ({
@@ -168,6 +166,6 @@ export const {
   useApplyToJobMutation,
   useArchiveJobApplicationMutation,
   useGetRecommendedJobsQuery,
-  useGetOneJobDetailsQuery,
+  useGetOneJobApplicationQuery,
   useGetArchivedJobApplicationQuery,
 } = jobApi;

@@ -4,6 +4,9 @@ import ResumeEducationPreview from "./preview/ResumeEducationPreview.tsx";
 import ResumeSkillsPreview from "./preview/ResumeSkillsPreview.tsx";
 import ResumeCertificatesPreview from "./preview/ResumeCertificatesPreview.tsx";
 import ResumeExperiencePreview from "./preview/ResumeExperiencePreview.tsx";
+import ResumeLanguagePreview from "./preview/ResumeLanguagePreview.tsx";
+import ResumeInterestPreview from "./preview/ResumeInterestPreview.tsx";
+import ResumeReferencePreview from "./preview/ResumeReferencePreview.tsx";
 
 function ResumePreview({ className }: { className?: string }) {
   const width = className?.split(" ").find((x) => x.match("w-"));
@@ -18,6 +21,9 @@ function ResumePreview({ className }: { className?: string }) {
       <ResumeExperiencePreview />
       <ResumeSkillsPreview />
       <ResumeCertificatesPreview />
+      <ResumeLanguagePreview />
+      <ResumeInterestPreview />
+      <ResumeReferencePreview />
     </div>
   );
 }

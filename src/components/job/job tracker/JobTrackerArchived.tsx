@@ -21,8 +21,7 @@ function JobTrackerArchived() {
               <JobTrackerItem
                 key={jobApplication.id}
                 userType="user"
-                archive={true}
-                jobApplication={jobApplication}
+                jobApplication={{ ...jobApplication, archived: true }}
               />
             ))
           ) : (

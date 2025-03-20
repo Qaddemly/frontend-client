@@ -8,6 +8,7 @@ import {
   ISetNewPasswordInputs,
   ISignupInputs,
   ISignupResponse,
+  IUser,
   IUserInfoResponse,
   IVerifyForgetPasswordInputs,
   IVerifyForgetPasswordResponse,
@@ -30,6 +31,13 @@ export const authApi = apiSlice.injectEndpoints({
       query: (data) => ({
         url: `${BASE_AUTH_URL}/signUp`,
         method: "POST",
+        body: data,
+      }),
+    }),
+    signup2: builder.mutation<ISignupResponse, IUser>({
+      query: (data) => ({
+        url: `${BASE_AUTH_URL}/completeRegistration`,
+        method: "PUT",
         body: data,
       }),
     }),

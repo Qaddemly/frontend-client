@@ -17,6 +17,9 @@ import ResumeSkillsForm from "./forms/ResumeSkillsForm.tsx";
 import ResumeEucationForm from "./forms/ResumeEucationForm.tsx";
 import ResumeCertificatesForm from "./forms/ResumeCertificatesForm.tsx";
 import ResumeExperienceForm from "./forms/ResumeExperienceForm.tsx";
+import ResumeLanguagesForm from "./forms/ResumeLanguageForm.tsx";
+import ResumeInterestForm from "./forms/ResumeInterestForm.tsx";
+import ResumeReferenceForm from "./forms/ResumeReferenceForm.tsx";
 
 function FormPreview() {
   const { setShowAddContent, status, setStatus, resumeInfo, setCurrId } =
@@ -93,6 +96,15 @@ function FormPreview() {
       {status.includes("add") && status.includes("certifications") && (
         <ResumeCertificatesForm mode="add" />
       )}
+      {status.includes("add") && status.includes("languages") && (
+        <ResumeLanguagesForm mode="add" />
+      )}
+      {status.includes("add") && status.includes("hobbies") && (
+        <ResumeInterestForm mode="add" />
+      )}
+      {status.includes("add") && status.includes("references") && (
+        <ResumeReferenceForm mode="add" />
+      )}
       {/*/////////////////////////////////////////// Edit Forms  ///////////////////////////////////////////////*/}
       {status.includes("edit") && status.includes("personal") && (
         <ResumePersonalForm mode="edit" />
@@ -116,6 +128,18 @@ function FormPreview() {
 
       {status.includes("edit") && status.includes("certifications") && (
         <ResumeCertificatesForm mode="edit" />
+      )}
+
+      {status.includes("edit") && status.includes("languages") && (
+        <ResumeLanguagesForm mode="edit" />
+      )}
+
+      {status.includes("edit") && status.includes("hobbies") && (
+        <ResumeInterestForm mode="edit" />
+      )}
+
+      {status.includes("edit") && status.includes("references") && (
+        <ResumeReferenceForm mode="edit" />
       )}
       {/*///////////////////////////////////////////  Sections  ///////////////////////////////////////////////*/}
       {status[0] === "normal" && (
@@ -194,6 +218,45 @@ function FormPreview() {
                 if (typeof id === "number") {
                   setCurrId(id);
                   setStatus(["edit", "certifications"]);
+                }
+              }}
+            />
+          )}
+          {/* Language Section */}
+          {/* {resumeInfo?.languages?.length && (
+            <ResumeSection
+              title="Language"
+              type="language"
+              titles={[`${resumeInfo?.languages?.length}`]}
+              // handleEditAboutme={() => setStatus(() => ["edit", "aboutme"])}
+            />
+          )} */}
+          {/* {resumeInfo?.languages?.length > 0 && (
+            <ResumeSection
+              title="Language"
+              items={resumeInfo.languages}
+              idField="id"
+              displayField="language"
+              handleEdit={(id) => {
+                if (typeof id === "number") {
+                  setCurrId(id);
+                  setStatus(["edit", "languages"]);
+                }
+              }}
+            />
+          )}
+            */}
+          {/* Reference Section */}
+          {resumeInfo?.references?.length > 0 && (
+            <ResumeSection
+              title="References"
+              items={resumeInfo.references}
+              idField="id"
+              displayField="reference"
+              handleEdit={(id) => {
+                if (typeof id === "number") {
+                  setCurrId(id);
+                  setStatus(["edit", "references"]);
                 }
               }}
             />
