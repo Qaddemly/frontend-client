@@ -125,14 +125,16 @@ function ResumeAwardsForm({ mode }: { mode: FormMode }) {
             [field]: value,
           };
         } else {
-          updatedArray.push({
+          const newAwards = {
             id: 303030,
             award: "",
             award_url: "",
             issuer: "",
             date: "",
             description: "",
-          });
+          } as IAwardsInputs;
+          newAwards[field] = value;
+          updatedArray.push(newAwards);
         }
       } else if (mode === "edit") {
         if (updatedArray[indexOfCurrAward]) {

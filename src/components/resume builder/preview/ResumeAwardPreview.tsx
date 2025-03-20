@@ -21,9 +21,9 @@ function ResumeAwardPreview() {
                 {award.issuer}
               </p>
               <p className="text-xs italic">
-                <p className="text-xs italic">
+                <span className="text-xs italic">
                   {formatDateByYearAndMonth(award.date || "")}
-                </p>
+                </span>
               </p>
             </div>
             <div className="rich-text-editor flex justify-between">

@@ -59,16 +59,7 @@ function ResumeAboutmeForm({ mode }: { mode: FormMode }) {
         <RichTextEditor value={aboutme} onChange={handleOnChange} />
         <ResumeFormButtons
           mode={mode}
-          handleDelete={() => {
-            setAboutme("");
-            setResumeInfo((prevInfo) => ({
-              ...prevInfo,
-              personal: {
-                ...prevInfo?.personal,
-                aboutMe: "",
-              },
-            }));
-          }}
+          hiddenDeleteBtn={true}
           handleCancel={() => {}}
         />
       </form>

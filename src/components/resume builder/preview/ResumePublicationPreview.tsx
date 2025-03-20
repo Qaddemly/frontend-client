@@ -21,9 +21,9 @@ function ResumePublicationPreview() {
                 {publication.publisher}
               </p>
               <p className="text-xs italic">
-                <p className="text-xs italic">
+                <span className="text-xs italic">
                   {formatDateByYearAndMonth(publication.date || "")}
-                </p>
+                </span>
               </p>
             </div>
             <div className="rich-text-editor flex justify-between">

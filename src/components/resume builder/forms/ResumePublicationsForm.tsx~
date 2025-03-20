@@ -130,16 +130,14 @@ function ResumePublicationsForm({ mode }: { mode: FormMode }) {
             [field]: value,
           };
         } else {
-          const newPublication = {
+          updatedArray.push({
             id: 303030,
             title: "",
             publication_url: "",
             publisher: "",
             date: "",
             description: "",
-          } as IPublicationsInputs;
-          newPublication[field] = value;
-          updatedArray.push(newPublication);
+          });
         }
       } else if (mode === "edit") {
         if (updatedArray[indexOfCurrPublication]) {

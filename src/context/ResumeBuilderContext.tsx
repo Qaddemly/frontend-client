@@ -133,13 +133,13 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
     resumeId && !status.includes("addResume") ? { resumeId } : skipToken,
   );
   ///////////////////////////////////////////// Awards //////////////////////////////////////////////
-  const { data: resumeAwards } = useGetAllResumeAwardsQuery({
-    resumeId: resumeId || "",
-  });
+  const { data: resumeAwards } = useGetAllResumeAwardsQuery(
+    resumeId && !status.includes("addResume") ? { resumeId } : skipToken,
+  );
   ///////////////////////////////////////////// Publications //////////////////////////////////////////////
-  const { data: resumePublications } = useGetAllResumePublicationsQuery({
-    resumeId: resumeId || "",
-  });
+  const { data: resumePublications } = useGetAllResumePublicationsQuery(
+    resumeId && !status.includes("addResume") ? { resumeId } : skipToken,
+  );
 
   useEffect(() => {
     setResumeTemplates(resumeTemplatesData ?? []);

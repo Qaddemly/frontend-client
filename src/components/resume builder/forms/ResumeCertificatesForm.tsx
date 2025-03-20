@@ -116,12 +116,14 @@ function ResumeCertificatesForm({ mode }: { mode: FormMode }) {
             [field]: value,
           };
         } else {
-          updatedArray.push({
+          const newCertificates = {
             id: 303030,
             certificate: "",
             certificate_url: "",
             additional_information: "",
-          });
+          } as ICertificatesInputs;
+          newCertificates[field] = value;
+          updatedArray.push(newCertificates);
         }
       } else if (mode === "edit") {
         if (updatedArray[indexOfCurrCertificate]) {

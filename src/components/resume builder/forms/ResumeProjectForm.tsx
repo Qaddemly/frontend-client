@@ -150,7 +150,7 @@ function ResumeProjectForm({ mode }: { mode: FormMode }) {
             [field]: value,
           };
         } else {
-          updatedArray.push({
+          const newProjects = {
             id: 303030,
             title: "",
             subtitle: "",
@@ -159,7 +159,9 @@ function ResumeProjectForm({ mode }: { mode: FormMode }) {
             end_date: "",
             description: "",
             is_current: false,
-          });
+          } as IProjectsInputs;
+          newProjects[field] = value;
+          updatedArray.push(newProjects);
         }
       } else if (mode === "edit") {
         if (updatedArray[indexOfCurrProject]) {

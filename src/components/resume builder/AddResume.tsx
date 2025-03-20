@@ -101,11 +101,7 @@ function AddResume() {
       {resumeTemplates?.map((resume) => (
         <div
           key={resume.id}
-          onClick={() => {
-            navigate(`/resumeBuilder/edit/${resume.id}`);
-            if (resume?.profile === null) setStatus(["start"]);
-            else setStatus(["normal"]);
-          }}
+          onClick={() => navigate(`/resumeBuilder/edit/${resume.id}`)}
         >
           <ResumePreview className="h-[400px] w-[18rem] cursor-pointer flex-col items-center justify-center gap-2 break-words rounded-lg bg-white p-5 text-center text-[1px] shadow-sm transition-all hover:scale-105 hover:shadow-md" />
           <div className="mt-5 flex items-center justify-between">

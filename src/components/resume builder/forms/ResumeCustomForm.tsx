@@ -15,7 +15,10 @@ import Input from "../../common/Input.tsx";
 import StartToEndDate from "../../common/StartToEndDate.tsx";
 import RichTextEditor from "../../common/RichTextEditor.tsx";
 import ResumeFormButtons from "../ResumeFormButtons.tsx";
-import { FormMode } from "../../../interfaces/ResumeBuilder.interfaces.ts";
+import {
+  FormMode,
+  ICustomInputs,
+} from "../../../interfaces/ResumeBuilder.interfaces.ts";
 
 function ResumeCustomForm({ mode }: { mode: FormMode }) {
   const { resumeId } = useParams();
@@ -162,7 +165,7 @@ function ResumeCustomForm({ mode }: { mode: FormMode }) {
             [field]: value,
           };
         } else {
-          updatedArray.push({
+          const newCustom = {
             id: 303030,
             section_name: "",
             title: "",
@@ -173,7 +176,9 @@ function ResumeCustomForm({ mode }: { mode: FormMode }) {
             end_date: "",
             description: "",
             is_current: false,
-          });
+          } as ICustomInputs;
+          newCustom[field] = value;
+          updatedArray.push(newCustom);
         }
       } else if (mode === "edit") {
         if (updatedArray[indexOfCurrCustom]) {

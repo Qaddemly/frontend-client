@@ -104,12 +104,14 @@ function ResumeSkillsForm({ mode }: { mode: FormMode }) {
             [field]: value,
           };
         } else {
-          updatedArray.push({
+          const newSkills = {
             id: 303030,
             name: "",
             information: "",
             level: "",
-          });
+          } as ISkillsInputs;
+          newSkills[field] = value;
+          updatedArray.push(newSkills);
         }
       } else if (mode === "edit") {
         if (updatedArray[indexOfCurrSkill]) {

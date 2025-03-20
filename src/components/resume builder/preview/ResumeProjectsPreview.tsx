@@ -14,17 +14,17 @@ function ResumeProjectsPreview() {
       )}
       <div className="flex flex-col gap-3">
         {ProjectsInfo?.map((project) => (
-          <div>
+          <div key={project.id}>
             <div className="flex w-full justify-between">
               <p className="text-sm">
                 <span className="font-semibold">{project.title}</span>,{" "}
                 {project.subtitle}
               </p>
               <p className="text-xs italic">
-                <p className="text-xs italic">
+                <span className="text-xs italic">
                   {formatDateByYearAndMonth(project.start_date || "")} -{" "}
                   {formatDateByYearAndMonth(project.end_date || "")}
-                </p>
+                </span>
               </p>
             </div>
             <div className="rich-text-editor w-full break-words">
