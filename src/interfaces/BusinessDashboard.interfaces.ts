@@ -76,6 +76,7 @@ export interface IJobApplicationState {
   job_application_id: number;
   job_id: number;
   state: string;
+  is_archived: boolean;
 }
 
 //////////////////////////////////////////////////////////////////////////////

@@ -37,7 +37,7 @@ function JobTrackerItem({ userType, jobApplication }: JobTrackerItemProps) {
   const { jobId } = useParams();
 
   const key = jobApplication?.job_application_state
-    .state as keyof typeof JobApplicationStateIndex;
+    ?.state as keyof typeof JobApplicationStateIndex;
   const stateValue = key ? JobApplicationStateIndex[key] : undefined;
   const stateKey = stateValue
     ? (
@@ -93,14 +93,14 @@ function JobTrackerItem({ userType, jobApplication }: JobTrackerItemProps) {
     };
 
     return (
-      <Button onClick={handleArchive}>
+      <Button onClick={handleArchive} className="flex justify-center px-2">
         {isArchived ? "Unarchive" : "Archive"}
       </Button>
     );
   };
 
   const { data } = useGetBusinessAccountInfoQuery({
-    id: jobApplication?.job.business_id.toString() || "",
+    id: jobApplication?.id.toString() || "",
   });
 
   if (isLoading1) return <Loader />;
@@ -125,9 +125,9 @@ function JobTrackerItem({ userType, jobApplication }: JobTrackerItemProps) {
         <div className="flex flex-col gap-1">
           {userType === "user" ? (
             <>
-              <div className="text-lg font-semibold">
+              {/* <div className="text-lg font-semibold">
                 {jobApplication?.job.title}
-              </div>
+              </div> */}
               <div className="flex items-center gap-2 text-gray-500">
                 <FontAwesomeIcon icon={faBuilding} />
                 <p>{data?.business.name}.</p>

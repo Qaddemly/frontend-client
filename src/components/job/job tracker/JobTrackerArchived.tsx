@@ -1,40 +1,40 @@
 import { useGetArchivedJobApplicationQuery } from "../../../services/jobApi";
-import Loader from "../../common/Loader";
-import Footer from "../../home/Footer";
-import Navbar from "../../home/Navbar";
-import JobTrackerHeader from "./JobTrackerHeader";
 import JobTrackerItem from "./JobTrackerItem";
+import Loader from "../../common/Loader";
+import { IJobApplication } from "../../../interfaces/BusinessDashboard.interfaces";
+import Navbar from "../../home/Navbar";
+import Footer from "../../home/Footer";
 
 function JobTrackerArchived() {
-  const { data, isLoading } = useGetArchivedJobApplicationQuery();
+  const { data, isLoading, isError } = useGetArchivedJobApplicationQuery();
 
   if (isLoading) return <Loader />;
+  if (isError || !data || !data.jobApplications)
+    return <div>Error loading archived jobs.</div>;
 
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-background p-20">
-        <JobTrackerHeader userType="user" />
-        <div className="mt-6 space-y-4">
-          {data?.jobApplications.length ? (
-            data.jobApplications.map((jobApplication) => (
+      <div className="ml-5 mt-4">
+        <h2 className="mb-5 text-2xl font-semibold">
+          Archived Job Applications
+        </h2>
+        <div className="space-y-5">
+          {data?.jobApplications?.length === 0 ? (
+            <p>No archived job applications available.</p>
+          ) : (
+            data?.jobApplications?.map((jobApplication: IJobApplication) => (
               <JobTrackerItem
                 key={jobApplication.id}
                 userType="user"
-                jobApplication={{ ...jobApplication, archived: true }}
+                jobApplication={jobApplication}
               />
             ))
-          ) : (
-            <p className="text-center text-gray-500">
-              No archived job applications found.
-            </p>
           )}
         </div>
-        {/* <JobTrackerItem userType="user" archive={false} /> */}
       </div>
       <Footer />
     </>
   );
 }
-
 export default JobTrackerArchived;
