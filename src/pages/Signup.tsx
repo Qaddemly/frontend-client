@@ -1,7 +1,12 @@
 import {
+  faBirthdayCake,
+  faBriefcase,
   faCircleUser,
   faEnvelope,
   faLock,
+  faMapMarkerAlt,
+  faPhone,
+  faUniversity,
 } from "@fortawesome/free-solid-svg-icons";
 import GoogleButton from "../components/auth/GoogleButton";
 import Logo from "../components/common/Logo";
@@ -199,6 +204,62 @@ function Signup() {
               />
             </InputField>
 
+            <InputField
+              id="dateOfBirth"
+              label="Date of Birth"
+              icon={faBirthdayCake}
+            >
+              <Input
+                register={register2}
+                // options={{ required: "birthday is required" }}
+                props={{ id: "dateOfBirth", type: "date" }}
+                icon={faBirthdayCake}
+              />
+            </InputField>
+            <InputField id="location" label="Location" icon={faMapMarkerAlt}>
+              <Input
+                register={register2}
+                props={{
+                  id: "location",
+                  placeholder: "location",
+                  type: "text",
+                }}
+                icon={faBirthdayCake}
+              />
+            </InputField>
+            <InputField id="phone" label="Phone" icon={faPhone}>
+              <Input
+                register={register2}
+                props={{
+                  id: "phone",
+                  placeholder: "123 456 789",
+                  type: "text",
+                }}
+                icon={faBirthdayCake}
+              />
+            </InputField>
+            <InputField id="education" label="University" icon={faUniversity}>
+              <Input
+                register={register2}
+                props={{
+                  id: "education",
+                  placeholder: "Your school / university",
+                  type: "text",
+                }}
+                icon={faUniversity}
+              />
+            </InputField>
+            <InputField id="experience" label="Experience" icon={faBriefcase}>
+              <Input
+                register={register2}
+                props={{
+                  id: "experience",
+                  placeholder: "enter your experience ,please",
+                  type: "text",
+                }}
+                icon={faBriefcase}
+              />
+            </InputField>
             <Button className="w-full">Continue</Button>
           </form>
         </>

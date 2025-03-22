@@ -1,27 +1,43 @@
+import React from "react";
 import { JobApplicationState } from "../../../enums/index.enums";
+import { useArchiveJobApplicationMutation } from "../../../services/jobApi"; // API service
 
-type JobTrackerStatusProps = {
+interface JobTrackerStatusProps {
   setShowConfirm: (s: boolean) => void;
   userType: "business" | "user";
   currentIndex: number;
   setCurrentIndex: (s: number) => void;
-};
+  jobApplicationId: string;
+}
 
-function JobTrackerStatus({
+const JobTrackerStatus: React.FC<JobTrackerStatusProps> = ({
   userType,
   setShowConfirm,
   currentIndex,
   setCurrentIndex,
-}: JobTrackerStatusProps) {
-  const stages = Object.keys(JobApplicationState);
+  jobApplicationId,
+}) => {
+  const stages = Object.values(JobApplicationState);
+  const [archiveJobApplication] = useArchiveJobApplicationMutation();
 
-  const handleChangeStatus = (index: number) => {
+  const handleChangeStatus = async (index: number) => {
     if (index >= 0 && index < stages.length) {
-      setCurrentIndex(index);
-      setShowConfirm(true);
+      try {
+        if (index === stages.length - 1) {
+          await archiveJobApplication({
+            id: jobApplicationId,
+            archive: true,
+          }).unwrap();
+        }
+
+        setCurrentIndex(index);
+        setShowConfirm(true);
+      } catch (error) {
+        console.error("Failed to archive status:", error);
+      }
     }
   };
-  console.log(currentIndex);
+
   return (
     <div className="flex w-full flex-col items-start">
       <div className="flex w-full justify-between text-xs text-gray-700">
@@ -34,40 +50,38 @@ function JobTrackerStatus({
         {stages.map((stage, index) => (
           <div
             key={stage}
-            className={`flex ${index === 4 ? "" : "w-full"} items-center`}
+            className={`flex ${index === stages.length - 1 ? "" : "w-full"} items-center`}
           >
-            {currentIndex !== 4 && (
-              <div
-                onClick={() => {
-                  if (userType === "business") handleChangeStatus(index);
-                }}
-                className={`flex cursor-pointer rounded-full p-3 ${index <= currentIndex ? "bg-green-100" : "bg-gray-100"}`}
-              ></div>
-            )}
+            <div
+              onClick={() => {
+                if (userType === "business") handleChangeStatus(index);
+              }}
+              className={`flex cursor-pointer rounded-full p-3 transition-all duration-200 ${
+                currentIndex === stages.length - 1 &&
+                index === stages.length - 1
+                  ? "bg-danger-300"
+                  : index <= currentIndex
+                    ? "bg-green-400"
+                    : "bg-gray-200"
+              }`}
+            ></div>
 
-            {currentIndex === 4 && (
+            {index < stages.length - 1 && (
               <div
-                onClick={() => {
-                  if (userType === "business") handleChangeStatus(index);
-                }}
-                className={`flex cursor-pointer rounded-full p-3 ${index === 4 ? "bg-danger-300" : "bg-gray-100"}`}
-              ></div>
+                className={`h-2 w-full ${
+                  index < currentIndex ? "bg-green-400" : "bg-gray-200"
+                }`}
+              />
             )}
-            {index < stages.length - 1 &&
-              (currentIndex !== 4 ? (
-                <div
-                  className={`h-2 w-full ${index < currentIndex ? "bg-green-100" : "bg-gray-100"}`}
-                />
-              ) : (
-                <div className={`h-2 w-full bg-gray-100`} />
-              ))}
           </div>
         ))}
       </div>
 
-      <div className="mt-2 text-sm text-gray-500">{"10/10/2025"}</div>
+      <div className="mt-2 text-sm text-gray-500">
+        {new Date().toLocaleDateString()}
+      </div>
     </div>
   );
-}
+};
 
 export default JobTrackerStatus;

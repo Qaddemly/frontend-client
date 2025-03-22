@@ -5,6 +5,9 @@ import ResumeEducationPreview from "./preview/ResumeEducationPreview.tsx";
 import ResumeSkillsPreview from "./preview/ResumeSkillsPreview.tsx";
 import ResumeCertificatesPreview from "./preview/ResumeCertificatesPreview.tsx";
 import ResumeExperiencePreview from "./preview/ResumeExperiencePreview.tsx";
+import ResumeLanguagePreview from "./preview/ResumeLanguagePreview.tsx";
+import ResumeInterestPreview from "./preview/ResumeInterestPreview.tsx";
+import ResumeReferencePreview from "./preview/ResumeReferencePreview.tsx";
 import ResumeProjectsPreview from "./preview/ResumeProjectsPreview.tsx";
 import ResumeCustomPreview from "./preview/ResumeCustomPreview.tsx";
 import ResumeAwardPreview from "./preview/ResumeAwardPreview.tsx";
@@ -20,7 +23,10 @@ const components = [
   ResumeProjectsPreview,
   ResumeCustomPreview,
   ResumeAwardPreview,
-  ResumePublicationPreview
+  ResumePublicationPreview,
+  ResumeLanguagePreview,
+  ResumeInterestPreview,
+  ResumeReferencePreview     
 ];
 
 
