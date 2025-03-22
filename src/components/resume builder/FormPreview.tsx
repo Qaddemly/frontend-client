@@ -151,14 +151,12 @@ function FormPreview() {
       {status.includes("edit") && status.includes("languages") && (
         <ResumeLanguagesForm mode="edit" />
       )}
-
       {status.includes("edit") && status.includes("hobbies") && (
         <ResumeInterestForm mode="edit" />
       )}
-
       {status.includes("edit") && status.includes("references") && (
         <ResumeReferenceForm mode="edit" />
-       )}
+      )}
       {status.includes("edit") && status.includes("projects") && (
         <ResumeProjectForm mode="edit" />
       )}
@@ -249,7 +247,7 @@ function FormPreview() {
           )}
 
           {/* Language Section */}
-          {resumeInfo?.languages?.length && (
+          {resumeInfo?.languages?.length > 0 && (
             <ResumeSection
               title="Language"
               type="language"
@@ -258,11 +256,11 @@ function FormPreview() {
                 if (typeof id === "number") {
                   setCurrId(id);
                   setStatus(["edit", "languages"]);
-                  }
+                }
               }}
             />
           )}
-  
+
           {/* Reference Section */}
           {resumeInfo?.references?.length > 0 && (
             <ResumeSection
@@ -274,7 +272,7 @@ function FormPreview() {
                 if (typeof id === "number") {
                   setCurrId(id);
                   setStatus(["edit", "references"]);
-                  }
+                }
               }}
             />
           )}

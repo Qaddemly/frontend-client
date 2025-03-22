@@ -107,7 +107,7 @@ function ResumeReferenceForm({ mode }: { mode: FormMode }) {
       case "name":
         setName(value);
         break;
-      case "jobTile":
+      case "job_title":
         setJobTitle(value);
         break;
       case "organization":
@@ -134,7 +134,7 @@ function ResumeReferenceForm({ mode }: { mode: FormMode }) {
             [field]: value,
           };
         } else {
-          updatedArray.push({
+          const newRefrence = {
             name: "",
             job_title: "",
             organization: "",
@@ -142,7 +142,9 @@ function ResumeReferenceForm({ mode }: { mode: FormMode }) {
             phone: "",
             resume_template_id: 0,
             id: 303030,
-          });
+          } as IReferenceInputs;
+          newRefrence[field] = value;
+          updatedArray.push(newRefrence);
         }
       } else if (mode === "edit") {
         if (updatedArray[indexOfCurrRef]) {
@@ -213,7 +215,7 @@ function ResumeReferenceForm({ mode }: { mode: FormMode }) {
           <InputField id="jobTitle" label="Job Title">
             <Input
               register={register}
-              onChange={(e) => handleOnChange(e, "jobTitle")}
+              onChange={(e) => handleOnChange(e, "job_title")}
               value={jobTitle}
               name="jobTitle"
               props={{

@@ -10,7 +10,7 @@ import ResumeReferencePreview from "./preview/ResumeReferencePreview.tsx";
 import ResumeProjectsPreview from "./preview/ResumeProjectsPreview.tsx";
 import ResumeCustomPreview from "./preview/ResumeCustomPreview.tsx";
 import ResumeAwardPreview from "./preview/ResumeAwardPreview.tsx";
-import ResumePublicationPreview from "./preview/ResumepublicationPreview.tsx";
+import ResumePublicationPreview from "./preview/ResumePublicationPreview.tsx";
 
 function ResumePreview() {
   return (
@@ -26,6 +26,7 @@ function ResumePreview() {
         <ResumeAwardPreview />
         <ResumeLanguagePreview />
         <ResumeInterestPreview />
+        <ResumeReferencePreview />
         <ResumePublicationPreview />
         <ResumeCustomPreview />
       </div>

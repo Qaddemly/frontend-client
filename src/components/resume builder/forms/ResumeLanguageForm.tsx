@@ -108,13 +108,15 @@ function ResumeLanguagesForm({ mode }: { mode: FormMode }) {
             [field]: value,
           };
         } else {
-          updatedArray.push({
+          const newLanguage = {
             id: 303030,
             language: "",
             additional_info: "",
             level: "",
             resume_template_id: 0,
-          });
+          } as ILanguagesInputs;
+          newLanguage[field] = value;
+          updatedArray.push(newLanguage);
         }
       } else if (mode === "edit") {
         if (updatedArray[indexOfCurrLanguage]) {

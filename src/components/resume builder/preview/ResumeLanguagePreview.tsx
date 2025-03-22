@@ -6,7 +6,7 @@ function ResumeLanguagePreview() {
 
   return (
     <div className="mt-5 text-sm">
-      {resumeInfo?.languages && (
+      {resumeInfo?.languages?.length > 0 && (
         <>
           <p className="text-lg font-medium">Language</p>
           <hr className="mb-2 border-[1.5px]" />

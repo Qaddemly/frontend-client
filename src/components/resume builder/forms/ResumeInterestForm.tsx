@@ -103,12 +103,14 @@ function ResumeInterestForm({ mode }: { mode: FormMode }) {
             [field]: value,
           };
         } else {
-          updatedArray.push({
+          const newInterest = {
             id: 303030,
             interest: "",
             description: "",
             resume_template_id: 0,
-          });
+          } as IInterestsInput;
+          newInterest[field] = value;
+          updatedArray.push(newInterest);
         }
       } else if (mode === "edit") {
         if (updatedArray[indexOfCurrInterest]) {
