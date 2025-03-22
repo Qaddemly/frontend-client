@@ -1,40 +1,36 @@
 import { formatDateByYearAndMonth } from "../../../utils/helpers.ts";
 import { useResumeBuilder } from "../../../context/ResumeBuilderContext.tsx";
 
-function ResumeExperiencePreview() {
+function ResumePublicationPreview() {
   const { resumeInfo } = useResumeBuilder();
-  const experienceInfo = resumeInfo?.experience;
+  const publicationInfo = resumeInfo?.publications;
   return (
     <div className="mt-5 text-sm">
-      {experienceInfo?.length > 0 && (
+      {publicationInfo?.length > 0 && (
         <>
-          <p className="text-lg font-medium">Experience</p>
+          <p className="text-lg font-medium">Publication</p>
           <hr className="mb-2 border-[1.5px]" />
         </>
       )}
       <div className="flex flex-col gap-3">
-        {experienceInfo?.map((exp) => (
-          <div>
+        {publicationInfo?.map((publication) => (
+          <div key={publication.id}>
             <div className="flex w-full justify-between">
               <p className="text-sm">
-                <span className="font-semibold">{exp.job_title}</span>,{" "}
-                {exp.company_name}
+                <span className="font-semibold">{publication.title}</span>,{" "}
+                {publication.publisher}
               </p>
               <p className="text-xs italic">
                 <p className="text-xs italic">
-                  {formatDateByYearAndMonth(exp.start_date || "")} -{" "}
-                  {formatDateByYearAndMonth(exp.end_date || "")}
+                  {formatDateByYearAndMonth(publication.date || "")}
                 </p>
               </p>
             </div>
             <div className="rich-text-editor flex justify-between">
               <p
-                dangerouslySetInnerHTML={{ __html: exp.description }}
-                className="w-[30rem] break-words"
+                dangerouslySetInnerHTML={{ __html: publication.description }}
+                className="w-[30rem]"
               ></p>
-              <p className="italic">
-                {exp.city}, {exp.country}
-              </p>
             </div>
           </div>
         ))}
@@ -43,4 +39,4 @@ function ResumeExperiencePreview() {
   );
 }
 
-export default ResumeExperiencePreview;
+export default ResumePublicationPreview;

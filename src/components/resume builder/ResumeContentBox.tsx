@@ -21,7 +21,7 @@ function ResumeContentBox({
         setShowAddContent(false);
         onClick(e);
       }}
-      className="w-[20rem] cursor-pointer rounded-lg bg-background p-5"
+      className="h-full w-full cursor-pointer rounded-lg bg-background p-5"
     >
       <div className="flex items-center gap-3">
         <FontAwesomeIcon icon={icon} className="text-lg" />

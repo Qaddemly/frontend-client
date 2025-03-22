@@ -25,7 +25,7 @@ import { useResumeBuilder } from "../../context/ResumeBuilderContext.tsx";
 function AddResumeContent() {
   const { setShowAddContent, setStatus } = useResumeBuilder();
   return (
-    <div className="min-h-screen w-[70rem] bg-white p-10">
+    <div className="h-fit rounded-lg bg-white p-10">
       <div className="mb-5 flex items-center justify-between">
         <p className="text-3xl font-semibold">Add Content</p>
         <Button
@@ -35,7 +35,7 @@ function AddResumeContent() {
           <FontAwesomeIcon icon={faClose} className="text-2xl" />
         </Button>
       </div>
-      <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-3">
+      <div className="grid grid-cols-1 place-items-center gap-5 md:grid-cols-2 lg:gap-10 xl:grid-cols-4">
         <ResumeContentBox
           title="Profile"
           icon={faUser}

@@ -6,7 +6,7 @@ function ResumeSkillsPreview() {
 
   return (
     <div className="mt-5 text-sm">
-      {resumeInfo?.skills && (
+      {resumeInfo?.skills?.length > 0 && (
         <>
           <p className="text-lg font-medium">Skills</p>
           <hr className="mb-2 border-[1.5px]" />

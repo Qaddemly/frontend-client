@@ -3,6 +3,7 @@ import { IResponse } from "./Common.interfaces.ts";
 export type FormMode = "add" | "edit";
 
 export type ResumeStatus =
+  | "addResume"
   | "start"
   | "normal"
   | "add"
@@ -42,6 +43,10 @@ export interface IResumeInfo {
   languages: ILanguagesInputs[];
   hobbies: IInterestsInput[];
   references: IReferenceInputs[];
+  projects: IProjectsInputs[];
+  custom: ICustomInputs[];
+  awards: IAwardsInputs[];
+  publications: IPublicationsInputs[];
 }
 
 ///////////////////////////////////////////// Resume Template //////////////////////////////////////////////
@@ -195,6 +200,69 @@ export interface IReferenceInputs {
 export interface IResumeReference extends IReferenceInputs {
   resumeTemplate: IResumeTemplate;
 }
+///////////////////////////////////////////// Projects //////////////////////////////////////////////
+export interface IProjectsInputs {
+  id?: number;
+  title: string;
+  subtitle: string;
+  project_link: string;
+  start_date: string;
+  end_date: string;
+  description: string;
+  is_current: boolean;
+  [x: string]: string | number | boolean | undefined | IResumeTemplate;
+}
+
+export interface IResumeProjects extends IProjectsInputs {
+  resumeTemplate: IResumeTemplate;
+}
+///////////////////////////////////////////// Custom //////////////////////////////////////////////
+export interface ICustomInputs {
+  id?: number;
+  section_name: string;
+  title: string;
+  subtitle: string;
+  city: string;
+  country: string;
+  start_date: string;
+  end_date: string;
+  description: string;
+  is_current: boolean;
+  [x: string]: string | number | boolean | undefined | IResumeTemplate;
+}
+export interface IResumeCustom extends ICustomInputs {
+  resumeTemplate: IResumeTemplate;
+}
+
+///////////////////////////////////////////// Awards //////////////////////////////////////////////
+export interface IAwardsInputs {
+  id?: number;
+  award: string;
+  award_url: string;
+  issuer: string;
+  date: string;
+  description: string;
+  [x: string]: string | number | boolean | undefined | IResumeTemplate;
+}
+
+export interface IResumeAward extends IAwardsInputs {
+  resumeTemplate: IResumeTemplate;
+}
+
+///////////////////////////////////////////// Publications //////////////////////////////////////////////
+export interface IPublicationsInputs {
+  id?: number;
+  title: string;
+  publication_url: string;
+  publisher: string;
+  date: string;
+  description: string;
+  [x: string]: string | number | boolean | undefined | IResumeTemplate;
+}
+
+export interface IResumePublication extends IPublicationsInputs {
+  resumeTemplate: IResumeTemplate;
+}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////// Personal Api Response //////////////////////////////////////////////
 export interface IGetResumePersonalInfoResponse {
@@ -276,4 +344,45 @@ export interface IGetResumeReferenceInfoResponse {
 export interface IGetResumeReferenceInfoResponse {
   success: boolean;
   referenceContent: IResumeReference;
+}
+///////////////////////////////////////////// Projects Api Response //////////////////////////////////////////////
+export interface IGetResumeProjectsInfoResponse {
+  success: boolean;
+  projectsContent: IResumeProjects[];
+}
+
+export interface IGetResumeProjectInfoResponse {
+  success: boolean;
+  projectContent: IResumeProjects;
+}
+///////////////////////////////////////////// Custom Api Response //////////////////////////////////////////////
+export interface IGetAllResumeCustomInfoResponse {
+  success: boolean;
+  data: IResumeCustom[];
+}
+
+export interface IGetResumeCustomInfoResponse {
+  success: boolean;
+  data: IResumeCustom;
+}
+///////////////////////////////////////////// Awards Api Response //////////////////////////////////////////////
+export interface IGetResumeAwardsInfoResponse {
+  success: boolean;
+  awardsContent: IResumeAward[];
+}
+
+export interface IGetResumeAwardInfoResponse {
+  success: boolean;
+  awardContent: IResumeAward;
+}
+
+///////////////////////////////////////////// Publications Api Response //////////////////////////////////////////////
+export interface IGetResumePublicationsInfoResponse {
+  success: boolean;
+  publicationsContent: IResumePublication[];
+}
+
+export interface IGetResumePublicationInfoResponse {
+  success: boolean;
+  publicationsContent: IResumePublication;
 }

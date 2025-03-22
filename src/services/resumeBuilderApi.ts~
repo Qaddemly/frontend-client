@@ -3,37 +3,46 @@ import {
   IAddPersonalInfoResponse,
   IAddResumeTemplateResopnse,
   ICertificatesInputs,
+  ICustomInputs,
   IEducationInputs,
   IExperienceInputs,
+  IGetAllResumeCustomInfoResponse,
   IGetAllResumeEducationResponse,
   IGetAllResumeTemplatesResponse,
   IGetResumeCertificateInfoResponse,
   IGetResumeCertificatesInfoResponse,
+  IGetResumeCustomInfoResponse,
   IGetResumeEducationResponse,
   IGetResumeExperienceInfoResponse,
   IGetResumeExperiencesInfoResponse,
   IGetResumePersonalInfoResponse,
+  IGetResumeProjectInfoResponse,
+  IGetResumeProjectsInfoResponse,
   IGetResumeSkillInfoResponse,
   IGetResumeSkillsInfoResponse,
+  IProjectsInputs,
   ISkillsInputs,
+  IGetResumeAwardsInfoResponse,
+  IGetResumeAwardInfoResponse,
+  IAwardsInputs,
+  IGetResumePublicationsInfoResponse,
+  IGetResumePublicationInfoResponse,
+  IPublicationsInputs,
 } from "../interfaces/ResumeBuilder.interfaces.ts";
-import {
-  BaseQueryFn,
-  EndpointBuilder,
-  FetchArgs,
-  FetchBaseQueryError,
-  FetchBaseQueryMeta,
-} from "@reduxjs/toolkit/query";
 
 const BASE_RESUME_URL = "/resumeTemplate";
 
 export const resumeBuilderApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     ///////////////////////////////////////////// Resume Template //////////////////////////////////////////////
-    addResumeTemplate: builder.mutation<IAddResumeTemplateResopnse, void>({
-      query: () => ({
+    addResumeTemplate: builder.mutation<
+      IAddResumeTemplateResopnse,
+      { data: { name: string } }
+    >({
+      query: ({ data }) => ({
         url: `${BASE_RESUME_URL}`,
         method: "POST",
+        body: data,
       }),
     }),
     getAllResumeTemplates: builder.query<IGetAllResumeTemplatesResponse, void>({
@@ -303,6 +312,214 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
+    ///////////////////////////////////////////// Projects //////////////////////////////////////////////
+    getAllResumeProjects: builder.query<
+      IGetResumeProjectsInfoResponse,
+      { resumeId: string }
+    >({
+      query: ({ resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/project`,
+        method: "GET",
+      }),
+    }),
+    getResumeProject: builder.query<
+      IGetResumeProjectInfoResponse,
+      { resumeId: string; projectId: string }
+    >({
+      query: ({ resumeId, projectId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/project/${projectId}`,
+        method: "GET",
+      }),
+    }),
+    addResumeProject: builder.mutation<
+      IGetResumeProjectInfoResponse,
+      {
+        resumeId: string;
+        data: IProjectsInputs;
+      }
+    >({
+      query: ({ data, resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/project`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    updateResumeProject: builder.mutation<
+      IGetResumeProjectInfoResponse,
+      { resumeId: string; data: IProjectsInputs; projectId: string }
+    >({
+      query: ({ data, resumeId, projectId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/project/${projectId}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    deleteResumeProject: builder.mutation<
+      void,
+      { resumeId: string; projectId: string }
+    >({
+      query: ({ resumeId, projectId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/project/${projectId}`,
+        method: "DELETE",
+      }),
+    }),
+    ///////////////////////////////////////////// Awards //////////////////////////////////////////////
+    getAllResumeAwards: builder.query<
+      IGetResumeAwardsInfoResponse,
+      { resumeId: string }
+    >({
+      query: ({ resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/award`,
+        method: "GET",
+      }),
+    }),
+    getResumeAward: builder.query<
+      IGetResumeAwardInfoResponse,
+      { resumeId: string; awardId: string }
+    >({
+      query: ({ resumeId, awardId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/award/${awardId}`,
+        method: "GET",
+      }),
+    }),
+    addResumeAward: builder.mutation<
+      IGetResumeAwardInfoResponse,
+      {
+        resumeId: string;
+        data: IAwardsInputs;
+      }
+    >({
+      query: ({ data, resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/award`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    updateResumeAward: builder.mutation<
+      IGetResumeAwardInfoResponse,
+      { resumeId: string; data: IAwardsInputs; awardId: string }
+    >({
+      query: ({ data, resumeId, awardId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/award/${awardId}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    deleteResumeAward: builder.mutation<
+      void,
+      { resumeId: string; awardId: string }
+    >({
+      query: ({ resumeId, awardId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/award/${awardId}`,
+        method: "DELETE",
+      }),
+    }),
+
+    ///////////////////////////////////////////// Custom //////////////////////////////////////////////
+    getAllResumeCustom: builder.query<
+      IGetAllResumeCustomInfoResponse,
+      { resumeId: string }
+    >({
+      query: ({ resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/customSection`,
+        method: "GET",
+      }),
+    }),
+    getResumeCustom: builder.query<
+      IGetResumeCustomInfoResponse,
+      { resumeId: string; customId: string }
+    >({
+      query: ({ resumeId, customId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/customSection/${customId}`,
+        method: "GET",
+      }),
+    }),
+    addResumeCustom: builder.mutation<
+      IGetResumeCustomInfoResponse,
+      {
+        resumeId: string;
+        data: ICustomInputs;
+      }
+    >({
+      query: ({ data, resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/customSection`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    deleteResumeCustom: builder.mutation<
+      void,
+      { resumeId: string; customId: string }
+    >({
+      query: ({ resumeId, customId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/customSection/${customId}`,
+        method: "DELETE",
+      }),
+    }),
+    ///////////////////////////////////////////// Publications //////////////////////////////////////////////
+    getAllResumePublications: builder.query<
+      IGetResumePublicationsInfoResponse,
+      { resumeId: string }
+    >({
+      query: ({ resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/publication`,
+        method: "GET",
+      }),
+    }),
+    getResumePublication: builder.query<
+      IGetResumePublicationInfoResponse,
+      { resumeId: string; publicationId: string }
+    >({
+      query: ({ resumeId, publicationId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/award/${publicationId}`,
+        method: "GET",
+      }),
+    }),
+    addResumePublication: builder.mutation<
+      IGetResumePublicationInfoResponse,
+      {
+        resumeId: string;
+        data: IPublicationsInputs;
+      }
+    >({
+      query: ({ data, resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/publication`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    updateResumeCustom: builder.mutation<
+      IGetResumeCustomInfoResponse,
+      { resumeId: string; data: ICustomInputs; customId: string }
+    >({
+      query: ({ data, resumeId, customId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/customSection/${customId}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    updateResumePublication: builder.mutation<
+      IGetResumePublicationInfoResponse,
+      { resumeId: string; data: IPublicationsInputs; publicationId: string }
+    >({
+      query: ({ data, resumeId, publicationId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/award/${publicationId}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+
+    deleteResumePublication: builder.mutation<
+      void,
+      { resumeId: string; publicationId: string }
+    >({
+      query: ({ resumeId, publicationId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/award/${publicationId}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -342,4 +559,28 @@ export const {
   useAddResumeCertificateMutation,
   useUpdateResumeCertificateMutation,
   useDeleteResumeCertificateMutation,
+  ///////////////////////////////////////////// Projects //////////////////////////////////////////////
+  useGetAllResumeProjectsQuery,
+  useGetResumeProjectQuery,
+  useAddResumeProjectMutation,
+  useUpdateResumeProjectMutation,
+  useDeleteResumeProjectMutation,
+  ///////////////////////////////////////////// Custom //////////////////////////////////////////////
+  useGetAllResumeCustomQuery,
+  useGetResumeCustomQuery,
+  useAddResumeCustomMutation,
+  useUpdateResumeCustomMutation,
+  useDeleteResumeCustomMutation,
+  ///////////////////////////////////////////// Awards //////////////////////////////////////////////
+  useAddResumeAwardMutation,
+  useGetAllResumeAwardsQuery,
+  useGetResumeAwardQuery,
+  useUpdateResumeAwardMutation,
+  useDeleteResumeAwardMutation,
+  ///////////////////////////////////////////// Publications //////////////////////////////////////////////
+  useAddResumePublicationMutation,
+  useGetAllResumePublicationsQuery,
+  useGetResumePublicationQuery,
+  useUpdateResumePublicationMutation,
+  useDeleteResumePublicationMutation,
 } = resumeBuilderApi;

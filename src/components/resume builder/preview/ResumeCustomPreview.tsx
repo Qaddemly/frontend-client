@@ -1,39 +1,37 @@
-import { formatDateByYearAndMonth } from "../../../utils/helpers.ts";
 import { useResumeBuilder } from "../../../context/ResumeBuilderContext.tsx";
+import { formatDateByYearAndMonth } from "../../../utils/helpers.ts";
 
-function ResumeExperiencePreview() {
+function ResumeCustomPreview() {
   const { resumeInfo } = useResumeBuilder();
-  const experienceInfo = resumeInfo?.experience;
+  const customInfo = resumeInfo?.custom;
   return (
     <div className="mt-5 text-sm">
-      {experienceInfo?.length > 0 && (
-        <>
-          <p className="text-lg font-medium">Experience</p>
-          <hr className="mb-2 border-[1.5px]" />
-        </>
-      )}
       <div className="flex flex-col gap-3">
-        {experienceInfo?.map((exp) => (
+        {customInfo?.map((custom) => (
           <div>
+            <>
+              <p className="text-lg font-medium">{custom.section_name}</p>
+              <hr className="mb-2 border-[1.5px]" />
+            </>
             <div className="flex w-full justify-between">
               <p className="text-sm">
-                <span className="font-semibold">{exp.job_title}</span>,{" "}
-                {exp.company_name}
+                <span className="font-semibold">{custom.title}</span>,{" "}
+                {custom.subtitle}
               </p>
               <p className="text-xs italic">
                 <p className="text-xs italic">
-                  {formatDateByYearAndMonth(exp.start_date || "")} -{" "}
-                  {formatDateByYearAndMonth(exp.end_date || "")}
+                  {formatDateByYearAndMonth(custom.start_date || "")} -{" "}
+                  {formatDateByYearAndMonth(custom.end_date || "")}
                 </p>
               </p>
             </div>
             <div className="rich-text-editor flex justify-between">
               <p
-                dangerouslySetInnerHTML={{ __html: exp.description }}
+                dangerouslySetInnerHTML={{ __html: custom.description }}
                 className="w-[30rem] break-words"
               ></p>
               <p className="italic">
-                {exp.city}, {exp.country}
+                {custom.city}, {custom.country}
               </p>
             </div>
           </div>
@@ -43,4 +41,4 @@ function ResumeExperiencePreview() {
   );
 }
 
-export default ResumeExperiencePreview;
+export default ResumeCustomPreview;

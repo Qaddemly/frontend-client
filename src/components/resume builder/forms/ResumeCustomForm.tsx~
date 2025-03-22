@@ -1,83 +1,86 @@
+import { useParams } from "react-router-dom";
+import { useResumeBuilder } from "../../../context/ResumeBuilderContext.tsx";
+import {
+  useAddResumeCustomMutation,
+  useDeleteResumeCustomMutation,
+  useGetAllResumeCustomQuery,
+  useUpdateResumeCustomMutation,
+} from "../../../services/resumeBuilderApi.ts";
+import { FormEvent, useState } from "react";
+import { handleApiError, handleResumeAction } from "../../../utils/helpers.ts";
+import { ContentEditableEvent } from "react-simple-wysiwyg";
 import FormPreviewSection from "./FormPreviewSection.tsx";
 import InputField from "../../common/InputField.tsx";
 import Input from "../../common/Input.tsx";
+import StartToEndDate from "../../common/StartToEndDate.tsx";
 import RichTextEditor from "../../common/RichTextEditor.tsx";
 import ResumeFormButtons from "../ResumeFormButtons.tsx";
-import {
-  FormMode,
-  IExperienceInputs,
-} from "../../../interfaces/ResumeBuilder.interfaces.ts";
-import { useResumeBuilder } from "../../../context/ResumeBuilderContext.tsx";
-import { useParams } from "react-router-dom";
-import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  useAddResumeExperienceMutation,
-  useDeleteResumeExperienceMutation,
-  useGetAllResumeExperienceQuery,
-  useUpdateResumeExperienceMutation,
-} from "../../../services/resumeBuilderApi.ts";
-import { useState } from "react";
-import { handleApiError, handleResumeAction } from "../../../utils/helpers.ts";
-import { ContentEditableEvent } from "react-simple-wysiwyg";
-import StartToEndDate from "../../common/StartToEndDate.tsx";
+import { FormMode } from "../../../interfaces/ResumeBuilder.interfaces.ts";
 
-function ResumeExperienceForm({ mode }: { mode: FormMode }) {
-  const { setStatus, resumeInfo, setResumeInfo, currId } = useResumeBuilder();
+function ResumeCustomForm({ mode }: { mode: FormMode }) {
   const { resumeId } = useParams();
-  const { register, handleSubmit } = useForm<IExperienceInputs>();
-  const indexOfCurrExp = resumeInfo?.experience?.findIndex(
-    (exp) => exp?.id === currId,
-  );
+  const { currId, resumeInfo, setResumeInfo, setStatus } = useResumeBuilder();
 
-  const { refetch } = useGetAllResumeExperienceQuery({
+  const { refetch } = useGetAllResumeCustomQuery({
     resumeId: resumeId || "",
   });
-  const [addResumeExperience] = useAddResumeExperienceMutation();
-  const [updateResumeExperience] = useUpdateResumeExperienceMutation();
-  const [deleteResumeExperience] = useDeleteResumeExperienceMutation();
+  const [addResumeCustom] = useAddResumeCustomMutation();
+  const [updateResumeCustom] = useUpdateResumeCustomMutation();
+  const [deleteResumeCustom] = useDeleteResumeCustomMutation();
 
-  const [jobTitle, setJobTitle] = useState(
-    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.job_title
-      ? resumeInfo.experience[indexOfCurrExp].job_title
+  const indexOfCurrCustom = resumeInfo?.custom?.findIndex(
+    (custom) => custom?.id === currId,
+  );
+  const [sectionName, setSectionName] = useState(
+    mode === "edit" && resumeInfo?.custom?.[indexOfCurrCustom]?.section_name
+      ? resumeInfo.custom[indexOfCurrCustom].section_name
       : "",
   );
-  const [company, setCompany] = useState(
-    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.company_name
-      ? resumeInfo.experience[indexOfCurrExp].company_name
+  const [title, setTitle] = useState(
+    mode === "edit" && resumeInfo?.custom?.[indexOfCurrCustom]?.title
+      ? resumeInfo.custom[indexOfCurrCustom].title
+      : "",
+  );
+  const [subtitle, setSubtitle] = useState(
+    mode === "edit" && resumeInfo?.custom?.[indexOfCurrCustom]?.subtitle
+      ? resumeInfo.custom[indexOfCurrCustom].subtitle
       : "",
   );
   const [country, setCountry] = useState(
-    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.country
-      ? resumeInfo.experience[indexOfCurrExp].country
+    mode === "edit" && resumeInfo?.custom?.[indexOfCurrCustom]?.country
+      ? resumeInfo.custom[indexOfCurrCustom].country
       : "",
   );
   const [city, setCity] = useState(
-    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.city
-      ? resumeInfo.experience[indexOfCurrExp].city
+    mode === "edit" && resumeInfo?.custom?.[indexOfCurrCustom]?.city
+      ? resumeInfo.custom[indexOfCurrCustom].city
       : "",
   );
   const [startDate, setStartDate] = useState(
-    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.start_date
-      ? resumeInfo.experience[indexOfCurrExp].start_date
+    mode === "edit" && resumeInfo?.custom?.[indexOfCurrCustom]?.start_date
+      ? resumeInfo.custom[indexOfCurrCustom].start_date
       : "",
   );
   const [endDate, setEndDate] = useState(
-    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.end_date
-      ? resumeInfo.experience[indexOfCurrExp].end_date
+    mode === "edit" && resumeInfo?.custom?.[indexOfCurrCustom]?.end_date
+      ? resumeInfo.custom[indexOfCurrCustom].end_date
       : "",
   );
   const [description, setDescription] = useState(
-    mode === "edit" && resumeInfo?.experience?.[indexOfCurrExp]?.level
-      ? resumeInfo.experience[indexOfCurrExp].description
+    mode === "edit" && resumeInfo?.custom?.[indexOfCurrCustom]?.description
+      ? resumeInfo.custom[indexOfCurrCustom].description
       : "",
   );
 
-  const submitForm: SubmitHandler<IExperienceInputs> = async () => {
-    const experienceData = {
-      job_title: jobTitle,
-      company_name: company,
-      country: country,
+  const submitForm = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const customData = {
+      section_name: sectionName,
+      title: title,
+      subtitle: subtitle,
       city: city,
+      country: country,
       start_date: startDate,
       end_date: endDate,
       description: description,
@@ -88,21 +91,21 @@ function ResumeExperienceForm({ mode }: { mode: FormMode }) {
       if (mode === "add") {
         await handleResumeAction(
           () =>
-            addResumeExperience({
-              data: experienceData,
+            addResumeCustom({
+              data: customData,
               resumeId: resumeId || "",
             }).unwrap(),
           mode,
         );
-        refetch();
         setStatus(["normal"]);
+        refetch();
       } else {
         await handleResumeAction(
           () =>
-            updateResumeExperience({
-              data: experienceData,
+            updateResumeCustom({
+              data: customData,
               resumeId: resumeId || "",
-              experienceId: currId.toString() || "",
+              customId: currId.toString() || "",
             }).unwrap(),
           mode,
         );
@@ -118,11 +121,14 @@ function ResumeExperienceForm({ mode }: { mode: FormMode }) {
   ) {
     const value = "target" in e ? e.target.value : e;
     switch (field) {
-      case "job_title":
-        setJobTitle(value);
+      case "section_name":
+        setSectionName(value);
         break;
-      case "company_name":
-        setCompany(value);
+      case "title":
+        setTitle(value);
+        break;
+      case "subtitle":
+        setSubtitle(value);
         break;
       case "country":
         setCountry(value);
@@ -144,20 +150,23 @@ function ResumeExperienceForm({ mode }: { mode: FormMode }) {
     }
 
     setResumeInfo((prevInfo) => {
-      const updatedArray = [...prevInfo.experience];
+      const updatedArray = [...prevInfo.custom];
 
       if (mode === "add") {
-        const existingExp = updatedArray.find((exp) => exp.id === 303030);
-        if (existingExp) {
-          updatedArray[resumeInfo?.experience?.length - 1] = {
-            ...updatedArray[resumeInfo?.experience?.length - 1],
+        const existingCustom = updatedArray.find(
+          (custom) => custom.id === 303030,
+        );
+        if (existingCustom) {
+          updatedArray[resumeInfo?.custom?.length - 1] = {
+            ...updatedArray[resumeInfo?.custom?.length - 1],
             [field]: value,
           };
         } else {
           updatedArray.push({
             id: 303030,
-            job_title: "",
-            company_name: "",
+            section_name: "",
+            title: "",
+            subtitle: "",
             country: "",
             city: "",
             start_date: "",
@@ -167,17 +176,16 @@ function ResumeExperienceForm({ mode }: { mode: FormMode }) {
           });
         }
       } else if (mode === "edit") {
-        if (updatedArray[indexOfCurrExp]) {
-          updatedArray[indexOfCurrExp] = {
-            ...updatedArray[indexOfCurrExp],
+        if (updatedArray[indexOfCurrCustom]) {
+          updatedArray[indexOfCurrCustom] = {
+            ...updatedArray[indexOfCurrCustom],
             [field]: value,
           };
         }
       }
-
       return {
         ...prevInfo,
-        experience: updatedArray,
+        custom: updatedArray,
       };
     });
   }
@@ -187,20 +195,20 @@ function ResumeExperienceForm({ mode }: { mode: FormMode }) {
     try {
       await handleResumeAction(
         () =>
-          deleteResumeExperience({
+          deleteResumeCustom({
             resumeId: resumeId || "",
-            experienceId: currId.toString() || "",
+            customId: currId.toString() || "",
           }).unwrap(),
         "delete",
       );
       setStatus(["normal"]);
       setResumeInfo((prevInfo) => {
-        const updatedArray = prevInfo.experience.filter(
-          (exp) => exp.id !== currId,
+        const updatedArray = prevInfo.custom.filter(
+          (custom) => custom.id !== currId,
         );
         return {
           ...prevInfo,
-          experience: updatedArray,
+          custom: updatedArray,
         };
       });
     } catch (error) {
@@ -210,42 +218,50 @@ function ResumeExperienceForm({ mode }: { mode: FormMode }) {
 
   return (
     <FormPreviewSection
-      title={mode === "add" ? "Add Experience" : "Edit Experience"}
-      tips={true}
+      title={mode === "edit" ? "Edit Custom section" : "Add Custom section"}
       autoFill={true}
+      tips={true}
     >
       <form
-        onSubmit={handleSubmit(submitForm)}
+        onSubmit={(e) => submitForm(e)}
         className="flex w-full flex-col gap-5"
       >
-        <InputField id="jobTitle" label="Job title">
+        <InputField id="sectionName" label="Section Name">
           <Input
-            register={register}
-            onChange={(e) => handleOnChange(e, "job_title")}
-            value={jobTitle}
-            name="jobTitle"
+            onChange={(e) => handleOnChange(e, "section_name")}
+            value={sectionName}
+            name="sectionName"
             props={{
-              placeholder: "Enter job title",
+              placeholder: "custom",
               type: "text",
-              id: "jobTitle",
+              id: "sectionName",
             }}
           />
         </InputField>
-
-        <InputField id="company" label="Employer">
+        <InputField id="title" label="Title">
           <Input
-            register={register}
-            onChange={(e) => handleOnChange(e, "company_name")}
-            value={company}
-            name="company"
+            onChange={(e) => handleOnChange(e, "title")}
+            value={title}
+            name="title"
             props={{
-              placeholder: "Enter employer",
+              placeholder: "School/University",
               type: "text",
-              id: "company",
+              id: "title",
             }}
           />
         </InputField>
-
+        <InputField id="subtitle" label="Title">
+          <Input
+            onChange={(e) => handleOnChange(e, "subtitle")}
+            value={subtitle}
+            name="subtitle"
+            props={{
+              placeholder: "Enter subtitle",
+              type: "text",
+              id: "subtitle",
+            }}
+          />
+        </InputField>
         <div className="flex gap-5">
           <InputField id="country" label="Country">
             <Input
@@ -272,7 +288,6 @@ function ResumeExperienceForm({ mode }: { mode: FormMode }) {
             />
           </InputField>
         </div>
-
         <StartToEndDate
           startDate="start_date"
           startDateDefaultValue={startDate?.toString()}
@@ -281,24 +296,22 @@ function ResumeExperienceForm({ mode }: { mode: FormMode }) {
           onChangeEndDate={(e) => handleOnChange(e, "start_date")}
           endDateDefaultValue={endDate?.toString()}
         />
-
         <RichTextEditor
           label="Description"
           value={description}
           onChange={(e) => handleOnChange(e, "description")}
         />
-
         <ResumeFormButtons
           mode={mode}
           handleDelete={(e) => handleDelete(e)}
           handleCancel={() => {
             setResumeInfo((prevInfo) => {
-              const updatedArray = prevInfo.experience.filter(
-                (exp) => exp.id !== 303030,
+              const updatedArray = prevInfo.custom.filter(
+                (custom) => custom.id !== 303030,
               );
               return {
                 ...prevInfo,
-                experience: updatedArray,
+                custom: updatedArray,
               };
             });
           }}
@@ -308,4 +321,4 @@ function ResumeExperienceForm({ mode }: { mode: FormMode }) {
   );
 }
 
-export default ResumeExperienceForm;
+export default ResumeCustomForm;
