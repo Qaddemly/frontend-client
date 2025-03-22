@@ -12,7 +12,7 @@ function JobTrackerArchived() {
     return <div>Error loading archived jobs.</div>;
 
   return (
-    <JobTrackerLayout>
+    <JobTrackerLayout archivedCount={data?.jobApplications?.length}>
       {data?.jobApplications?.length === 0 ? (
         <p>No archived job applications available.</p>
       ) : (

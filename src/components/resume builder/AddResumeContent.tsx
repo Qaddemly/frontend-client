@@ -1,6 +1,5 @@
 import ResumeContentBox from "./ResumeContentBox.tsx";
 import {
-  faAddressCard,
   faBookOpen,
   faBriefcase,
   faBrush,
@@ -120,12 +119,6 @@ function AddResumeContent() {
           icon={faGear}
           description="Highlights additional learning experiences that enhance your skills."
           onClick={() => setStatus(() => ["add", "training"])}
-        />
-        <ResumeContentBox
-          title="Portfolio/ Personal Website"
-          icon={faAddressCard}
-          description="Provides a link to your work samples (Useful for creative or technical roles)."
-          onClick={() => setStatus(() => ["add", "portfolio"])}
         />
         <ResumeContentBox
           title="Custom"

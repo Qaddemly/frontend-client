@@ -15,11 +15,16 @@ import {
   IGetResumeEducationResponse,
   IGetResumeExperienceInfoResponse,
   IGetResumeExperiencesInfoResponse,
+  IGetResumeInterestsInfoResponse,
+  IGetResumeLanguageInfoResponse,
   IGetResumePersonalInfoResponse,
+  IGetResumeReferenceInfoResponse,
+  IGetResumeSkillInfoResponse,
+  IInterestsInput,
+  ILanguagesInputs,
+  IReferenceInputs,
   IGetResumeProjectInfoResponse,
   IGetResumeProjectsInfoResponse,
-  IGetResumeSkillInfoResponse,
-  IGetResumeSkillsInfoResponse,
   IProjectsInputs,
   ISkillsInputs,
   IGetResumeAwardsInfoResponse,
@@ -27,7 +32,7 @@ import {
   IAwardsInputs,
   IGetResumePublicationsInfoResponse,
   IGetResumePublicationInfoResponse,
-  IPublicationsInputs,
+  IPublicationsInputs, IGetResumeSkillsInfoResponse
 } from "../interfaces/ResumeBuilder.interfaces.ts";
 
 const BASE_RESUME_URL = "/resumeTemplate";
@@ -709,6 +714,24 @@ export const {
   useAddResumeCertificateMutation,
   useUpdateResumeCertificateMutation,
   useDeleteResumeCertificateMutation,
+  ///////////////////////////////////////////// Language //////////////////////////////////////////////
+  useGetAllResumeLanguageQuery,
+  useGetResumeLanguageQuery,
+  useAddResumeLanguageMutation,
+  useDeleteResumeLanguageMutation,
+  useUpdateResumeLanguageMutation,
+  ///////////////////////////////////////////// Interest //////////////////////////////////////////////
+  useAddResumeInterestMutation,
+  useDeleteResumeInterestMutation,
+  useUpdateResumeInterestMutation,
+  useGetAllResumeInterestsQuery,
+  useGetResumeInterestQuery,
+  ///////////////////////////////////////////// Reference //////////////////////////////////////////////
+  useAddResumeReferenceMutation,
+  useDeleteResumeReferenceMutation,
+  useGetAllResumeReferenceQuery,
+  useGetResumeReferenceQuery,
+  useUpdateResumeReferenceMutation,
   ///////////////////////////////////////////// Projects //////////////////////////////////////////////
   useGetAllResumeProjectsQuery,
   useGetResumeProjectQuery,

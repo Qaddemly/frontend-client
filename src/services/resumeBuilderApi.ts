@@ -20,14 +20,11 @@ import {
   IGetResumePersonalInfoResponse,
   IGetResumeReferenceInfoResponse,
   IGetResumeSkillInfoResponse,
-  IGetResumeSkillsInfoResponse,
   IInterestsInput,
   ILanguagesInputs,
   IReferenceInputs,
   IGetResumeProjectInfoResponse,
   IGetResumeProjectsInfoResponse,
-  IGetResumeSkillInfoResponse,
-  IGetResumeSkillsInfoResponse,
   IProjectsInputs,
   ISkillsInputs,
   IGetResumeAwardsInfoResponse,
@@ -36,6 +33,7 @@ import {
   IGetResumePublicationsInfoResponse,
   IGetResumePublicationInfoResponse,
   IPublicationsInputs,
+  IGetResumeSkillsInfoResponse,
 } from "../interfaces/ResumeBuilder.interfaces.ts";
 
 const BASE_RESUME_URL = "/resumeTemplate";

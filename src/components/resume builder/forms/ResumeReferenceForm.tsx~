@@ -107,7 +107,7 @@ function ResumeReferenceForm({ mode }: { mode: FormMode }) {
       case "name":
         setName(value);
         break;
-      case "job_title":
+      case "jobTile":
         setJobTitle(value);
         break;
       case "organization":
@@ -215,7 +215,7 @@ function ResumeReferenceForm({ mode }: { mode: FormMode }) {
           <InputField id="jobTitle" label="Job Title">
             <Input
               register={register}
-              onChange={(e) => handleOnChange(e, "job_title")}
+              onChange={(e) => handleOnChange(e, "jobTitle")}
               value={jobTitle}
               name="jobTitle"
               props={{

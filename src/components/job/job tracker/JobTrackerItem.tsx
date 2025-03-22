@@ -125,9 +125,9 @@ function JobTrackerItem({ userType, jobApplication }: JobTrackerItemProps) {
         <div className="flex flex-col gap-1">
           {userType === "user" ? (
             <>
-              {/* <div className="text-lg font-semibold">
-                {jobApplication?.job.title}
-              </div> */}
+              <div className="text-lg font-semibold">
+                {jobApplication?.job?.title}
+              </div>
               <div className="flex items-center gap-2 text-gray-500">
                 <FontAwesomeIcon icon={faBuilding} />
                 <p>{data?.business.name}.</p>
