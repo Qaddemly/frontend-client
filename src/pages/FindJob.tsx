@@ -65,15 +65,17 @@ function FindJob() {
   return (
     <>
       <Navbar />
-      <div className="flex min-h-screen">
-        <div className="w-full bg-background pb-20">
+      <div className="flex flex-col-reverse sm:flex-row">
+        <div
+          className={`min-h-screen w-full bg-background px-2 pb-10 text-center sm:px-5 lg:px-10 ${isOpen ? "lg:text-left" : "md:text-left"}`}
+        >
           {/* Heading and search bar */}
-          <div className="mx-6 max-w-5xl p-20 md:mx-4">
-            <h2 className="text-4xl font-semibold text-gray-800 md:text-3xl">
+          <div className="max-w-5xl py-10 pt-20 md:mx-4">
+            <h2 className="text-3xl font-semibold text-gray-800 md:text-4xl">
               Find your dream job
             </h2>
             <p className="mt-2 text-gray-600">Get access to millions of jobs</p>
-            <div className="flex items-center gap-5 py-6">
+            <div className="flex items-center gap-1 py-6 sm:gap-3 md:gap-5">
               <SearchBar
                 placeholder="Find your job"
                 buttonName="Find jobs"
@@ -85,7 +87,7 @@ function FindJob() {
               />
               {!isOpen && (
                 <Button
-                  className="flex items-center gap-2 border border-gray-100 bg-white p-2 text-lg text-main hover:bg-main hover:text-white"
+                  className="flex items-center gap-2 border border-gray-100 bg-white p-1 text-lg text-main hover:bg-main hover:text-white md:p-2"
                   onClick={() => {
                     setIsOpen(true);
                   }}
@@ -101,9 +103,9 @@ function FindJob() {
           {/*End of heading and search bar */}
 
           {/* Popular jobs */}
-          <div className="px-20 md:mx-4">
+          <div className="md:mx-4">
             <div
-              className={`grid gap-6 ${isOpen ? "grid-cols-1 sm:grid-cols-2 md:grid-cols-2" : "grid-cols-1 sm:grid-cols-2 md:grid-cols-3"}`}
+              className={`mt-8 grid grid-cols-1 place-items-center gap-6 ${isOpen ? "lg:grid-cols-2 lg:place-items-stretch xl:grid-cols-3 2xl:grid-cols-4" : "sm:grid-cols-2 sm:place-items-stretch lg:grid-cols-3 2xl:grid-cols-4"}`}
             >
               {data?.jobs.data.length === 0 && (
                 <p className="italic text-gray-300">No jobs founded</p>
@@ -128,7 +130,7 @@ function FindJob() {
               setCurrentPage(page);
             }}
           />
-          {/* End of popular companies */}
+          {/* End of popular jobs */}
         </div>
 
         {/* Sidebar filter */}
