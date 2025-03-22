@@ -154,7 +154,7 @@ function ResumeExperienceForm({ mode }: { mode: FormMode }) {
             [field]: value,
           };
         } else {
-          updatedArray.push({
+          const newExp = {
             id: 303030,
             job_title: "",
             company_name: "",
@@ -164,7 +164,9 @@ function ResumeExperienceForm({ mode }: { mode: FormMode }) {
             end_date: "",
             description: "",
             is_current: false,
-          });
+          } as IExperienceInputs;
+          newExp[field] = value;
+          updatedArray.push(newExp);
         }
       } else if (mode === "edit") {
         if (updatedArray[indexOfCurrExp]) {

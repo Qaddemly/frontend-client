@@ -5,17 +5,17 @@ import RichTextEditor from "../../common/RichTextEditor.tsx";
 import ResumeFormButtons from "../ResumeFormButtons.tsx";
 import {
   FormMode,
-  IAwardsInputs,
+  IPublicationsInputs,
 } from "../../../interfaces/ResumeBuilder.interfaces.ts";
 import { useResumeBuilder } from "../../../context/ResumeBuilderContext.tsx";
 import { useParams } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import {
-  useAddResumeAwardMutation,
-  useDeleteResumeAwardMutation,
-  useGetAllResumeAwardsQuery,
-  useUpdateResumeAwardMutation,
+  useAddResumePublicationMutation,
+  useDeleteResumePublicationMutation,
+  useGetAllResumePublicationsQuery,
+  useUpdateResumePublicationMutation,
 } from "../../../services/resumeBuilderApi.ts";
 import { handleApiError, handleResumeAction } from "../../../utils/helpers.ts";
 import { ContentEditableEvent } from "react-simple-wysiwyg";
@@ -25,53 +25,56 @@ import { faLink } from "@fortawesome/free-solid-svg-icons";
 import InputWithLink from "../../common/InputWithLink.tsx";
 import DatePicker from "../../common/DatePicker.tsx";
 
-function ResumeAwardsForm({ mode }: { mode: FormMode }) {
+function ResumePublicationsForm({ mode }: { mode: FormMode }) {
   const { setStatus, resumeInfo, setResumeInfo, currId } = useResumeBuilder();
   const { resumeId } = useParams();
-  const { register, handleSubmit } = useForm<IAwardsInputs>();
-  const indexOfCurrAward = resumeInfo?.awards?.findIndex(
-    (award) => award?.id === currId,
+  const { register, handleSubmit } = useForm<IPublicationsInputs>();
+  const indexOfCurrPublication = resumeInfo?.publications?.findIndex(
+    (publication) => publication?.id === currId,
   );
 
-  const { refetch } = useGetAllResumeAwardsQuery({
+  const { refetch } = useGetAllResumePublicationsQuery({
     resumeId: resumeId || "",
   });
-  const [addResumeAward] = useAddResumeAwardMutation();
-  const [updateResumeAward] = useUpdateResumeAwardMutation();
-  const [deleteResumeAward] = useDeleteResumeAwardMutation();
+  const [addResumePublication] = useAddResumePublicationMutation();
+  const [updateResumePublication] = useUpdateResumePublicationMutation();
+  const [deleteResumePublication] = useDeleteResumePublicationMutation();
 
-  const [award, setAward] = useState(
-    mode === "edit" && resumeInfo?.awards?.[indexOfCurrAward]?.award
-      ? resumeInfo.awards[indexOfCurrAward].award
+  const [title, setTitle] = useState(
+    mode === "edit" && resumeInfo?.publications?.[indexOfCurrPublication]?.title
+      ? resumeInfo.publications[indexOfCurrPublication].title
       : "",
   );
-  const [awardUrl, setAwardUrl] = useState(
-    mode === "edit" && resumeInfo?.awards?.[indexOfCurrAward]?.award_url
-      ? resumeInfo.awards[indexOfCurrAward].award_url
+  const [publicationUrl, setPublicationUrl] = useState(
+    mode === "edit" &&
+      resumeInfo?.publications?.[indexOfCurrPublication]?.publication_url
+      ? resumeInfo.publications[indexOfCurrPublication].publication_url
       : "",
   );
-  const [issuer, setIssuer] = useState(
-    mode === "edit" && resumeInfo?.awards?.[indexOfCurrAward]?.issuer
-      ? resumeInfo.awards[indexOfCurrAward].issuer
+  const [publisher, setPublisher] = useState(
+    mode === "edit" &&
+      resumeInfo?.publications?.[indexOfCurrPublication]?.publisher
+      ? resumeInfo.publications[indexOfCurrPublication].publisher
       : "",
   );
   const [date, setDate] = useState(
-    mode === "edit" && resumeInfo?.awards?.[indexOfCurrAward]?.date
-      ? resumeInfo.awards[indexOfCurrAward].date
+    mode === "edit" && resumeInfo?.publications?.[indexOfCurrPublication]?.date
+      ? resumeInfo.publications[indexOfCurrPublication].date
       : "",
   );
   const [description, setDescription] = useState(
-    mode === "edit" && resumeInfo?.awards?.[indexOfCurrAward]?.description
-      ? resumeInfo.awards[indexOfCurrAward].description
+    mode === "edit" &&
+      resumeInfo?.publications?.[indexOfCurrPublication]?.description
+      ? resumeInfo.publications[indexOfCurrPublication].description
       : "",
   );
   const [showLink, setShowLink] = useState(false);
 
-  const submitForm: SubmitHandler<IAwardsInputs> = async () => {
-    const awardsData = {
-      award: award,
-      award_url: awardUrl,
-      issuer: issuer,
+  const submitForm: SubmitHandler<IPublicationsInputs> = async () => {
+    const publicationsData = {
+      title: title,
+      publication_url: publicationUrl,
+      publisher: publisher,
       date: date,
       description: description,
     };
@@ -80,8 +83,8 @@ function ResumeAwardsForm({ mode }: { mode: FormMode }) {
       if (mode === "add") {
         await handleResumeAction(
           () =>
-            addResumeAward({
-              data: awardsData,
+            addResumePublication({
+              data: publicationsData,
               resumeId: resumeId || "",
             }).unwrap(),
           mode,
@@ -91,10 +94,10 @@ function ResumeAwardsForm({ mode }: { mode: FormMode }) {
       } else {
         await handleResumeAction(
           () =>
-            updateResumeAward({
-              data: awardsData,
+            updateResumePublication({
+              data: publicationsData,
               resumeId: resumeId || "",
-              awardId: currId.toString() || "",
+              publicationId: currId.toString() || "",
             }).unwrap(),
           mode,
         );
@@ -109,44 +112,46 @@ function ResumeAwardsForm({ mode }: { mode: FormMode }) {
     field: string,
   ) {
     const value = "target" in e ? e.target.value : e;
-    if (field === "award") setAward(value);
-    else if (field === "description") setDescription(value);
-    else if (field === "award_url") setAwardUrl(value);
-    else if (field === "issuer") setIssuer(value);
+    if (field === "title") setTitle(value);
+    else if (field === "publication_url") setPublicationUrl(value);
+    else if (field === "publisher") setPublisher(value);
     else if (field === "date") setDate(value);
+    else if (field === "description") setDescription(value);
 
     setResumeInfo((prevInfo) => {
-      const updatedArray = [...prevInfo.awards];
+      const updatedArray = [...prevInfo.publications];
       if (mode === "add") {
-        const existingSkill = updatedArray.find((award) => award.id === 303030);
+        const existingSkill = updatedArray.find(
+          (publication) => publication.id === 303030,
+        );
         if (existingSkill) {
-          updatedArray[resumeInfo?.awards?.length - 1] = {
-            ...updatedArray[resumeInfo?.awards?.length - 1],
+          updatedArray[resumeInfo?.publications?.length - 1] = {
+            ...updatedArray[resumeInfo?.publications?.length - 1],
             [field]: value,
           };
         } else {
-          const newAwards = {
+          const newPublication = {
             id: 303030,
-            award: "",
-            award_url: "",
-            issuer: "",
+            title: "",
+            publication_url: "",
+            publisher: "",
             date: "",
             description: "",
-          } as IAwardsInputs;
-          newAwards[field] = value;
-          updatedArray.push(newAwards);
+          } as IPublicationsInputs;
+          newPublication[field] = value;
+          updatedArray.push(newPublication);
         }
       } else if (mode === "edit") {
-        if (updatedArray[indexOfCurrAward]) {
-          updatedArray[indexOfCurrAward] = {
-            ...updatedArray[indexOfCurrAward],
+        if (updatedArray[indexOfCurrPublication]) {
+          updatedArray[indexOfCurrPublication] = {
+            ...updatedArray[indexOfCurrPublication],
             [field]: value,
           };
         }
       }
       return {
         ...prevInfo,
-        awards: updatedArray,
+        publications: updatedArray,
       };
     });
   }
@@ -156,20 +161,20 @@ function ResumeAwardsForm({ mode }: { mode: FormMode }) {
     try {
       await handleResumeAction(
         () =>
-          deleteResumeAward({
+          deleteResumePublication({
             resumeId: resumeId || "",
-            awardId: currId.toString() || "",
+            publicationId: currId.toString() || "",
           }).unwrap(),
         "delete",
       );
       setStatus(["normal"]);
       setResumeInfo((prevInfo) => {
-        const updatedArray = prevInfo.awards.filter(
-          (award) => award.id !== currId,
+        const updatedArray = prevInfo.publications.filter(
+          (publication) => publication.id !== currId,
         );
         return {
           ...prevInfo,
-          awards: updatedArray,
+          publications: updatedArray,
         };
       });
     } catch (error) {
@@ -179,11 +184,7 @@ function ResumeAwardsForm({ mode }: { mode: FormMode }) {
 
   return (
     <FormPreviewSection
-      title={
-        mode === "add"
-          ? "Add Achievements / Awards"
-          : "Edit Achievements / Awards"
-      }
+      title={mode === "add" ? "Add Publication" : "Edit Publication"}
       tips={true}
       autoFill={true}
     >
@@ -191,18 +192,17 @@ function ResumeAwardsForm({ mode }: { mode: FormMode }) {
         onSubmit={handleSubmit(submitForm)}
         className="relative flex w-full flex-col"
       >
-        <InputField id="award" label="Achievement / Award">
+        <InputField id="publication" label="Title">
           <div className="mb-5 flex items-center gap-3">
             <Input
               register={register}
-              onChange={(e) => handleOnChange(e, "award")}
-              value={award}
-              options={{ required: "Award name is required" }}
-              name="award"
+              onChange={(e) => handleOnChange(e, "title")}
+              value={title}
+              name="title"
               props={{
-                placeholder: "Enter Achievement / Award",
+                placeholder: "Enter Publication title",
                 type: "text",
-                id: "award",
+                id: "publication",
               }}
             />
             <Button
@@ -219,25 +219,25 @@ function ResumeAwardsForm({ mode }: { mode: FormMode }) {
         {showLink && (
           <InputWithLink
             register={register}
-            value={awardUrl}
-            handleOnChange={(e) => handleOnChange(e, "award_url")}
+            value={publicationUrl}
+            handleOnChange={(e) => handleOnChange(e, "publication_url")}
             setShowLink={setShowLink}
-            setValue={setAwardUrl}
-            name="awardUrl"
-            id="awardUrl"
+            setValue={setPublicationUrl}
+            name="publicationUrl"
+            id="publicationUrl"
           />
         )}
 
-        <InputField id="issuer" label="Issuer">
+        <InputField id="Publisher" label="Publisher">
           <Input
             register={register}
-            onChange={(e) => handleOnChange(e, "issuer")}
-            value={issuer}
-            name="issuer"
+            onChange={(e) => handleOnChange(e, "publisher")}
+            value={publisher}
+            name="publisher"
             props={{
-              placeholder: "Enter Issuer",
+              placeholder: "Enter Publisher",
               type: "text",
-              id: "issuer",
+              id: "Publisher",
             }}
           />
         </InputField>
@@ -246,13 +246,13 @@ function ResumeAwardsForm({ mode }: { mode: FormMode }) {
           <label htmlFor="education" className="font-medium">
             Date
           </label>
-          <DatePicker
-            onChange={(e) => handleOnChange(e, "date")}
-            name="date" // TODO solve error
-            register={register}
-          />
+        <DatePicker
+          name="date" // TODO solve error
+          register={register}
+          onChange={(e) => handleOnChange(e, "date")}
+        />
         </div>
-
+        
         <RichTextEditor
           label="Description"
           value={description}
@@ -264,12 +264,12 @@ function ResumeAwardsForm({ mode }: { mode: FormMode }) {
           handleDelete={(e) => handleDelete(e)}
           handleCancel={() => {
             setResumeInfo((prevInfo) => {
-              const updatedArray = prevInfo.awards.filter(
-                (award) => award.id !== 303030,
+              const updatedArray = prevInfo.publications.filter(
+                (publication) => publication.id !== 303030,
               );
               return {
                 ...prevInfo,
-                awards: updatedArray,
+                publications: updatedArray,
               };
             });
           }}
@@ -279,4 +279,4 @@ function ResumeAwardsForm({ mode }: { mode: FormMode }) {
   );
 }
 
-export default ResumeAwardsForm;
+export default ResumePublicationsForm;

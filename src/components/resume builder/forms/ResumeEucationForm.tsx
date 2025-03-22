@@ -15,7 +15,10 @@ import {
 } from "../../../services/resumeBuilderApi.ts";
 import { handleApiError, handleResumeAction } from "../../../utils/helpers.ts";
 import { useParams } from "react-router-dom";
-import { FormMode } from "../../../interfaces/ResumeBuilder.interfaces.ts";
+import {
+  FormMode,
+  IEducationInputs,
+} from "../../../interfaces/ResumeBuilder.interfaces.ts";
 
 function ResumeEducationForm({ mode }: { mode: FormMode }) {
   const { resumeId } = useParams();
@@ -154,7 +157,7 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
             [field]: value,
           };
         } else {
-          updatedArray.push({
+          const newEducation = {
             id: 303030,
             degree: "",
             school: "",
@@ -167,7 +170,9 @@ function ResumeEducationForm({ mode }: { mode: FormMode }) {
             description: "",
             school_link: "",
             is_current: false,
-          });
+          } as IEducationInputs;
+          newEducation[field] = value;
+          updatedArray.push(newEducation);
         }
       } else if (mode === "edit") {
         if (updatedArray[indexOfCurrEdu]) {

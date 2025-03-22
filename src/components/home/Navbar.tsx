@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { RootState } from "../../store/store";
 import UserMenu from "../user settings/UserMenu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,10 +19,11 @@ import BusinessAccountsMenu from "../business account/BusinessAccountsMenu";
 import NavbarLink from "../common/NavbarLink";
 
 function Navbar() {
+  const { resumeId } = useParams();
   const { user } = useSelector((state: RootState) => state.user);
   const { data } = useGetUserBusinessesQuery(undefined, {
     skip: Object.entries(user).length === 0,
-  }); // this api can handled with getMe api instead (ask backend)
+  }); // this api can be handled with getMe api instead (ask backend)
   const [showMenu, setShowMenu] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const divRef = useRef<HTMLDivElement>(null);
@@ -53,7 +54,10 @@ function Navbar() {
               />
             </li>
             <li>
-              <NavbarLink to="/resumeBuilder" content="Build Resume" />
+              <NavbarLink
+                to={["/resumeBuilder", `/resumeBuilder/edit/${resumeId}`]}
+                content="Build Resume"
+              />
             </li>
           </ul>
         </div>

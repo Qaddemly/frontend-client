@@ -13,9 +13,9 @@ function ResumeCertificatesPreview() {
           <hr className="mb-2 border-[1.5px]" />
         </>
       )}
-      <div className="flex gap-3">
+      <div className="grid grid-cols-3">
         {certificatesInfo?.map((certificate) => (
-          <div>
+          <div key={certificate.id}>
             <div className="flex w-full flex-col justify-between">
               <a
                 href={certificate.certificate_url}

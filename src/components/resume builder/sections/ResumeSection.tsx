@@ -30,10 +30,10 @@ function ResumeSection<T>({
       </div>
       {type === "aboutme" &&
         titles?.map((title) => (
-          <div className="flex w-full items-center justify-between border-t border-gray-200 py-3">
+          <div className="flex w-full items-center justify-between break-words border-t border-gray-200 py-3">
             <p
               dangerouslySetInnerHTML={{ __html: title }}
-              className="text-lg font-medium text-gray-300"
+              className="w-[14rem] break-words text-lg font-medium text-gray-300"
             ></p>
             <Button
               onClick={handleEditAboutme}

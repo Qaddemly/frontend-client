@@ -15,7 +15,7 @@ function ResumeCertificatesPreview() {
       )}
       <div className="grid grid-cols-3">
         {certificatesInfo?.map((certificate) => (
-          <div>
+          <div key={certificate.id}>
             <div className="flex w-full flex-col justify-between">
               <a
                 href={certificate.certificate_url}
@@ -29,7 +29,7 @@ function ResumeCertificatesPreview() {
                 dangerouslySetInnerHTML={{
                   __html: certificate.additional_information ?? "",
                 }}
-                className="rich-text-editor text-sm"
+                className="rich-text-editor text-xs"
               ></p>
             </div>
           </div>

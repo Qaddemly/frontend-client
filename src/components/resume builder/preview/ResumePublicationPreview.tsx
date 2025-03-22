@@ -21,15 +21,15 @@ function ResumePublicationPreview() {
                 {publication.publisher}
               </p>
               <p className="text-xs italic">
-                <p className="text-xs italic">
+                <span className="text-xs italic">
                   {formatDateByYearAndMonth(publication.date || "")}
-                </p>
+                </span>
               </p>
             </div>
             <div className="rich-text-editor flex justify-between">
               <p
                 dangerouslySetInnerHTML={{ __html: publication.description }}
-                className="w-[30rem]"
+                className="w-[15rem] text-xs md:w-[30rem]"
               ></p>
             </div>
           </div>

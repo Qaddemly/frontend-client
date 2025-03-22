@@ -242,7 +242,7 @@ function ResumeAwardsForm({ mode }: { mode: FormMode }) {
           />
         </InputField>
 
-        <div className="my-5">
+        <div>
           <label htmlFor="education" className="font-medium">
             Date
           </label>

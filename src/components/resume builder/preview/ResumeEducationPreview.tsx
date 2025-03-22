@@ -14,23 +14,23 @@ function ResumeEducationPreview() {
       )}
       <div className="flex flex-col gap-3">
         {educationInfo?.map((edu) => (
-          <div>
+          <div key={edu.id}>
             <div className="flex w-full justify-between">
               <p className="text-sm">
                 <span className="font-semibold">{edu.degree}</span>,{" "}
                 {edu.school}
               </p>
               <p className="text-xs italic">
-                <p className="text-xs italic">
+                <span className="text-xs italic">
                   {formatDateByYearAndMonth(edu.start_date || "")} -{" "}
                   {formatDateByYearAndMonth(edu.end_date || "")}
-                </p>
+                </span>
               </p>
             </div>
             <div className="rich-text-editor flex justify-between">
               <p
                 dangerouslySetInnerHTML={{ __html: edu.description }}
-                className="w-[30rem]"
+                className="w-[15rem] break-words text-xs md:w-[30rem]"
               ></p>
               <p className="italic">
                 {edu.city}, {edu.country}

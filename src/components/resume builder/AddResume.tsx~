@@ -9,8 +9,7 @@ import {
   useDeleteResumeTemplateMutation,
 } from "../../services/resumeBuilderApi.ts";
 import toast from "react-hot-toast";
-import { formatLastEditTime, handleApiError } from "../../utils/helpers.ts";
-import ResumePreview from "./ResumePreview.tsx";
+import { ediTimeAgo, handleApiError } from "../../utils/helpers.ts";
 import { useResumeBuilder } from "../../context/ResumeBuilderContext.tsx";
 
 function AddResume() {
@@ -102,18 +101,41 @@ function AddResume() {
         <div
           key={resume.id}
           onClick={() => {
+            if (resume.personalInfo === null) setStatus(["start"]);
+            else setStatus(["normal"]);
             navigate(`/resumeBuilder/edit/${resume.id}`);
-            if (resume?.profile === null)
-                  setStatus(["start"]);
-                else setStatus( ["normal"]);
           }}
         >
-          <ResumePreview className="h-[400px] w-[18rem] cursor-pointer flex-col items-center justify-center gap-2 break-words rounded-lg bg-white p-5 text-center text-[1px] shadow-sm transition-all hover:scale-105 hover:shadow-md" />
+          <div className="h-[400px] w-[18rem] cursor-pointer flex-col items-center justify-center gap-2 break-words rounded-lg bg-white p-5 text-center text-[10px] shadow-sm transition-all hover:scale-105 hover:shadow-md">
+            <h2 className="text-center font-bold">
+              {resume.personalInfo?.full_name}
+            </h2>
+            <h2 className="text-center font-medium">
+              {resume.personalInfo?.job_title}
+            </h2>
+            <h2 className="text-center font-normal">
+              {resume.personalInfo?.address}
+            </h2>
+            <div className="flex justify-center gap-5">
+              <h2 className="font-normal">{resume.personalInfo?.email}</h2>
+              <h2 className="font-normal">
+                {resume.personalInfo?.phone_number}
+              </h2>
+            </div>
+            {resume.personalInfo&&
+              <div className="mt-1 space-y-3">
+                {Array.from({ length: 23 }).map((_, index) => (
+                  <hr key={index} className="border-gray-200" />
+                ))}
+              </div>
+            }
+          </div>
+
           <div className="mt-5 flex items-center justify-between">
             <div>
               <p className="text-lg font-semibold">{resume.name}</p>
               <p className="text-sm text-gray-300">
-                {formatLastEditTime(resume.updated_at)}
+                {ediTimeAgo(resume.updated_at)}
               </p>
             </div>
             <Button

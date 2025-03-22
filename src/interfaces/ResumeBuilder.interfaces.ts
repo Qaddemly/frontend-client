@@ -57,6 +57,7 @@ export interface IResumeTemplate {
   account_id: number;
   created_at: string;
   updated_at: string;
+  personalInfo: PersonaInfoContent;
 }
 
 ///////////////////////////////////////////// Resume Template Api Response //////////////////////////////////////////////

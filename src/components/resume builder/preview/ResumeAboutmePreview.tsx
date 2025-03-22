@@ -13,7 +13,7 @@ function ResumeAboutmePreview() {
       )}
       <div
         dangerouslySetInnerHTML={{ __html: personalInfo?.aboutMe }}
-        className="rich-text-editor text-sm"
+        className="rich-text-editor break-words text-xs"
       ></div>
     </div>
   );

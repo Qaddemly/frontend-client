@@ -14,23 +14,23 @@ function ResumeExperiencePreview() {
       )}
       <div className="flex flex-col gap-3">
         {experienceInfo?.map((exp) => (
-          <div>
+          <div key={exp.id}>
             <div className="flex w-full justify-between">
               <p className="text-sm">
                 <span className="font-semibold">{exp.job_title}</span>,{" "}
                 {exp.company_name}
               </p>
               <p className="text-xs italic">
-                <p className="text-xs italic">
+                <span className="text-xs italic">
                   {formatDateByYearAndMonth(exp.start_date || "")} -{" "}
                   {formatDateByYearAndMonth(exp.end_date || "")}
-                </p>
+                </span>
               </p>
             </div>
             <div className="rich-text-editor flex justify-between">
               <p
                 dangerouslySetInnerHTML={{ __html: exp.description }}
-                className="w-[30rem]"
+                className="w-[10rem] break-words text-xs md:w-[30rem]"
               ></p>
               <p className="italic">
                 {exp.city}, {exp.country}

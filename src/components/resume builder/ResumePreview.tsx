@@ -1,4 +1,3 @@
-import { useState, useEffect, useRef } from "react";
 import ResumePersonalPreview from "./preview/ResumePersonalPreview.tsx";
 import ResumeAboutmePreview from "./preview/ResumeAboutmePreview.tsx";
 import ResumeEducationPreview from "./preview/ResumeEducationPreview.tsx";
@@ -13,73 +12,25 @@ import ResumeCustomPreview from "./preview/ResumeCustomPreview.tsx";
 import ResumeAwardPreview from "./preview/ResumeAwardPreview.tsx";
 import ResumePublicationPreview from "./preview/ResumepublicationPreview.tsx";
 
-const components = [
-  ResumePersonalPreview,
-  ResumeAboutmePreview,
-  ResumeEducationPreview,
-  ResumeExperiencePreview,
-  ResumeSkillsPreview,
-  ResumeCertificatesPreview,
-  ResumeProjectsPreview,
-  ResumeCustomPreview,
-  ResumeAwardPreview,
-  ResumePublicationPreview,
-  ResumeLanguagePreview,
-  ResumeInterestPreview,
-  ResumeReferencePreview     
-];
-
-
-function ResumePreview({ className }: { className?: string }) {
-  const width = className?.split(" ").find((x) => x.match("w-"));
-  // const height = className?.split(" ").find((x) => x.match("h-"));
-  // const text = className?.split(" ").find((x) => x.match("text-"));
-  const [sections, setSections] = useState<[number, number][]>([
-    [0, components.length],
-  ]);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const heightLimit = 1120;
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    let totalHeight = 0;
-    let splitIndex = 0;
-    const childNodes = Array.from(containerRef.current.children);
-
-    for (let i = 0; i < childNodes.length; i++) {
-      totalHeight += childNodes[i].getBoundingClientRect().height;
-      if (totalHeight > heightLimit) {
-        splitIndex = i;
-        break;
-      }
-    }
-
-    if (splitIndex > 0) {
-      setSections((prev) => {
-        const lastSection = prev[prev.length - 1];
-        return [
-          ...prev.slice(0, -1),
-          [lastSection[0], splitIndex],
-          [splitIndex, components.length],
-        ];
-      });
-    }
-  }, [sections]);
-
+function ResumePreview() {
   return (
-    <div className={`${width ? width : "w-1/2"} flex flex-col gap-5`}>
-      {sections.map(([start, end], index) => (
-        <div
-          key={index}
-          ref={index === sections.length - 1 ? containerRef : null}
-          className={`rounded-md bg-white p-14 font-[Arial] shadow-lg ${className}`}
-        >
-          {components.slice(start, end).map((Component, i) => (
-            <Component key={i} />
-          ))}
-        </div>
-      ))}
+    <div className="print-area w-full space-y-8 md:w-1/2">
+      <div className="min-h-screen rounded-md bg-white p-14 font-[Arial] shadow-lg">
+        <ResumePersonalPreview />
+        <ResumeAboutmePreview />
+        <ResumeEducationPreview />
+        <ResumeExperiencePreview />
+        <ResumeSkillsPreview />
+        <ResumeCertificatesPreview />
+        <ResumeProjectsPreview />
+        <ResumeAwardPreview />
+        <ResumeLanguagePreview />
+        <ResumeInterestPreview />
+        <ResumePublicationPreview />
+        <ResumeCustomPreview />
+      </div>
+      {/*<div className="min-h-screen rounded-md bg-white p-14 font-[Arial] shadow-lg">*/}
+      {/*</div>*/}
     </div>
   );
 }

@@ -100,3 +100,12 @@ input[type="number"] {
   list-style: decimal;
   padding-left: 2em;
 }
+
+@media print {
+  .print-area{
+    break-after: page;
+  }
+  .no-print{
+    display: none;
+  }
+}

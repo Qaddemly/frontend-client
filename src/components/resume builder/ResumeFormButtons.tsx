@@ -6,10 +6,12 @@ function ResumeFormButtons({
   mode,
   handleDelete,
   handleCancel,
+  hiddenDeleteBtn,
 }: {
   mode: FormMode;
-  handleDelete: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  handleDelete?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   handleCancel: () => void;
+  hiddenDeleteBtn?: boolean;
 }) {
   const { setStatus } = useResumeBuilder();
   return (
@@ -21,14 +23,15 @@ function ResumeFormButtons({
           {/* handle delete */}
           <Button
             type="button"
-            onClick={(e) => handleDelete(e)}
-            className="rounded-full px-3 text-danger-300 hover:bg-danger-300 hover:text-white"
+            onClick={(e) => handleDelete && handleDelete(e)}
+            className={`rounded-full px-3 text-danger-300 hover:bg-danger-300 hover:text-white ${hiddenDeleteBtn ? "hidden" : "block"}`}
           >
             Delete
           </Button>
         </div>
       )}
       <div className="space-x-2">
+        {/* handle cancel */}
         <Button
           type="button"
           onClick={() => {

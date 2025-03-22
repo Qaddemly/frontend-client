@@ -8,7 +8,6 @@ import { FormMode } from "../../../interfaces/ResumeBuilder.interfaces.ts";
 import ResumeFormButtons from "../ResumeFormButtons.tsx";
 import {
   useAddResumePersonalMutation,
-  useDeleteResumePersonalMutation,
   useGetResumePersonalQuery,
   useUpdateResumePersonalMutation,
 } from "../../../services/resumeBuilderApi.ts";
@@ -39,7 +38,6 @@ function ResumePersonalForm({ mode }: { mode: FormMode }) {
   const { refetch } = useGetResumePersonalQuery({ resumeId: resumeId || "" });
   const [addResumePersonal] = useAddResumePersonalMutation();
   const [updateResumePersonal] = useUpdateResumePersonalMutation();
-  const [deleteResumePersonal] = useDeleteResumePersonalMutation();
 
   const initialPersonalInfo: PersonalForm =
     mode === "add"
@@ -94,35 +92,6 @@ function ResumePersonalForm({ mode }: { mode: FormMode }) {
       handleApiError(error);
     }
   };
-
-  async function handleDeletePersonal(e: React.MouseEvent<HTMLButtonElement>) {
-    e.stopPropagation();
-    try {
-      await handleResumeAction(
-        () =>
-          deleteResumePersonal({
-            resumeId: resumeId || "",
-            personalInfoId: resumeInfo?.personal?.id.toString() || "",
-          }).unwrap(),
-        "delete",
-      );
-      setStatus(() => ["normal", "personal"]);
-      setResumeInfo((prevInfo) => ({
-        ...prevInfo,
-        personal: {
-          id: 0,
-          fullName: "",
-          jobTitle: "",
-          email: "",
-          phone: "",
-          address: "",
-          aboutMe: "",
-        },
-      }));
-    } catch (error) {
-      handleApiError(error);
-    }
-  }
 
   function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -222,7 +191,7 @@ function ResumePersonalForm({ mode }: { mode: FormMode }) {
         </div>
         <ResumeFormButtons
           mode={mode}
-          handleDelete={(e) => handleDeletePersonal(e)}
+          hiddenDeleteBtn={true}
           handleCancel={() => {}}
         />
       </form>
