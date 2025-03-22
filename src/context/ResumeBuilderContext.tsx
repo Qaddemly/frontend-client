@@ -18,6 +18,9 @@ import {
   useGetAllResumeCustomQuery,
   useGetAllResumeEducationQuery,
   useGetAllResumeExperienceQuery,
+  useGetAllResumeInterestsQuery,
+  useGetAllResumeLanguageQuery,
+  useGetAllResumeReferenceQuery,
   useGetAllResumeProjectsQuery,
   useGetAllResumeSkillsQuery,
   useGetAllResumeTemplatesQuery,
@@ -140,6 +143,21 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
   const { data: resumePublications } = useGetAllResumePublicationsQuery(
     resumeId && !status.includes("addResume") ? { resumeId } : skipToken,
   );
+  const { data: resumePublications } = useGetAllResumePublicationsQuery({
+    resumeId: resumeId || "",
+  });
+  ///////////////////////////////////////////// Languages //////////////////////////////////////////////
+  const { data: resumeLanguages } = useGetAllResumeLanguageQuery({
+    resumeId: resumeId || "",
+  });
+  ///////////////////////////////////////////// Interests //////////////////////////////////////////////
+  const { data: resumeInterests } = useGetAllResumeInterestsQuery({
+    resumeId: resumeId || "",
+  });
+  ///////////////////////////////////////////// Reference //////////////////////////////////////////////
+  const { data: resumeReference } = useGetAllResumeReferenceQuery({
+    resumeId: resumeId || "",
+  });
 
   useEffect(() => {
     setResumeTemplates(resumeTemplatesData ?? []);
@@ -255,6 +273,34 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
               description: publication.description ?? "",
             }))
           : [],
+         languages: resumeLanguages?.languagesContent
+        ? resumeLanguages.languagesContent.map((lang) => ({
+            id: lang.id ?? 0,
+            language: lang.language ?? "",
+            additional_info: lang.additional_info ?? "",
+            level: lang.level ?? "",
+            resume_template_id: lang.resume_template_id ?? "",
+          }))
+        : [],
+      interests: resumeInterests?.interestsContent
+        ? resumeInterests.interestsContent.map((inter) => ({
+            id: inter.id ?? 0,
+            resume_template_id: inter.resume_template_id ?? "",
+            interest: inter.interest ?? "",
+            description: inter.description ?? "",
+          }))
+        : [],
+      references: resumeReference?.referencesContent
+        ? resumeReference.referencesContent.map((ref) => ({
+            id: ref.id ?? 0,
+            resume_template_id: ref.resume_template_id ?? "",
+            name: ref.name ?? "",
+            job_title: ref.job_title ?? "",
+            organization: ref.organization ?? "",
+            email: ref.email ?? "",
+            phone: ref.phone ?? "",
+          }))
+        : [],
       };
     });
   }, [
@@ -266,6 +312,9 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
     resumeExperience,
     resumeSkills,
     resumeCertificates,
+    resumeLanguages,
+    resumeInterests,
+    resumeReference,
     resumeProjects,
     resumeCustoms,
     currId,

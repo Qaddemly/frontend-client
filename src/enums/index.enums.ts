@@ -479,6 +479,7 @@ export enum JobApplicationState {
   UNDER_CONSIDERATION = "UNDER_CONSIDERATION",
   ACCEPTED = "ACCEPTED",
   REJECTED = "REJECTED",
+  ARCHIVED = "ARCHIVED",
 }
 export enum JobApplicationStateIndex {
   PENDING = "1",

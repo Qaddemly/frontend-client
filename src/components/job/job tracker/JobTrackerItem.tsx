@@ -25,24 +25,19 @@ import { useArchiveJobApplicationMutation } from "../../../services/jobApi";
 
 type JobTrackerItemProps = {
   userType: "business" | "user";
-  archive?: boolean;
-  jobApplication?: IJobApplication;
+  jobApplication?: IJobApplication & { archived?: boolean };
 };
+
 type ArchiveButtonProps = {
   jobId: string;
   isArchived: boolean;
 };
 
-function JobTrackerItem({
-  userType,
-  // archive,
-  jobApplication,
-}: JobTrackerItemProps) {
+function JobTrackerItem({ userType, jobApplication }: JobTrackerItemProps) {
   const { jobId } = useParams();
-  //////////////////////////// For Business ///////////////////////////
 
   const key = jobApplication?.job_application_state
-    .state as keyof typeof JobApplicationStateIndex;
+    ?.state as keyof typeof JobApplicationStateIndex;
   const stateValue = key ? JobApplicationStateIndex[key] : undefined;
   const stateKey = stateValue
     ? (
@@ -52,11 +47,10 @@ function JobTrackerItem({
       ).find((k) => JobApplicationStateIndex[k] === stateValue)
     : undefined;
 
-  // Convert stateKey to an index number
   const currentIndexValue = stateKey ? parseInt(stateValue as string, 10) : 0;
   const [currentIndex, setCurrentIndex] = useState<number>(currentIndexValue);
-
   const [showConfirm, setShowConfirm] = useState(false);
+
   const user = jobApplication?.account;
   const [updateJobApplicationStatus, { isLoading: isLoading1 }] =
     useUpdateJobApplicationStatusMutation();
@@ -88,123 +82,105 @@ function JobTrackerItem({
           id: jobId,
           archive: !isArchived,
         }).unwrap();
-        console.log("Archived has successfully");
+        toast.success(
+          isArchived
+            ? "Job unarchived successfully"
+            : "Job archived successfully",
+        );
       } catch (error) {
         handleApiError(error);
       }
     };
-    console.log(ArchiveButton);
-    //////////////////////////// For User ///////////////////////////
-    // const [archiveJobApplication, { isLoading: isLoading2 }] =
-    //   useArchiveJobApplicationMutation();
-
-    // async function handleArchiveJobApplication() {
-    //   try {
-    //     await archiveJobApplication({ id: "1", archive: true }).unwrap();
-    //     toast.success("Job application archived successfully");
-    //   } catch (error) {
-    //     handleApiError(error);
-    //   }
-    // }
-
-    // useEffect(() => {
-    //   businessesAccounts.userBusinessesAccounts.map((business) => {
-    //     console.log(business.id);
-    //     console.log(jobApplication?.job.business_id);
-
-    //     if (jobApplication?.job.business_id === business.id)
-    //       setCurrentBusinessId(business.id.toString());
-    //   });
-    // }, [businessesAccounts.userBusinessesAccounts, jobApplication]);
-    const { data } = useGetBusinessAccountInfoQuery({
-      id: jobApplication?.job.business_id.toString() || "",
-    });
-
-    if (isLoading1) return <Loader />;
 
     return (
-      <div className="mt-4 flex items-center gap-5 rounded-md bg-white p-5 shadow-md">
-        <div className="flex w-full gap-5">
-          <div className="w-fit rounded-md bg-gray-200 p-5">
-            {userType === "user" ? (
-              <GoogleLogo className="h-12 w-12" />
-            ) : user?.profile_picture ? (
-              <img
-                src={user.profile_picture}
-                alt="profile photo"
-                className="h-20 w-20 rounded-md object-cover"
-              />
-            ) : (
-              <FontAwesomeIcon icon={faUser} className="text-5xl" />
-            )}
-          </div>
+      <Button onClick={handleArchive} className="flex justify-center px-2">
+        {isArchived ? "Unarchive" : "Archive"}
+      </Button>
+    );
+  };
 
-          <div className="flex flex-col gap-1">
-            {userType === "user" ? (
-              <>
-                <div className="text-lg font-semibold">
-                  {jobApplication?.job.title}
-                </div>
-                <div className="flex items-center gap-2 text-gray-500">
-                  <FontAwesomeIcon icon={faBuilding} />
-                  <p>{data?.business.name}.</p>
-                </div>
-                <div className="flex items-center gap-2 text-gray-500">
-                  <FontAwesomeIcon icon={faLocationDot} />
-                  <p>{data?.business.location_type}</p>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="text-lg font-semibold">
-                  {user?.first_name} {user?.last_name}
-                </div>
-                <div className="flex items-center gap-2 text-gray-500">
-                  <FontAwesomeIcon icon={faEnvelope} />
-                  <p>{user?.email}</p>
-                </div>
-                <div className="flex items-center gap-2 text-gray-500">
-                  <FontAwesomeIcon icon={faPhone} />
-                  <p>
-                    +{user?.phone.country_code} {user?.phone.number}
-                  </p>
-                </div>
-              </>
-            )}
-          </div>
+  const { data } = useGetBusinessAccountInfoQuery({
+    id: jobApplication?.id.toString() || "",
+  });
+
+  if (isLoading1) return <Loader />;
+
+  return (
+    <div className="mt-4 flex items-center gap-5 rounded-md bg-white p-5 shadow-md">
+      <div className="flex w-full gap-5">
+        <div className="w-fit rounded-md bg-gray-200 p-5">
+          {userType === "user" ? (
+            <GoogleLogo className="h-12 w-12" />
+          ) : user?.profile_picture ? (
+            <img
+              src={user.profile_picture}
+              alt="profile photo"
+              className="h-20 w-20 rounded-md object-cover"
+            />
+          ) : (
+            <FontAwesomeIcon icon={faUser} className="text-5xl" />
+          )}
         </div>
 
-        <JobTrackerStatus
-          currentIndex={currentIndex - 1}
-          setCurrentIndex={setCurrentIndex}
-          userType={userType}
-          setShowConfirm={setShowConfirm}
-        />
-
-        <div>
+        <div className="flex flex-col gap-1">
           {userType === "user" ? (
             <>
-              <Button onClick={handleArchive}>
-                {isArchived ? "Unarchive" : "Archive"}
-              </Button>
+              {/* <div className="text-lg font-semibold">
+                {jobApplication?.job.title}
+              </div> */}
+              <div className="flex items-center gap-2 text-gray-500">
+                <FontAwesomeIcon icon={faBuilding} />
+                <p>{data?.business.name}.</p>
+              </div>
+              <div className="flex items-center gap-2 text-gray-500">
+                <FontAwesomeIcon icon={faLocationDot} />
+                <p>{data?.business.location_type}</p>
+              </div>
             </>
           ) : (
-            // <Button onClick={handleArchiveJobApplication} className="px-3">
-            //   {archive ? "Archive" : "Unarchive"}
-            // </Button>
-            showConfirm && (
-              <Button
-                onClick={handleUpdateJobApplicationStatus}
-                className="px-3"
-              >
-                Confirm
-              </Button>
-            )
+            <>
+              <div className="text-lg font-semibold">
+                {user?.first_name} {user?.last_name}
+              </div>
+              <div className="flex items-center gap-2 text-gray-500">
+                <FontAwesomeIcon icon={faEnvelope} />
+                <p>{user?.email}</p>
+              </div>
+              <div className="flex items-center gap-2 text-gray-500">
+                <FontAwesomeIcon icon={faPhone} />
+                <p>
+                  +{user?.phone.country_code} {user?.phone.number}
+                </p>
+              </div>
+            </>
           )}
         </div>
       </div>
-    );
-  };
+
+      <JobTrackerStatus
+        currentIndex={currentIndex - 1}
+        setCurrentIndex={setCurrentIndex}
+        userType={userType}
+        setShowConfirm={setShowConfirm}
+        jobApplicationId="123"
+      />
+
+      <div>
+        {userType === "user" && jobApplication ? (
+          <ArchiveButton
+            jobId={jobApplication.id.toString()}
+            isArchived={jobApplication.archived || false}
+          />
+        ) : (
+          showConfirm && (
+            <Button onClick={handleUpdateJobApplicationStatus} className="px-3">
+              Confirm
+            </Button>
+          )
+        )}
+      </div>
+    </div>
+  );
 }
 
 export default JobTrackerItem;

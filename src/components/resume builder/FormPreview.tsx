@@ -16,6 +16,9 @@ import ResumeSkillsForm from "./forms/ResumeSkillsForm.tsx";
 import ResumeEucationForm from "./forms/ResumeEucationForm.tsx";
 import ResumeCertificatesForm from "./forms/ResumeCertificatesForm.tsx";
 import ResumeExperienceForm from "./forms/ResumeExperienceForm.tsx";
+import ResumeLanguagesForm from "./forms/ResumeLanguageForm.tsx";
+import ResumeInterestForm from "./forms/ResumeInterestForm.tsx";
+import ResumeReferenceForm from "./forms/ResumeReferenceForm.tsx";
 import ResumeProjectForm from "./forms/ResumeProjectForm.tsx";
 import ResumeCustomForm from "./forms/ResumeCustomForm.tsx";
 import { useParams } from "react-router-dom";
@@ -105,6 +108,15 @@ function FormPreview() {
       {status.includes("add") && status.includes("certifications") && (
         <ResumeCertificatesForm mode="add" />
       )}
+      {status.includes("add") && status.includes("languages") && (
+        <ResumeLanguagesForm mode="add" />
+      )}
+      {status.includes("add") && status.includes("hobbies") && (
+        <ResumeInterestForm mode="add" />
+      )}
+      {status.includes("add") && status.includes("references") && (
+        <ResumeReferenceForm mode="add" />
+      )}
       {status.includes("add") && status.includes("projects") && (
         <ResumeProjectForm mode="add" />
       )}
@@ -136,6 +148,17 @@ function FormPreview() {
       {status.includes("edit") && status.includes("certifications") && (
         <ResumeCertificatesForm mode="edit" />
       )}
+      {status.includes("edit") && status.includes("languages") && (
+        <ResumeLanguagesForm mode="edit" />
+      )}
+
+      {status.includes("edit") && status.includes("hobbies") && (
+        <ResumeInterestForm mode="edit" />
+      )}
+
+      {status.includes("edit") && status.includes("references") && (
+        <ResumeReferenceForm mode="edit" />
+       )}
       {status.includes("edit") && status.includes("projects") && (
         <ResumeProjectForm mode="edit" />
       )}
@@ -224,6 +247,38 @@ function FormPreview() {
               }}
             />
           )}
+
+          {/* Language Section */}
+          {resumeInfo?.languages?.length && (
+            <ResumeSection
+              title="Language"
+              type="language"
+              titles={[`${resumeInfo?.languages?.length}`]}
+              handleEdit={(id) => {
+                if (typeof id === "number") {
+                  setCurrId(id);
+                  setStatus(["edit", "languages"]);
+                  }
+              }}
+            />
+          )}
+  
+          {/* Reference Section */}
+          {resumeInfo?.references?.length > 0 && (
+            <ResumeSection
+              title="References"
+              items={resumeInfo.references}
+              idField="id"
+              displayField="reference"
+              handleEdit={(id) => {
+                if (typeof id === "number") {
+                  setCurrId(id);
+                  setStatus(["edit", "references"]);
+                  }
+              }}
+            />
+          )}
+
           {/* Projects Section */}
           {resumeInfo?.projects?.length > 0 && (
             <ResumeSection

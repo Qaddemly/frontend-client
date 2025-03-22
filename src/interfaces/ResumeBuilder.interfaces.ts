@@ -40,6 +40,9 @@ export interface IResumeInfo {
   skills: ISkillsInputs[];
   experience: IExperienceInputs[];
   certificates: ICertificatesInputs[];
+  languages: ILanguagesInputs[];
+  hobbies: IInterestsInput[];
+  references: IReferenceInputs[];
   projects: IProjectsInputs[];
   custom: ICustomInputs[];
   awards: IAwardsInputs[];
@@ -161,6 +164,43 @@ export interface ICertificatesInputs {
 export interface IResumeCertificate extends ICertificatesInputs {
   resumeTemplate: IResumeTemplate;
 }
+///////////////////////////////////////////// Language //////////////////////////////////////////////
+export interface ILanguagesInputs {
+  language: string;
+  level: string;
+  additional_info: string;
+  resume_template_id: number;
+  id?: number;
+  [x: string]: string | number | boolean | undefined | IResumeTemplate;
+}
+export interface IResumeLanguages extends ILanguagesInputs {
+  resumeTemplate: IResumeTemplate;
+}
+///////////////////////////////////////////// Interests //////////////////////////////////////////////
+export interface IInterestsInput {
+  interest: string;
+  description: string;
+  resume_template_id: number;
+  id: number;
+  [x: string]: string | number | boolean | undefined | IResumeTemplate;
+}
+export interface IResumeInterests extends IInterestsInput {
+  resumeTemplate: IResumeTemplate;
+}
+///////////////////////////////////////////// Reference //////////////////////////////////////////////
+export interface IReferenceInputs {
+  name: string;
+  job_title: string;
+  organization: string;
+  email: string;
+  phone: string;
+  resume_template_id: number;
+  id: number;
+  [x: string]: string | number | boolean | undefined | IResumeTemplate;
+}
+export interface IResumeReference extends IReferenceInputs {
+  resumeTemplate: IResumeTemplate;
+}
 ///////////////////////////////////////////// Projects //////////////////////////////////////////////
 export interface IProjectsInputs {
   id?: number;
@@ -275,6 +315,36 @@ export interface IGetResumeCertificatesInfoResponse {
 export interface IGetResumeCertificateInfoResponse {
   success: boolean;
   certificateContent: IResumeCertificate;
+}
+///////////////////////////////////////////// Language Api Response //////////////////////////////////////////////
+export interface IGetResumeLanguageInfoResponse {
+  success: boolean;
+  languagesContent: IResumeLanguages[];
+}
+
+export interface IGetResumeLanguageInfoResponse {
+  success: boolean;
+  languageContent: IResumeLanguages;
+}
+///////////////////////////////////////////// Interests Api Response //////////////////////////////////////////////
+export interface IGetResumeInterestsInfoResponse {
+  success: boolean;
+  interestsContent: IResumeInterests[];
+}
+
+export interface IGetResumeInterestsInfoResponse {
+  success: boolean;
+  interestContent: IResumeInterests;
+}
+///////////////////////////////////////////// Reference Api Response //////////////////////////////////////////////
+export interface IGetResumeReferenceInfoResponse {
+  success: boolean;
+  referencesContent: IResumeReference[];
+}
+
+export interface IGetResumeReferenceInfoResponse {
+  success: boolean;
+  referenceContent: IResumeReference;
 }
 ///////////////////////////////////////////// Projects Api Response //////////////////////////////////////////////
 export interface IGetResumeProjectsInfoResponse {

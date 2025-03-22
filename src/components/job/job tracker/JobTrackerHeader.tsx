@@ -8,6 +8,7 @@ type JobTrackerHeaderProps = {
   businessJobApplicationsLength?: number;
   currentState?: string;
   fetchApplications?: (params: { id: string; filterByState: string }) => void;
+  archivedCount?: number;
 };
 
 function JobTrackerHeader({
@@ -15,18 +16,21 @@ function JobTrackerHeader({
   businessJobApplicationsLength,
   currentState,
   fetchApplications,
+  archivedCount = 0,
 }: JobTrackerHeaderProps) {
   const { companyId, jobId } = useParams();
   const jobApplicationsStateValues = Object.values(JobApplicationState);
-  const [applicationsState, setApplicationsState] = useState(currentState);
+  const [applicationsState, setApplicationsState] = useState(
+    currentState || "All",
+  );
 
   useEffect(() => {
     if (fetchApplications)
       fetchApplications({
         id: jobId || "",
-        filterByState: applicationsState || "",
+        filterByState: applicationsState !== "All" ? applicationsState : "",
       });
-  }, [fetchApplications, applicationsState]);
+  }, [fetchApplications, applicationsState, jobId]);
 
   return (
     <div className="relative">
@@ -43,7 +47,7 @@ function JobTrackerHeader({
               ? `/jobTracker`
               : `/businessDashboard/companyJobs/${companyId}/jobApplications/${jobId}/jobTracker`
           }
-          className={({ isActive }: { isActive: boolean }) =>
+          className={({ isActive }) =>
             `cursor-pointer border-b-4 pb-2 hover:border-main hover:text-main ${
               isActive
                 ? "border-b-main text-main"
@@ -52,15 +56,13 @@ function JobTrackerHeader({
           }
         >
           Active{" "}
-          {userType === "business"
-            ? `(${businessJobApplicationsLength})`
-            : `()`}
+          {userType === "business" ? `(${businessJobApplicationsLength})` : ""}
         </NavLink>
         {userType === "user" && (
           <NavLink
             end
             to="/jobTracker/archived"
-            className={({ isActive }: { isActive: boolean }) =>
+            className={({ isActive }) =>
               `cursor-pointer border-b-4 pb-2 hover:border-main hover:text-main ${
                 isActive
                   ? "border-b-main text-main"
@@ -68,7 +70,7 @@ function JobTrackerHeader({
               }`
             }
           >
-            Archived (4)
+            Archived ({archivedCount})
           </NavLink>
         )}
       </div>
@@ -87,13 +89,13 @@ function JobTrackerHeader({
           onChange={(e) => setApplicationsState(e.target.value)}
           className="w-[15rem] rounded-md border border-gray-100 px-5 py-2 text-gray-400 outline-none focus:border-secondary"
         >
-          {userType === "user" ? (
-            <option value="All">Job Type</option>
-          ) : (
+          <option value="All">All</option>
+          {userType === "business" &&
             jobApplicationsStateValues.map((state) => (
-              <option value={state}>{state}</option>
-            ))
-          )}
+              <option key={state} value={state}>
+                {state}
+              </option>
+            ))}
         </select>
       </div>
     </div>
