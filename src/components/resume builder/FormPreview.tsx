@@ -40,7 +40,7 @@ function FormPreview() {
   // const [showEditResumeName, setShowEditResumeName] = useState(false);
 
   return (
-    <div className="flex w-1/3 flex-col gap-10">
+    <div className="no-print flex w-1/3 flex-col gap-10">
       <div className="flex items-center justify-between rounded-lg bg-white px-8 py-5 shadow-md">
         {/*{showEditResumeName ? (*/}
         {/*  <div className="flex items-center gap-5">*/}
@@ -65,7 +65,12 @@ function FormPreview() {
           {/*  onClick={() => setShowEditResumeName(true)}*/}
           {/*/>*/}
         </p>
-        <Button className="flex items-center gap-3 px-3">
+        <Button
+          onClick={() => {
+            window.print();
+          }}
+          className="flex items-center gap-3 px-3"
+        >
           Download
           <FontAwesomeIcon icon={faFileArrowDown} className="text-xl" />
         </Button>
@@ -155,7 +160,7 @@ function FormPreview() {
             <ResumeSection
               title="Profile"
               type="aboutme"
-              titles={[`${resumeInfo?.personal?.aboutMe.slice(0, 1000)}`]}
+              titles={[`${resumeInfo?.personal?.aboutMe.slice(0, 50)}...`]}
               handleEditAboutme={() => setStatus(() => ["edit", "aboutme"])}
             />
           )}

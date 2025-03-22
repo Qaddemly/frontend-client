@@ -242,11 +242,17 @@ function ResumePublicationsForm({ mode }: { mode: FormMode }) {
           />
         </InputField>
 
-        <DatePicker
-          name="date" // TODO solve error
-          register={register}
-          onChange={(e) => handleOnChange(e, "date")}
-        />
+        <div className="my-5">
+          <label htmlFor="education" className="font-medium">
+            Date
+          </label>
+          <DatePicker
+            name="date" // TODO solve error
+            register={register}
+            onChange={(e) => handleOnChange(e, "date")}
+          />
+        </div>
+
         <RichTextEditor
           label="Description"
           value={description}

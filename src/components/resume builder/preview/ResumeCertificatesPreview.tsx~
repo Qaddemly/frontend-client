@@ -29,7 +29,7 @@ function ResumeCertificatesPreview() {
                 dangerouslySetInnerHTML={{
                   __html: certificate.additional_information ?? "",
                 }}
-                className="rich-text-editor text-xs"
+                className="rich-text-editor text-sm"
               ></p>
             </div>
           </div>

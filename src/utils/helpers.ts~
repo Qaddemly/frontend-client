@@ -170,6 +170,8 @@ export function ediTimeAgo(timestamp: string): string {
   const time = new Date(timestamp);
   const now = new Date();
   const diffInSeconds = Math.floor((now.getTime() - time.getTime()) / 1000);
+  console.log(timestamp);
+  console.log(diffInSeconds, time, now);
   if (diffInSeconds < 10) return "edited just now";
   if (diffInSeconds < 60) return `edited ${diffInSeconds} sec ago`;
 

@@ -29,7 +29,7 @@ function ResumePublicationPreview() {
             <div className="rich-text-editor flex justify-between">
               <p
                 dangerouslySetInnerHTML={{ __html: publication.description }}
-                className="w-[30rem]"
+                className="w-[15rem] text-xs md:w-[30rem]"
               ></p>
             </div>
           </div>

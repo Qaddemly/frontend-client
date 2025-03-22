@@ -130,14 +130,16 @@ function ResumePublicationsForm({ mode }: { mode: FormMode }) {
             [field]: value,
           };
         } else {
-          updatedArray.push({
+          const newPublication = {
             id: 303030,
             title: "",
             publication_url: "",
             publisher: "",
             date: "",
             description: "",
-          });
+          } as IPublicationsInputs;
+          newPublication[field] = value;
+          updatedArray.push(newPublication);
         }
       } else if (mode === "edit") {
         if (updatedArray[indexOfCurrPublication]) {
@@ -240,11 +242,17 @@ function ResumePublicationsForm({ mode }: { mode: FormMode }) {
           />
         </InputField>
 
+        <div className="my-5">
+          <label htmlFor="education" className="font-medium">
+            Date
+          </label>
         <DatePicker
           name="date" // TODO solve error
           register={register}
           onChange={(e) => handleOnChange(e, "date")}
         />
+        </div>
+        
         <RichTextEditor
           label="Description"
           value={description}

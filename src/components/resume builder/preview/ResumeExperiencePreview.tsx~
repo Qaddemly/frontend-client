@@ -1,36 +1,40 @@
 import { formatDateByYearAndMonth } from "../../../utils/helpers.ts";
 import { useResumeBuilder } from "../../../context/ResumeBuilderContext.tsx";
 
-function ResumeAwardPreview() {
+function ResumeExperiencePreview() {
   const { resumeInfo } = useResumeBuilder();
-  const awardInfo = resumeInfo?.awards;
+  const experienceInfo = resumeInfo?.experience;
   return (
     <div className="mt-5 text-sm">
-      {awardInfo?.length > 0 && (
+      {experienceInfo?.length > 0 && (
         <>
-          <p className="text-lg font-medium">Achievement / Award</p>
+          <p className="text-lg font-medium">Experience</p>
           <hr className="mb-2 border-[1.5px]" />
         </>
       )}
       <div className="flex flex-col gap-3">
-        {awardInfo?.map((award) => (
-          <div key={award.id}>
+        {experienceInfo?.map((exp) => (
+          <div key={exp.id}>
             <div className="flex w-full justify-between">
               <p className="text-sm">
-                <span className="font-semibold">{award.award}</span>,{" "}
-                {award.issuer}
+                <span className="font-semibold">{exp.job_title}</span>,{" "}
+                {exp.company_name}
               </p>
               <p className="text-xs italic">
                 <span className="text-xs italic">
-                  {formatDateByYearAndMonth(award.date || "")}
+                  {formatDateByYearAndMonth(exp.start_date || "")} -{" "}
+                  {formatDateByYearAndMonth(exp.end_date || "")}
                 </span>
               </p>
             </div>
             <div className="rich-text-editor flex justify-between">
               <p
-                dangerouslySetInnerHTML={{ __html: award.description }}
-                className="w-[15rem] text-xs md:w-[30rem]"
+                dangerouslySetInnerHTML={{ __html: exp.description }}
+                className="w-[10rem] break-words text-xs md:w-[30rem]"
               ></p>
+              <p className="italic">
+                {exp.city}, {exp.country}
+              </p>
             </div>
           </div>
         ))}
@@ -39,4 +43,4 @@ function ResumeAwardPreview() {
   );
 }
 
-export default ResumeAwardPreview;
+export default ResumeExperiencePreview;

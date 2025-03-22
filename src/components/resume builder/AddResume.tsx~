@@ -122,13 +122,13 @@ function AddResume() {
                 {resume.personalInfo?.phone_number}
               </h2>
             </div>
-            {resume.personalInfo && (
+            {resume.personalInfo&&
               <div className="mt-1 space-y-3">
                 {Array.from({ length: 23 }).map((_, index) => (
                   <hr key={index} className="border-gray-200" />
                 ))}
               </div>
-            )}
+            }
           </div>
 
           <div className="mt-5 flex items-center justify-between">

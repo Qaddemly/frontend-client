@@ -5,7 +5,7 @@ function ResumeAboutmePreview() {
   const personalInfo = resumeInfo?.personal;
   return (
     <div>
-      {personalInfo?.aboutMe.length > 0 && (
+      {personalInfo?.aboutMe?.length > 0 && (
         <>
           <p className="text-lg font-medium">Profile</p>
           <hr className="mb-2 border-[1.5px]" />
@@ -13,7 +13,7 @@ function ResumeAboutmePreview() {
       )}
       <div
         dangerouslySetInnerHTML={{ __html: personalInfo?.aboutMe }}
-        className="rich-text-editor text-sm"
+        className="rich-text-editor break-words text-sm"
       ></div>
     </div>
   );
