@@ -19,10 +19,6 @@ function ResumeLanguagePreview() {
               <span className="font-semibold">{lang.language}</span> -{" "}
               {lang.level}
             </p>
-            <p
-              className="rich-text-editor"
-              dangerouslySetInnerHTML={{ __html: lang.additional_info }}
-            ></p>
           </div>
         ))}
       </div>

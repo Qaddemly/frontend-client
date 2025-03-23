@@ -47,6 +47,7 @@ export interface IResumeInfo {
   custom: ICustomInputs[];
   awards: IAwardsInputs[];
   publications: IPublicationsInputs[];
+  volunteering: IOrganizationsInputs[];
 }
 
 ///////////////////////////////////////////// Resume Template //////////////////////////////////////////////
@@ -264,6 +265,24 @@ export interface IPublicationsInputs {
 export interface IResumePublication extends IPublicationsInputs {
   resumeTemplate: IResumeTemplate;
 }
+///////////////////////////////////////////// Organization  //////////////////////////////////////////////
+export interface IOrganizationsInputs {
+  id?: number;
+  organization: string;
+  position: string;
+  city: string;
+  country: string;
+  start_date: string;
+  end_date: string;
+  is_current: boolean;
+  description: string;
+  resume_template_id: number;
+  [x: string]: string | number | boolean | undefined | IResumeTemplate;
+}
+
+export interface IResumeOrganization extends IOrganizationsInputs {
+  resumeTemplate: IResumeTemplate;
+}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////// Personal Api Response //////////////////////////////////////////////
 export interface IGetResumePersonalInfoResponse {
@@ -317,7 +336,7 @@ export interface IGetResumeCertificateInfoResponse {
   certificateContent: IResumeCertificate;
 }
 ///////////////////////////////////////////// Language Api Response //////////////////////////////////////////////
-export interface IGetResumeLanguageInfoResponse {
+export interface IGetResumeLanguagesInfoResponse {
   success: boolean;
   languagesContent: IResumeLanguages[];
 }
@@ -332,12 +351,12 @@ export interface IGetResumeInterestsInfoResponse {
   interestsContent: IResumeInterests[];
 }
 
-export interface IGetResumeInterestsInfoResponse {
+export interface IGetResumeInterestInfoResponse {
   success: boolean;
   interestContent: IResumeInterests;
 }
 ///////////////////////////////////////////// Reference Api Response //////////////////////////////////////////////
-export interface IGetResumeReferenceInfoResponse {
+export interface IGetResumeReferencesInfoResponse {
   success: boolean;
   referencesContent: IResumeReference[];
 }
@@ -386,4 +405,15 @@ export interface IGetResumePublicationsInfoResponse {
 export interface IGetResumePublicationInfoResponse {
   success: boolean;
   publicationsContent: IResumePublication;
+}
+
+///////////////////////////////////////////// Organization Api Response //////////////////////////////////////////////
+export interface IGetResumeOrganizationsInfoResponse {
+  success: boolean;
+  organizationsContent: IResumeOrganization[];
+}
+
+export interface IGetResumeOrganizationInfoResponse {
+  success: boolean;
+  organizationContent: IResumeOrganization;
 }

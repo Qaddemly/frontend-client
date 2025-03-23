@@ -24,6 +24,7 @@ import ResumeCustomForm from "./forms/ResumeCustomForm.tsx";
 import { useParams } from "react-router-dom";
 import ResumeAwardsForm from "./forms/ResumeAwardsForm.tsx";
 import ResumePublicationsForm from "./forms/ResumePublicationsForm.tsx";
+import ResumeOrganizationForm from "./forms/ResumeVolunteeringForm.tsx";
 
 function FormPreview() {
   const {
@@ -129,6 +130,9 @@ function FormPreview() {
       {status.includes("add") && status.includes("publications") && (
         <ResumePublicationsForm mode="add" />
       )}
+      {status.includes("add") && status.includes("volunteering") && (
+        <ResumeOrganizationForm mode="add" />
+      )}
       {/*/////////////////////////////////////////// Edit Forms  ///////////////////////////////////////////////*/}
       {status.includes("edit") && status.includes("personal") && (
         <ResumePersonalForm mode="edit" />
@@ -168,6 +172,9 @@ function FormPreview() {
       )}
       {status.includes("edit") && status.includes("publications") && (
         <ResumePublicationsForm mode="edit" />
+      )}
+      {status.includes("edit") && status.includes("volunteering") && (
+        <ResumeOrganizationForm mode="edit" />
       )}
       {/*///////////////////////////////////////////  Sections  ///////////////////////////////////////////////*/}
       {status[0] === "normal" && (
@@ -249,9 +256,10 @@ function FormPreview() {
           {/* Language Section */}
           {resumeInfo?.languages?.length > 0 && (
             <ResumeSection
-              title="Language"
-              type="language"
-              titles={[`${resumeInfo?.languages?.length}`]}
+              title="Languages"
+              items={resumeInfo.languages}
+              idField="id"
+              displayField="language"
               handleEdit={(id) => {
                 if (typeof id === "number") {
                   setCurrId(id);
@@ -260,7 +268,38 @@ function FormPreview() {
               }}
             />
           )}
+          {/* Interests Section */}
+          {resumeInfo?.hobbies?.length > 0 && (
+            <ResumeSection
+              title="Interest"
+              items={resumeInfo.hobbies}
+              idField="id"
+              displayField="interest"
+              titles={[`${resumeInfo?.hobbies?.length}`]}
+              handleEdit={(id) => {
+                if (typeof id === "number") {
+                  setCurrId(id);
+                  setStatus(["edit", "hobbies"]);
+                }
+              }}
+            />
+          )}
 
+          {/* Organization Section */}
+          {resumeInfo?.volunteering?.length > 0 && (
+            <ResumeSection
+              title="Organization"
+              items={resumeInfo.volunteering}
+              idField="id"
+              displayField="organization"
+              handleEdit={(id) => {
+                if (typeof id === "number") {
+                  setCurrId(id);
+                  setStatus(["edit", "volunteering"]);
+                }
+              }}
+            />
+          )}
           {/* Reference Section */}
           {resumeInfo?.references?.length > 0 && (
             <ResumeSection
