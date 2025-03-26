@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Button from "../common/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faStar } from "@fortawesome/free-solid-svg-icons";
 import Navbar from "../home/Navbar";
 import Footer from "../home/Footer";
 import StartMessage from "./StartMessage";
-import Chat from "./Chat"; // تأكد من إضافة هذا الاستيراد
+import Chat from "./Chat";
 
 export default function Messaging() {
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
