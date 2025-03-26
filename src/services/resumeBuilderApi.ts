@@ -34,6 +34,12 @@ import {
   IGetResumePublicationInfoResponse,
   IPublicationsInputs,
   IGetResumeSkillsInfoResponse,
+  IGetResumeOrganizationInfoResponse,
+  IGetResumeOrganizationsInfoResponse,
+  IGetResumeReferencesInfoResponse,
+  IGetResumeInterestInfoResponse,
+  IOrganizationsInputs,
+  IGetResumeLanguagesInfoResponse,
 } from "../interfaces/ResumeBuilder.interfaces.ts";
 
 const BASE_RESUME_URL = "/resumeTemplate";
@@ -525,7 +531,7 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
     }),
     ///////////////////////////////////////////// Language //////////////////////////////////////////////
     getAllResumeLanguage: builder.query<
-      IGetResumeLanguageInfoResponse,
+      IGetResumeLanguagesInfoResponse,
       { resumeId: string }
     >({
       query: ({ resumeId }) => ({
@@ -585,7 +591,7 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
       }),
     }),
     getResumeInterest: builder.query<
-      IGetResumeInterestsInfoResponse,
+      IGetResumeInterestInfoResponse,
       { resumeId: string; interestId: string }
     >({
       query: ({ resumeId, interestId }) => ({
@@ -594,7 +600,7 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
       }),
     }),
     addResumeInterest: builder.mutation<
-      IGetResumeInterestsInfoResponse,
+      IGetResumeInterestInfoResponse,
       {
         resumeId: string;
         data: IInterestsInput;
@@ -607,7 +613,7 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
       }),
     }),
     updateResumeInterest: builder.mutation<
-      IGetResumeInterestsInfoResponse,
+      IGetResumeInterestInfoResponse,
       { resumeId: string; data: IInterestsInput; interestId: string }
     >({
       query: ({ data, resumeId, interestId }) => ({
@@ -627,7 +633,7 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
     }),
     ///////////////////////////////////////////// Reference //////////////////////////////////////////////
     getAllResumeReference: builder.query<
-      IGetResumeReferenceInfoResponse,
+      IGetResumeReferencesInfoResponse,
       { resumeId: string }
     >({
       query: ({ resumeId }) => ({
@@ -673,6 +679,58 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
     >({
       query: ({ resumeId, referenceId }) => ({
         url: `${BASE_RESUME_URL}/${resumeId}/reference/${referenceId}`,
+        method: "DELETE",
+      }),
+    }),
+
+    ///////////////////////////////////////////// Organization //////////////////////////////////////////////
+    getAllResumeOrganization: builder.query<
+      IGetResumeOrganizationsInfoResponse,
+      { resumeId: string }
+    >({
+      query: ({ resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/organization`,
+        method: "GET",
+      }),
+    }),
+    getResumeOrganization: builder.query<
+      IGetResumeOrganizationInfoResponse,
+      { resumeId: string; organizationId: string }
+    >({
+      query: ({ resumeId, organizationId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/organization/${organizationId}`,
+        method: "GET",
+      }),
+    }),
+    addResumeOrganization: builder.mutation<
+      IGetResumeOrganizationInfoResponse,
+      {
+        resumeId: string;
+        data: IOrganizationsInputs;
+      }
+    >({
+      query: ({ data, resumeId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/organization`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    updateResumeOrganization: builder.mutation<
+      IGetResumeOrganizationInfoResponse,
+      { resumeId: string; data: IOrganizationsInputs; organizationId: string }
+    >({
+      query: ({ data, resumeId, organizationId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/organization/${organizationId}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    deleteResumeOrganization: builder.mutation<
+      void,
+      { resumeId: string; organizationId: string }
+    >({
+      query: ({ resumeId, organizationId }) => ({
+        url: `${BASE_RESUME_URL}/${resumeId}/organization/${organizationId}`,
         method: "DELETE",
       }),
     }),
@@ -757,4 +815,10 @@ export const {
   useGetResumePublicationQuery,
   useUpdateResumePublicationMutation,
   useDeleteResumePublicationMutation,
+  ///////////////////////////////////////////// Publications //////////////////////////////////////////////
+  useAddResumeOrganizationMutation,
+  useDeleteResumeOrganizationMutation,
+  useGetAllResumeOrganizationQuery,
+  useGetResumeOrganizationQuery,
+  useUpdateResumeOrganizationMutation,
 } = resumeBuilderApi;
