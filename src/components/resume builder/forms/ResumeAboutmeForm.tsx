@@ -1,0 +1,70 @@
+import FormPreviewSection from "./FormPreviewSection.tsx";
+import RichTextEditor from "../../common/RichTextEditor.tsx";
+import { useResumeBuilder } from "../../../context/ResumeBuilderContext.tsx";
+import { ContentEditableEvent } from "react-simple-wysiwyg";
+import { FormEvent, useState } from "react";
+import ResumeFormButtons from "../ResumeFormButtons.tsx";
+import { useAddOrEditAboutmeMutation } from "../../../services/resumeBuilderApi.ts";
+import { handleApiError, handleResumeAction } from "../../../utils/helpers.ts";
+import { useParams } from "react-router-dom";
+
+type FormMode = "add" | "edit";
+
+function ResumeAboutmeForm({ mode }: { mode: FormMode }) {
+  const { resumeId } = useParams();
+  const { resumeInfo, setResumeInfo, setStatus } = useResumeBuilder();
+
+  const [aboutme, setAboutme] = useState(
+    mode === "edit" ? resumeInfo.personal?.aboutMe : "",
+  );
+
+  const [addOrEditAboutme] = useAddOrEditAboutmeMutation();
+
+  function handleOnChange(e: ContentEditableEvent) {
+    const { value } = e.target;
+    setAboutme(value);
+    setResumeInfo((prevInfo) => ({
+      ...prevInfo,
+      personal: {
+        ...prevInfo?.personal,
+        aboutMe: value,
+      },
+    }));
+  }
+
+  async function submitForm(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    try {
+      await handleResumeAction(
+        () =>
+          addOrEditAboutme({
+            resumeId: resumeId || "",
+            data: { profile: aboutme },
+          }).unwrap(),
+        mode,
+      );
+      setStatus(["normal"]);
+    } catch (error) {
+      handleApiError(error);
+    }
+  }
+
+  return (
+    <FormPreviewSection
+      title={mode === "edit" ? "Edit Profile" : "Add Profile"}
+      tips={true}
+      autoFill={false}
+    >
+      <form onSubmit={(e) => submitForm(e)} className="w-full">
+        <RichTextEditor value={aboutme} onChange={handleOnChange} />
+        <ResumeFormButtons
+          mode={mode}
+          hiddenDeleteBtn={true}
+          handleCancel={() => {}}
+        />
+      </form>
+    </FormPreviewSection>
+  );
+}
+
+export default ResumeAboutmeForm;

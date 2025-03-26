@@ -4,9 +4,18 @@ export default {
   theme: {
     colors: {
       main: "#133E87",
+      "light-main": "#42659f",
       secondary: "#608BC1",
-      danger: "#D93A40",
+      "light-secondary": "#CBDCEB",
+      "light-secondary-200": "#98A0B4",
+      "light-secondary-300": "#BACAE4",
+      "danger-300": "#D93A40",
+      "danger-200": "#e16166",
+      white: "#FFFFFF",
+      background: "#F3F2F0",
+      yellow: "#EECC00",
       "light-danger": "#FEEEEF",
+      offWhite: "#E4E5E8",
       "gray-100": "#ccc",
       "gray-200": "#D9D9D9",
       "gray-300": "#999",
@@ -18,8 +27,24 @@ export default {
       "green-100": "#0BA02C",
       "green-200": "#017550",
       "light-green": "#E7F6EA",
+      "main-dark": "#1B1F23",
     },
-    extend: {},
+    extend: {
+      animation: {
+        slide: "slideX 35s linear infinite",
+        fadeIn: "fadeIn 0.3s ease-out forwards",
+      },
+      keyframes: {
+        slideX: {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(100%)" },
+        },
+        fadeIn: {
+          "0%": { opacity: "0", transform: "scale(0.95)" },
+          "100%": { opacity: "1", transform: "scale(1)" },
+        },
+      },
+    },
   },
   plugins: [],
 };

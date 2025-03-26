@@ -1,0 +1,28 @@
+import ResumeBuilderLayout from "../../layout/ResumeBuilderLayout.tsx";
+import FormPreview from "./FormPreview.tsx";
+import ResumePreview from "./ResumePreview.tsx";
+import { useResumeBuilder } from "../../context/ResumeBuilderContext.tsx";
+import AddResumeContent from "./AddResumeContent.tsx";
+
+function EditResume() {
+  const { showAddContent } = useResumeBuilder();
+
+  return (
+    <ResumeBuilderLayout>
+      <div className="m-auto">
+        {showAddContent ? (
+          // <div className="min-h-screen min-w-[60rem]">
+          // </div>
+          <AddResumeContent />
+        ) : (
+          <div className="flex justify-evenly">
+            <FormPreview />
+            <ResumePreview />
+          </div>
+        )}
+      </div>
+    </ResumeBuilderLayout>
+  );
+}
+
+export default EditResume;

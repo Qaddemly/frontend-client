@@ -1,0 +1,340 @@
+import { IEducation } from "../interfaces/Auth.interfaces";
+import {
+  IAddNewLanguageResponse,
+  IAddNewSkillResponse,
+  IAddNewVolunteeringResponse,
+  IAddResumeResponse,
+  ICertificateResponse,
+  IGetAllResumesResponse,
+  IGetUserResponse,
+  IProjectResponse,
+  IUpdateExperienceInputs,
+  IUpdatePersonalResponse,
+  IGetVolunteeringsResponse,
+  IUpdateVolunteeringResponse,
+  IVolunteeringInputs,
+  IGetVolunteeringResponse,
+  IGetAllProjectsResponse,
+  IProject,
+  IGetAllCertificatesResponse,
+  IEducationResponse,
+  IExperienceResponse,
+  IGetBasicInfoResponse,
+  IGetExperienceResponse,
+  IGetEducationResponse,
+} from "../interfaces/Profile.interfaces";
+import { apiSlice } from "./apiSlice";
+
+const BASE_USER_URL = "/user";
+
+export const profileApi = apiSlice.injectEndpoints({
+  endpoints: (builder) => ({
+    ///////////////////////////////////////////// Personal //////////////////////////////////////////////
+    getUser: builder.query<IGetUserResponse, void>({
+      query: () => ({
+        url: "/auth/getMe",
+        method: "GET",
+      }),
+    }),
+    updatePersonal: builder.mutation<
+      IUpdatePersonalResponse,
+      { data: FormData }
+    >({
+      query: ({ data }) => ({
+        url: `${BASE_USER_URL}/updateBasicInfo`,
+        method: "PATCH",
+        body: data,
+      }),
+    }),
+    getBasicInfo: builder.query<IGetBasicInfoResponse, { id?: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/${id ? `basicInfo/${id}` : `myBasicInfo`}`,
+        method: "GET",
+      }),
+    }),
+    ///////////////////////////////////////////// Experience //////////////////////////////////////////////
+    createExperience: builder.mutation<
+      IExperienceResponse,
+      { data: IUpdateExperienceInputs }
+    >({
+      query: ({ data }) => ({
+        url: `${BASE_USER_URL}/addNewExperience`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    updateExperience: builder.mutation<
+      IExperienceResponse,
+      { data: IUpdateExperienceInputs; id: string }
+    >({
+      query: ({ data, id }) => ({
+        url: `${BASE_USER_URL}/updateExperience/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    deleteExperience: builder.mutation({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/deleteExperience/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    getExperience: builder.query<IGetExperienceResponse, { id?: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/${id ? `experiences/${id}` : `myExperiences`}`,
+        method: "GET",
+      }),
+    }),
+    ///////////////////////////////////////////// Education //////////////////////////////////////////////
+    createEducation: builder.mutation<IEducationResponse, { data: IEducation }>(
+      {
+        query: ({ data }) => ({
+          url: `${BASE_USER_URL}/addEducation`,
+          method: "POST",
+          body: data,
+        }),
+      },
+    ),
+    updateEducation: builder.mutation<
+      IEducationResponse,
+      { data: IEducation; id: string }
+    >({
+      query: ({ data, id }) => ({
+        url: `${BASE_USER_URL}/updateEducation/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    deleteEducation: builder.mutation<void, { id: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/deleteEducation/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    getEducation: builder.query<IGetEducationResponse, { id?: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/${id ? `educations/${id}` : `myEducations`}`,
+        method: "GET",
+      }),
+    }),
+    ///////////////////////////////////////////// Resumes //////////////////////////////////////////////
+    getAllResumes: builder.query<IGetAllResumesResponse, void>({
+      query: () => ({
+        url: `${BASE_USER_URL}/getAllResumes`,
+        method: "GET",
+      }),
+    }),
+    addResume: builder.mutation<IAddResumeResponse, { resumes: FormData }>({
+      query: ({ resumes }) => ({
+        url: `${BASE_USER_URL}/addResume`,
+        method: "POST",
+        body: resumes,
+      }),
+    }),
+    deleteResume: builder.mutation<void, { id: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/deleteResume/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    ///////////////////////////////////////////// Skills //////////////////////////////////////////////
+    addNewSkill: builder.mutation<IAddNewSkillResponse, { skills: string[] }>({
+      query: (data) => ({
+        url: `${BASE_USER_URL}/addNewSkill`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    deleteSkill: builder.mutation<void, { skillsId: number[] }>({
+      query: (data) => ({
+        url: `${BASE_USER_URL}/deleteSkill`,
+        method: "DELETE",
+        body: data,
+      }),
+    }),
+    ///////////////////////////////////////////// Languages //////////////////////////////////////////////
+    addNewLanguage: builder.mutation<
+      IAddNewLanguageResponse,
+      { languages: string[] }
+    >({
+      query: (data) => ({
+        url: `${BASE_USER_URL}/addNewLanguage`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    deleteLanguage: builder.mutation<void, { languagesId: number[] }>({
+      query: (data) => ({
+        url: `${BASE_USER_URL}/deleteLanguage`,
+        method: "DELETE",
+        body: data,
+      }),
+    }),
+    ///////////////////////////////////////////// Volunteering //////////////////////////////////////////////
+    addNewVolunteering: builder.mutation<
+      IAddNewVolunteeringResponse,
+      { data: IVolunteeringInputs }
+    >({
+      query: ({ data }) => ({
+        url: `${BASE_USER_URL}/volunteering`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getAllVolunteerings: builder.query<
+      IGetVolunteeringsResponse,
+      { id?: string }
+    >({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/${id ? `volunteerings/user/${id}` : `myVolunteerings`}`,
+        method: "GET",
+      }),
+    }),
+    getVolunteering: builder.query<IGetVolunteeringResponse, { id: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/volunteering/${id}`,
+        method: "GET",
+      }),
+    }),
+    deleteVolunteering: builder.mutation({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/volunteering/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    updateVolunteering: builder.mutation<
+      IUpdateVolunteeringResponse,
+      { data: IVolunteeringInputs; id: string }
+    >({
+      query: ({ data, id }) => ({
+        url: `${BASE_USER_URL}/volunteering/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    ///////////////////////////////////////////// Certificates //////////////////////////////////////////////
+    createCertificate: builder.mutation<
+      ICertificateResponse,
+      { certificates: FormData }
+    >({
+      query: ({ certificates }) => ({
+        url: `${BASE_USER_URL}/createCertificate`,
+        method: "POST",
+        body: certificates,
+      }),
+    }),
+    getAllCertificates: builder.query<
+      IGetAllCertificatesResponse,
+      { id?: string }
+    >({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/${id ? `get-my-all-certificates/user/${id}` : `get-my-all-certificates`}`,
+        method: "GET",
+      }),
+    }),
+    getCertificate: builder.query<ICertificateResponse, { id: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/get-one-certificate/${id}`,
+        method: "GET",
+      }),
+    }),
+    updateCertificate: builder.mutation<
+      ICertificateResponse,
+      { data: FormData; id: string }
+    >({
+      query: ({ data, id }) => ({
+        url: `${BASE_USER_URL}/updateCertificate/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    deleteCertificate: builder.mutation<void, { id: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/deleteCertificate/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    ///////////////////////////////////////////// Projects //////////////////////////////////////////////
+    addProject: builder.mutation<IProjectResponse, { data: IProject }>({
+      query: ({ data }) => ({
+        url: `${BASE_USER_URL}/project`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getAllProjects: builder.query<IGetAllProjectsResponse, { id?: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/${id ? `projects/user/${id}` : "allProjects"}`,
+        method: "GET",
+      }),
+    }),
+    getProject: builder.query<IProjectResponse, { id: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/project/${id}`,
+        method: "GET",
+      }),
+    }),
+
+    deleteProject: builder.mutation({
+      query: ({ id }) => ({
+        url: `${BASE_USER_URL}/project/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    updateProject: builder.mutation<
+      IProjectResponse,
+      { data: IProject; id: string }
+    >({
+      query: ({ id, data }) => ({
+        url: `${BASE_USER_URL}/project/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+  }),
+});
+
+export const {
+  ////////////////////// Personal //////////////////////
+  useGetUserQuery,
+  useUpdatePersonalMutation,
+  useGetBasicInfoQuery,
+  ////////////////////// Experience //////////////////////
+  useCreateExperienceMutation,
+  useUpdateExperienceMutation,
+  useDeleteExperienceMutation,
+  useGetExperienceQuery,
+  ////////////////////// Education //////////////////////
+  useCreateEducationMutation,
+  useUpdateEducationMutation,
+  useDeleteEducationMutation,
+  useGetEducationQuery,
+  ////////////////////// Resumes //////////////////////
+  useGetAllResumesQuery,
+  useAddResumeMutation,
+  useDeleteResumeMutation,
+  ////////////////////// Skills //////////////////////
+  useAddNewSkillMutation,
+  useDeleteSkillMutation,
+  ////////////////////// Languages //////////////////////
+  useAddNewLanguageMutation,
+  useDeleteLanguageMutation,
+  ////////////////////// Volunteering //////////////////////
+  useAddNewVolunteeringMutation,
+  useGetAllVolunteeringsQuery,
+  useDeleteVolunteeringMutation,
+  useGetVolunteeringQuery,
+  useUpdateVolunteeringMutation,
+  ////////////////////// Certificates //////////////////////
+  useCreateCertificateMutation,
+  useGetAllCertificatesQuery,
+  useGetCertificateQuery,
+  useUpdateCertificateMutation,
+  useDeleteCertificateMutation,
+  ////////////////////// Projects //////////////////////
+  useAddProjectMutation,
+  useDeleteProjectMutation,
+  useGetAllProjectsQuery,
+  useGetProjectQuery,
+  useUpdateProjectMutation,
+} = profileApi;

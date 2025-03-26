@@ -1,0 +1,143 @@
+import {
+  IBasicInfo,
+  IEducation,
+  IExperience,
+  ILanguages,
+  ISkills,
+  IUser,
+  IVolunteering,
+} from "./Auth.interfaces";
+import { IResume } from "./BusinessDashboard.interfaces";
+
+export interface IUpdateExperienceInputs {
+  jobTitle: string;
+  companyName: string;
+  location: string;
+  locationType: string;
+  employmentType: string;
+  stillWorking: boolean;
+  startDate: string;
+  endDate: string;
+}
+export interface IVolunteeringInputs {
+  organization: string;
+  role: string;
+  description: string;
+  start_date: string;
+  end_date: string;
+}
+//////////////////////////////////////////////////////////////////////////////
+// Api Response Interfaces
+export interface IGetUserResponse {
+  success: boolean;
+  user: IUser;
+}
+
+export interface IUpdatePersonalResponse {
+  success: boolean;
+  updatedUser: IUser;
+}
+
+export interface IGetBasicInfoResponse {
+  success: boolean;
+  basicInfo: IBasicInfo;
+}
+export interface IExperienceResponse {
+  success: boolean;
+  experience: IExperience;
+}
+
+export interface IGetExperienceResponse {
+  success: boolean;
+  experiences: IExperience[];
+}
+export interface IEducationResponse {
+  success: boolean;
+  education: IEducation;
+}
+
+export interface IGetEducationResponse {
+  success: boolean;
+  educations: IEducation[];
+}
+
+export interface IGetAllResumesResponse {
+  success: boolean;
+  resumes: IResume[];
+}
+export interface IAddResumeResponse {
+  success: boolean;
+  resume: IResume;
+}
+
+export interface IAddNewSkillResponse {
+  success: boolean;
+  skills: ISkills[];
+}
+export interface IAddNewLanguageResponse {
+  success: boolean;
+  skills: ILanguages[];
+}
+export interface IAddNewVolunteeringResponse {
+  success: boolean;
+  volunteering: IVolunteering;
+}
+export interface IGetVolunteeringsResponse {
+  success: boolean;
+  volunteerings: IVolunteering[];
+}
+export interface IGetVolunteeringResponse {
+  success: boolean;
+  volunteering: IVolunteering;
+}
+export interface IUpdateVolunteeringResponse {
+  success: boolean;
+  volunteering: IVolunteering;
+}
+
+export interface ICertificate {
+  id: number;
+  title: string;
+  issuing_organization: string;
+  start_date: string;
+  end_date: string;
+  account_id: number;
+  media: string;
+}
+
+export interface ICertificateResponse {
+  success: boolean;
+  certificate: ICertificate;
+}
+export interface IGetAllCertificatesResponse {
+  success: boolean;
+  certificates: ICertificate[];
+}
+
+export interface IAccount {
+  id: number;
+}
+
+export interface IProject {
+  id: number;
+  name: string;
+  account: IAccount;
+  description: string;
+  skills: string[];
+  start_date: string;
+  end_date: string;
+  still_working: boolean;
+  link: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface IProjectResponse {
+  success: boolean;
+  project: IProject;
+}
+
+export interface IGetAllProjectsResponse {
+  success: boolean;
+  projects: IProject[];
+}

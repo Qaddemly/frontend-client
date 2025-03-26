@@ -1,0 +1,241 @@
+import FormPreviewSection from "./FormPreviewSection.tsx";
+import InputField from "../../common/InputField.tsx";
+import Input from "../../common/Input.tsx";
+import RichTextEditor from "../../common/RichTextEditor.tsx";
+import ResumeFormButtons from "../ResumeFormButtons.tsx";
+import {
+  FormMode,
+  ICertificatesInputs,
+} from "../../../interfaces/ResumeBuilder.interfaces.ts";
+import { useResumeBuilder } from "../../../context/ResumeBuilderContext.tsx";
+import { useParams } from "react-router-dom";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useState } from "react";
+import {
+  useAddResumeCertificateMutation,
+  useDeleteResumeCertificateMutation,
+  useGetAllResumeCertificatesQuery,
+  useUpdateResumeCertificateMutation,
+} from "../../../services/resumeBuilderApi.ts";
+import { handleApiError, handleResumeAction } from "../../../utils/helpers.ts";
+import { ContentEditableEvent } from "react-simple-wysiwyg";
+import Button from "../../common/Button.tsx";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLink } from "@fortawesome/free-solid-svg-icons";
+import InputWithLink from "../../common/InputWithLink.tsx";
+
+function ResumeCertificatesForm({ mode }: { mode: FormMode }) {
+  const { setStatus, resumeInfo, setResumeInfo, currId } = useResumeBuilder();
+  const { resumeId } = useParams();
+  const { register, handleSubmit } = useForm<ICertificatesInputs>();
+  const indexOfCurrCertificate = resumeInfo?.certificates?.findIndex(
+    (certificate) => certificate?.id === currId,
+  );
+
+  const { refetch } = useGetAllResumeCertificatesQuery({
+    resumeId: resumeId || "",
+  });
+  const [addResumeCertificate] = useAddResumeCertificateMutation();
+  const [updateResumeCertificate] = useUpdateResumeCertificateMutation();
+  const [deleteResumeCertificate] = useDeleteResumeCertificateMutation();
+
+  const [certificate, setCertificate] = useState(
+    mode === "edit" &&
+      resumeInfo?.certificates?.[indexOfCurrCertificate]?.certificate
+      ? resumeInfo.certificates[indexOfCurrCertificate].certificate
+      : "",
+  );
+  const [certificateUrl, setCertificateUrl] = useState(
+    mode === "edit" &&
+      resumeInfo?.certificates?.[indexOfCurrCertificate]?.certificate_url
+      ? resumeInfo.certificates[indexOfCurrCertificate].certificate_url
+      : "",
+  );
+  const [additionalInformation, setAdditionalInformation] = useState(
+    mode === "edit" &&
+      resumeInfo?.certificates?.[indexOfCurrCertificate]?.additional_information
+      ? resumeInfo.certificates[indexOfCurrCertificate].additional_information
+      : "",
+  );
+  const [showLink, setShowLink] = useState(false);
+
+  const submitForm: SubmitHandler<ICertificatesInputs> = async (data) => {
+    const certificatesData = {
+      certificate: data.certificate,
+      certificate_url: certificateUrl,
+      additional_information: additionalInformation,
+    };
+
+    try {
+      if (mode === "add") {
+        await handleResumeAction(
+          () =>
+            addResumeCertificate({
+              data: certificatesData,
+              resumeId: resumeId || "",
+            }).unwrap(),
+          mode,
+        );
+        refetch();
+        setStatus(["normal"]);
+      } else {
+        await handleResumeAction(
+          () =>
+            updateResumeCertificate({
+              data: certificatesData,
+              resumeId: resumeId || "",
+              certificateId: currId.toString() || "",
+            }).unwrap(),
+          mode,
+        );
+      }
+    } catch (error) {
+      handleApiError(error);
+    }
+  };
+
+  function handleOnChange(
+    e: React.ChangeEvent<HTMLInputElement> | ContentEditableEvent,
+    field: string,
+  ) {
+    const value = "target" in e ? e.target.value : e;
+    if (field === "certificate") setCertificate(value);
+    else if (field === "additional_information")
+      setAdditionalInformation(value);
+    else if (field === "certificate_url") setCertificateUrl(value);
+
+    setResumeInfo((prevInfo) => {
+      const updatedArray = [...prevInfo.certificates];
+      if (mode === "add") {
+        const existingSkill = updatedArray.find(
+          (certificate) => certificate.id === 303030,
+        );
+        if (existingSkill) {
+          updatedArray[resumeInfo?.certificates?.length - 1] = {
+            ...updatedArray[resumeInfo?.certificates?.length - 1],
+            [field]: value,
+          };
+        } else {
+          const newCertificates = {
+            id: 303030,
+            certificate: "",
+            certificate_url: "",
+            additional_information: "",
+          } as ICertificatesInputs;
+          newCertificates[field] = value;
+          updatedArray.push(newCertificates);
+        }
+      } else if (mode === "edit") {
+        if (updatedArray[indexOfCurrCertificate]) {
+          updatedArray[indexOfCurrCertificate] = {
+            ...updatedArray[indexOfCurrCertificate],
+            [field]: value,
+          };
+        }
+      }
+      return {
+        ...prevInfo,
+        certificates: updatedArray,
+      };
+    });
+  }
+
+  async function handleDelete(e: React.MouseEvent<HTMLButtonElement>) {
+    e.stopPropagation();
+    try {
+      await handleResumeAction(
+        () =>
+          deleteResumeCertificate({
+            resumeId: resumeId || "",
+            certificateId: currId.toString() || "",
+          }).unwrap(),
+        "delete",
+      );
+      setStatus(["normal"]);
+      setResumeInfo((prevInfo) => {
+        const updatedArray = prevInfo.certificates.filter(
+          (certificate) => certificate.id !== currId,
+        );
+        return {
+          ...prevInfo,
+          certificates: updatedArray,
+        };
+      });
+    } catch (error) {
+      handleApiError(error);
+    }
+  }
+
+  return (
+    <FormPreviewSection
+      title={mode === "add" ? "Add Certificates" : "Edit Certificates"}
+      tips={true}
+      autoFill={true}
+    >
+      <form
+        onSubmit={handleSubmit(submitForm)}
+        className="relative flex w-full flex-col"
+      >
+        <InputField id="certificate" label="Certificate">
+          <div className="mb-5 flex items-center gap-3">
+            <Input
+              register={register}
+              onChange={(e) => handleOnChange(e, "certificate")}
+              value={certificate}
+              name="certificate"
+              props={{
+                placeholder: "Enter Certificate",
+                type: "text",
+                id: "certificate",
+              }}
+            />
+            <Button
+              type="button"
+              className="flex items-center gap-1 border-2 border-gray-200 bg-white px-3 text-gray-300 hover:bg-white"
+              onClick={() => setShowLink(true)}
+            >
+              <FontAwesomeIcon icon={faLink} />
+              <span>Link</span>
+            </Button>
+          </div>
+        </InputField>
+
+        {showLink && (
+          <InputWithLink
+            register={register}
+            value={certificateUrl}
+            handleOnChange={(e) => handleOnChange(e, "certificate_url")}
+            setShowLink={setShowLink}
+            setValue={setCertificateUrl}
+            name="certificateUrl"
+            id="certificateUrl"
+          />
+        )}
+
+        <RichTextEditor
+          label="Additional information"
+          value={additionalInformation}
+          onChange={(e) => handleOnChange(e, "additional_information")}
+        />
+
+        <ResumeFormButtons
+          mode={mode}
+          handleDelete={(e) => handleDelete(e)}
+          handleCancel={() => {
+            setResumeInfo((prevInfo) => {
+              const updatedArray = prevInfo.certificates.filter(
+                (certificate) => certificate.id !== 303030,
+              );
+              return {
+                ...prevInfo,
+                certificates: updatedArray,
+              };
+            });
+          }}
+        />
+      </form>
+    </FormPreviewSection>
+  );
+}
+
+export default ResumeCertificatesForm;
