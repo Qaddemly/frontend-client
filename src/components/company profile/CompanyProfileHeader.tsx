@@ -15,6 +15,8 @@ import {
   faStar as faStarFilled,
   faStarHalfStroke,
 } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
+import Chat from "../messages/Chat";
 
 function CompanyProfileHeader({
   data,
@@ -27,6 +29,33 @@ function CompanyProfileHeader({
 }) {
   const [followBusiness] = useFollowBusinessMutation();
   const [unFollowBusiness] = useUnfollowBusinessMutation();
+
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
+  const handleOpenChat = () => {
+    setIsChatOpen(true);
+  };
+  const chatMessages: {
+    text: string;
+    sender: "user" | "business";
+    time: string;
+  }[] = [
+    {
+      text: "Hello, how can we help you?",
+      sender: "business",
+      time: "10:00 AM",
+    },
+    {
+      text: "I need some information.",
+      sender: "user",
+      time: "10:02 AM",
+    },
+    {
+      text: "Sure! Please tell us what you need.",
+      sender: "business",
+      time: "10:03 AM",
+    },
+  ];
 
   async function handleFollowBusiness() {
     try {
@@ -103,7 +132,21 @@ function CompanyProfileHeader({
               Unfollow
             </Button>
           )}
-          {/* <Button className="px-2">Message</Button> */}
+          {/* Message */}
+
+          <Button className="px-2" onClick={handleOpenChat}>
+            Message
+          </Button>
+          <div className="fixed bottom-0 right-4 w-full max-w-lg rounded-t-xl border border-gray-300 bg-white shadow-xl">
+            {isChatOpen && (
+              <Chat
+                title={data?.name || "Company Chat"}
+                website={data?.website}
+                messages={chatMessages}
+                onBack={() => setIsChatOpen(false)}
+              />
+            )}
+          </div>
         </div>
       </div>
       {/* Navigation Section */}
