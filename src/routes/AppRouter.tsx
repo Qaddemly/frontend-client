@@ -53,6 +53,7 @@ import ArchivedCompanyJobs from "../components/business account/business dashboa
 import ResumeBuilder from "../pages/ResumeBuilder.tsx";
 import EditResume from "../components/resume builder/EditResume.tsx";
 import { ResumeBuilderProvider } from "../context/ResumeBuilderContext.tsx";
+import MessagingBusiness from "../components/business account/MessageBusiness.tsx";
 
 const router = createBrowserRouter([
   {
@@ -60,6 +61,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Home />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/messaging-business",
+    element: (
+      <ProtectedRoute>
+        <MessagingBusiness />
       </ProtectedRoute>
     ),
   },
@@ -184,6 +193,7 @@ const router = createBrowserRouter([
           },
         ],
       },
+
       { path: "updateJob/:jobId", element: <UpdateJob /> },
       { path: "companyCandidates/:companyId", element: <CompanyCandidates /> },
       {
