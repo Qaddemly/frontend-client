@@ -32,7 +32,7 @@ function NavbarBusiness() {
             <FontAwesomeIcon icon={faBell} className="text-2xl" />
             <p className="hidden lg:block">Notifications</p>
           </Link>
-          <Link to="" className="flex gap-2">
+          <Link to="/messaging-business" className="flex gap-2">
             <FontAwesomeIcon icon={faEnvelope} className="text-2xl" />
             <p className="hidden lg:block">Messages</p>
           </Link>
