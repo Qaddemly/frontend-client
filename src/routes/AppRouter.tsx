@@ -102,7 +102,14 @@ const router = createBrowserRouter([
   { path: "/forgetPassword", element: <ForgetPassword /> },
   { path: "/setNewPassword", element: <SetNewPassword /> },
   { path: "/apply-job", element: <Apply /> },
-  { path: "/message", element: <Message /> },
+  {
+    path: "/message",
+    element: (
+      <ProtectedRoute>
+        <Message />
+      </ProtectedRoute>
+    ),
+  },
   {
     path: "/findCompany",
     element: (
