@@ -1,4 +1,4 @@
-import ListMessage from "../messages/ChatsList";
+import ChatsList from "../messages/ChatsList";
 import NavMessage from "../messages/NavMessage";
 import { Chat } from "./types";
 
@@ -201,7 +201,7 @@ function MessagingBusiness() {
         <div className="flex h-full flex-col gap-4 rounded-xl bg-white p-4">
           <NavMessage />
           <div className="min-h-0 flex-1">
-            <ListMessage chats={chats} />
+            <ChatsList chats={chats} />
           </div>
         </div>
       </div>
