@@ -1,7 +1,7 @@
 import Navbar from "../home/Navbar";
 import Footer from "../home/Footer";
 import NavMessage from "./NavMessage";
-import ListMessage from "./ChatsList";
+import ChatsList from "./ChatsList";
 import { Chat } from "./types";
 
 const chats: Chat[] = [
@@ -204,7 +204,7 @@ function Messaging() {
         <div className="flex h-full flex-col gap-4 rounded-xl bg-white p-4">
           <NavMessage />
           <div className="min-h-0 flex-1">
-            <ListMessage chats={chats} />
+            <ChatsList chats={chats} />
           </div>
         </div>
       </div>

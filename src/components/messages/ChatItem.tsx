@@ -3,19 +3,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import GoogleLogo from "../common/GoogleLogo";
 import { Chat } from "./types";
 
-type MessageItemProps = {
+type ChatItemProps = {
   chat: Chat;
   isSelected: boolean;
   onClick: () => void;
 };
 
-function MessageItem({ chat, isSelected, onClick }: MessageItemProps) {
+function ChatItem({ chat, isSelected, onClick }: ChatItemProps) {
   const lastMessage = chat.messages[chat.messages.length - 1];
 
   return (
     <button
       onClick={onClick}
-      className={`flex w-full cursor-pointer items-center justify-between border-b border-gray-200 p-6 hover:bg-gray-100 ${
+      className={`flex w-full cursor-pointer flex-col items-start justify-between border-b border-gray-200 p-6 hover:bg-gray-100 sm:flex-row sm:items-center ${
         isSelected ? "bg-gray-100" : ""
       }`}
     >
@@ -29,7 +29,7 @@ function MessageItem({ chat, isSelected, onClick }: MessageItemProps) {
           </p>
         </div>
       </div>
-      <div className="flex flex-col items-center gap-1">
+      <div className="flex flex-row items-center gap-3 sm:flex-col sm:gap-1">
         <p className="text-lg font-medium">{lastMessage.time}</p>
         <div className="flex items-center gap-1">
           {chat.unreadMessages > 0 && (
@@ -49,4 +49,4 @@ function MessageItem({ chat, isSelected, onClick }: MessageItemProps) {
   );
 }
 
-export default MessageItem;
+export default ChatItem;

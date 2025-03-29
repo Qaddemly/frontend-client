@@ -1,25 +1,29 @@
 import { useState } from "react";
 import Chat from "./Chat";
 import StartMessage from "./StartMessage";
-import MessageItem from "./ChatItem";
+import ChatItem from "./ChatItem";
 import { Chat as ChatType } from "./types";
 
-type ListMessageProps = {
+type ChatsListProps = {
   chats: ChatType[];
 };
 
-function ListMessage({ chats }: ListMessageProps) {
+function ChatsList({ chats }: ChatsListProps) {
   const [selectedChat, setSelectedChat] = useState<ChatType | null>(null);
 
   return (
-    <div className="flex h-full w-full gap-4 rounded-t-xl">
+    <div
+      className={`flex h-full w-full gap-4 rounded-t-xl ${
+        selectedChat ? "" : "justify-center"
+      }`}
+    >
       <div
-        className={`max-h-[45rem] w-full max-w-sm flex-col overflow-y-auto rounded-t-xl border-2 border-gray-100 md:flex lg:max-w-md ${
-          selectedChat ? "hidden md:flex" : "flex"
+        className={`max-h-[45rem] w-full flex-col overflow-y-auto rounded-t-xl border-2 border-gray-100 md:flex lg:max-w-md ${
+          selectedChat ? "hidden md:flex" : "flex max-w-sm"
         }`}
       >
         {chats.map((chat) => (
-          <MessageItem
+          <ChatItem
             key={chat.name}
             chat={chat}
             isSelected={selectedChat?.name === chat.name}
@@ -52,4 +56,4 @@ function ListMessage({ chats }: ListMessageProps) {
   );
 }
 
-export default ListMessage;
+export default ChatsList;

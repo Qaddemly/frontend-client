@@ -64,14 +64,6 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
-  {
-    path: "/messaging-business",
-    element: (
-      <ProtectedRoute>
-        <MessagingBusiness />
-      </ProtectedRoute>
-    ),
-  },
   { path: "/login", element: <Login /> },
   { path: "/signup", element: <Signup /> },
   {
@@ -213,6 +205,10 @@ const router = createBrowserRouter([
             element: <UpdateCompanyAccount />,
           },
         ],
+      },
+      {
+        path: "messaging-business",
+        element: <MessagingBusiness />,
       },
     ],
   },
