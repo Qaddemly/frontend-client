@@ -1,5 +1,4 @@
 import {
-  faBell,
   faChevronDown,
   faChevronUp,
   faUser,
@@ -47,9 +46,6 @@ function UserMenu({ children, type }: UserMenuProps) {
         onClick={() => setShowMenu((s) => !s)}
         ref={divRef}
       >
-        {type === "NormalAccount" && (
-          <FontAwesomeIcon icon={faBell} className="text-2xl" />
-        )}
         {user.profile_picture === "undefined" ? (
           <FontAwesomeIcon
             icon={faUser}

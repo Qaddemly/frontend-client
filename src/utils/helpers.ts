@@ -196,3 +196,19 @@ export function ediTimeAgo(timestamp: string): string {
   const diffInYears = Math.floor(diffInDays / 365);
   return `edited ${diffInYears} year${diffInYears > 1 ? "s" : ""} ago`;
 }
+
+export function formatTimeAgo(timestamp: string): string {
+  const now = new Date();
+  const past = new Date(timestamp);
+  const diffMs = now.getTime() - past.getTime();
+
+  const seconds = Math.floor(diffMs / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  if (days > 0) return `${days} days ago`;
+  if (hours > 0) return `${hours} hours ago`;
+  if (minutes > 0) return `${minutes} mins ago`;
+  return "Just now";
+}

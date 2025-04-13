@@ -33,6 +33,8 @@ export default {
       animation: {
         slide: "slideX 35s linear infinite",
         fadeIn: "fadeIn 0.3s ease-out forwards",
+        enterNotification: "enter 0.2s ease-out",
+        leaveNotification: "leave 0.15s ease-in forwards",
       },
       keyframes: {
         slideX: {
@@ -42,6 +44,14 @@ export default {
         fadeIn: {
           "0%": { opacity: "0", transform: "scale(0.95)" },
           "100%": { opacity: "1", transform: "scale(1)" },
+        },
+        enter: {
+          " 0%": { transform: "scale(0.9)", opacity: 0 },
+          "100%": { transform: "scale(1)", opacity: 1 },
+        },
+        leave: {
+          "0%": { transform: "scale(1)", opacity: 1 },
+          "100%": { transform: "scale(0.9)", opacity: 0 },
         },
       },
     },

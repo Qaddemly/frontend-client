@@ -96,13 +96,11 @@ function PostJobForm() {
     const data = {
       title,
       description,
-      location: country,
+      location: { country, city },
       location_type: locationType,
       salary: 5000, // GAD TODO : min, max, currency, other currency
       employee_type: employeeType,
       keywords,
-      country,
-      city,
       experience: 2,
       business_id: companyId ? parseInt(companyId) : undefined,
       skills,

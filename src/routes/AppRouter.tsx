@@ -53,6 +53,7 @@ import ArchivedCompanyJobs from "../components/business account/business dashboa
 import ResumeBuilder from "../pages/ResumeBuilder.tsx";
 import EditResume from "../components/resume builder/EditResume.tsx";
 import { ResumeBuilderProvider } from "../context/ResumeBuilderContext.tsx";
+import SSENotifications from "../components/notifications/SSENotifications.tsx";
 
 const router = createBrowserRouter([
   {

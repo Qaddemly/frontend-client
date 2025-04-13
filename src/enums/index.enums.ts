@@ -488,3 +488,10 @@ export enum JobApplicationStateIndex {
   ACCEPTED = "4",
   REJECTED = "5",
 }
+
+export enum NotificationType {
+  JobPosted = "JobPosted",
+  RecommendedJobPosted = "RecommendedJobPosted",
+  JobApplicationStatusUpdated = "JobApplicationStatusUpdated",
+  NewMessage = "NewMessage",
+}

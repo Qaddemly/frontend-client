@@ -4,6 +4,7 @@ import { useGetUserQuery } from "../services/profileApi";
 import { setUser } from "../components/auth/UserSlice";
 import { ReactNode, useEffect } from "react";
 import { Navigate, useLocation } from "react-router-dom";
+import SSENotifications from "../components/notifications/SSENotifications.tsx";
 
 function ProtectedRoute({ children }: { children: ReactNode }) {
   const location = useLocation();
@@ -21,7 +22,12 @@ function ProtectedRoute({ children }: { children: ReactNode }) {
   if (location.pathname !== "/")
     if (!user || isError) return <Navigate to="/login" replace />;
 
-  return <>{children}</>;
+  return (
+    <>
+      <SSENotifications />
+      {children}
+    </>
+  );
 }
 
 export default ProtectedRoute;
