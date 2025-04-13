@@ -11,7 +11,6 @@ import {
   faMessage,
   faTimes,
   faUser,
-  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import Logo from "../common/Logo";
 import { useGetUserBusinessesQuery } from "../../services/businessAccountApi";
@@ -23,10 +22,9 @@ import NavbarLink from "../common/NavbarLink";
 import { useGetAllResumeTemplatesQuery } from "../../services/resumeBuilderApi.ts";
 import {
   useGetAllNotificationsQuery,
-  useMakeNotificationReadMutation,
   useMakeNotificationsSeenMutation,
 } from "../../services/notificationsApi.ts";
-import { formatTimeAgo } from "../../utils/helpers.ts";
+import SidebarNotifications from "../notifications/SidebarNotifications.tsx";
 
 function Navbar() {
   const { resumeId } = useParams();
@@ -47,55 +45,16 @@ function Navbar() {
     useGetAllNotificationsQuery();
   const notifications = notificationsData?.notifications;
   const [makeNotificationsSeen] = useMakeNotificationsSeenMutation();
-  const [makeNotificationRead] = useMakeNotificationReadMutation();
+
   const [showSideNav, setShowSideNav] = useState(false);
 
   return (
     <>
-      <div
-        className={`${showSideNav ? "translate-x-1" : "translate-x-full"} fixed right-0 top-0 z-10 flex h-full w-[30rem] flex-col gap-5 bg-main-dark p-5 text-xl text-white transition-all duration-300 ease-in-out`}
-      >
-        <div className="flex items-center justify-between">
-          <div>
-            <p>Notifications</p>
-            <p className="cursor-pointer text-sm text-gray-300">
-              Mark all as read
-            </p>
-          </div>
-          <FontAwesomeIcon
-            icon={faXmark}
-            className="cursor-pointer text-3xl"
-            onClick={() => setShowSideNav(false)}
-          />
-        </div>
-        {notifications?.map((n) => (
-          <div className="flex items-center justify-between text-sm">
-            <div className="flex items-center gap-5">
-              <img
-                src={n.business.logo}
-                alt="busienss logo"
-                className="h-10 w-10 rounded-full"
-              />
-              <div>
-                <p>{n.message}</p>
-                <p className="text-xs">{formatTimeAgo(n.createdAt)}</p>
-                {!n.isRead && (
-                  <p
-                    onClick={async () => {
-                      await makeNotificationRead({ notificationId: n._id });
-                      refetchNotificatins();
-                    }}
-                    className="cursor-pointer text-xs text-gray-300"
-                  >
-                    Mark as read
-                  </p>
-                )}
-              </div>
-            </div>
-            {!n.isRead && <div className="h-4 w-4 rounded-full bg-main"></div>}
-          </div>
-        ))}
-      </div>
+      <SidebarNotifications
+        setShowSideNav={setShowSideNav}
+        showSideNav={showSideNav}
+        notifications={notifications ?? []}
+      />
 
       <nav className="flex w-full items-center justify-between border-b border-gray-200 bg-white px-6 py-3 lg:px-10">
         <Logo className="text-3xl font-medium text-main lg:text-4xl" />
@@ -198,7 +157,7 @@ function Navbar() {
             </Link>
           </div>
         ) : (
-          <div className="relative flex items-center gap-10">
+          <div className="relative flex items-center gap-8">
             <div
               className="relative cursor-pointer"
               onClick={async () => {
@@ -215,6 +174,10 @@ function Navbar() {
               )}
             </div>
 
+            <Link to="/message">
+              <FontAwesomeIcon icon={faMessage} className="text-2xl" />
+            </Link>
+
             <div className="hidden lg:block">
               <Button
                 onClick={() => setShowMenu((s) => !s)}
@@ -229,9 +192,6 @@ function Navbar() {
                 />
               )}
             </div>
-            <Link to="/message">
-              <FontAwesomeIcon icon={faMessage} className="text-lg" />
-            </Link>
             <UserMenu type="NormalAccount">
               <div className="mt-2 flex flex-col gap-3">
                 <div className="px-3 pb-2">
