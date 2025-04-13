@@ -120,13 +120,20 @@ function JobProfileHeader({ job }: { job: IJob }) {
           )}
         </div>
 
-        {close && data?.resumes.length && (
-          <div className="h-20 w-[20rem] rounded-md bg-[#eee] p-5 shadow-lg">
+        {close && (data?.resumes?.length || 0) === 0 && (
+          <p className="w-[20rem] rounded-md bg-[#eee] p-5 text-gray-500">
+            You currently have no resumes uploaded. Please add a resume to apply
+            for jobs.
+          </p>
+        )}
+
+        {close && (data?.resumes?.length || 0) > 0 && (
+          <div className="min-h-50 w-[20rem] rounded-md bg-[#eee] p-5 shadow-lg">
+            <p className="text-gray-300">Choose resume</p>
             {data?.resumes.map((resume) => (
               <>
-                <p className="text-gray-300">Choose resume</p>
                 <div
-                  className="cursor-pointer rounded-md px-1 hover:bg-gray-200"
+                  className="cursor-pointer rounded-md px-1 py-2 hover:bg-gray-200"
                   onClick={() => handleApplyToJob(resume.id)}
                 >
                   {resume.name}

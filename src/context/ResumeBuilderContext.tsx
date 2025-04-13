@@ -145,13 +145,13 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
     resumeId && !status.includes("addResume") ? { resumeId } : skipToken,
   );
   ///////////////////////////////////////////// Languages //////////////////////////////////////////////
-  const { data: resumeLanguages } = useGetAllResumeLanguageQuery({
-    resumeId: resumeId || "",
-  });
+  const { data: resumeLanguages } = useGetAllResumeLanguageQuery(
+    resumeId && !status.includes("addResume") ? { resumeId } : skipToken,
+  );
   ///////////////////////////////////////////// Interests //////////////////////////////////////////////
-  const { data: resumeInterests } = useGetAllResumeInterestsQuery({
-    resumeId: resumeId || "",
-  });
+  const { data: resumeInterests } = useGetAllResumeInterestsQuery(
+    resumeId && !status.includes("addResume") ? { resumeId } : skipToken,
+  );
   ///////////////////////////////////////////// Reference //////////////////////////////////////////////
   const { data: resumeReference } = useGetAllResumeReferenceQuery({
     resumeId: resumeId || "",

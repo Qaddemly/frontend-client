@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import {
   useAddResumeTemplateMutation,
   useDeleteResumeTemplateMutation,
+  useGetAllResumeTemplatesQuery,
 } from "../../services/resumeBuilderApi.ts";
 import toast from "react-hot-toast";
 import { ediTimeAgo, handleApiError } from "../../utils/helpers.ts";
@@ -20,6 +21,7 @@ function AddResume() {
   const [addResumeTemplate] = useAddResumeTemplateMutation();
   const [deleteResumeTemplate] = useDeleteResumeTemplateMutation();
   const isResumeBuilderUrl = location.href.includes("resumeBuilder");
+  const { refetch } = useGetAllResumeTemplatesQuery();
 
   useEffect(() => {
     if (isResumeBuilderUrl) setStatus(["addResume"]);
@@ -36,6 +38,7 @@ function AddResume() {
       setShowModal(false);
       const { data } = await res;
       setResumeTemplates((prev) => [...prev, { ...data }]);
+      refetch();
     } catch (error) {
       handleApiError(error);
     }

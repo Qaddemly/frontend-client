@@ -21,7 +21,10 @@ export interface IPostNewJobInputs {
   business_id: number;
   title: string;
   description: string;
-  location: string;
+  location: {
+    country: LocationType;
+    city: string;
+  };
   location_type: string;
   salary: number;
   employee_type: string;
