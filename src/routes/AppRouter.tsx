@@ -54,6 +54,7 @@ import ResumeBuilder from "../pages/ResumeBuilder.tsx";
 import EditResume from "../components/resume builder/EditResume.tsx";
 import { ResumeBuilderProvider } from "../context/ResumeBuilderContext.tsx";
 import SSENotifications from "../components/notifications/SSENotifications.tsx";
+import MessagingBusiness from "../components/business account/MessageBusiness.tsx";
 
 const router = createBrowserRouter([
   {
@@ -103,7 +104,14 @@ const router = createBrowserRouter([
   { path: "/forgetPassword", element: <ForgetPassword /> },
   { path: "/setNewPassword", element: <SetNewPassword /> },
   { path: "/apply-job", element: <Apply /> },
-  { path: "/message", element: <Message /> },
+  {
+    path: "/message",
+    element: (
+      <ProtectedRoute>
+        <Message />
+      </ProtectedRoute>
+    ),
+  },
   {
     path: "/findCompany",
     element: (
@@ -185,6 +193,7 @@ const router = createBrowserRouter([
           },
         ],
       },
+
       { path: "updateJob/:jobId", element: <UpdateJob /> },
       { path: "companyCandidates/:companyId", element: <CompanyCandidates /> },
       {
@@ -197,6 +206,10 @@ const router = createBrowserRouter([
             element: <UpdateCompanyAccount />,
           },
         ],
+      },
+      {
+        path: "messaging-business",
+        element: <MessagingBusiness />,
       },
     ],
   },

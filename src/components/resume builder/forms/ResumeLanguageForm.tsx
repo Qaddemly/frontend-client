@@ -34,17 +34,12 @@ function ResumeLanguagesForm({ mode }: { mode: FormMode }) {
   const [updateResumeLanguage] = useUpdateResumeLanguageMutation();
   const [deleteResumeLanguage] = useDeleteResumeLanguageMutation();
 
-  const [name, setName] = useState(
+  const [language, setLanguage] = useState(
     mode === "edit" && resumeInfo?.languages?.[indexOfCurrLanguage]?.language
       ? resumeInfo.languages[indexOfCurrLanguage].language
       : "",
   );
-  const [information, setInformation] = useState(
-    mode === "edit" &&
-      resumeInfo?.languages?.[indexOfCurrLanguage]?.additional_info
-      ? resumeInfo.languages[indexOfCurrLanguage].additional_info
-      : "",
-  );
+
   const [level, setLevel] = useState(
     mode === "edit" && resumeInfo?.languages?.[indexOfCurrLanguage]?.level
       ? resumeInfo.languages[indexOfCurrLanguage].level
@@ -53,7 +48,7 @@ function ResumeLanguagesForm({ mode }: { mode: FormMode }) {
   const submitForm: SubmitHandler<ILanguagesInputs> = async (data) => {
     const LanguagesData = {
       language: data.language,
-      additional_info: information,
+      additional_info: data.additional_info,
       level: data.level,
       resume_template_id: data.resume_template_id,
     };
@@ -91,9 +86,8 @@ function ResumeLanguagesForm({ mode }: { mode: FormMode }) {
     field: string,
   ) {
     const value = "target" in e ? e.target.value : e;
-    if (field === "language") setName(value);
+    if (field === "language") setLanguage(value);
     if (field === "level") setLevel(value);
-    if (field === "additional_info") setInformation(value);
 
     setResumeInfo((prevInfo) => {
       const updatedArray = [...prevInfo.languages];
@@ -174,7 +168,7 @@ function ResumeLanguagesForm({ mode }: { mode: FormMode }) {
           <Input
             register={register}
             onChange={(e) => handleOnChange(e, "language")}
-            value={name}
+            value={language}
             name="language"
             props={{
               placeholder: "Ex.English, Arbic, ...",

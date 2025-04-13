@@ -25,6 +25,7 @@ import {
   useGetAllResumeSkillsQuery,
   useGetAllResumeTemplatesQuery,
   useGetResumePersonalQuery,
+  useGetAllResumeOrganizationQuery,
 } from "../services/resumeBuilderApi.ts";
 import { useParams } from "react-router-dom";
 import { skipToken } from "@reduxjs/toolkit/query";
@@ -152,9 +153,13 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
     resumeId && !status.includes("addResume") ? { resumeId } : skipToken,
   );
   ///////////////////////////////////////////// Reference //////////////////////////////////////////////
-  const { data: resumeReference } = useGetAllResumeReferenceQuery(
-    resumeId && !status.includes("addResume") ? { resumeId } : skipToken,
-  );
+  const { data: resumeReference } = useGetAllResumeReferenceQuery({
+    resumeId: resumeId || "",
+  });
+  ///////////////////////////////////////////// Reference //////////////////////////////////////////////
+  const { data: resumeOrganization } = useGetAllResumeOrganizationQuery({
+    resumeId: resumeId || "",
+  });
 
   useEffect(() => {
     setResumeTemplates(resumeTemplatesData ?? []);
@@ -279,7 +284,7 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
               resume_template_id: lang.resume_template_id ?? "",
             }))
           : [],
-        interests: resumeInterests?.interestsContent
+        hobbies: resumeInterests?.interestsContent
           ? resumeInterests.interestsContent.map((inter) => ({
               id: inter.id ?? 0,
               resume_template_id: inter.resume_template_id ?? "",
@@ -296,6 +301,20 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
               organization: ref.organization ?? "",
               email: ref.email ?? "",
               phone: ref.phone ?? "",
+            }))
+          : [],
+        volunteering: resumeOrganization?.organizationsContent
+          ? resumeOrganization.organizationsContent.map((org) => ({
+              id: org.id ?? 0,
+              organization: org.organization ?? "",
+              position: org.position ?? "",
+              start_date: org.start_date ?? "",
+              end_date: org.end_date ?? "",
+              description: org.description ?? "",
+              is_current: false,
+              country: org.country ?? "",
+              city: org.city ?? "",
+              resume_template_id: org.resume_template_id ?? 0,
             }))
           : [],
       };
@@ -320,6 +339,7 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
     setResumeInfo,
     resumeAwards,
     resumePublications,
+    resumeOrganization,
   ]);
 
   return (

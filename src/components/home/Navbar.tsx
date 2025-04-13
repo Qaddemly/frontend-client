@@ -8,6 +8,7 @@ import {
   faBell,
   faBookmark,
   faFileLines,
+  faMessage,
   faTimes,
   faUser,
   faXmark,
@@ -228,6 +229,9 @@ function Navbar() {
                 />
               )}
             </div>
+            <Link to="/message">
+              <FontAwesomeIcon icon={faMessage} className="text-lg" />
+            </Link>
             <UserMenu type="NormalAccount">
               <div className="mt-2 flex flex-col gap-3">
                 <div className="px-3 pb-2">
