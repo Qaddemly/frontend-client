@@ -53,8 +53,9 @@ import ArchivedCompanyJobs from "../components/business account/business dashboa
 import ResumeBuilder from "../pages/ResumeBuilder.tsx";
 import EditResume from "../components/resume builder/EditResume.tsx";
 import { ResumeBuilderProvider } from "../context/ResumeBuilderContext.tsx";
-import SSENotifications from "../components/notifications/SSENotifications.tsx";
 import MessagingBusiness from "../components/business account/MessageBusiness.tsx";
+import { CoverLetterProvider } from "../context/CoverLetterContext.tsx";
+import CoverLetterBuilder from "../pages/CoverLetterBuilder.tsx";
 
 const router = createBrowserRouter([
   {
@@ -239,6 +240,26 @@ const router = createBrowserRouter([
         <ResumeBuilderProvider>
           <EditResume />
         </ResumeBuilderProvider>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/coverLetterBuilder",
+    element: (
+      <ProtectedRoute>
+        <CoverLetterProvider>
+          <CoverLetterBuilder />
+        </CoverLetterProvider>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/coverLetterBuilder/edit/:coverLetterId",
+    element: (
+      <ProtectedRoute>
+        <CoverLetterProvider>
+          <EditResume />
+        </CoverLetterProvider>
       </ProtectedRoute>
     ),
   },

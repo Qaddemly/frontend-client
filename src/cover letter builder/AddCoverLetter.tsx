@@ -1,0 +1,161 @@
+import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSquarePlus } from "@fortawesome/free-solid-svg-icons";
+import Modal from "../components/common/Modal.tsx";
+import Button from "../components/common/Button.tsx";
+import { useCoverLetter } from "../context/CoverLetterContext.tsx";
+
+function AddCoverLetter() {
+  const {
+    // coverLetterTemplates,setCoverLetterTemplates,
+    setStatus,
+  } = useCoverLetter();
+  // const navigate = useNavigate();
+  const [coverLetterName, setCoverLetterName] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  // TODO: handle apis
+  // const [addResumeTemplate] = useAddResumeTemplateMutation();
+  // const [deleteResumeTemplate] = useDeleteResumeTemplateMutation();
+  // const { refetch } = useGetAllResumeTemplatesQuery();
+  const isCoverLetterUrl = location.href.includes("coverLetterBuilder");
+
+  useEffect(() => {
+    if (isCoverLetterUrl) setStatus(["addCoverLetter"]);
+  }, [isCoverLetterUrl, setStatus]);
+
+  // TODO: handle add conver letter function
+  // async function handleAddResumeTemplate() {
+  //   try {
+  //     const res = addResumeTemplate({ data: { name: resumeName } }).unwrap();
+  //     await toast.promise(res, {
+  //       loading: "Creating resume",
+  //       success: "Resume created successfully",
+  //       error: "Could not create resume",
+  //     });
+  //     setShowModal(false);
+  //     const { data } = await res;
+  //     setResumeTemplates((prev) => [...prev, { ...data }]);
+  //     refetch();
+  //   } catch (error) {
+  //     handleApiError(error);
+  //   }
+  // }
+
+  // TODO: handle delete conver letter function
+  // async function handleDeleteResumeTemplate(id: string) {
+  //   try {
+  //     const res = deleteResumeTemplate({ resumeTemplateId: id }).unwrap();
+  //     await toast.promise(res, {
+  //       loading: "Deleting resume",
+  //       success: "Resume deleted successfully",
+  //       error: "Could not delete resume",
+  //     });
+  //     setShowModal(false);
+  //     setResumeTemplates((prev) =>
+  //       prev.filter((resume) => resume.id.toString() !== id),
+  //     );
+  //   } catch (error) {
+  //     handleApiError(error);
+  //   }
+  // }
+
+  return (
+    <div className="flex gap-10">
+      <div
+        onClick={() => setShowModal(true)}
+        className="flex h-[400px] w-[18rem] cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border border-dashed bg-white p-14 py-24 text-gray-500 transition-all hover:scale-105 hover:shadow-md"
+      >
+        <FontAwesomeIcon icon={faSquarePlus} className="text-2xl" />
+        <p>New cover letter</p>
+      </div>
+
+      {showModal && (
+        <Modal setClose={setShowModal}>
+          <div className="flex w-[40rem] flex-col p-10">
+            <p className="text-xl font-semibold">Create New cover letter</p>
+            <p className="my-2 text-gray-300">
+              Add a title for your new cover letter
+            </p>
+            <input
+              value={coverLetterName}
+              onChange={(e) => setCoverLetterName(e.target.value)}
+              type="text"
+              className="h-10 rounded-md border border-gray-100 px-5 py-5"
+              placeholder="Ex.Full Stack cover letter"
+            />
+            <div className="mt-5 flex gap-5 self-end">
+              <Button
+                onClick={() => setShowModal(false)}
+                className="text-black bg-white px-3 hover:bg-[#eee]"
+              >
+                Cancel
+              </Button>
+              {/* TODO: handel create button */}
+              {/*<Button onClick={handleAddResumeTemplate} className="px-3">*/}
+              {/*  Create*/}
+              {/*</Button>*/}
+            </div>
+          </div>
+        </Modal>
+      )}
+
+      {/* TODO: handel cover letter templates button */}
+      {/*{resumeTemplates?.map((resume) => (*/}
+      {/*  <div*/}
+      {/*    key={resume.id}*/}
+      {/*    onClick={() => {*/}
+      {/*      if (resume.personalInfo === null) setStatus(["start"]);*/}
+      {/*      else setStatus(["normal"]);*/}
+      {/*      navigate(`/resumeBuilder/edit/${resume.id}`);*/}
+      {/*    }}*/}
+      {/*  >*/}
+      {/*    <div className="h-[400px] w-[18rem] cursor-pointer flex-col items-center justify-center gap-2 break-words rounded-lg bg-white p-5 text-center text-[10px] shadow-sm transition-all hover:scale-105 hover:shadow-md">*/}
+      {/*      <h2 className="text-center font-bold">*/}
+      {/*        {resume.personalInfo?.full_name}*/}
+      {/*      </h2>*/}
+      {/*      <h2 className="text-center font-medium">*/}
+      {/*        {resume.personalInfo?.job_title}*/}
+      {/*      </h2>*/}
+      {/*      <h2 className="text-center font-normal">*/}
+      {/*        {resume.personalInfo?.address}*/}
+      {/*      </h2>*/}
+      {/*      <div className="flex justify-center gap-5">*/}
+      {/*        <h2 className="font-normal">{resume.personalInfo?.email}</h2>*/}
+      {/*        <h2 className="font-normal">*/}
+      {/*          {resume.personalInfo?.phone_number}*/}
+      {/*        </h2>*/}
+      {/*      </div>*/}
+      {/*      {resume.personalInfo && (*/}
+      {/*        <div className="mt-1 space-y-3">*/}
+      {/*          {Array.from({ length: 23 }).map((_, index) => (*/}
+      {/*            <hr key={index} className="border-gray-200" />*/}
+      {/*          ))}*/}
+      {/*        </div>*/}
+      {/*      )}*/}
+      {/*    </div>*/}
+
+      {/*    <div className="mt-5 flex items-center justify-between">*/}
+      {/*      <div>*/}
+      {/*        <p className="text-lg font-semibold">{resume.name}</p>*/}
+      {/*        <p className="text-sm text-gray-300">*/}
+      {/*          {ediTimeAgo(resume.updated_at)}*/}
+      {/*        </p>*/}
+      {/*      </div>*/}
+      {/*      /!* TODO: handle delete button *!/*/}
+      {/*      /!*<Button*!/*/}
+      {/*      /!*  onClick={(e) => {*!/*/}
+      {/*      /!*    e.stopPropagation();*!/*/}
+      {/*      /!*    handleDeleteResumeTemplate(resume.id.toString());*!/*/}
+      {/*      /!*  }}*!/*/}
+      {/*      /!*  className="border border-danger-300 bg-background px-4 text-danger-300 hover:bg-danger-300 hover:text-white"*!/*/}
+      {/*      /!*>*!/*/}
+      {/*      /!*  Delete*!/*/}
+      {/*      /!*</Button>*!/*/}
+      {/*    </div>*/}
+      {/*  </div>*/}
+      {/*))}*/}
+    </div>
+  );
+}
+
+export default AddCoverLetter;

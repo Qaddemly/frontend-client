@@ -61,17 +61,6 @@ export interface IResumeTemplate {
   personalInfo: PersonaInfoContent;
 }
 
-///////////////////////////////////////////// Resume Template Api Response //////////////////////////////////////////////
-export interface IGetAllResumeTemplatesResponse {
-  status: string;
-  data: IResumeTemplate[];
-}
-
-export interface IAddResumeTemplateResopnse {
-  status: string;
-  data: IResumeTemplate;
-}
-
 ///////////////////////////////////////////// Personal //////////////////////////////////////////////
 export interface PersonaInfoContent {
   id: number;
@@ -284,6 +273,17 @@ export interface IResumeOrganization extends IOrganizationsInputs {
   resumeTemplate: IResumeTemplate;
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////// Resume Template Api Response //////////////////////////////////////////////
+export interface IGetAllResumeTemplatesResponse {
+  status: string;
+  data: IResumeTemplate[];
+}
+
+export interface IAddResumeTemplateResopnse {
+  status: string;
+  data: IResumeTemplate;
+}
+
 ///////////////////////////////////////////// Personal Api Response //////////////////////////////////////////////
 export interface IGetResumePersonalInfoResponse {
   success: boolean;

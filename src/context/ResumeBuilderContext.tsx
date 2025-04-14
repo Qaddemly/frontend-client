@@ -58,13 +58,14 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
   const [status, setStatus] = useState<ResumeStatus[]>(
     JSON.parse(localStorage.getItem("resumeStatus") || '["start"]'),
   );
+  const [currId, setCurrId] = useState(0);
+
   useEffect(() => {
     if (localStorage.getItem("resumeStatus")?.includes("edit")) {
       setStatus(["normal"]);
     }
   }, []);
   localStorage.setItem("resumeStatus", JSON.stringify(status));
-  const [currId, setCurrId] = useState(0);
   const { data } = useGetAllResumeTemplatesQuery();
   const resumeTemplatesData = data?.data;
 
