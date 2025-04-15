@@ -56,6 +56,7 @@ import { ResumeBuilderProvider } from "../context/ResumeBuilderContext.tsx";
 import MessagingBusiness from "../components/business account/MessageBusiness.tsx";
 import { CoverLetterProvider } from "../context/CoverLetterContext.tsx";
 import CoverLetterBuilder from "../pages/CoverLetterBuilder.tsx";
+import EditCoverLetter from "../cover letter builder/EditCoverLetter.tsx";
 
 const router = createBrowserRouter([
   {
@@ -258,7 +259,7 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <CoverLetterProvider>
-          <EditResume />
+          <EditCoverLetter />
         </CoverLetterProvider>
       </ProtectedRoute>
     ),

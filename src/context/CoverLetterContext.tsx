@@ -18,8 +18,6 @@ export interface CoverLetterContextProps {
   >;
   coverLetterInfo: ICoverLetterInfo;
   setCoverLetterInfo: React.Dispatch<React.SetStateAction<ICoverLetterInfo>>;
-  showAddContent: boolean;
-  setShowAddContent: React.Dispatch<React.SetStateAction<boolean>>;
   status: CoverLetterStatus[];
   setStatus: React.Dispatch<React.SetStateAction<CoverLetterStatus[]>>;
   currId: number;
@@ -41,7 +39,6 @@ export const CoverLetterProvider: React.FC<{ children: ReactNode }> = ({
   const [coverLetterInfo, setCoverLetterInfo] = useState<ICoverLetterInfo>(
     {} as ICoverLetterInfo,
   );
-  const [showAddContent, setShowAddContent] = useState(false);
   const [status, setStatus] = useState<CoverLetterStatus[]>(
     JSON.parse(localStorage.getItem("coverLetterStatus") || '["start"]'),
   );
@@ -63,8 +60,6 @@ export const CoverLetterProvider: React.FC<{ children: ReactNode }> = ({
         setCoverLetterTemplates,
         coverLetterInfo,
         setCoverLetterInfo,
-        showAddContent,
-        setShowAddContent,
         status,
         setStatus,
         currId,

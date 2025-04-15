@@ -3,9 +3,24 @@ export type CoverLetterStatus =
   | "start"
   | "normal"
   | "add"
-  | "edit";
+  | "edit"
+  | "personal";
 
-export interface ICoverLetterInfo {}
+export interface ICoverLetterInfo {
+  personal: ICoverLetterPersonalInputs;
+}
 
 ///////////////////////////////////////////// Cover Letter Template //////////////////////////////////////////////
-export interface ICoverLetterTemplate {}
+export interface ICoverLetterTemplate {
+  id: number;
+  name: string;
+}
+///////////////////////////////////////////// Personal //////////////////////////////////////////////
+export interface ICoverLetterPersonalInputs {
+  id: number;
+  fullName: string;
+  jobTitle: string;
+  email: string;
+  phone: string;
+  address: string;
+}

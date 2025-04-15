@@ -27,15 +27,7 @@ export type ResumeStatus =
   | "custom";
 
 export interface IResumeInfo {
-  personal: {
-    id: number;
-    fullName: string;
-    jobTitle: string;
-    email: string;
-    phone: string;
-    address: string;
-    aboutMe: string;
-  };
+  personal: IPersonalInputs;
   education: IEducationInputs[];
   skills: ISkillsInputs[];
   experience: IExperienceInputs[];
@@ -62,6 +54,16 @@ export interface IResumeTemplate {
 }
 
 ///////////////////////////////////////////// Personal //////////////////////////////////////////////
+export interface IPersonalInputs {
+  id: number;
+  fullName: string;
+  jobTitle: string;
+  email: string;
+  phone: string;
+  address: string;
+  aboutMe: string;
+}
+
 export interface PersonaInfoContent {
   id: number;
   full_name: string;

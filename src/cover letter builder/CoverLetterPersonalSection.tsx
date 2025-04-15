@@ -1,21 +1,24 @@
-import Button from "../../common/Button.tsx";
+import Button from "../components/common/Button.tsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEnvelope,
   faPenToSquare,
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
-import { useResumeBuilder } from "../../../context/ResumeBuilderContext.tsx";
+import { useCoverLetter } from "../context/CoverLetterContext.tsx";
 
-function ResumeLanguageSection() {
-  const { resumeInfo, setStatus } = useResumeBuilder();
-  const languageInfo = resumeInfo?.languages;
+function CoverLetterPersonalSection() {
+  const {
+     coverLetterInfo,
+    setStatus,
+  } = useCoverLetter();
+   const personalInfo = coverLetterInfo?.personal;
   return (
     <div className="flex flex-col justify-between rounded-lg bg-white px-8 py-5 shadow-md">
       <div className="flex w-full items-center justify-between pb-3">
         <div>
-          <p className="text-xl font-semibold">{languageInfo?.fullName}</p>
-          <p className="text-sm text-gray-300">{languageInfo?.jobTitle}</p>
+          <p className="text-xl font-semibold">{personalInfo?.fullName}</p>
+          <p className="text-sm text-gray-300">{personalInfo?.jobTitle}</p>
         </div>
         <Button
           onClick={() => setStatus(() => ["edit", "personal"])}
@@ -30,14 +33,14 @@ function ResumeLanguageSection() {
       </div>
       <p className="flex items-center gap-1 text-gray-500">
         <FontAwesomeIcon icon={faEnvelope} />
-        <span>{languageInfo?.email}</span>
+        <span>{personalInfo?.email}</span>
       </p>
       <p className="flex items-center gap-1 text-gray-500">
         <FontAwesomeIcon icon={faPhone} />
-        <span>{languageInfo?.phone}</span>
+        <span>{personalInfo?.phone}</span>
       </p>
     </div>
   );
 }
 
-export default ResumeLanguageSection;
+export default CoverLetterPersonalSection;
