@@ -154,13 +154,9 @@ export const ResumeBuilderProvider: React.FC<{ children: ReactNode }> = ({
     resumeId && !status.includes("addResume") ? { resumeId } : skipToken,
   );
   ///////////////////////////////////////////// Reference //////////////////////////////////////////////
-  const { data: resumeReference } = useGetAllResumeReferenceQuery(
-    resumeId && !status.includes("addResume") ? { resumeId } : skipToken,
-  );
+  const { data: resumeReference } = useGetAllResumeReferenceQuery(resumeId && !status.includes("addResume") ? { resumeId } : skipToken,);
   ///////////////////////////////////////////// Reference //////////////////////////////////////////////
-  const { data: resumeOrganization } = useGetAllResumeOrganizationQuery(
-    resumeId && !status.includes("addResume") ? { resumeId } : skipToken,
-  );
+  const { data: resumeOrganization } = useGetAllResumeOrganizationQuery(resumeId && !status.includes("addResume") ? { resumeId } : skipToken,);
 
   useEffect(() => {
     setResumeTemplates(resumeTemplatesData ?? []);

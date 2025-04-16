@@ -74,9 +74,9 @@ export interface PersonaInfoContent {
   personal_information: PersonalInformation;
   picture: string;
   links: Links;
+  resumeTemplate: IResumeTemplate;
   created_at: string;
   updated_at: string;
-  resumeTemplate: IResumeTemplate;
 }
 
 export interface PersonalInformation {

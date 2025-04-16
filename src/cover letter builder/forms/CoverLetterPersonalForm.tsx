@@ -6,6 +6,18 @@ import { FormMode } from "../../interfaces/ResumeBuilder.interfaces.ts";
 import { useCoverLetter } from "../../context/CoverLetterContext.tsx";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
+import {
+  useAddPersonalCoverLetterMutation,
+  useGetPersonalCoverLetterQuery,
+  useUpdatePersonalCoverLetterMutation,
+} from "../../services/coverLetterBuilderApi.ts";
+import {
+  createFormData,
+  handleApiError,
+  handleResumeAction,
+} from "../../utils/helpers.ts";
+import { ResumeBuilderProvider } from "../../context/ResumeBuilderContext.tsx";
 
 type PersonalForm = {
   fullName: string;
@@ -16,22 +28,19 @@ type PersonalForm = {
 };
 
 function CoverLetterPersonalForm({ mode }: { mode: FormMode }) {
-  // const { coverLetterId } = useParams();
-  const {
-    coverLetterInfo,
-    setCoverLetterInfo,
-    // setStatus
-  } = useCoverLetter();
+  const { coverLetterId } = useParams();
+  const { coverLetterInfo, setCoverLetterInfo, setStatus } = useCoverLetter();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<PersonalForm>();
 
-  // TODO: handle apis
-  // const { refetch } = useGetResumePersonalQuery({ resumeId: resumeId || "" });
-  // const [addResumePersonal] = useAddResumePersonalMutation();
-  // const [updateResumePersonal] = useUpdateResumePersonalMutation();
+  const { refetch } = useGetPersonalCoverLetterQuery({
+    id: coverLetterId || "",
+  });
+  const [addPersonalCoverLetter] = useAddPersonalCoverLetterMutation();
+  const [updatePersonalCoverLetter] = useUpdatePersonalCoverLetterMutation();
 
   const initialPersonalInfo: PersonalForm =
     mode === "add"
@@ -49,44 +58,41 @@ function CoverLetterPersonalForm({ mode }: { mode: FormMode }) {
   );
 
   const submitForm: SubmitHandler<PersonalForm> = async (data) => {
-    console.log(data);
-    // const personalData = {
-    //   full_name: data.fullName,
-    //   job_title: data.jobTitle,
-    //   email: data.email,
-    //   phone_number: data.phone,
-    //   address: data.address,
-    // };
+    const personalData = {
+      full_name: data.fullName,
+      job_title: data.jobTitle,
+      email: data.email,
+      phone_number: data.phone,
+      address: data.address,
+    };
 
-    // const personalFormData = createFormData(personalData);
+    const personalFormData = createFormData(personalData);
 
-    // TODO: handle add cover letter
-    // try {
-    //   if (mode === "add") {
-    //     await handleResumeAction(
-    //       () =>
-    //         addResumePersonal({
-    //           data: personalFormData,
-    //           resumeId: resumeId || "",
-    //         }).unwrap(),
-    //       mode,
-    //     );
-    //   } else {
-    //     await handleResumeAction(
-    //       () =>
-    //         updateResumePersonal({
-    //           data: personalFormData,
-    //           resumeId: resumeId || "",
-    //           personalInfoId: resumeInfo?.personal?.id.toString() || "",
-    //         }).unwrap(),
-    //       mode,
-    //     );
-    //   }
-    //   setStatus(() => ["normal"]);
-    //   refetch();
-    // } catch (error) {
-    //   handleApiError(error);
-    // }
+    try {
+      if (mode === "add") {
+        await handleResumeAction(
+          () =>
+            addPersonalCoverLetter({
+              coverLetter: personalFormData,
+              id: coverLetterId || "",
+            }).unwrap(),
+          mode,
+        );
+      } else {
+        await handleResumeAction(
+          () =>
+            updatePersonalCoverLetter({
+              coverLetter: personalFormData,
+              id: coverLetterId || "",
+            }).unwrap(),
+          mode,
+        );
+      }
+      setStatus(() => ["normal"]);
+      refetch();
+    } catch (error) {
+      handleApiError(error);
+    }
   };
 
   function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -185,11 +191,14 @@ function CoverLetterPersonalForm({ mode }: { mode: FormMode }) {
             />
           </InputField>
         </div>
-        <ResumeFormButtons
-          mode={mode}
-          hiddenDeleteBtn={true}
-          handleCancel={() => {}}
-        />
+        <ResumeBuilderProvider>
+          <ResumeFormButtons
+            type="coverLetter"
+            mode={mode}
+            hiddenDeleteBtn={true}
+            handleCancel={() => {}}
+          />
+        </ResumeBuilderProvider>
       </form>
     </FormPreviewSection>
   );

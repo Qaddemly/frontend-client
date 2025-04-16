@@ -9,7 +9,14 @@ import {
   CoverLetterStatus,
   ICoverLetterInfo,
   ICoverLetterTemplate,
+  IGetPersonalCoverLetterResponse,
 } from "../interfaces/CoverLetter.interfaces.ts";
+import {
+  useGetCoverLettersQuery,
+  useGetPersonalCoverLetterQuery,
+} from "../services/coverLetterBuilderApi.ts";
+import { skipToken } from "@reduxjs/toolkit/query";
+import { useParams } from "react-router-dom";
 
 export interface CoverLetterContextProps {
   coverLetterTemplates: ICoverLetterTemplate[];
@@ -31,8 +38,8 @@ const CoverLetterContext = createContext<CoverLetterContextProps | undefined>(
 export const CoverLetterProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  // const { coverLetterId } = useParams();
-  ///////////////////////////////////////////// Resume Template //////////////////////////////////////////////
+  const { coverLetterId } = useParams();
+  ///////////////////////////////////////////// Cover Letter Template //////////////////////////////////////////////
   const [coverLetterTemplates, setCoverLetterTemplates] = useState<
     ICoverLetterTemplate[]
   >([]);
@@ -40,18 +47,84 @@ export const CoverLetterProvider: React.FC<{ children: ReactNode }> = ({
     {} as ICoverLetterInfo,
   );
   const [status, setStatus] = useState<CoverLetterStatus[]>(
-    JSON.parse(localStorage.getItem("coverLetterStatus") || '["start"]'),
+    JSON.parse(localStorage.getItem("coverLetterStatus") || '["normal"]'),
   );
   const [currId, setCurrId] = useState(0);
-
   useEffect(() => {
     if (localStorage.getItem("coverLetterStatus")?.includes("edit")) {
       setStatus(["normal"]);
     }
   }, []);
   localStorage.setItem("coverLetterStatus", JSON.stringify(status));
+  const { data } = useGetCoverLettersQuery();
+  const coverLetterTemplatesData = data?.coverLetters;
 
-  // TODO: handle api
+  ///////////////////////////////////////////// Personal //////////////////////////////////////////////
+  const { data: coverLetterPersonalData, isError } =
+    useGetPersonalCoverLetterQuery(
+      coverLetterId && !status.includes("addCoverLetter")
+        ? { id: coverLetterId }
+        : skipToken,
+    );
+  const [coverLetterPersonal, setCoverLetterPersonal] = useState<
+    IGetPersonalCoverLetterResponse | undefined
+  >(undefined);
+  const currentCoverLetterTemplate = coverLetterTemplates?.filter(
+    (cover) => cover.id === Number(coverLetterId),
+  );
+
+  useEffect(() => {
+    if (isError) {
+      setCoverLetterPersonal({
+        status: "",
+        personalDetails: {
+          id: 0,
+          full_name: "",
+          job_title: "",
+          email: "",
+          phone_number: "",
+          address: "",
+          personal_information: {
+            date_of_birth: "",
+            gender: "",
+            id: "",
+            nationality: "",
+          },
+          picture: "",
+          links: {
+            gitHub: "",
+            faceBook: "",
+            website: "",
+          },
+          created_at: "",
+          updated_at: "",
+          coverLetter: {} as ICoverLetterTemplate,
+        },
+      });
+    } else {
+      setCoverLetterPersonal(coverLetterPersonalData);
+    }
+  }, [isError, coverLetterPersonalData]);
+
+  useEffect(() => {
+    if (coverLetterTemplatesData) {
+      setCoverLetterTemplates(coverLetterTemplatesData);
+      setCoverLetterInfo((prevState) => {
+        return {
+          ...prevState,
+          personal: {
+            id: coverLetterPersonal?.personalDetails.id ?? 0,
+            fullName: coverLetterPersonal?.personalDetails.full_name ?? "",
+            jobTitle: coverLetterPersonal?.personalDetails.job_title ?? "",
+            email: coverLetterPersonal?.personalDetails.email ?? "",
+            phone: coverLetterPersonal?.personalDetails.phone_number ?? "",
+            address: coverLetterPersonal?.personalDetails.address ?? "",
+            body: currentCoverLetterTemplate[0]?.body ?? "",
+          },
+        };
+      });
+    }
+  }, [coverLetterPersonal, coverLetterTemplatesData]);
 
   return (
     <CoverLetterContext.Provider

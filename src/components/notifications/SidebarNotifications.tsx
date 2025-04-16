@@ -35,7 +35,7 @@ function SidebarNotifications({
         />
       </div>
       {notifications?.map((n) => (
-        <div className="flex items-center justify-between text-sm">
+        <div key={n._id} className="flex items-center justify-between text-sm">
           <div className="flex items-center gap-5">
             <img
               src={n.business.logo}

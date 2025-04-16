@@ -4,60 +4,65 @@ import { faSquarePlus } from "@fortawesome/free-solid-svg-icons";
 import Modal from "../components/common/Modal.tsx";
 import Button from "../components/common/Button.tsx";
 import { useCoverLetter } from "../context/CoverLetterContext.tsx";
+import { useNavigate } from "react-router-dom";
+import {
+  useAddCoverLetterMutation,
+  useDeleteCoverLetterMutation,
+  useGetCoverLettersQuery,
+} from "../services/coverLetterBuilderApi.ts";
+import { ediTimeAgo, handleApiError } from "../utils/helpers.ts";
+import toast from "react-hot-toast";
 
 function AddCoverLetter() {
-  const {
-    // coverLetterTemplates,setCoverLetterTemplates,
-    setStatus,
-  } = useCoverLetter();
-  // const navigate = useNavigate();
+  const { coverLetterTemplates, setCoverLetterTemplates, setStatus } =
+    useCoverLetter();
+  const navigate = useNavigate();
   const [coverLetterName, setCoverLetterName] = useState("");
   const [showModal, setShowModal] = useState(false);
-  // TODO: handle apis
-  // const [addResumeTemplate] = useAddResumeTemplateMutation();
-  // const [deleteResumeTemplate] = useDeleteResumeTemplateMutation();
-  // const { refetch } = useGetAllResumeTemplatesQuery();
+  const [addCoverLetter] = useAddCoverLetterMutation();
+  const [deleteCoverLetter] = useDeleteCoverLetterMutation();
+  const { refetch } = useGetCoverLettersQuery();
   const isCoverLetterUrl = location.href.includes("coverLetterBuilder");
 
   useEffect(() => {
     if (isCoverLetterUrl) setStatus(["addCoverLetter"]);
   }, [isCoverLetterUrl, setStatus]);
 
-  // TODO: handle add conver letter function
-  // async function handleAddResumeTemplate() {
-  //   try {
-  //     const res = addResumeTemplate({ data: { name: resumeName } }).unwrap();
-  //     await toast.promise(res, {
-  //       loading: "Creating resume",
-  //       success: "Resume created successfully",
-  //       error: "Could not create resume",
-  //     });
-  //     setShowModal(false);
-  //     const { data } = await res;
-  //     setResumeTemplates((prev) => [...prev, { ...data }]);
-  //     refetch();
-  //   } catch (error) {
-  //     handleApiError(error);
-  //   }
-  // }
+  async function handleAddCoverLetterTemplate() {
+    try {
+      const res = addCoverLetter({
+        data: { name: coverLetterName },
+      }).unwrap();
+      await toast.promise(res, {
+        loading: "Creating cover letter",
+        success: "Cover letter created successfully",
+        error: "Could not create cover letter",
+      });
+      setShowModal(false);
+      const { coverLetter } = await res;
+      setCoverLetterTemplates((prev) => [...prev, { ...coverLetter }]);
+      refetch();
+    } catch (error) {
+      handleApiError(error);
+    }
+  }
 
-  // TODO: handle delete conver letter function
-  // async function handleDeleteResumeTemplate(id: string) {
-  //   try {
-  //     const res = deleteResumeTemplate({ resumeTemplateId: id }).unwrap();
-  //     await toast.promise(res, {
-  //       loading: "Deleting resume",
-  //       success: "Resume deleted successfully",
-  //       error: "Could not delete resume",
-  //     });
-  //     setShowModal(false);
-  //     setResumeTemplates((prev) =>
-  //       prev.filter((resume) => resume.id.toString() !== id),
-  //     );
-  //   } catch (error) {
-  //     handleApiError(error);
-  //   }
-  // }
+  async function handleDeleteCoverLetterTemplate(id: string) {
+    try {
+      const res = deleteCoverLetter({ id }).unwrap();
+      await toast.promise(res, {
+        loading: "Deleting cover letter",
+        success: "Cover letter deleted successfully",
+        error: "Could not delete cover letter",
+      });
+      setShowModal(false);
+      setCoverLetterTemplates((prev) =>
+        prev.filter((coverLetter) => coverLetter.id.toString() !== id),
+      );
+    } catch (error) {
+      handleApiError(error);
+    }
+  }
 
   return (
     <div className="flex gap-10">
@@ -90,70 +95,70 @@ function AddCoverLetter() {
               >
                 Cancel
               </Button>
-              {/* TODO: handel create button */}
-              {/*<Button onClick={handleAddResumeTemplate} className="px-3">*/}
-              {/*  Create*/}
-              {/*</Button>*/}
+
+              <Button onClick={handleAddCoverLetterTemplate} className="px-3">
+                Create
+              </Button>
             </div>
           </div>
         </Modal>
       )}
 
-      {/* TODO: handel cover letter templates button */}
-      {/*{resumeTemplates?.map((resume) => (*/}
-      {/*  <div*/}
-      {/*    key={resume.id}*/}
-      {/*    onClick={() => {*/}
-      {/*      if (resume.personalInfo === null) setStatus(["start"]);*/}
-      {/*      else setStatus(["normal"]);*/}
-      {/*      navigate(`/resumeBuilder/edit/${resume.id}`);*/}
-      {/*    }}*/}
-      {/*  >*/}
-      {/*    <div className="h-[400px] w-[18rem] cursor-pointer flex-col items-center justify-center gap-2 break-words rounded-lg bg-white p-5 text-center text-[10px] shadow-sm transition-all hover:scale-105 hover:shadow-md">*/}
-      {/*      <h2 className="text-center font-bold">*/}
-      {/*        {resume.personalInfo?.full_name}*/}
-      {/*      </h2>*/}
-      {/*      <h2 className="text-center font-medium">*/}
-      {/*        {resume.personalInfo?.job_title}*/}
-      {/*      </h2>*/}
-      {/*      <h2 className="text-center font-normal">*/}
-      {/*        {resume.personalInfo?.address}*/}
-      {/*      </h2>*/}
-      {/*      <div className="flex justify-center gap-5">*/}
-      {/*        <h2 className="font-normal">{resume.personalInfo?.email}</h2>*/}
-      {/*        <h2 className="font-normal">*/}
-      {/*          {resume.personalInfo?.phone_number}*/}
-      {/*        </h2>*/}
-      {/*      </div>*/}
-      {/*      {resume.personalInfo && (*/}
-      {/*        <div className="mt-1 space-y-3">*/}
-      {/*          {Array.from({ length: 23 }).map((_, index) => (*/}
-      {/*            <hr key={index} className="border-gray-200" />*/}
-      {/*          ))}*/}
-      {/*        </div>*/}
-      {/*      )}*/}
-      {/*    </div>*/}
+      {coverLetterTemplates?.map((coverLetter) => (
+        <div
+          key={coverLetter.id}
+          onClick={() => {
+            setStatus(["normal"]);
+            navigate(`/coverLetterBuilder/edit/${coverLetter.id}`);
+          }}
+        >
+          <div className="h-[400px] w-[18rem] cursor-pointer flex-col items-center justify-center gap-2 break-words rounded-lg bg-white p-5 text-center text-[10px] shadow-sm transition-all hover:scale-105 hover:shadow-md">
+            <h2 className="text-center font-bold">
+              {coverLetter.personalDetails?.full_name}
+            </h2>
+            <h2 className="text-center font-medium">
+              {coverLetter.personalDetails?.job_title}
+            </h2>
+            <h2 className="text-center font-normal">
+              {coverLetter.personalDetails?.address}
+            </h2>
+            <div className="flex justify-center gap-5">
+              <h2 className="font-normal">
+                {coverLetter.personalDetails?.email}
+              </h2>
+              <h2 className="font-normal">
+                {coverLetter.personalDetails?.phone_number}
+              </h2>
+            </div>
+            {coverLetter.personalDetails && (
+              <div className="mt-1 space-y-3">
+                {Array.from({ length: 23 }).map((_, index) => (
+                  <hr key={index} className="border-gray-200" />
+                ))}
+              </div>
+            )}
+          </div>
 
-      {/*    <div className="mt-5 flex items-center justify-between">*/}
-      {/*      <div>*/}
-      {/*        <p className="text-lg font-semibold">{resume.name}</p>*/}
-      {/*        <p className="text-sm text-gray-300">*/}
-      {/*          {ediTimeAgo(resume.updated_at)}*/}
-      {/*        </p>*/}
-      {/*      </div>*/}
-      {/*      /!* TODO: handle delete button *!/*/}
-      {/*      /!*<Button*!/*/}
-      {/*      /!*  onClick={(e) => {*!/*/}
-      {/*      /!*    e.stopPropagation();*!/*/}
-      {/*      /!*    handleDeleteResumeTemplate(resume.id.toString());*!/*/}
-      {/*      /!*  }}*!/*/}
-      {/*      /!*  className="border border-danger-300 bg-background px-4 text-danger-300 hover:bg-danger-300 hover:text-white"*!/*/}
-      {/*      /!*>*!/*/}
-      {/*      /!*  Delete*!/*/}
-      {/*      /!*</Button>*!/*/}
-      {/*    </div>*/}
-      {/*  </div>*/}
-      {/*))}*/}
+          <div className="mt-5 flex items-center justify-between">
+            <div>
+              <p className="text-lg font-semibold">{coverLetter.name}</p>
+              <p className="text-sm text-gray-300">
+                {ediTimeAgo(coverLetter.updated_at)}
+              </p>
+            </div>
+
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDeleteCoverLetterTemplate(coverLetter.id.toString());
+              }}
+              className="border border-danger-300 bg-background px-4 text-danger-300 hover:bg-danger-300 hover:text-white"
+            >
+              Delete
+            </Button>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
