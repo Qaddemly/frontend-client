@@ -6,7 +6,7 @@ function ResumeInterestPreview() {
 
   return (
     <div className="mt-5 text-sm">
-      {resumeInfo?.hobbies && (
+      {resumeInfo?.hobbies?.length > 0 && (
         <>
           <p className="text-lg font-medium">Interests</p>
           <hr className="mb-2 border-[1.5px]" />

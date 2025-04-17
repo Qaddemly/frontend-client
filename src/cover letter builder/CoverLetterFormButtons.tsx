@@ -1,6 +1,6 @@
-import Button from "../common/Button.tsx";
-import { useResumeBuilder } from "../../context/ResumeBuilderContext.tsx";
-import { FormMode } from "../../interfaces/ResumeBuilder.interfaces.ts";
+import { useCoverLetter } from "../context/CoverLetterContext.tsx";
+import { FormMode } from "../interfaces/ResumeBuilder.interfaces.ts";
+import Button from "../components/common/Button.tsx";
 
 function ResumeFormButtons({
   mode,
@@ -13,7 +13,7 @@ function ResumeFormButtons({
   handleCancel: () => void;
   hiddenDeleteBtn?: boolean;
 }) {
-  const { setStatus } = useResumeBuilder();
+  const { setStatus } = useCoverLetter();
 
   return (
     <div

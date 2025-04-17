@@ -11,8 +11,6 @@ function EditResume() {
     <ResumeBuilderLayout>
       <div className="m-auto">
         {showAddContent ? (
-          // <div className="min-h-screen min-w-[60rem]">
-          // </div>
           <AddResumeContent />
         ) : (
           <div className="flex justify-evenly">

@@ -39,7 +39,7 @@ function FormPreview() {
   const currentResumeTemplate = resumeTemplates?.filter(
     (resume) => resume.id === Number(resumeId),
   );
-  // Edit resume name need handle from backend
+  // TODO: Edit resume name need handle from backend
   // const [resumeName, setResumeName] = useState(currentResumeTemplate[0].name);
   // const [showEditResumeName, setShowEditResumeName] = useState(false);
 
@@ -79,6 +79,8 @@ function FormPreview() {
           <FontAwesomeIcon icon={faFileArrowDown} className="text-xl" />
         </Button>
       </div>
+
+      {/*/////////////////////////////////////////// Main Content  ///////////////////////////////////////////////*/}
       {(status[0] === "normal" && status[1] === "personal") ||
       status.includes("start") ? (
         <div className="flex items-center justify-between rounded-lg bg-white px-8 py-5 shadow-md">

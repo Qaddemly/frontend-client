@@ -1,0 +1,21 @@
+import { useCoverLetter } from "../../context/CoverLetterContext.tsx";
+
+function CoverLetterBodyPreview() {
+  const { coverLetterInfo } = useCoverLetter();
+  const personalInfo = coverLetterInfo?.personal;
+  return (
+    <div>
+      {personalInfo?.body?.length > 0 && (
+        <p className="text-lg font-medium"></p>
+      )}
+      <div
+        dangerouslySetInnerHTML={{
+          __html: personalInfo?.body,
+        }}
+        className="rich-text-editor break-words text-xs"
+      ></div>
+    </div>
+  );
+}
+
+export default CoverLetterBodyPreview;

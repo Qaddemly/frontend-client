@@ -27,15 +27,7 @@ export type ResumeStatus =
   | "custom";
 
 export interface IResumeInfo {
-  personal: {
-    id: number;
-    fullName: string;
-    jobTitle: string;
-    email: string;
-    phone: string;
-    address: string;
-    aboutMe: string;
-  };
+  personal: IPersonalInputs;
   education: IEducationInputs[];
   skills: ISkillsInputs[];
   experience: IExperienceInputs[];
@@ -61,18 +53,17 @@ export interface IResumeTemplate {
   personalInfo: PersonaInfoContent;
 }
 
-///////////////////////////////////////////// Resume Template Api Response //////////////////////////////////////////////
-export interface IGetAllResumeTemplatesResponse {
-  status: string;
-  data: IResumeTemplate[];
-}
-
-export interface IAddResumeTemplateResopnse {
-  status: string;
-  data: IResumeTemplate;
-}
-
 ///////////////////////////////////////////// Personal //////////////////////////////////////////////
+export interface IPersonalInputs {
+  id: number;
+  fullName: string;
+  jobTitle: string;
+  email: string;
+  phone: string;
+  address: string;
+  aboutMe: string;
+}
+
 export interface PersonaInfoContent {
   id: number;
   full_name: string;
@@ -83,9 +74,9 @@ export interface PersonaInfoContent {
   personal_information: PersonalInformation;
   picture: string;
   links: Links;
+  resumeTemplate: IResumeTemplate;
   created_at: string;
   updated_at: string;
-  resumeTemplate: IResumeTemplate;
 }
 
 export interface PersonalInformation {
@@ -284,6 +275,17 @@ export interface IResumeOrganization extends IOrganizationsInputs {
   resumeTemplate: IResumeTemplate;
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////// Resume Template Api Response //////////////////////////////////////////////
+export interface IGetAllResumeTemplatesResponse {
+  status: string;
+  data: IResumeTemplate[];
+}
+
+export interface IAddResumeTemplateResopnse {
+  status: string;
+  data: IResumeTemplate;
+}
+
 ///////////////////////////////////////////// Personal Api Response //////////////////////////////////////////////
 export interface IGetResumePersonalInfoResponse {
   success: boolean;

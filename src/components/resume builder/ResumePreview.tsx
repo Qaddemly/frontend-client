@@ -1,17 +1,17 @@
-import ResumePersonalPreview from "./preview/ResumePersonalPreview.tsx";
-import ResumeAboutmePreview from "./preview/ResumeAboutmePreview.tsx";
-import ResumeEducationPreview from "./preview/ResumeEducationPreview.tsx";
-import ResumeSkillsPreview from "./preview/ResumeSkillsPreview.tsx";
-import ResumeCertificatesPreview from "./preview/ResumeCertificatesPreview.tsx";
-import ResumeExperiencePreview from "./preview/ResumeExperiencePreview.tsx";
-import ResumeLanguagePreview from "./preview/ResumeLanguagePreview.tsx";
-import ResumeInterestPreview from "./preview/ResumeInterestPreview.tsx";
-import ResumeReferencePreview from "./preview/ResumeReferencePreview.tsx";
-import ResumeProjectsPreview from "./preview/ResumeProjectsPreview.tsx";
-import ResumeCustomPreview from "./preview/ResumeCustomPreview.tsx";
-import ResumeAwardPreview from "./preview/ResumeAwardPreview.tsx";
-import ResumePublicationPreview from "./preview/ResumePublicationPreview.tsx";
-import ResumeOrganizationPreview from "./preview/ResumeVolunteeringPreview.tsx";
+import ResumePersonalPreview from "./previews/ResumePersonalPreview.tsx";
+import ResumeAboutmePreview from "./previews/ResumeAboutmePreview.tsx";
+import ResumeEducationPreview from "./previews/ResumeEducationPreview.tsx";
+import ResumeSkillsPreview from "./previews/ResumeSkillsPreview.tsx";
+import ResumeCertificatesPreview from "./previews/ResumeCertificatesPreview.tsx";
+import ResumeExperiencePreview from "./previews/ResumeExperiencePreview.tsx";
+import ResumeLanguagePreview from "./previews/ResumeLanguagePreview.tsx";
+import ResumeInterestPreview from "./previews/ResumeInterestPreview.tsx";
+import ResumeReferencePreview from "./previews/ResumeReferencePreview.tsx";
+import ResumeProjectsPreview from "./previews/ResumeProjectsPreview.tsx";
+import ResumeCustomPreview from "./previews/ResumeCustomPreview.tsx";
+import ResumeAwardPreview from "./previews/ResumeAwardPreview.tsx";
+import ResumePublicationPreview from "./previews/ResumePublicationPreview.tsx";
+import ResumeOrganizationPreview from "./previews/ResumeVolunteeringPreview.tsx";
 
 function ResumePreview() {
   return (
