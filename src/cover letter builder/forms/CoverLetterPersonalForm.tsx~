@@ -192,13 +192,24 @@ function CoverLetterPersonalForm({ mode }: { mode: FormMode }) {
           </InputField>
         </div>
         <ResumeBuilderProvider>
-
-        <ResumeFormButtons
-          type="coverLetter"
-          mode={mode}
-          hiddenDeleteBtn={true}
-          handleCancel={() => {}}
-        />
+          <ResumeFormButtons
+            type="coverLetter"
+            mode={mode}
+            hiddenDeleteBtn={true}
+            handleCancel={() => {
+              setCoverLetterInfo((prevInfo) => ({
+                ...prevInfo,
+                personal: {
+                  ...prevInfo.personal,
+                  fullName: "",
+                  jobTitle: "",
+                  email: "",
+                  phone: "",
+                  address: "",
+                },
+              }))
+            }}
+          />
         </ResumeBuilderProvider>
       </form>
     </FormPreviewSection>

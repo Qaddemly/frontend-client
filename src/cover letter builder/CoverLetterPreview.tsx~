@@ -6,7 +6,7 @@ function CoverLetterPreview() {
     <div className="print-area w-full space-y-8 md:w-1/2">
       <div className="min-h-screen rounded-md bg-white p-14 font-[Arial] shadow-lg">
         <CoverLetterPersonalPreview />
-        <CoverLetterBodyPreview />
+        <CoverLetterBodyPreview/>
       </div>
     </div>
   );

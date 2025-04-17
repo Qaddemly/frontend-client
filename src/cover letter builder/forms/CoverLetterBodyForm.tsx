@@ -43,7 +43,9 @@ function CoverLetterBodyForm({ mode }: { mode: FormMode }) {
         () =>
           updateCoverLetter({
             id: coverLetterId || "",
-            coverLetter: { ...currentCoverLetterTemplate[0], body },
+            coverLetter: {
+              body,
+            },
           }).unwrap(),
         mode,
       );
@@ -60,13 +62,21 @@ function CoverLetterBodyForm({ mode }: { mode: FormMode }) {
       autoFill={false}
     >
       <form onSubmit={(e) => submitForm(e)} className="w-full">
-        <RichTextEditor value={body} onChange={handleOnChange} />
+        <RichTextEditor value={body ?? ""} onChange={handleOnChange} />
         <ResumeBuilderProvider>
           <ResumeFormButtons
             type="coverLetter"
             mode={mode}
             hiddenDeleteBtn={true}
-            handleCancel={() => {}}
+            handleCancel={() => {
+              setCoverLetterInfo((prevInfo) => ({
+                ...prevInfo,
+                personal: {
+                  ...prevInfo.personal,
+                  body: "",
+                },
+              }));
+            }}
           />
         </ResumeBuilderProvider>
       </form>

@@ -15,15 +15,15 @@ export interface ICoverLetterInfo {
 
 ///////////////////////////////////////////// Cover Letter Template //////////////////////////////////////////////
 export interface ICoverLetterTemplate {
-  id?: number;
-  name?: string;
-  account_id?: number;
-  date?: string;
-  body?: string;
-  recipientDetails?: IRecipientDetails;
-  personalDetails?: ICoverLetterPersonalInfo;
-  created_at?: string;
-  updated_at?: string;
+  id: number;
+  name: string;
+  account_id: number;
+  date: string;
+  body: string;
+  recipientDetails: IRecipientDetails;
+  personalDetails: ICoverLetterPersonalInfo;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface IRecipientDetails {

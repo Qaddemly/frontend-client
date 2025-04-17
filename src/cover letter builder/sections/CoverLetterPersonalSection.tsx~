@@ -24,9 +24,8 @@ function CoverLetterPersonalSection() {
         </div>
         <Button
           onClick={() => {
-            if (personalInfo?.fullName?.length)
-              setStatus(() => ["edit", "personal"]);
-            else setStatus(() => ["add", "personal"]);
+            if(personalInfo?.fullName?.length)setStatus(() => ["edit", "personal"])
+            else setStatus(() => ["add", "personal"])
           }}
           className="flex items-center gap-2 bg-white text-gray-300 hover:bg-white"
         >
