@@ -1,14 +1,14 @@
-import Button from "../components/common/Button.tsx";
+import Button from "../common/Button.tsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileArrowDown } from "@fortawesome/free-solid-svg-icons";
-import { useCoverLetter } from "../context/CoverLetterContext.tsx";
+import { useCoverLetter } from "../../context/CoverLetterContext.tsx";
 import { useParams } from "react-router-dom";
 import CoverLetterPersonalSection from "./sections/CoverLetterPersonalSection.tsx";
 import CoverLetterPersonalForm from "./forms/CoverLetterPersonalForm.tsx";
 import CoverLetterBodySection from "./sections/CoverLetterBodySection.tsx";
 import CoverLetterBodyForm from "./forms/CoverLetterBodyForm.tsx";
 import CoverLetterRecipientSection from "./sections/CoverLetterRecipientSection.tsx";
-import { IRecipientDetails } from "../interfaces/CoverLetter.interfaces.ts";
+import { IRecipientDetails } from "../../interfaces/CoverLetter.interfaces.ts";
 import CoverLetterRecipientForm from "./forms/CoverLetterRecipientForm.tsx";
 
 function FormCoverLetterPreview() {
@@ -65,7 +65,7 @@ function FormCoverLetterPreview() {
         <CoverLetterBodyForm mode="add" />
       )}
       {status.includes("add") && status.includes("recipientDetails") && (
-        <CoverLetterRecipientForm mode="edit" />
+        <CoverLetterRecipientForm mode="add" />
       )}
       {/*/////////////////////////////////////////// Edit Forms  ///////////////////////////////////////////////*/}
       {status.includes("edit") && status.includes("personal") && (

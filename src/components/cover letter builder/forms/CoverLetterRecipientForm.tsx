@@ -1,14 +1,14 @@
 import { useParams } from "react-router-dom";
-import { useCoverLetter } from "../../context/CoverLetterContext.tsx";
+import { useCoverLetter } from "../../../context/CoverLetterContext.tsx";
 import { useState } from "react";
-import { useUpdateCoverLetterMutation } from "../../services/coverLetterBuilderApi.ts";
-import { handleApiError, handleResumeAction } from "../../utils/helpers.ts";
-import { FormMode } from "../../interfaces/ResumeBuilder.interfaces.ts";
-import { IRecipientDetails } from "../../interfaces/CoverLetter.interfaces.ts";
+import { useUpdateCoverLetterMutation } from "../../../services/coverLetterBuilderApi.ts";
+import { handleApiError, handleResumeAction } from "../../../utils/helpers.ts";
+import { FormMode } from "../../../interfaces/ResumeBuilder.interfaces.ts";
+import { IRecipientDetails } from "../../../interfaces/CoverLetter.interfaces.ts";
 import { SubmitHandler, useForm } from "react-hook-form";
-import InputField from "../../components/common/InputField.tsx";
-import Input from "../../components/common/Input.tsx";
-import FormPreviewSection from "../../components/resume builder/forms/FormPreviewSection.tsx";
+import InputField from "../../common/InputField.tsx";
+import Input from "../../common/Input.tsx";
+import FormPreviewSection from "../../resume builder/forms/FormPreviewSection.tsx";
 import CoverLetterFormButtons from "../CoverLetterFormButtons.tsx";
 
 function CoverLetterRecipientForm({ mode }: { mode: FormMode }) {

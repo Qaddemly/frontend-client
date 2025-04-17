@@ -1,4 +1,4 @@
-import { useCoverLetter } from "../../context/CoverLetterContext.tsx";
+import { useCoverLetter } from "../../../context/CoverLetterContext.tsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEnvelope,
@@ -10,7 +10,7 @@ function CoverLetterPersonalPreview() {
   const { coverLetterInfo } = useCoverLetter();
   const personalInfo = coverLetterInfo?.personal;
   return (
-    <div>
+    <div className="mb-20">
       <h2 className="text-center text-xl font-bold">
         {personalInfo?.fullName}
       </h2>

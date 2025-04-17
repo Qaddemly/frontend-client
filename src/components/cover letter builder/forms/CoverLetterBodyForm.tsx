@@ -1,12 +1,12 @@
 import { useParams } from "react-router-dom";
 import { FormEvent, useState } from "react";
 import { ContentEditableEvent } from "react-simple-wysiwyg";
-import { handleApiError, handleResumeAction } from "../../utils/helpers.ts";
-import FormPreviewSection from "../../components/resume builder/forms/FormPreviewSection.tsx";
-import RichTextEditor from "../../components/common/RichTextEditor.tsx";
-import { useCoverLetter } from "../../context/CoverLetterContext.tsx";
-import { FormMode } from "../../interfaces/ResumeBuilder.interfaces.ts";
-import { useUpdateCoverLetterMutation } from "../../services/coverLetterBuilderApi.ts";
+import { handleApiError, handleResumeAction } from "../../../utils/helpers.ts";
+import FormPreviewSection from "../../resume builder/forms/FormPreviewSection.tsx";
+import RichTextEditor from "../../common/RichTextEditor.tsx";
+import { useCoverLetter } from "../../../context/CoverLetterContext.tsx";
+import { FormMode } from "../../../interfaces/ResumeBuilder.interfaces.ts";
+import { useUpdateCoverLetterMutation } from "../../../services/coverLetterBuilderApi.ts";
 import CoverLetterFormButtons from "../CoverLetterFormButtons.tsx";
 
 function CoverLetterBodyForm({ mode }: { mode: FormMode }) {

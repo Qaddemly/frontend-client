@@ -1,8 +1,8 @@
-import InputField from "../../components/common/InputField.tsx";
-import Input from "../../components/common/Input.tsx";
-import FormPreviewSection from "../../components/resume builder/forms/FormPreviewSection.tsx";
-import { FormMode } from "../../interfaces/ResumeBuilder.interfaces.ts";
-import { useCoverLetter } from "../../context/CoverLetterContext.tsx";
+import InputField from "../../common/InputField.tsx";
+import Input from "../../common/Input.tsx";
+import FormPreviewSection from "../../resume builder/forms/FormPreviewSection.tsx";
+import { FormMode } from "../../../interfaces/ResumeBuilder.interfaces.ts";
+import { useCoverLetter } from "../../../context/CoverLetterContext.tsx";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
@@ -10,12 +10,12 @@ import {
   useAddPersonalCoverLetterMutation,
   useGetPersonalCoverLetterQuery,
   useUpdatePersonalCoverLetterMutation,
-} from "../../services/coverLetterBuilderApi.ts";
+} from "../../../services/coverLetterBuilderApi.ts";
 import {
   createFormData,
   handleApiError,
   handleResumeAction,
-} from "../../utils/helpers.ts";
+} from "../../../utils/helpers.ts";
 import CoverLetterFormButtons from "../CoverLetterFormButtons.tsx";
 
 type PersonalForm = {
@@ -194,7 +194,7 @@ function CoverLetterPersonalForm({ mode }: { mode: FormMode }) {
           mode={mode}
           hiddenDeleteBtn={true}
           handleCancel={() => {
-            if (mode === "edit")
+            if (mode === "add")
               setCoverLetterInfo((prevInfo) => ({
                 ...prevInfo,
                 personal: {
