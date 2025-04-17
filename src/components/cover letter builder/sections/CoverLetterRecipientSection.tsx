@@ -1,8 +1,8 @@
-import { IRecipientDetails } from "../../interfaces/CoverLetter.interfaces.ts";
-import Button from "../../components/common/Button.tsx";
+import { IRecipientDetails } from "../../../interfaces/CoverLetter.interfaces.ts";
+import Button from "../../common/Button.tsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import { useCoverLetter } from "../../context/CoverLetterContext.tsx";
+import { useCoverLetter } from "../../../context/CoverLetterContext.tsx";
 
 function CoverLetterRecipientSection({
   recipientDetails,
@@ -10,6 +10,7 @@ function CoverLetterRecipientSection({
   recipientDetails: IRecipientDetails;
 }) {
   const { setStatus } = useCoverLetter();
+  console.log(recipientDetails);
   return (
     <div className="flex flex-col items-center justify-between rounded-lg bg-white px-8 py-5 shadow-md">
       <div className="flex w-full items-center justify-between pb-3">

@@ -1,11 +1,10 @@
-import Button from "../../components/common/Button.tsx";
+import Button from "../../common/Button.tsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import { useCoverLetter } from "../../context/CoverLetterContext.tsx";
+import { useCoverLetter } from "../../../context/CoverLetterContext.tsx";
 
 function CoverLetterBodySection({ body }: { body: string }) {
   const { setStatus } = useCoverLetter();
-  console.log(body);
   return (
     <div className="flex flex-col items-center justify-between rounded-lg bg-white px-8 py-5 shadow-md">
       <div className="flex w-full items-center justify-between pb-3">
@@ -13,21 +12,28 @@ function CoverLetterBodySection({ body }: { body: string }) {
       </div>
 
       <div className="flex w-full items-center justify-between break-words border-t border-gray-200 py-3">
-        <p
-          dangerouslySetInnerHTML={{ __html: body }}
-          className="w-[14rem] break-words text-lg font-medium text-gray-300"
-        ></p>
+        {body ? (
+          <p
+            dangerouslySetInnerHTML={{ __html: body }}
+            className="w-[14rem] break-words text-lg font-medium text-gray-300"
+          ></p>
+        ) : (
+          <p className="italic text-gray-400">Add body</p>
+        )}
+
         <Button
-          onClick={() => setStatus(() => ["edit", "body"])}
+          onClick={() => {
+            if (body) setStatus(() => ["edit", "body"]);
+            else setStatus(() => ["add", "body"]);
+          }}
           className="flex items-center gap-2 bg-white text-gray-300 hover:bg-white"
         >
-          <span>Edit</span>
+          <span>{body ? "Edit" : "Add"}</span>
           <FontAwesomeIcon
             icon={faPenToSquare}
             className="cursor-pointer text-xl text-gray-400"
           />
         </Button>
-          {!body && <p>Add body</p>}
       </div>
     </div>
   );

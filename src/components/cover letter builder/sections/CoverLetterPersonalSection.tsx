@@ -1,4 +1,4 @@
-import Button from "../../components/common/Button.tsx";
+import Button from "../../common/Button.tsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEnvelope,
@@ -6,7 +6,7 @@ import {
   faPenToSquare,
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
-import { useCoverLetter } from "../../context/CoverLetterContext.tsx";
+import { useCoverLetter } from "../../../context/CoverLetterContext.tsx";
 
 function CoverLetterPersonalSection() {
   const { coverLetterInfo, setStatus } = useCoverLetter();
@@ -24,8 +24,9 @@ function CoverLetterPersonalSection() {
         </div>
         <Button
           onClick={() => {
-            if(personalInfo?.fullName?.length)setStatus(() => ["edit", "personal"])
-            else setStatus(() => ["add", "personal"])
+            if (personalInfo?.fullName?.length)
+              setStatus(() => ["edit", "personal"]);
+            else setStatus(() => ["add", "personal"]);
           }}
           className="flex items-center gap-2 bg-white text-gray-300 hover:bg-white"
         >

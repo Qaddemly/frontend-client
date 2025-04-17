@@ -1,5 +1,5 @@
 import ResumeBuilderLayout from "../layout/ResumeBuilderLayout.tsx";
-import AddCoverLetter from "../components/cover letter builder/AddCoverLetter.tsx";
+import AddCoverLetter from "../cover letter builder/AddCoverLetter.tsx";
 
 function CoverLetterBuilder() {
   return (

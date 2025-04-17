@@ -1,4 +1,4 @@
-import { useCoverLetter } from "../../context/CoverLetterContext.tsx";
+import { useCoverLetter } from "../../../context/CoverLetterContext.tsx";
 
 function CoverLetterBodyPreview() {
   const { coverLetterInfo } = useCoverLetter();
