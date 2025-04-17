@@ -1,6 +1,5 @@
 import InputField from "../../components/common/InputField.tsx";
 import Input from "../../components/common/Input.tsx";
-import ResumeFormButtons from "../../components/resume builder/ResumeFormButtons.tsx";
 import FormPreviewSection from "../../components/resume builder/forms/FormPreviewSection.tsx";
 import { FormMode } from "../../interfaces/ResumeBuilder.interfaces.ts";
 import { useCoverLetter } from "../../context/CoverLetterContext.tsx";
@@ -17,7 +16,7 @@ import {
   handleApiError,
   handleResumeAction,
 } from "../../utils/helpers.ts";
-import { ResumeBuilderProvider } from "../../context/ResumeBuilderContext.tsx";
+import CoverLetterFormButtons from "../CoverLetterFormButtons.tsx";
 
 type PersonalForm = {
   fullName: string;
@@ -191,12 +190,11 @@ function CoverLetterPersonalForm({ mode }: { mode: FormMode }) {
             />
           </InputField>
         </div>
-        <ResumeBuilderProvider>
-          <ResumeFormButtons
-            type="coverLetter"
-            mode={mode}
-            hiddenDeleteBtn={true}
-            handleCancel={() => {
+        <CoverLetterFormButtons
+          mode={mode}
+          hiddenDeleteBtn={true}
+          handleCancel={() => {
+            if (mode === "edit")
               setCoverLetterInfo((prevInfo) => ({
                 ...prevInfo,
                 personal: {
@@ -207,10 +205,9 @@ function CoverLetterPersonalForm({ mode }: { mode: FormMode }) {
                   phone: "",
                   address: "",
                 },
-              }))
-            }}
-          />
-        </ResumeBuilderProvider>
+              }));
+          }}
+        />
       </form>
     </FormPreviewSection>
   );

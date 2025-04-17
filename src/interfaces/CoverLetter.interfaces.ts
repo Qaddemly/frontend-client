@@ -7,7 +7,8 @@ export type CoverLetterStatus =
   | "add"
   | "edit"
   | "personal"
-  | "body";
+  | "body"
+  | "recipientDetails";
 
 export interface ICoverLetterInfo {
   personal: ICoverLetterPersonalInputs;
@@ -29,7 +30,8 @@ export interface ICoverLetterTemplate {
 export interface IRecipientDetails {
   nameOfRecipient: string;
   companyName: string;
-  Address: string;
+  address: string;
+  recipientAddress?: string;
 }
 ///////////////////////////////////////////// Personal //////////////////////////////////////////////
 export interface ICoverLetterPersonalInputs {
@@ -40,6 +42,9 @@ export interface ICoverLetterPersonalInputs {
   phone: string;
   address: string;
   body: string;
+  nameOfRecipient: string;
+  companyName: string;
+  recipientAddress: string;
 }
 export interface ICoverLetterPersonalInfo {
   id: number;

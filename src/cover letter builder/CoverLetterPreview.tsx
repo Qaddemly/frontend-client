@@ -1,11 +1,13 @@
 import CoverLetterPersonalPreview from "./previews/CoverLetterPersonalPreview.tsx";
 import CoverLetterBodyPreview from "./previews/CoverLetterBodyPreview.tsx";
+import CoverLetterRecipientPreview from "./previews/CoverLetterRecipientPreview.tsx";
 
 function CoverLetterPreview() {
   return (
     <div className="print-area w-full space-y-8 md:w-1/2">
       <div className="min-h-screen rounded-md bg-white p-14 font-[Arial] shadow-lg">
         <CoverLetterPersonalPreview />
+        <CoverLetterRecipientPreview />
         <CoverLetterBodyPreview />
       </div>
     </div>

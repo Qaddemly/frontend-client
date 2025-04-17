@@ -91,7 +91,7 @@ function Navbar() {
                   "/coverLetterBuilder",
                   `/coverLetterBuilder/edit/${coverLetterId}`,
                 ]}
-                content="Build Cover Letter"
+                content="Build Resume"
               />
             </li>
           </ul>

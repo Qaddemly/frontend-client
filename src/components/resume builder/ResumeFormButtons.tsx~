@@ -1,6 +1,7 @@
 import Button from "../common/Button.tsx";
 import { useResumeBuilder } from "../../context/ResumeBuilderContext.tsx";
 import { FormMode } from "../../interfaces/ResumeBuilder.interfaces.ts";
+import { useCoverLetter } from "../../context/CoverLetterContext.tsx";
 
 function ResumeFormButtons({
   mode,

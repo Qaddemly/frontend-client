@@ -7,6 +7,9 @@ import CoverLetterPersonalSection from "./sections/CoverLetterPersonalSection.ts
 import CoverLetterPersonalForm from "./forms/CoverLetterPersonalForm.tsx";
 import CoverLetterBodySection from "./sections/CoverLetterBodySection.tsx";
 import CoverLetterBodyForm from "./forms/CoverLetterBodyForm.tsx";
+import CoverLetterRecipientSection from "./sections/CoverLetterRecipientSection.tsx";
+import { IRecipientDetails } from "../interfaces/CoverLetter.interfaces.ts";
+import CoverLetterRecipientForm from "./forms/CoverLetterRecipientForm.tsx";
 
 function FormCoverLetterPreview() {
   const { coverLetterTemplates, status } = useCoverLetter();
@@ -61,6 +64,9 @@ function FormCoverLetterPreview() {
       {status.includes("add") && status.includes("body") && (
         <CoverLetterBodyForm mode="add" />
       )}
+      {status.includes("add") && status.includes("recipientDetails") && (
+        <CoverLetterRecipientForm mode="add" />
+      )}
       {/*/////////////////////////////////////////// Edit Forms  ///////////////////////////////////////////////*/}
       {status.includes("edit") && status.includes("personal") && (
         <CoverLetterPersonalForm mode="edit" />
@@ -68,10 +74,23 @@ function FormCoverLetterPreview() {
       {status.includes("edit") && status.includes("body") && (
         <CoverLetterBodyForm mode="edit" />
       )}
+      {status.includes("edit") && status.includes("recipientDetails") && (
+        <CoverLetterRecipientForm mode="edit" />
+      )}
       {/*///////////////////////////////////////////  Sections  ///////////////////////////////////////////////*/}
       {status[0] === "normal" && <CoverLetterPersonalSection />}
       {status[0] === "normal" && (
-        <CoverLetterBodySection body={currentCoverLetterTemplate[0]?.body} />
+        <CoverLetterBodySection
+          body={currentCoverLetterTemplate[0]?.body ?? ""}
+        />
+      )}
+      {status[0] === "normal" && (
+        <CoverLetterRecipientSection
+          recipientDetails={
+            currentCoverLetterTemplate[0]?.recipientDetails ??
+            ({} as IRecipientDetails)
+          }
+        />
       )}
     </div>
   );

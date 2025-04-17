@@ -13,28 +13,21 @@ function CoverLetterBodySection({ body }: { body: string }) {
       </div>
 
       <div className="flex w-full items-center justify-between break-words border-t border-gray-200 py-3">
-        {body ? (
-          <p
-            dangerouslySetInnerHTML={{ __html: body }}
-            className="w-[14rem] break-words text-lg font-medium text-gray-300"
-          ></p>
-        ) : (
-          <p className="italic text-gray-400">Add body</p>
-        )}
-
+        <p
+          dangerouslySetInnerHTML={{ __html: body }}
+          className="w-[14rem] break-words text-lg font-medium text-gray-300"
+        ></p>
         <Button
-          onClick={() => {
-            if (body) setStatus(() => ["edit", "body"]);
-            else setStatus(() => ["add", "body"]);
-          }}
+          onClick={() => setStatus(() => ["edit", "body"])}
           className="flex items-center gap-2 bg-white text-gray-300 hover:bg-white"
         >
-          <span>{body ? "Edit" : "Add"}</span>
+          <span>Edit</span>
           <FontAwesomeIcon
             icon={faPenToSquare}
             className="cursor-pointer text-xl text-gray-400"
           />
         </Button>
+          {!body && <p>Add body</p>}
       </div>
     </div>
   );

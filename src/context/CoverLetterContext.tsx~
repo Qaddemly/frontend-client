@@ -135,8 +135,7 @@ export const CoverLetterProvider: React.FC<{ children: ReactNode }> = ({
   }, [
     coverLetterPersonal,
     coverLetterTemplatesData,
-    currentCoverLetterTemplate[0]?.body,
-    currentCoverLetterTemplate[0]?.recipientDetails,
+    currentCoverLetterTemplate,
   ]);
 
   return (
