@@ -30,17 +30,23 @@ function JobProfile() {
         {showModal && (
           <Modal setClose={setShowModal}>
             <div className="flex flex-col justify-center gap-9 p-5 md:p-10 lg:gap-16 lg:p-14">
-              <p className="text-5xl font-semibold">Choose your Application</p>
+              <p className="pt-3 text-center text-3xl font-semibold sm:pt-0 sm:text-5xl">
+                Choose your Application
+              </p>
               <div className="flex flex-col gap-5 lg:gap-9">
-                <Button>
+                <Button className="px-2">
                   {/* TODO : onClick send profile info to backend then ask for resume and questions(if needed) */}
-                  <p className="text-3xl">Easy Apply</p>
-                  <p className="text-2xl">(Apply with your profile Info.)</p>
+                  <p className="text-2xl sm:text-3xl">Easy Apply</p>
+                  <p className="text-xl sm:text-2xl">
+                    (Apply with your profile Info.)
+                  </p>
                 </Button>
-                <Button>
+                <Button className="px-2">
                   {/* TODO : onClick open custom forms and send to backend then ask for resume and questions(if needed) */}
-                  <p className="text-3xl">Custom Apply</p>
-                  <p className="text-2xl">(Create your custom application)</p>
+                  <p className="text-2xl sm:text-3xl">Custom Apply</p>
+                  <p className="text-xl sm:text-2xl">
+                    (Create your custom application)
+                  </p>
                 </Button>
               </div>
             </div>
