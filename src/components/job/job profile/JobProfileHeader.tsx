@@ -16,10 +16,16 @@ import {
   useUnSaveJobMutation,
 } from "../../../services/jobApi";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useGetAllResumesQuery } from "../../../services/profileApi";
 
-function JobProfileHeader({ job }: { job: IJob }) {
+function JobProfileHeader({
+  job,
+  setShowModal,
+}: {
+  job: IJob;
+  setShowModal: Dispatch<SetStateAction<boolean>>;
+}) {
   const [close, setClose] = useState(false);
   const { jobId } = useParams();
   const [saveJob, { isLoading: loadingSaveJob }] = useSaveJobMutation();
@@ -70,7 +76,7 @@ function JobProfileHeader({ job }: { job: IJob }) {
   if (loadingSaveJob || loadingUnSaveJob || loadingApplyJob) return <Loader />;
   return (
     <div className="flex w-full flex-col items-center bg-light-secondary py-4">
-      <div className="mx-5 flex w-full flex-col items-center justify-evenly gap-2 px-[25rem] py-10 lg:mx-0 lg:items-start">
+      <div className="mx-5 flex w-full flex-col items-center justify-evenly gap-2 px-5 py-10 sm:px-20 md:mx-0 md:items-start md:px-52 lg:px-[15rem] xl:px-[25rem]">
         <img
           src={job?.business.logo}
           alt={job.title}
@@ -96,25 +102,28 @@ function JobProfileHeader({ job }: { job: IJob }) {
           {/* <p className="ml-2">{job.business.rating}</p> */}
           {/* <FontAwesomeIcon icon={faStar} /> */}
         </div>
-        <div className="flex w-full items-center justify-between px-10 lg:px-0">
+        <div className="flex w-full items-center justify-evenly md:justify-between">
           <Button
             className="rounded-lg px-6 py-3 text-xl text-white"
-            onClick={() => setClose(true)}
+            onClick={() => {
+              // setClose(true);
+              setShowModal(true);
+            }}
           >
-            Easy Apply <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
+            Apply Now <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
           </Button>
           {!job?.isSaved ? (
             <button onClick={(e) => handleSaveJob(e)}>
               <FontAwesomeIcon
                 icon={faBookmark}
-                className="text-2xl text-gray-300 transition-colors duration-100 hover:text-main"
+                className="text-3xl text-gray-300 transition-colors duration-100 hover:text-main"
               />
             </button>
           ) : (
             <button onClick={(e) => handleUnSaveJob(e)}>
               <FontAwesomeIcon
                 icon={faBookmarkSolid}
-                className="text-2xl text-yellow"
+                className="text-3xl text-yellow"
               />
             </button>
           )}
