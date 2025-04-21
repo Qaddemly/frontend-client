@@ -1,8 +1,6 @@
 import Navbar from "../home/Navbar";
 import Footer from "../home/Footer";
 import NavMessage from "./NavMessage";
-// import ChatsList from "./ChatsList";
-// import { Chat } from "./types";
 
 // const chats: Chat[] = [
 //   {
@@ -196,7 +194,7 @@ import NavMessage from "./NavMessage";
 //   },
 // ];
 
-function Messaging() {
+function Message() {
   return (
     <>
       <Navbar />
@@ -213,4 +211,4 @@ function Messaging() {
   );
 }
 
-export default Messaging;
+export default Message;

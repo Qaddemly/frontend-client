@@ -244,7 +244,7 @@ function NavMessage() {
         {/*  </Button>*/}
         {/*</div>*/}
       </div>
-      <ChatsList chats={chats ?? []} />
+      <ChatsList chats={chats} />
     </>
   );
 }

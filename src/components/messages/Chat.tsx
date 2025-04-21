@@ -3,63 +3,88 @@ import {
   faMinus,
   faPaperclip,
   faPaperPlane,
-  faStar as faStarFilled,
 } from "@fortawesome/free-solid-svg-icons";
-import { faStar } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import GoogleLogo from "../common/GoogleLogo";
-import { useState } from "react";
-
-type ChatMessage = {
-  text: string;
-  sender: "user" | "business";
-  time: string;
-};
+import { useEffect, useRef, useState } from "react";
+import { socket } from "../../services/socket.ts";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store.ts";
+import { IChat, IMessage } from "../../interfaces/Messages.interfaces.ts";
+import { formatTimestampTo12Hour } from "../../utils/helpers.ts";
 
 type ChatProps = {
-  title: string;
-  website?: string;
-  messages: ChatMessage[];
+  chat: IChat;
+  businessId: number;
+  messages: IMessage[];
   onBack?: () => void;
   onClose?: () => void;
   isCloseButton?: boolean;
-  isStarred?: boolean;
+  // isStarred?: boolean;
 };
 
 function Chat({
-  title,
-  website,
+  chat,
+  businessId,
   messages,
   onBack,
   onClose,
   isCloseButton = false,
-  isStarred = false,
+  // isStarred = false,
 }: ChatProps) {
-  const [isStarredState, setIsStarredState] = useState(isStarred);
+  const { id: userId } = useSelector((state: RootState) => state.user.user);
+  // const [isStarredState, setIsStarredState] = useState(isStarred);
   const [messageInput, setMessageInput] = useState("");
-  const [chatMessages, setChatMessages] = useState<ChatMessage[]>(messages);
 
-  const toggleStar = () => {
-    setIsStarredState(!isStarredState);
-    // TODO: Add API call to update star status
-  };
+  // this for handle two times emit
+  const hasEmitted = useRef(false);
+
+  useEffect(() => {
+    if (!userId || hasEmitted.current) return;
+
+    const handleConnect = () => {
+      if (!hasEmitted.current) {
+        socket.emit("connect_user", userId);
+        hasEmitted.current = true;
+      }
+    };
+
+    if (socket.connected) {
+      handleConnect();
+    } else {
+      socket.on("connect", handleConnect);
+    }
+
+    return () => {
+      socket.off("connect", handleConnect);
+    };
+  }, [userId]);
+
+  // const toggleStar = () => {
+  // setIsStarredState(!isStarredState);
+  // TODO: Add API call to update star status
+  // };
 
   const handleSendMessage = () => {
     if (messageInput.trim()) {
-      const newMessage: ChatMessage = {
-        text: messageInput,
-        sender: "user",
-        time: new Date().toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-      };
+      // const newMessage: ChatMessage = {
+      //   text: messageInput,
+      //   sender: "user",
+      //   time: new Date().toLocaleTimeString([], {
+      //     hour: "2-digit",
+      //     minute: "2-digit",
+      //   }),
+      // };
 
-      setChatMessages([...chatMessages, newMessage]);
+      socket.emit("user_send_message", {
+        chatId: chat.id,
+        userId,
+        businessId,
+        content: messageInput,
+      });
+
+      // setChatMessages([...chatMessages, newMessage]);
       setMessageInput("");
-
-      // TODO: Add API call to send message
-      console.log("Message sent:", messageInput);
     }
   };
 
@@ -81,20 +106,20 @@ function Chat({
         <div className="flex flex-row items-center justify-center gap-3">
           <GoogleLogo />
           <div>
-            <p className="text-xl font-semibold">{title}</p>
-            <p className="text-base opacity-90">{website}</p>
+            <p className="text-xl font-semibold">{`${chat?.account?.first_name} ${chat?.account?.last_name}`}</p>
+            {/*<p className="text-base opacity-90">{website}</p>*/}
           </div>
         </div>
 
         {/* Buttons */}
         <div className="flex flex-row items-center justify-center gap-3 text-white">
-          <button onClick={toggleStar}>
-            {isStarredState ? (
-              <FontAwesomeIcon icon={faStarFilled} className="text-2xl" />
-            ) : (
-              <FontAwesomeIcon icon={faStar} className="text-2xl" />
-            )}
-          </button>
+          {/*<button onClick={toggleStar}>*/}
+          {/*  {isStarredState ? (*/}
+          {/*    <FontAwesomeIcon icon={faStarFilled} className="text-2xl" />*/}
+          {/*  ) : (*/}
+          {/*    <FontAwesomeIcon icon={faStar} className="text-2xl" />*/}
+          {/*  )}*/}
+          {/*</button>*/}
 
           {isCloseButton ? (
             <button
@@ -113,11 +138,11 @@ function Chat({
 
       {/* Chat Messages */}
       <div className="min-h-96 flex-1 overflow-y-auto bg-white p-6">
-        {chatMessages.map((msg, index) => (
+        {messages?.map((msg) => (
           <div
-            key={`${msg.time}-${index}`}
+            key={msg.id}
             className={`flex items-center gap-4 ${
-              msg.sender === "user" ? "flex-row-reverse" : "justify-start"
+              msg?.sent_status === "USER" ? "flex-row-reverse" : "justify-start"
             }`}
           >
             <div>
@@ -126,19 +151,19 @@ function Chat({
             <div className="flex flex-col gap-0.5">
               <div
                 className={`max-w-xs rounded-2xl px-3 py-1 ${
-                  msg.sender === "user"
+                  msg?.sent_status === "USER"
                     ? "bg-gray-600 text-white"
                     : "border border-gray-600 bg-white text-gray-600"
                 }`}
               >
-                {msg.text}
+                {msg?.content}
               </div>
               <div
                 className={`px-3 py-1 text-xs text-gray-600 ${
-                  msg.sender === "user" ? "text-right" : "text-left"
+                  msg?.sent_status === "USER" ? "text-right" : "text-left"
                 }`}
               >
-                {msg.time}
+                {formatTimestampTo12Hour(msg?.created_at)}
                 {/* TODO : Add (sent - Delivered - seen) status */}
               </div>
             </div>

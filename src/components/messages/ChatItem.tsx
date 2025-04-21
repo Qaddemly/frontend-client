@@ -1,16 +1,17 @@
-import { faStar as faStarFilled } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import GoogleLogo from "../common/GoogleLogo";
-import { Chat } from "./types";
+import { IChat, IMessage } from "../../interfaces/Messages.interfaces.ts";
+import { formatTimestampTo12Hour } from "../../utils/helpers.ts";
 
 type ChatItemProps = {
-  chat: Chat;
+  chat: IChat;
+  messages: IMessage[];
   isSelected: boolean;
   onClick: () => void;
 };
 
-function ChatItem({ chat, isSelected, onClick }: ChatItemProps) {
-  const lastMessage = chat.messages[chat.messages.length - 1];
+function ChatItem({ chat, isSelected, onClick, messages }: ChatItemProps) {
+  const lastMessage = messages[messages.length - 1];
+  const unreadMessages = messages.filter((msg) => !msg.is_read);
 
   return (
     <button
@@ -22,27 +23,31 @@ function ChatItem({ chat, isSelected, onClick }: ChatItemProps) {
       <div className="flex items-center gap-3">
         <GoogleLogo />
         <div className="flex flex-col items-start">
-          <h4 className="text-xl font-medium">{chat.name}</h4>
+          <h4 className="text-xl font-medium">
+            {chat?.account?.first_name} {chat?.account?.last_name}
+          </h4>
           <p className="max-w-[200px] truncate text-base text-gray-500">
-            {lastMessage.sender === "user" && "You: "}
-            {lastMessage.text}
+            {lastMessage.sent_status === "USER" && "You: "}
+            {lastMessage.content}
           </p>
         </div>
       </div>
       <div className="flex flex-row items-center gap-3 sm:flex-col sm:gap-1">
-        <p className="text-lg font-medium">{lastMessage.time}</p>
+        <p className="text-lg font-medium">
+          {formatTimestampTo12Hour(lastMessage.created_at)}
+        </p>
         <div className="flex items-center gap-1">
-          {chat.unreadMessages > 0 && (
+          {unreadMessages.length > 0 && (
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-main text-base text-white">
-              {chat.unreadMessages}
+              {unreadMessages.length}
             </span>
           )}
-          {chat.isStarred && (
-            <FontAwesomeIcon
-              icon={faStarFilled}
-              className="h-6 w-6 text-yellow"
-            />
-          )}
+          {/*{chat.isStarred && (*/}
+          {/*  <FontAwesomeIcon*/}
+          {/*    icon={faStarFilled}*/}
+          {/*    className="h-6 w-6 text-yellow"*/}
+          {/*  />*/}
+          {/*)}*/}
         </div>
       </div>
     </button>

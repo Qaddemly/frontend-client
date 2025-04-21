@@ -43,7 +43,7 @@ function CompanyProfileHeader({
   const [createNewChat] = useCreateNewChatMutation();
   const [chat, setChat] = useState<IChat | null>(null);
   const businessId = data?.id;
-  const { data: allMessagesOfUser } = useGetAllMessagesOfUserQuery({
+  const { data:allMessagesOfUser } = useGetAllMessagesOfUserQuery({
     chatId: chat?.id.toString() || "1",
     page: "1",
   });

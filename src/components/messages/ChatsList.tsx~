@@ -13,7 +13,7 @@ function ChatsList({ chats }: ChatsListProps) {
   const [selectedChat, setSelectedChat] = useState<IChat | null>(null);
 
   const { data: allMessagesOfUser } = useGetAllMessagesOfUserQuery({
-    chatId: selectedChat?.id.toString() || "1",
+    chatId: chat?.id.toString() || "1",
     page: "1",
   });
 
