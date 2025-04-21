@@ -7,6 +7,7 @@ import { FieldErrors } from "react-hook-form";
 import { FieldValues } from "react-hook-form";
 
 type AuthInputProps<T extends FieldValues> = {
+  props?: React.InputHTMLAttributes<HTMLInputElement>;
   icon?: IconDefinition;
   label?: string;
   id: string;
@@ -18,6 +19,7 @@ type AuthInputProps<T extends FieldValues> = {
 };
 
 function InputField<T extends FieldValues>({
+  props,
   label,
   id,
   icon,
@@ -28,7 +30,7 @@ function InputField<T extends FieldValues>({
   setShowPassword,
 }: AuthInputProps<T>) {
   return (
-    <div className="">
+    <div className={`${props?.className ? props?.className : ""}`}>
       <label htmlFor={id} className="font-medium">
         {label} <span className="text-danger-300">{required ? "*" : ""}</span>
       </label>

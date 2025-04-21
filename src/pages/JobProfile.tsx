@@ -10,9 +10,14 @@ import { useGetJobDetailsQuery } from "../services/jobApi";
 import Loader from "../components/common/Loader";
 import Modal from "../components/common/Modal";
 import Button from "../components/common/Button";
+import { useNavigate } from "react-router-dom";
+import { useApplication } from "../context/ApplicationContext";
 
 function JobProfile() {
   const { jobId } = useParams();
+
+  const navigate = useNavigate();
+  const { setApplicationType, setJobId } = useApplication();
 
   const { data, isLoading } = useGetJobDetailsQuery({ id: jobId || "" });
   const [showModal, setShowModal] = useState(false);
@@ -34,14 +39,32 @@ function JobProfile() {
                 Choose your Application
               </p>
               <div className="flex flex-col gap-5 lg:gap-9">
-                <Button className="px-2">
+                <Button
+                  className="px-2"
+                  onClick={() => {
+                    setApplicationType("easy");
+                    setJobId(jobId || "");
+                    // TODO : backend should add custom questions(hasQuestions)
+                    // If business has custom questions, go to resume upload then questions
+                    // if (job?.hasQuestions) {
+                    navigate("/apply/resume");
+                    // }
+                  }}
+                >
                   {/* TODO : onClick send profile info to backend then ask for resume and questions(if needed) */}
                   <p className="text-2xl sm:text-3xl">Easy Apply</p>
                   <p className="text-xl sm:text-2xl">
                     (Apply with your profile Info.)
                   </p>
                 </Button>
-                <Button className="px-2">
+                <Button
+                  className="px-2"
+                  onClick={() => {
+                    setApplicationType("custom");
+                    setJobId(jobId || "");
+                    navigate("/apply/custom");
+                  }}
+                >
                   {/* TODO : onClick open custom forms and send to backend then ask for resume and questions(if needed) */}
                   <p className="text-2xl sm:text-3xl">Custom Apply</p>
                   <p className="text-xl sm:text-2xl">

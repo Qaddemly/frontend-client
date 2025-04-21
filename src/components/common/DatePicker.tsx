@@ -21,7 +21,7 @@ function DatePicker<T extends FieldValues>({
   name,
 }: DatePickerProps<T>) {
   return (
-    <div className="relative w-fit">
+    <div className={`relative w-fit ${props?.className}`}>
       <div className="absolute inset-y-0 start-0 flex items-center ps-3.5">
         <svg
           className="h-4 w-4 text-gray-300"
@@ -38,7 +38,7 @@ function DatePicker<T extends FieldValues>({
         onChange={onChange}
         {...props}
         type="date"
-        className="block rounded-md border-2 border-gray-100 p-2.5 ps-10 text-sm"
+        className={`block rounded-md border-2 border-gray-100 p-2.5 ps-10 text-sm ${props?.className}`}
       />
       {/* w-[13rem] doesn't have effect in createCompany or updateCompany   */}
     </div>

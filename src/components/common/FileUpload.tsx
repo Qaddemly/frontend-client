@@ -35,6 +35,9 @@ function FileUpload<T extends FieldValues>({
             </span>
           </p>
           <p className="text-xs text-gray-500">
+            PDF, DOC, DOCX (Max. File Size: 100MB)
+          </p>
+          <p className="text-xs text-gray-500">
             SVG, PNG, JPG or GIF (MAX. 800x400px)
           </p>
         </div>
