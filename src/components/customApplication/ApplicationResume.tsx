@@ -15,7 +15,7 @@ function ApplicationResume() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h2 className="text-3xl font-bold">Upload Your Resume</h2>
+      <h2 className="text-center text-3xl font-bold">Upload Your Resume</h2>
 
       <div className="flex flex-col gap-4">
         <FileUpload

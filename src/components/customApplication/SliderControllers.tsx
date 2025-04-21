@@ -32,12 +32,10 @@ function SliderControllers({
 
   return (
     <div className="mt-6 flex justify-between gap-2 sm:gap-4 md:gap-6">
-      {currentStep > 1 ? (
+      {currentStep > 1 && (
         <Button onClick={onPrev} type="button" className="w-full">
           Previous
         </Button>
-      ) : (
-        <div></div> // Empty div to maintain space
       )}
 
       <Button

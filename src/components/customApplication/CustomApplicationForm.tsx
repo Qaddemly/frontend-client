@@ -54,7 +54,7 @@ function CustomApplicationForm() {
       <SliderControllers
         currentStep={currentStep}
         totalSteps={totalSteps}
-        onNext={nextStep}
+        onNext={handleNext} // nextStep
         onPrev={prevStep}
         onSubmit={handleSubmit}
         isLastStep={isLastStep}
