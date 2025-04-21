@@ -19,10 +19,20 @@ function SliderControllers({
   isLastStep,
   isSubmitting = false,
 }: SliderControllersProps) {
-  const { applicationData } = useApplication();
+  const { applicationData, setApplicationData } = useApplication();
   const handleNext = () => {
     console.log("Current application data:", applicationData);
-
+    if (currentStep === 1) {
+      setApplicationData((prev) => ({ ...prev, personal: data.personal }));
+    } else if (currentStep === 2) {
+      setApplicationData((prev) => ({ ...prev, education: data.education }));
+    } else if (currentStep === 3) {
+      setApplicationData((prev) => ({ ...prev, experience: data.experience }));
+    } else if (currentStep === 4) {
+      setApplicationData((prev) => ({ ...prev, skills: data.skills }));
+      setApplicationData((prev) => ({ ...prev, languages: data.languages }));
+    }
+    console.log("Current application data:", applicationData);
     if (!isLastStep) {
       onNext();
     } else {
@@ -42,6 +52,7 @@ function SliderControllers({
         onClick={handleNext}
         type="button"
         className={`w-full ${isLastStep ? "bg-green-100 hover:bg-green-200" : ""} `}
+        disabled={isSubmitting}
       >
         {isSubmitting
           ? "Submitting..."

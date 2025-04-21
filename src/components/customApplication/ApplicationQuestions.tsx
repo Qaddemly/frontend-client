@@ -28,8 +28,7 @@ function ApplicationQuestions() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
-      <h2 className="text-center text-3xl font-bold">Application Questions</h2>
+    <>
       {questions.map((question) => (
         <div key={question.id} className="flex flex-col gap-2">
           <label className="text-lg font-medium">{question.text}</label>
@@ -69,7 +68,7 @@ function ApplicationQuestions() {
           )}
         </div>
       ))}
-    </div>
+    </>
   );
 }
 

@@ -1,34 +1,8 @@
 import React, { createContext, useContext, useState } from "react";
-
-interface ApplicationData {
-  personal?: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-    dob: string;
-  };
-  education?: {
-    university: string;
-    fieldOfStudy: string;
-    gpa: string;
-    startDate: string;
-    endDate?: string;
-    // currentlyStudying: boolean;
-  };
-  experience?: Array<{
-    jobTitle: string;
-    companyName: string;
-    location: string;
-    city: string;
-    locationType: string;
-    startDate: string;
-    endDate?: string;
-    // currentlyWorking: boolean;
-  }>;
-  skills?: string[];
-  languages?: string[];
-}
+import {
+  IApplicationData,
+  ICustomExperience,
+} from "../interfaces/CustomApplication.interfaces";
 
 interface ApplicationContextType {
   applicationType: "easy" | "custom" | null;
@@ -39,12 +13,18 @@ interface ApplicationContextType {
   setResume: (file: File | null) => void;
   answers: Record<string, string>;
   setAnswers: (answers: Record<string, string>) => void;
-  applicationData: ApplicationData;
-  setApplicationData: React.Dispatch<React.SetStateAction<ApplicationData>>;
+  applicationData: IApplicationData;
+  setApplicationData: React.Dispatch<React.SetStateAction<IApplicationData>>;
   currentStep: number;
   nextStep: () => void;
   prevStep: () => void;
   submitApplication: () => Promise<void>;
+  experience: ICustomExperience[];
+  setExperience: React.Dispatch<React.SetStateAction<ICustomExperience[]>>;
+  skills: string[];
+  setSkills: React.Dispatch<React.SetStateAction<string[]>>;
+  languages: string[];
+  setLanguages: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const ApplicationContext = createContext<ApplicationContextType | undefined>(
@@ -60,8 +40,12 @@ export const ApplicationProvider: React.FC<{ children: React.ReactNode }> = ({
   const [jobId, setJobId] = useState<string | null>(null);
   const [resume, setResume] = useState<File | null>(null);
   const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [applicationData, setApplicationData] = useState<ApplicationData>({});
+  const [applicationData, setApplicationData] = useState<IApplicationData>({});
   const [currentStep, setCurrentStep] = useState(1);
+
+  const [experience, setExperience] = useState<ICustomExperience[]>([]);
+  const [skills, setSkills] = useState<string[]>([]);
+  const [languages, setLanguages] = useState<string[]>([]);
 
   const nextStep = () => setCurrentStep((prev) => prev + 1);
   const prevStep = () => setCurrentStep((prev) => prev - 1);
@@ -103,6 +87,12 @@ export const ApplicationProvider: React.FC<{ children: React.ReactNode }> = ({
         nextStep,
         prevStep,
         submitApplication,
+        setExperience,
+        experience,
+        setSkills,
+        skills,
+        setLanguages,
+        languages,
       }}
     >
       {children}

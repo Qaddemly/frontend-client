@@ -7,6 +7,8 @@ import ApplicationSkills from "./ApplicationSkills";
 import ApplicationResume from "./ApplicationResume";
 import ApplicationQuestions from "./ApplicationQuestions";
 import SliderControllers from "./SliderControllers";
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
+import { IApplicationData } from "../../interfaces/CustomApplication.interfaces";
 
 function CustomApplicationForm() {
   const {
@@ -15,6 +17,7 @@ function CustomApplicationForm() {
     prevStep,
     submitApplication,
     applicationData,
+    setApplicationData,
   } = useApplication();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -23,13 +26,15 @@ function CustomApplicationForm() {
   const totalSteps = hasQuestions ? 6 : 5;
   const isLastStep = currentStep === totalSteps;
 
+  const methods = useForm<IApplicationData>();
+
   const handleNext = () => {
     // Log current data before proceeding
     console.log("Current step data:", applicationData);
     nextStep();
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit: SubmitHandler<IApplicationData> = async (data) => {
     setIsSubmitting(true);
     try {
       await submitApplication();
@@ -43,24 +48,41 @@ function CustomApplicationForm() {
   };
 
   return (
-    <div className="relative p-6">
-      {currentStep === 1 && <ApplicationPersonal />}
-      {currentStep === 2 && <ApplicationEducation />}
-      {currentStep === 3 && <ApplicationExperience />}
-      {currentStep === 4 && <ApplicationSkills />}
-      {currentStep === 5 && <ApplicationResume />}
-      {hasQuestions && currentStep === 6 && <ApplicationQuestions />}
+    <FormProvider {...methods}>
+      <div className="relative p-6">
+        <div className="flex flex-col gap-6">
+          <h2 className="text-center text-3xl font-bold">
+            {currentStep === 1 && "Personal Info"}
+            {currentStep === 2 && "Education"}
+            {currentStep === 3 && "Experiences"}
+            {currentStep === 4 && "Skills & Languages"}
+            {currentStep === 5 && "Upload Your Resume"}
+            {hasQuestions && currentStep === 6 && "Application Questions"}
+          </h2>
+          <form
+            onSubmit={methods.handleSubmit(handleSubmit)}
+            className="flex flex-col gap-4"
+          >
+            {currentStep === 1 && <ApplicationPersonal />}
+            {currentStep === 2 && <ApplicationEducation />}
+            {currentStep === 3 && <ApplicationExperience />}
+            {currentStep === 4 && <ApplicationSkills />}
+            {currentStep === 5 && <ApplicationResume />}
+            {hasQuestions && currentStep === 6 && <ApplicationQuestions />}
 
-      <SliderControllers
-        currentStep={currentStep}
-        totalSteps={totalSteps}
-        onNext={handleNext} // nextStep
-        onPrev={prevStep}
-        onSubmit={handleSubmit}
-        isLastStep={isLastStep}
-        isSubmitting={isSubmitting}
-      />
-    </div>
+            <SliderControllers
+              currentStep={currentStep}
+              totalSteps={totalSteps}
+              onNext={handleNext} // nextStep
+              onPrev={prevStep}
+              onSubmit={handleSubmit}
+              isLastStep={isLastStep}
+              isSubmitting={isSubmitting}
+            />
+          </form>
+        </div>
+      </div>
+    </FormProvider>
   );
 }
 
