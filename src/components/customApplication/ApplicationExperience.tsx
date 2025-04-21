@@ -33,13 +33,7 @@ interface ExperienceData {
   // currentlyWorking: boolean;
 }
 
-function ApplicationExperience({
-  nextStep,
-  // prevStep,
-}: {
-  nextStep: () => void;
-  prevStep: () => void;
-}) {
+function ApplicationExperience() {
   const {
     register,
     handleSubmit,
@@ -88,15 +82,14 @@ function ApplicationExperience({
     }));
   };
 
-  const onSubmit = () => {
-    nextStep();
-  };
-
   return (
-    <div className="flex flex-col gap-6 p-6">
+    <div className="flex flex-col gap-6">
       <h2 className="text-center text-3xl font-bold">Experiences</h2>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      <form
+        onSubmit={handleSubmit(handleAddExperience)}
+        className="flex flex-col gap-4"
+      >
         <div className="flex flex-col gap-4 text-left">
           <InputField errors={errors} id="customJobTitle">
             <Input

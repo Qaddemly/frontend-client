@@ -14,13 +14,7 @@ interface SkillsFormData {
   newLanguage: string;
 }
 
-function ApplicationSkills({
-  nextStep,
-  // prevStep,
-}: {
-  nextStep: () => void;
-  prevStep: () => void;
-}) {
+function ApplicationSkills() {
   const {
     handleSubmit,
     setValue,
@@ -67,11 +61,10 @@ function ApplicationSkills({
       skills: data.skills || [],
       languages: data.languages || [],
     }));
-    nextStep();
   };
 
   return (
-    <div className="flex flex-col gap-6 p-6">
+    <div className="flex flex-col gap-6">
       <h2 className="text-center text-3xl font-bold">Skills & Languages</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-10">
         <div className="flex flex-col gap-4">

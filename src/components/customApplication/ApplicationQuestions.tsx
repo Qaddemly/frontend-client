@@ -4,12 +4,8 @@ import Select from "../common/Select";
 import InputField from "../common/InputField";
 import Input from "../common/Input";
 
-interface ApplicationQuestionsProps {
-  prevStep: () => void;
-}
-
-function ApplicationQuestions({ prevStep }: ApplicationQuestionsProps) {
-  const { answers, setAnswers } = useApplication(); //  jobId
+function ApplicationQuestions() {
+  const { answers } = useApplication();
   const [currentAnswers, setCurrentAnswers] =
     useState<Record<string, string>>(answers);
 
@@ -31,14 +27,8 @@ function ApplicationQuestions({ prevStep }: ApplicationQuestionsProps) {
     }));
   };
 
-  const handleSubmit = () => {
-    setAnswers(currentAnswers);
-    // Here you would submit the application to the API
-    console.log("Submitting application with answers:", currentAnswers);
-  };
-
   return (
-    <div className="flex flex-col gap-6 p-6">
+    <div className="flex flex-col gap-6">
       <h2 className="text-center text-3xl font-bold">Application Questions</h2>
       {questions.map((question) => (
         <div key={question.id} className="flex flex-col gap-2">

@@ -3,12 +3,7 @@ import { useApplication } from "../../context/ApplicationContext";
 import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons";
 import FileUpload from "../common/FileUpload";
 
-interface ApplicationResumeProps {
-  nextStep: () => void;
-  prevStep: () => void;
-}
-
-function ApplicationResume({ nextStep, prevStep }: ApplicationResumeProps) {
+function ApplicationResume() {
   const { setResume } = useApplication();
   const [file, setFile] = React.useState<File | null>(null);
 
@@ -18,15 +13,8 @@ function ApplicationResume({ nextStep, prevStep }: ApplicationResumeProps) {
     }
   };
 
-  const handleSubmit = () => {
-    if (file) {
-      setResume(file);
-      nextStep();
-    }
-  };
-
   return (
-    <div className="flex flex-col gap-6 p-6">
+    <div className="flex flex-col gap-6">
       <h2 className="text-3xl font-bold">Upload Your Resume</h2>
 
       <div className="flex flex-col gap-4">

@@ -44,6 +44,7 @@ interface ApplicationContextType {
   currentStep: number;
   nextStep: () => void;
   prevStep: () => void;
+  submitApplication: () => Promise<void>;
 }
 
 const ApplicationContext = createContext<ApplicationContextType | undefined>(
@@ -65,6 +66,26 @@ export const ApplicationProvider: React.FC<{ children: React.ReactNode }> = ({
   const nextStep = () => setCurrentStep((prev) => prev + 1);
   const prevStep = () => setCurrentStep((prev) => prev - 1);
 
+  // TODO : finish the submiting function to API
+  const submitApplication = async () => {
+    try {
+      // API call
+      console.log("Submitting application:", {
+        jobId,
+        applicationData,
+        resume,
+        answers,
+      });
+      // Reset form after successful submission
+      setApplicationData({});
+      setResume(null);
+      setAnswers({});
+      setCurrentStep(1);
+    } catch (error) {
+      console.error("Error submitting application:", error);
+    }
+  };
+
   return (
     <ApplicationContext.Provider
       value={{
@@ -81,6 +102,7 @@ export const ApplicationProvider: React.FC<{ children: React.ReactNode }> = ({
         currentStep,
         nextStep,
         prevStep,
+        submitApplication,
       }}
     >
       {children}

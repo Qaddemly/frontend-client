@@ -15,7 +15,7 @@ interface PersonalFormData {
   dob: string;
 }
 
-function ApplicationPersonal({ nextStep }: { nextStep: () => void }) {
+function ApplicationPersonal() {
   const prefixValues = Object.values(Prefixes).filter(
     (value) => typeof value == "string",
   );
@@ -28,11 +28,10 @@ function ApplicationPersonal({ nextStep }: { nextStep: () => void }) {
 
   const onSubmit = (data: PersonalFormData) => {
     setApplicationData((prev) => ({ ...prev, personal: data }));
-    nextStep();
   };
 
   return (
-    <div className="flex flex-col gap-6 p-6">
+    <div className="flex flex-col gap-6">
       <h2 className="text-center text-3xl font-bold">Personal Info</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <InputField errors={errors} id="customfName">

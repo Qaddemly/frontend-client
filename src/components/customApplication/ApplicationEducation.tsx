@@ -13,13 +13,7 @@ interface EducationFormData {
   currentlyStudying: boolean;
 }
 
-function ApplicationEducation({
-  nextStep,
-  // prevStep,
-}: {
-  nextStep: () => void;
-  prevStep: () => void;
-}) {
+function ApplicationEducation() {
   const {
     register,
     handleSubmit,
@@ -34,11 +28,10 @@ function ApplicationEducation({
       ...prev,
       education: data,
     }));
-    nextStep();
   };
 
   return (
-    <div className="flex flex-col gap-6 p-6">
+    <div className="flex flex-col gap-6">
       <h2 className="text-center text-3xl font-bold">Education</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <InputField errors={errors} id="customUniversity">

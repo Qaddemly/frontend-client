@@ -59,15 +59,13 @@ import CoverLetterBuilder from "../pages/CoverLetterBuilder.tsx";
 import EditCoverLetter from "../components/cover letter builder/EditCoverLetter.tsx";
 import { ApplicationProvider } from "../context/ApplicationContext.tsx";
 import CustomApplicationForm from "../components/customApplication/CustomApplicationForm.tsx";
-import ApplicationQuestions from "../components/customApplication/ApplicationQuestions.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/apply/custom",
     element: (
       <ApplicationProvider>
-        <ApplicationQuestions prevStep={() => {}} />
-        {/* <CustomApplicationForm /> */}
+        <CustomApplicationForm />
       </ApplicationProvider>
     ),
   },
