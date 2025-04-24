@@ -1,9 +1,8 @@
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import ChatsList from "./ChatsList";
-import { useGetAllChatsOfUserQuery } from "../../services/messagesApi.ts";
+import Navbar from "../home/Navbar";
+import Footer from "../home/Footer";
+import NavMessage from "./NavMessage";
 
-// const chats: IChat[] = [
+// const chats: Chat[] = [
 //   {
 //     avatar: "https://example.com/avatar1.png",
 //     name: "John Doe",
@@ -195,57 +194,21 @@ import { useGetAllChatsOfUserQuery } from "../../services/messagesApi.ts";
 //   },
 // ];
 
-function NavMessage() {
-  // const [filter, setFilter] = useState("all");
-
-  const { data } = useGetAllChatsOfUserQuery();
-  const chats = data?.chats;
-
-  // const filteredChats = chats.filter((chat) => {
-  //   if (filter === "unread") return chat.unreadMessages > 0;
-  //   if (filter === "starred") return chat.isStarred;
-  //   return true;
-  // });
-
+function Message() {
   return (
     <>
-      <div className="flex flex-col items-center justify-between gap-3 rounded-xl border border-gray-200 px-5 py-1 sm:items-start lg:flex-row lg:items-center">
-        <div className="flex w-fit flex-col items-center justify-center gap-3 sm:flex-row sm:gap-8">
-          <h1 className="p-3 pb-0 text-3xl font-medium sm:pb-3">Messaging</h1>
-          <div className="flex w-[14rem] items-center justify-center gap-3 rounded-lg border border-gray-200 px-3 py-2 sm:w-[20rem] md:w-[25rem]">
-            <FontAwesomeIcon
-              icon={faSearch}
-              className="justify-center text-light-main"
-            />
-            <input
-              placeholder="Search messages"
-              className="relative w-full items-center justify-center border-none outline-none"
-            />
-          </div>
+      <Navbar />
+      <div className="flex min-h-[calc(100vh-200px)] flex-col bg-background px-1 py-7 sm:px-8 md:px-14">
+        <div className="flex h-full flex-col gap-4 rounded-xl bg-white p-4">
+          <NavMessage chatType="USER"/>
+          {/* <div className="min-h-0 flex-1">
+            <ChatsList chats={chats} />
+          </div> */}
         </div>
-        {/*<div className="flex gap-4 px-3 md:gap-7">*/}
-        {/*  <Button*/}
-        {/*    onClick={() => setFilter("all")}*/}
-        {/*    className="border border-main bg-white px-2 py-0 text-main hover:bg-main hover:text-white focus:bg-main focus:text-white md:py-1"*/}
-        {/*  >*/}
-        {/*    All*/}
-        {/*  </Button>*/}
-        {/*  <Button*/}
-        {/*    onClick={() => setFilter("unread")}*/}
-        {/*    className="border border-main bg-white px-2 py-0 text-main hover:bg-main hover:text-white focus:bg-main focus:text-white md:py-1"*/}
-        {/*  >*/}
-        {/*    Unread*/}
-        {/*  </Button>*/}
-        {/*  <Button*/}
-        {/*    onClick={() => setFilter("starred")}*/}
-        {/*    className="border border-main bg-white px-2 py-0 text-main hover:bg-main hover:text-white focus:bg-main focus:text-white md:py-1"*/}
-        {/*  >*/}
-        {/*    Starred*/}
-        {/*  </Button>*/}
-        {/*</div>*/}
       </div>
-      <ChatsList chats={chats} />
+      <Footer />
     </>
   );
 }
-export default NavMessage;
+
+export default Message;

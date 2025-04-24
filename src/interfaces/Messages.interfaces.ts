@@ -1,6 +1,8 @@
 import { IBusinessAccount } from "./BusinessAccount.interfaces.ts";
 import { IUser } from "./Auth.interfaces.ts";
 
+export type ChatType = "USER" | "BUSINESS";
+
 export interface IMessage {
   id: number;
   business_id: number;
@@ -9,7 +11,7 @@ export interface IMessage {
   content: string;
   sent_status: "USER" | "BUSINESS";
   is_delivered: boolean;
-  is_read: boolean;
+  is_seen: boolean;
   created_at: string;
 }
 

@@ -44,12 +44,31 @@ function Chat({
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
 
+  // const { refetch: refetchUserMessages } = useGetAllMessagesOfUserQuery(
+  //   {
+  //     chatId: chat?.id?.toString() || "1",
+  //     page: "1",
+  //   },
+  //   {
+  //     skip: chatType === "BUSINESS",
+  //   },
+  // );
+  //
+  // const { refetch: refetchBusinessMessages } = useGetAllMessagesOfBusinessQuery(
+  //   {
+  //     businessId: chat?.business_id?.toString(),
+  //     chatId: chat?.id?.toString() || "1",
+  //   },
+  //   {
+  //     skip: chatType === "USER",
+  //   },
+  // );
+
   // TODO: Add API call to update star status
   // const toggleStar = () => {
   // setIsStarredState(!isStarredState);
   // };
 
-  // this useEffect for handle scrolling
   useEffect(() => {
     const scrollToBottom = () => {
       if (messagesContainerRef.current) {
