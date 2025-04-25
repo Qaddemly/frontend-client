@@ -12,39 +12,47 @@ import { IApplicationData } from "../../interfaces/CustomApplication.interfaces"
 
 function CustomApplicationForm() {
   const {
+    jobId,
+    resume,
+    answers,
     currentStep,
     nextStep,
     prevStep,
-    submitApplication,
-    applicationData,
-    setApplicationData,
+    skills,
+    languages,
+    setCurrentStep,
+    experience,
   } = useApplication();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const hasQuestions = false; // API will tell us if business has questions
-
+  const hasQuestions = true; // API will tell us if business has questions
   const totalSteps = hasQuestions ? 6 : 5;
   const isLastStep = currentStep === totalSteps;
 
   const methods = useForm<IApplicationData>();
 
-  const handleNext = () => {
-    // Log current data before proceeding
-    console.log("Current step data:", applicationData);
-    nextStep();
-  };
-
-  const handleSubmit: SubmitHandler<IApplicationData> = async (data) => {
+  const onSubmit: SubmitHandler<IApplicationData> = (data) => {
     setIsSubmitting(true);
-    try {
-      await submitApplication();
-      // Handle successful submission (e.g., show success message, redirect, etc.)
-    } catch (error) {
-      console.error("Submission error:", error);
-      // Handle error (e.g., show error message)
-    } finally {
-      setIsSubmitting(false);
-    }
+    console.log("input data: ", data);
+    // API call
+    const appData = { ...data, skills, languages, experience };
+    const appAnswers = hasQuestions ? answers : null;
+    console.log("sendind data: ", appData);
+
+    console.log("Submitting application:", {
+      jobId,
+      appData,
+      resume,
+      appAnswers,
+    });
+
+    // Reset form after successful submission
+    // setResume(null);
+    // setAnswers({});
+    // set skills, languages, experience => empty array
+    // reset values from react hook form
+    setCurrentStep(1);
+    setIsSubmitting(false);
   };
 
   return (
@@ -60,7 +68,7 @@ function CustomApplicationForm() {
             {hasQuestions && currentStep === 6 && "Application Questions"}
           </h2>
           <form
-            onSubmit={methods.handleSubmit(handleSubmit)}
+            onSubmit={methods.handleSubmit(onSubmit)}
             className="flex flex-col gap-4"
           >
             {currentStep === 1 && <ApplicationPersonal />}
@@ -73,9 +81,9 @@ function CustomApplicationForm() {
             <SliderControllers
               currentStep={currentStep}
               totalSteps={totalSteps}
-              onNext={handleNext} // nextStep
+              onNext={nextStep}
               onPrev={prevStep}
-              onSubmit={handleSubmit}
+              onSubmit={methods.handleSubmit(onSubmit)}
               isLastStep={isLastStep}
               isSubmitting={isSubmitting}
             />
@@ -87,3 +95,22 @@ function CustomApplicationForm() {
 }
 
 export default CustomApplicationForm;
+
+// const submitApplication = async () => {
+//   try {
+//     // API call
+//     console.log("Submitting application:", {
+//       jobId,
+//       applicationData,
+//       resume,
+//       answers,
+//     });
+//     // Reset form after successful submission
+//     // setApplicationData({});
+//     // setResume(null);
+//     // setAnswers({});
+//     // setCurrentStep(1);
+//   } catch (error) {
+//     console.error("Error submitting application:", error);
+//   }
+// };

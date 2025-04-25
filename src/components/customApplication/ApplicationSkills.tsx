@@ -59,6 +59,7 @@ function ApplicationSkills() {
             <Input
               register={register}
               value={skillInput}
+              name="skills"
               onChange={(e) => setSkillInput(e.target.value)}
               props={{
                 type: "text",
@@ -67,7 +68,7 @@ function ApplicationSkills() {
               }}
             />
           </InputField>
-          <Button onClick={addSkill} className="h-fit w-fit px-3">
+          <Button onClick={addSkill} type="button" className="h-fit w-fit px-3">
             Add
           </Button>
         </div>
@@ -99,6 +100,7 @@ function ApplicationSkills() {
             <Input
               register={register}
               value={languageInput}
+              name="languages"
               onChange={(e) => setLanguageInput(e.target.value)}
               props={{
                 type: "text",
@@ -107,7 +109,11 @@ function ApplicationSkills() {
               }}
             />
           </InputField>
-          <Button onClick={addLanguage} className="h-fit w-fit px-3">
+          <Button
+            onClick={addLanguage}
+            type="button"
+            className="h-fit w-fit px-3"
+          >
             Add
           </Button>
         </div>

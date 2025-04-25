@@ -1,30 +1,28 @@
-import { useState } from "react";
 import { useApplication } from "../../context/ApplicationContext";
 import Select from "../common/Select";
 import InputField from "../common/InputField";
 import Input from "../common/Input";
 
 function ApplicationQuestions() {
-  const { answers } = useApplication();
-  const [currentAnswers, setCurrentAnswers] =
-    useState<Record<string, string>>(answers);
+  const { answers, setAnswers } = useApplication();
 
   const questions = [
     {
       id: 1,
       text: "First question the business want?",
       type: "multiple-choice",
-      options: ["Option 1", "Option 2"],
+      options: ["Option 1", "Option 2", "Option 3"],
     },
     { id: 2, text: "Second question the business want?", type: "long-answer" },
     { id: 3, text: "Third question the business want?", type: "short-answer" },
   ];
 
   const handleAnswerChange = (questionId: number, value: string) => {
-    setCurrentAnswers((prev) => ({
-      ...prev,
-      [questionId.toString()]: value,
-    }));
+    setAnswers((prev) => {
+      const newAnswers = [...prev];
+      newAnswers[questionId - 1] = value; // Subtract 1 from questionId
+      return newAnswers;
+    });
   };
 
   return (
@@ -35,12 +33,15 @@ function ApplicationQuestions() {
           {question.type === "multiple-choice" ? (
             <div className="flex flex-col gap-2">
               <Select
-                name={`question-${question.id}`}
-                value={currentAnswers[question.id.toString()] || ""}
+                value={answers[question.id - 1] || ""}
                 onChange={(e) =>
                   handleAnswerChange(question.id, e.target.value)
                 }
               >
+                {/* TODO : solve option 1  problem  */}
+                <option value="" disabled>
+                  Select an option
+                </option>
                 {question.options?.map((option) => (
                   <option key={option} value={option}>
                     {option}
@@ -59,7 +60,7 @@ function ApplicationQuestions() {
                   id: `question-${question.id}`,
                   placeholder: "Enter your answer",
                 }}
-                value={currentAnswers[question.id.toString()] || ""}
+                value={answers[question.id - 1] || ""}
                 onChange={(e) =>
                   handleAnswerChange(question.id, e.target.value)
                 }

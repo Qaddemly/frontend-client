@@ -1,11 +1,10 @@
 import { useFormContext } from "react-hook-form";
 import { Prefixes } from "../../enums/index.enums";
-
 import InputField from "../common/InputField";
 import Input from "../common/Input";
 import Select from "../common/Select";
 import DatePicker from "../common/DatePicker";
-import { ICustomPersonal } from "../../interfaces/CustomApplication.interfaces";
+// import { ICustomPersonal } from "../../interfaces/CustomApplication.interfaces";
 
 function ApplicationPersonal() {
   const prefixValues = Object.values(Prefixes).filter(
@@ -14,7 +13,7 @@ function ApplicationPersonal() {
   const {
     register,
     formState: { errors },
-  } = useFormContext<ICustomPersonal>();
+  } = useFormContext();
   // const { setApplicationData } = useApplication();
 
   // const onSubmit = (data: PersonalFormData) => {
@@ -26,7 +25,7 @@ function ApplicationPersonal() {
       <InputField errors={errors} id="customfName">
         <Input
           register={register}
-          name={"firstName"}
+          name={"personal.firstName"}
           props={{
             id: "customfName",
             type: "text",
@@ -38,7 +37,7 @@ function ApplicationPersonal() {
       <InputField errors={errors} id="customlName">
         <Input
           register={register}
-          name={"lastName"}
+          name={"personal.lastName"}
           props={{
             id: "customlName",
             type: "text",
@@ -50,7 +49,7 @@ function ApplicationPersonal() {
       <InputField errors={errors} id="customeMail">
         <Input
           register={register}
-          name={"email"}
+          name={"personal.email"}
           props={{
             id: "customeMail",
             type: "text",
@@ -66,7 +65,7 @@ function ApplicationPersonal() {
       <div className="flex w-full items-center gap-3">
         <Select
           register={register}
-          name="phone"
+          name="personal.phone.countryCode"
           id="customphone"
           className="w-3 sm:w-fit"
         >
@@ -89,7 +88,7 @@ function ApplicationPersonal() {
         >
           <Input
             register={register}
-            name={"phone"}
+            name={"personal.phone.number"}
             props={{
               placeholder: "Phone number",
               id: "customphone",
@@ -102,7 +101,7 @@ function ApplicationPersonal() {
       <div className="flex flex-col gap-1">
         <DatePicker
           register={register}
-          name={"dob"}
+          name={"personal.dob"}
           props={{ id: "customdob", className: "w-full" }}
         />
         {errors.dob && typeof errors.dob?.message === "string" && (

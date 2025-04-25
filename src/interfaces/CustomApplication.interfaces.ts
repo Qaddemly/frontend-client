@@ -4,12 +4,17 @@ export interface IApplicationData {
   experience?: ICustomExperience[];
   skills?: string[];
   languages?: string[];
+  resume?: File | null;
+  answers?: string[];
 }
 export interface ICustomPersonal {
   firstName: string;
   lastName: string;
   email: string;
-  phone: string;
+  phone: {
+    countryCode: string;
+    number: string;
+  };
   dob: string;
 }
 interface ICustomEducation {

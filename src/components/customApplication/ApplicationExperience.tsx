@@ -17,7 +17,7 @@ function ApplicationExperience() {
     getValues,
     resetField,
   } = useFormContext();
-  const { applicationData, setExperience } = useApplication();
+  const { setExperience, experience } = useApplication();
 
   const locationTypeValues = Object.values(LocationType);
   const countryValues = Object.values(Country);
@@ -25,39 +25,30 @@ function ApplicationExperience() {
   const handleAddExperience = () => {
     const newExperience: ICustomExperience = {
       id: Date.now(),
-      jobTitle: getValues("jobTitle"),
-      companyName: getValues("companyName"),
-      location: getValues("location"),
-      city: getValues("city"),
-      locationType: getValues("locationType"),
-      startDate: getValues("startDate"),
-      endDate: getValues("endDate"),
+      jobTitle: getValues("experience.jobTitle"),
+      companyName: getValues("experience.companyName"),
+      location: getValues("experience.location"),
+      city: getValues("experience.city"),
+      locationType: getValues("experience.locationType"),
+      startDate: getValues("experience.startDate"),
+      endDate: getValues("experience.endDate"),
       // currentlyWorking: getValues("currentlyWorking"),
     };
     setExperience((prev) => [...prev, newExperience]);
 
-    // setApplicationData((prev) => ({
-    //   ...prev,
-    //   experience: [...(prev.experience || []), newExperience],
-    // }));
-
     // Reset form fields
-    resetField("jobTitle");
-    resetField("companyName");
-    resetField("location");
-    resetField("city");
-    resetField("locationType");
-    resetField("startDate");
-    resetField("endDate");
+    resetField("experience.jobTitle");
+    resetField("experience.companyName");
+    resetField("experience.location");
+    resetField("experience.city");
+    resetField("experience.locationType");
+    resetField("experience.startDate");
+    resetField("experience.endDate");
     // resetField("currentlyWorking");
   };
 
   const handleRemoveExperience = (id: number) => {
     setExperience((prev) => prev.filter((exp) => exp.id !== id));
-    //   setApplicationData((prev) => ({
-    //     ...prev,
-    //     experience: prev.experience?.filter((exp) => exp.id !== id),
-    //   }));
   };
 
   return (
@@ -66,7 +57,7 @@ function ApplicationExperience() {
         <InputField errors={errors} id="customJobTitle">
           <Input
             register={register}
-            name={"jobTitle"}
+            name={"experience.jobTitle"}
             props={{
               id: "customJobTitle",
               type: "text",
@@ -78,7 +69,7 @@ function ApplicationExperience() {
         <InputField errors={errors} id="customCompanyName">
           <Input
             register={register}
-            name={"companyName"}
+            name={"experience.companyName"}
             props={{
               id: "customCompanyName",
               type: "text",
@@ -88,7 +79,11 @@ function ApplicationExperience() {
         </InputField>
 
         <div className="flex w-full items-center gap-3">
-          <Select register={register} name="location" id="customLocation">
+          <Select
+            register={register}
+            name="experience.location"
+            id="customLocation"
+          >
             {countryValues.map((value) => (
               <option key={value} value={value}>
                 {value}
@@ -103,7 +98,7 @@ function ApplicationExperience() {
           >
             <Input
               register={register}
-              name={"city"}
+              name={"experience.city"}
               props={{
                 id: "customCity",
                 type: "text",
@@ -113,7 +108,11 @@ function ApplicationExperience() {
           </InputField>
         </div>
 
-        <Select name="locationType" register={register} id="locationType">
+        <Select
+          name="experience.locationType"
+          register={register}
+          id="locationType"
+        >
           {locationTypeValues.map((value) => (
             <option value={value} key={value}>
               {value}
@@ -122,8 +121,8 @@ function ApplicationExperience() {
         </Select>
 
         <StartToEndDate
-          startDate={"startDate"}
-          endDate={"endDate"}
+          startDate={"experience.startDate"}
+          endDate={"experience.endDate"}
           register={register}
           // currentlyWorkingField="currentlyWorking"
         />
@@ -150,12 +149,15 @@ function ApplicationExperience() {
       </div>
 
       {/* Display added experiences */}
-      {applicationData?.experience?.length ? (
+      {experience?.length ? (
         <div className="mt-4">
           <h3 className="mb-2 text-base font-medium">Experiences Added</h3>
           <div className="flex flex-row flex-wrap gap-2">
-            {applicationData.experience.map((exp) => (
-              <div className="flex w-fit flex-row items-center justify-between gap-3 rounded-full bg-green-200 p-3 text-white">
+            {experience.map((exp) => (
+              <div
+                key={exp.id}
+                className="flex w-fit flex-row items-center justify-between gap-3 rounded-full bg-green-200 p-3 text-white"
+              >
                 <p>{exp.jobTitle}</p>
                 <FontAwesomeIcon
                   icon={faXmark}

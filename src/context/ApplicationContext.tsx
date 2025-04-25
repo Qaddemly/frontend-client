@@ -11,14 +11,14 @@ interface ApplicationContextType {
   setJobId: (id: string) => void;
   resume: File | null;
   setResume: (file: File | null) => void;
-  answers: Record<string, string>;
-  setAnswers: (answers: Record<string, string>) => void;
+  answers: string[];
+  setAnswers: React.Dispatch<React.SetStateAction<string[]>>;
   applicationData: IApplicationData;
   setApplicationData: React.Dispatch<React.SetStateAction<IApplicationData>>;
   currentStep: number;
+  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   nextStep: () => void;
   prevStep: () => void;
-  submitApplication: () => Promise<void>;
   experience: ICustomExperience[];
   setExperience: React.Dispatch<React.SetStateAction<ICustomExperience[]>>;
   skills: string[];
@@ -39,7 +39,7 @@ export const ApplicationProvider: React.FC<{ children: React.ReactNode }> = ({
   >(null);
   const [jobId, setJobId] = useState<string | null>(null);
   const [resume, setResume] = useState<File | null>(null);
-  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [answers, setAnswers] = useState<string[]>([]);
   const [applicationData, setApplicationData] = useState<IApplicationData>({});
   const [currentStep, setCurrentStep] = useState(1);
 
@@ -51,24 +51,6 @@ export const ApplicationProvider: React.FC<{ children: React.ReactNode }> = ({
   const prevStep = () => setCurrentStep((prev) => prev - 1);
 
   // TODO : finish the submiting function to API
-  const submitApplication = async () => {
-    try {
-      // API call
-      console.log("Submitting application:", {
-        jobId,
-        applicationData,
-        resume,
-        answers,
-      });
-      // Reset form after successful submission
-      setApplicationData({});
-      setResume(null);
-      setAnswers({});
-      setCurrentStep(1);
-    } catch (error) {
-      console.error("Error submitting application:", error);
-    }
-  };
 
   return (
     <ApplicationContext.Provider
@@ -84,9 +66,9 @@ export const ApplicationProvider: React.FC<{ children: React.ReactNode }> = ({
         applicationData,
         setApplicationData,
         currentStep,
+        setCurrentStep,
         nextStep,
         prevStep,
-        submitApplication,
         setExperience,
         experience,
         setSkills,

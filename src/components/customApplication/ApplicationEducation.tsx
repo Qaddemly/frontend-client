@@ -24,7 +24,7 @@ function ApplicationEducation() {
       <InputField errors={errors} id="customUniversity">
         <Input
           register={register}
-          name={"university"}
+          name={"education.university"}
           props={{
             id: "customUniversity",
             type: "text",
@@ -36,7 +36,7 @@ function ApplicationEducation() {
       <InputField errors={errors} id="customFieldOfStudy">
         <Input
           register={register}
-          name={"fieldOfStudy"}
+          name={"education.fieldOfStudy"}
           props={{
             id: "customFieldOfStudy",
             type: "text",
@@ -48,7 +48,7 @@ function ApplicationEducation() {
       <InputField errors={errors} id="customGpa">
         <Input
           register={register}
-          name={"gpa"}
+          name={"education.gpa"}
           options={{
             min: { value: 1, message: "min value 1" },
             max: { value: 4, message: "max value 4" },
@@ -62,8 +62,8 @@ function ApplicationEducation() {
       </InputField>
 
       <StartToEndDate
-        startDate="startDate"
-        endDate="endDate"
+        startDate="education.startDate"
+        endDate="education.endDate"
         register={register}
       />
       {/* TODO : add currentlyStudying checkbox  */}
