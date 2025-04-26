@@ -62,7 +62,7 @@ import CustomApplicationForm from "../components/customApplication/CustomApplica
 
 const router = createBrowserRouter([
   {
-    path: "/apply/custom",
+    path: "/apply/custom/:jobId",
     element: (
       <ApplicationProvider>
         <CustomApplicationForm />

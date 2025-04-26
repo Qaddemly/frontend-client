@@ -14,11 +14,6 @@ function ApplicationPersonal() {
     register,
     formState: { errors },
   } = useFormContext();
-  // const { setApplicationData } = useApplication();
-
-  // const onSubmit = (data: PersonalFormData) => {
-  //   setApplicationData((prev) => ({ ...prev, personal: data }));
-  // };
 
   return (
     <>
@@ -26,6 +21,7 @@ function ApplicationPersonal() {
         <Input
           register={register}
           name={"personal.firstName"}
+          options={{ required: "First Name field is required" }}
           props={{
             id: "customfName",
             type: "text",
@@ -38,6 +34,7 @@ function ApplicationPersonal() {
         <Input
           register={register}
           name={"personal.lastName"}
+          options={{ required: "Last Name field is required" }}
           props={{
             id: "customlName",
             type: "text",
@@ -50,15 +47,18 @@ function ApplicationPersonal() {
         <Input
           register={register}
           name={"personal.email"}
+          options={{
+            required: "Email is required",
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: "Invalid email address",
+            },
+          }}
           props={{
             id: "customeMail",
             type: "text",
-            placeholder: "Mail",
+            placeholder: "Email",
           }}
-          // TODO : check email validation
-          // pattern= {
-          //   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-          //   message: "Invalid email address",}
         />
       </InputField>
 
@@ -89,6 +89,17 @@ function ApplicationPersonal() {
           <Input
             register={register}
             name={"personal.phone.number"}
+            options={{
+              required: "Phone number is required",
+              minLength: {
+                value: 8,
+                message: "Phone number must be at least 8 digits",
+              },
+              pattern: {
+                value: /^[0-9]*$/,
+                message: "Phone number must be numeric",
+              },
+            }}
             props={{
               placeholder: "Phone number",
               id: "customphone",

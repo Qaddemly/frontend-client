@@ -10,6 +10,7 @@ interface SliderControllersProps {
   onSubmit: () => void;
   isLastStep: boolean;
   isSubmitting?: boolean;
+  isStepValid: boolean;
 }
 
 function SliderControllers({
@@ -19,36 +20,45 @@ function SliderControllers({
   onSubmit,
   isLastStep,
   isSubmitting = false,
+  isStepValid,
 }: SliderControllersProps) {
   const { handleSubmit } = useForm<IApplicationData>();
 
   return (
-    <div className="mt-6 flex justify-between gap-2 sm:gap-4 md:gap-6">
-      {currentStep > 1 && (
-        <Button onClick={onPrev} type="button" className="w-full">
-          Previous
-        </Button>
-      )}
+    <>
+      <div className="mt-6 flex justify-between gap-2 sm:gap-4 md:gap-6">
+        {currentStep > 1 && (
+          <Button onClick={onPrev} type="button" className="w-full">
+            Previous
+          </Button>
+        )}
 
-      <Button
-        onClick={handleSubmit(() => {
-          if (!isLastStep) {
-            onNext();
-          } else {
-            onSubmit();
-          }
-        })}
-        type="button"
-        className={`w-full ${isLastStep ? "bg-green-100 hover:bg-green-200" : ""} `}
-        disabled={isSubmitting}
-      >
-        {isSubmitting
-          ? "Submitting..."
-          : isLastStep
-            ? "Submit Application"
-            : "Next"}
-      </Button>
-    </div>
+        <Button
+          onClick={handleSubmit(() => {
+            if (!isLastStep) {
+              onNext();
+            } else {
+              onSubmit();
+            }
+          })}
+          type="button"
+          className={`w-full ${isLastStep ? "bg-green-100 hover:bg-green-200" : ""}`}
+          disabled={isSubmitting}
+          // || !isStepValid}
+        >
+          {isSubmitting
+            ? "Submitting..."
+            : isLastStep
+              ? "Submit Application"
+              : "Next"}
+        </Button>
+      </div>
+      {!isStepValid && (
+        <div className="text-center text-xl font-semibold text-danger-300">
+          Please fill out all fields.
+        </div>
+      )}
+    </>
   );
 }
 

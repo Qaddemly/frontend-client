@@ -9,15 +9,6 @@ function ApplicationEducation() {
     // watch,
     formState: { errors },
   } = useFormContext();
-  // const { setApplicationData } = useApplication();
-  // const currentlyStudying = watch("currentlyStudying");
-
-  // const onSubmit = (data: EducationFormData) => {
-  //   setApplicationData((prev) => ({
-  //     ...prev,
-  //     education: data,
-  //   }));
-  // };
 
   return (
     <>
@@ -25,6 +16,7 @@ function ApplicationEducation() {
         <Input
           register={register}
           name={"education.university"}
+          options={{ required: "University is required" }}
           props={{
             id: "customUniversity",
             type: "text",
@@ -37,6 +29,7 @@ function ApplicationEducation() {
         <Input
           register={register}
           name={"education.fieldOfStudy"}
+          options={{ required: "Field Of Study is required" }}
           props={{
             id: "customFieldOfStudy",
             type: "text",
@@ -50,8 +43,11 @@ function ApplicationEducation() {
           register={register}
           name={"education.gpa"}
           options={{
-            min: { value: 1, message: "min value 1" },
-            max: { value: 4, message: "max value 4" },
+            required: "GPA is required",
+            pattern: {
+              value: /^[0-4](\.\d{1,2})?$/,
+              message: "GPA must be a number between 0 and 4",
+            },
           }}
           props={{
             id: "customGpa",

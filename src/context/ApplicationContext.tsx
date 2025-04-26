@@ -7,8 +7,6 @@ import {
 interface ApplicationContextType {
   applicationType: "easy" | "custom" | null;
   setApplicationType: (type: "easy" | "custom" | null) => void;
-  jobId: string | null;
-  setJobId: (id: string) => void;
   resume: File | null;
   setResume: (file: File | null) => void;
   answers: string[];
@@ -37,7 +35,6 @@ export const ApplicationProvider: React.FC<{ children: React.ReactNode }> = ({
   const [applicationType, setApplicationType] = useState<
     "easy" | "custom" | null
   >(null);
-  const [jobId, setJobId] = useState<string | null>(null);
   const [resume, setResume] = useState<File | null>(null);
   const [answers, setAnswers] = useState<string[]>([]);
   const [applicationData, setApplicationData] = useState<IApplicationData>({});
@@ -57,8 +54,6 @@ export const ApplicationProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         applicationType,
         setApplicationType,
-        jobId,
-        setJobId,
         resume,
         setResume,
         answers,

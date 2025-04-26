@@ -38,14 +38,6 @@ function ApplicationSkills() {
     setLanguages((prev) => prev.filter((lang) => lang !== languageToRemove));
   };
 
-  // const onSubmit = (data: SkillsFormData) => {
-  //   setApplicationData((prev) => ({
-  //     ...prev,
-  //     skills: data.skills || [],
-  //     languages: data.languages || [],
-  //   }));
-  // };
-
   return (
     <>
       <div className="flex flex-col gap-4">
