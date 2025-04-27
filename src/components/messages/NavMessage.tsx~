@@ -11,7 +11,7 @@ function NavMessage({ chatType }: { chatType: ChatType }) {
   const businessId = localStorage.getItem("businessAccountId");
   // const [filter, setFilter] = useState("all");
 
-  const { data: userChats } = useGetAllChatsOfUserQuery(undefined, {
+  const { data: userChats } = useGetAllChatsOfUserQuery(undefined,{
     skip: chatType === "BUSINESS",
   });
   const { data: businessChats } = useGetAllChatsOfBusinessQuery(

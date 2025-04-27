@@ -2,11 +2,18 @@ import { useState } from "react";
 import Chat from "./Chat";
 import StartMessage from "./StartMessage";
 import ChatItem from "./ChatItem";
-import { ChatType, IChat } from "../../interfaces/Messages.interfaces.ts";
+import {
+  ChatType,
+  IChat,
+  IMessage,
+} from "../../interfaces/Messages.interfaces.ts";
 import {
   useGetAllMessagesOfBusinessQuery,
   useGetAllMessagesOfUserQuery,
 } from "../../services/messagesApi.ts";
+import { socket } from "../../services/socket.ts";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store.ts";
 
 function ChatsList({
   chats,
@@ -15,7 +22,11 @@ function ChatsList({
   chats: IChat[];
   chatType: ChatType;
 }) {
+  const { id: userId } = useSelector((state: RootState) => state.user.user);
+
   const [selectedChat, setSelectedChat] = useState<IChat | null>(null);
+  const [unreadMessages, setUnreadMessages] = useState<IMessage[] | null>(null);
+  const [lastMessage, setLastMessage] = useState<IMessage | null>(null);
 
   const { data: allMessagesOfUser } = useGetAllMessagesOfUserQuery(
     {
@@ -34,13 +45,23 @@ function ChatsList({
     { skip: !selectedChat?.id || chatType === "USER" },
   );
 
-  const [unreadMessages, setUnreadMessages] = useState(
-    chatType === "USER"
-      ? allMessagesOfUser?.messages?.filter((msg) => !msg.is_delivered)
-      : allMessagesOfBusiness?.messages?.filter((msg) => !msg.is_delivered),
-  );
-
-  // console.log(unreadMessages);
+  function handleOpenChat(chat: IChat) {
+    setSelectedChat(chat);
+    if (chatType === "USER") {
+      socket.emit("user_message_seen", {
+        chatId: chat.id,
+        userId,
+        businessId: chat.business_id,
+      });
+    } else {
+      socket.emit("business_seen_message", {
+        chatId: chat.id,
+        userId: chat.account_id,
+        businessId: chat.business_id,
+      });
+    }
+    setUnreadMessages([]);
+  }
 
   return (
     <div
@@ -58,12 +79,12 @@ function ChatsList({
             key={chat.id}
             chat={chat}
             chatType={chatType}
-            unreadMessages={unreadMessages || []}
+            unreadMessages={unreadMessages}
+            setUnreadMessages={setUnreadMessages}
+            lastMessage={lastMessage}
+            setLastMessage={setLastMessage}
             isSelected={selectedChat?.id === chat.id}
-            onClick={() => {
-              setSelectedChat(chat);
-              setUnreadMessages([]);
-            }}
+            onClick={() => handleOpenChat(chat)}
           />
         ))}
       </div>
@@ -82,6 +103,7 @@ function ChatsList({
             isCloseButton={true}
             onClose={() => setSelectedChat(null)}
             onBack={() => setSelectedChat(null)}
+            setLastMessage={setLastMessage}
             messages={
               chatType === "USER"
                 ? (allMessagesOfUser?.messages ?? [])

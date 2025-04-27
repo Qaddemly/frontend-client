@@ -24,6 +24,12 @@ export interface IChat {
   account: IUser;
 }
 
+export interface IChatStatus {
+  chatId: number;
+  userId: number;
+  businessId: number;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////// Api Response Interfaces /////////////////////////////
 export interface IGetAllChatsResponse {

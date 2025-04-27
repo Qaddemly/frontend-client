@@ -214,6 +214,7 @@ export function formatTimeAgo(timestamp: string): string {
 }
 
 export function formatTimestampTo12Hour(time: string): string {
+  if (time === "") return "";
   const date = new Date(time);
   let hours = date.getHours();
   const minutes = date.getMinutes();

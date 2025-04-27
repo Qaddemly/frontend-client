@@ -15,6 +15,8 @@ import {
   IMessage,
 } from "../../interfaces/Messages.interfaces.ts";
 import { formatTimestampTo12Hour } from "../../utils/helpers.ts";
+import CheckIcon from "../common/CheckIcon.tsx";
+import DoubleCheckIcon from "../common/DoubleCheckIcon.tsx";
 
 type ChatProps = {
   chat: IChat;
@@ -25,6 +27,7 @@ type ChatProps = {
   isCloseButton?: boolean;
   chatType: ChatType;
   // isStarred?: boolean;
+  setLastMessage: (message: IMessage | null) => void;
 };
 
 function Chat({
@@ -35,6 +38,7 @@ function Chat({
   onClose,
   isCloseButton = false,
   chatType,
+  setLastMessage,
   // isStarred = false,
 }: ChatProps) {
   const { id: userId } = useSelector((state: RootState) => state.user.user);
@@ -66,33 +70,89 @@ function Chat({
   }, [chatMessages]);
 
   useEffect(() => {
-    const handleBusinessMessage = (message: IMessage) => {
+    const handleBusinessSendMessage = (message: IMessage) => {
       console.log("Received message from business:", message);
       setChatMessages((prev) => [
         ...prev,
-        { ...message, created_at: new Date().toISOString() },
+        {
+          ...message,
+          is_seen: true,
+          is_delivered: true,
+          created_at: new Date().toISOString(),
+        },
       ]);
+      setLastMessage({
+        ...message,
+        is_seen: true,
+        is_delivered: true,
+        created_at: new Date().toISOString(),
+      });
     };
 
-    const handleUserMessage = (message: IMessage) => {
+    // TODO: make message delivered and seen when both business and user are online
+    const handleUserSendMessage = (message: IMessage) => {
       console.log("Received message from user:", message);
       setChatMessages((prev) => [
         ...prev,
-        { ...message, created_at: new Date().toISOString() },
+        {
+          ...message,
+          is_seen: true,
+          is_delivered: true,
+          created_at: new Date().toISOString(),
+        },
       ]);
+      setLastMessage({
+        ...message,
+        is_seen: true,
+        is_delivered: true,
+        created_at: new Date().toISOString(),
+      });
+    };
+
+    const handleSeenMessage = () => {
+      setChatMessages((prev) => {
+        const updatedMessages = [...prev];
+        const lastMessage = updatedMessages[updatedMessages.length - 1];
+        console.log(lastMessage);
+        if (lastMessage) {
+          lastMessage.is_delivered = true;
+          lastMessage.is_seen = true;
+        }
+        return updatedMessages;
+      });
+    };
+
+    const handleDeliveredMessage = () => {
+      console.log(`business delivered message`);
+      setChatMessages((prev) => {
+        const updatedMessages = [...prev];
+        const lastMessage = updatedMessages[updatedMessages.length - 1];
+        if (lastMessage) {
+          lastMessage.is_delivered = true;
+        }
+        return updatedMessages;
+      });
     };
 
     if (chatType === "USER") {
-      socket.on("business_send_message", handleBusinessMessage);
+      socket.on("business_send_message", handleBusinessSendMessage);
+      socket.on("business_seen_message", handleSeenMessage);
+      socket.on("business_delivered_message", handleDeliveredMessage);
     } else {
-      socket.on("user_send_message", handleUserMessage);
+      socket.on("user_send_message", handleUserSendMessage);
+      socket.on("user_message_seen", handleSeenMessage);
+      socket.on("user_delivered_message", handleDeliveredMessage);
     }
 
     return () => {
-      socket.off("business_send_message", handleBusinessMessage);
-      socket.off("user_send_message", handleUserMessage);
+      socket.off("business_send_message", handleBusinessSendMessage);
+      socket.off("business_seen_message", handleSeenMessage);
+      socket.off("business_delivered_message", handleDeliveredMessage);
+      socket.off("user_send_message", handleUserSendMessage);
+      socket.off("user_message_seen", handleSeenMessage);
+      socket.off("user_delivered_message", handleDeliveredMessage);
     };
-  }, [chatType]);
+  }, [chatType, setLastMessage]);
 
   const handleSendMessage = () => {
     if (messageInput.length > 0) {
@@ -103,20 +163,20 @@ function Chat({
           businessId,
           content: messageInput,
         });
-        setChatMessages((prev) => [
-          ...prev,
-          {
-            id: 1,
-            business_id: businessId,
-            account_id: userId,
-            chat_id: chat.id,
-            content: messageInput,
-            sent_status: "USER",
-            is_delivered: true,
-            is_seen: true,
-            created_at: new Date().toISOString(),
-          },
-        ]);
+
+        const newMessage: IMessage = {
+          id: 1,
+          business_id: businessId,
+          account_id: userId,
+          chat_id: chat.id,
+          content: messageInput,
+          sent_status: "USER",
+          is_delivered: false,
+          is_seen: false,
+          created_at: new Date().toISOString(),
+        };
+        setChatMessages((prev) => [...prev, newMessage]);
+        setLastMessage(newMessage);
       } else {
         socket.emit("business_send_message", {
           chatId: chat.id,
@@ -124,20 +184,20 @@ function Chat({
           businessId,
           content: messageInput,
         });
-        setChatMessages((prev) => [
-          ...prev,
-          {
-            id: 1,
-            business_id: businessId,
-            account_id: chat.account_id,
-            chat_id: chat.id,
-            content: messageInput,
-            sent_status: "BUSINESS",
-            is_delivered: true,
-            is_seen: true,
-            created_at: new Date().toISOString(),
-          },
-        ]);
+
+        const newMessage: IMessage = {
+          id: 1,
+          business_id: businessId,
+          account_id: chat.account_id,
+          chat_id: chat.id,
+          content: messageInput,
+          sent_status: "BUSINESS",
+          is_delivered: false,
+          is_seen: false,
+          created_at: new Date().toISOString(),
+        };
+        setChatMessages((prev) => [...prev, newMessage]);
+        setLastMessage(newMessage);
       }
       setMessageInput("");
     }
@@ -249,7 +309,7 @@ function Chat({
                 {msg?.content}
               </div>
               <div
-                className={`px-3 py-1 text-xs text-gray-600 ${
+                className={`flex items-center gap-2 px-3 py-1 text-xs text-gray-600 ${
                   (msg?.sent_status === "USER" && chatType === "USER") ||
                   (msg?.sent_status === "BUSINESS" && chatType === "BUSINESS")
                     ? "text-right"
@@ -258,6 +318,26 @@ function Chat({
               >
                 {formatTimestampTo12Hour(msg?.created_at)}
                 {/* TODO : Add (sent - Delivered - seen) status */}
+                {msg?.sent_status === "USER" &&
+                  chatType === "USER" &&
+                  !msg.is_delivered && <CheckIcon />}
+                {msg?.sent_status === "BUSINESS" &&
+                  chatType === "BUSINESS" &&
+                  !msg.is_delivered && <CheckIcon />}
+                {msg?.sent_status === "USER" &&
+                  chatType === "USER" &&
+                  msg.is_delivered && (
+                    <DoubleCheckIcon
+                      color={msg.is_seen ? "#52BCE9" : "#1C274C"}
+                    />
+                  )}
+                {msg?.sent_status === "BUSINESS" &&
+                  chatType === "BUSINESS" &&
+                  msg.is_delivered && (
+                    <DoubleCheckIcon
+                      color={msg.is_seen ? "#52BCE9" : "#1C274C"}
+                    />
+                  )}
               </div>
             </div>
           </div>
@@ -274,7 +354,7 @@ function Chat({
             className="text-md w-full bg-gray-200 text-gray-600 placeholder:text-gray-600 focus:outline-none sm:text-lg"
             value={messageInput}
             onChange={(e) => setMessageInput(e.target.value)}
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyPress}
           />
           {/* Buttons */}
           <div className="flex flex-row items-center justify-center gap-4 text-2xl">

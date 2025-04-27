@@ -201,9 +201,6 @@ function Message() {
       <div className="flex min-h-[calc(100vh-200px)] flex-col bg-background px-1 py-7 sm:px-8 md:px-14">
         <div className="flex h-full flex-col gap-4 rounded-xl bg-white p-4">
           <NavMessage chatType="USER" />
-          {/* <div className="min-h-0 flex-1">
-            <ChatsList chats={chats} />
-          </div> */}
         </div>
       </div>
       <Footer />

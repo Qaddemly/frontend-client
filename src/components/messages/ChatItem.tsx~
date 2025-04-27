@@ -9,13 +9,18 @@ import {
   useGetAllMessagesOfUserQuery,
 } from "../../services/messagesApi.ts";
 import Loader from "../common/Loader.tsx";
+import { useEffect } from "react";
+import { socket } from "../../services/socket.ts";
 
 type ChatItemProps = {
   chat: IChat;
-  unreadMessages: IMessage[];
   chatType: ChatType;
   isSelected: boolean;
   onClick: () => void;
+  unreadMessages: IMessage[] | null;
+  setUnreadMessages: React.Dispatch<React.SetStateAction<IMessage[] | null>>;
+  lastMessage: IMessage | null;
+  setLastMessage: (message: IMessage | null) => void;
 };
 
 function ChatItem({
@@ -24,6 +29,9 @@ function ChatItem({
   onClick,
   chatType,
   unreadMessages,
+  setUnreadMessages,
+  lastMessage,
+  setLastMessage,
 }: ChatItemProps) {
   const { data: allMessagesOfUser, isLoading: isLoadingUserMessages } =
     useGetAllMessagesOfUserQuery(
@@ -35,7 +43,7 @@ function ChatItem({
         skip: !chat?.id || chatType === "BUSINESS",
       },
     );
-  const { data: allMessagesOfBusiness, isLoading: c } =
+  const { data: allMessagesOfBusiness, isLoading: isLoadingBusinessMessages } =
     useGetAllMessagesOfBusinessQuery(
       {
         businessId: chat?.business_id.toString(),
@@ -48,7 +56,58 @@ function ChatItem({
     chatType === "USER"
       ? allMessagesOfUser?.messages
       : allMessagesOfBusiness?.messages;
-  const lastMessage = messages?.[messages?.length - 1];
+
+
+  useEffect(() => {
+    setLastMessage(messages?.[messages?.length - 1] ?? null);
+  }, [messages, setLastMessage]);
+
+  useEffect(() => {
+    if (chatType === "USER" && allMessagesOfUser?.messages) {
+      setUnreadMessages(
+        allMessagesOfUser.messages.filter(
+          (msg) => msg.sent_status === "BUSINESS" && !msg?.is_seen,
+        ),
+      );
+    } else if (chatType === "BUSINESS" && allMessagesOfBusiness?.messages) {
+      setUnreadMessages(
+        allMessagesOfBusiness.messages.filter(
+          (msg) => msg.sent_status === "USER" && !msg?.is_seen,
+        ),
+      );
+    }
+  }, [allMessagesOfUser, allMessagesOfBusiness, chatType, setUnreadMessages]);
+
+  useEffect(() => {
+    const handleBusinessMessage = (message: IMessage) => {
+      setLastMessage({ ...message, created_at: new Date().toISOString() });
+      if (!isSelected)
+        setUnreadMessages((prev) => [
+          ...(prev || []),
+          { ...message, created_at: new Date().toISOString() },
+        ]);
+    };
+
+    const handleUserMessage = (message: IMessage) => {
+      setLastMessage({ ...message, created_at: new Date().toISOString() });
+      if (!isSelected)
+        setUnreadMessages((prev) => [
+          ...(prev || []),
+          { ...message, created_at: new Date().toISOString() },
+        ]);
+    };
+
+    if (chatType === "USER") {
+      socket.on("business_send_message", handleBusinessMessage);
+    } else {
+      socket.on("user_send_message", handleUserMessage);
+    }
+
+    return () => {
+      socket.off("business_send_message", handleBusinessMessage);
+      socket.off("user_send_message", handleUserMessage);
+    };
+  }, [chatType, isSelected, setLastMessage, setUnreadMessages]);
 
   if (isLoadingUserMessages || isLoadingBusinessMessages) return <Loader />;
   return (
@@ -94,7 +153,7 @@ function ChatItem({
           {formatTimestampTo12Hour(lastMessage?.created_at || "")}
         </p>
         <div className="flex items-center gap-1">
-          {unreadMessages?.length > 0 && (
+          {unreadMessages && unreadMessages?.length > 0 && (
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-main text-base text-white">
               {unreadMessages?.length}
             </span>
