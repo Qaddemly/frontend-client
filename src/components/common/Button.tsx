@@ -6,9 +6,17 @@ type AuthButtonProps = {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   name?: string;
   type?: React.ButtonHTMLAttributes<HTMLButtonElement>["type"];
+  disabled?: boolean;
 };
 
-function Button({ children, className, onClick, name, type }: AuthButtonProps) {
+function Button({
+  children,
+  className,
+  onClick,
+  name,
+  type,
+  disabled,
+}: AuthButtonProps) {
   const hover = className?.split(" ").find((x) => x.match("hover:"));
   const bg = className?.split(" ").find((x) => x.match("bg-"));
   const text = className?.split(" ").find((x) => x.match("text-"));
@@ -20,6 +28,7 @@ function Button({ children, className, onClick, name, type }: AuthButtonProps) {
       name={name}
       className={`${rounded?.length ? rounded : "rounded-md"} ${bg?.length ? bg : "bg-main"} ${hover?.length ? hover : "hover:bg-light-main"} ${text?.length ? text : "text-white"} py-2 font-medium ${className}`}
       onClick={onClick}
+      disabled={disabled}
     >
       {children}
     </button>

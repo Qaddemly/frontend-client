@@ -58,7 +58,7 @@ function Navbar() {
         notifications={notifications ?? []}
       />
 
-      <nav className="flex w-full items-center justify-between border-b border-gray-200 bg-white px-6 py-3 lg:px-10">
+      <nav className="flex w-full items-center justify-between border-b border-gray-200 bg-white px-6 py-3 lg:px-8">
         <Logo className="text-3xl font-medium text-main lg:text-4xl" />
         <div className="hidden lg:flex">
           <ul className="flex items-center justify-between space-x-8">
@@ -169,26 +169,28 @@ function Navbar() {
             </Link>
           </div>
         ) : (
-          <div className="relative flex items-center gap-8">
-            <div
-              className="relative cursor-pointer"
-              onClick={async () => {
-                setShowSideNav((e) => !e);
-                await makeNotificationsSeen({});
-                refetchNotificatins();
-              }}
-            >
-              <FontAwesomeIcon icon={faBell} className="text-2xl" />
-              {(notifications?.filter((n) => !n.isSeen)?.length ?? 0) > 0 && (
-                <div className="absolute bottom-4 left-2 rounded-full bg-danger-300 px-2 py-1 text-xs font-medium text-white">
-                  {notifications?.filter((n) => !n.isSeen)?.length ?? 0}
-                </div>
-              )}
-            </div>
+          <div className="relative flex items-center gap-6">
+            <div className="flex gap-4">
+              <div
+                className="relative cursor-pointer"
+                onClick={async () => {
+                  setShowSideNav((e) => !e);
+                  await makeNotificationsSeen({});
+                  refetchNotificatins();
+                }}
+              >
+                <FontAwesomeIcon icon={faBell} className="text-2xl" />
+                {(notifications?.filter((n) => !n.isSeen)?.length ?? 0) > 0 && (
+                  <div className="absolute bottom-4 left-2 rounded-full bg-danger-300 px-2 py-1 text-xs font-medium text-white">
+                    {notifications?.filter((n) => !n.isSeen)?.length ?? 0}
+                  </div>
+                )}
+              </div>
 
-            <Link to="/message">
-              <FontAwesomeIcon icon={faMessage} className="text-2xl" />
-            </Link>
+              <Link to="/message">
+                <FontAwesomeIcon icon={faMessage} className="text-2xl" />
+              </Link>
+            </div>
 
             <div className="hidden lg:block">
               <Button

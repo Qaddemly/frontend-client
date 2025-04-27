@@ -57,8 +57,18 @@ import MessagingBusiness from "../components/business account/MessageBusiness.ts
 import { CoverLetterProvider } from "../context/CoverLetterContext.tsx";
 import CoverLetterBuilder from "../pages/CoverLetterBuilder.tsx";
 import EditCoverLetter from "../components/cover letter builder/EditCoverLetter.tsx";
+import { ApplicationProvider } from "../context/ApplicationContext.tsx";
+import CustomApplicationForm from "../components/customApplication/CustomApplicationForm.tsx";
 
 const router = createBrowserRouter([
+  {
+    path: "/apply/custom/:jobId",
+    element: (
+      <ApplicationProvider>
+        <CustomApplicationForm />
+      </ApplicationProvider>
+    ),
+  },
   {
     path: "/",
     element: (
@@ -150,7 +160,9 @@ const router = createBrowserRouter([
     path: "/findJob/jobProfile/:jobId",
     element: (
       <ProtectedRoute>
-        <JobProfile />
+        <ApplicationProvider>
+          <JobProfile />
+        </ApplicationProvider>
       </ProtectedRoute>
     ),
   },

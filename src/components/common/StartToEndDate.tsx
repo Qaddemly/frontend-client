@@ -25,20 +25,31 @@ function StartToEndDate<T extends FieldValues>({
   // } = useFormContext();
   return (
     <>
-      <label htmlFor="education" className="font-medium">
+      <label
+        htmlFor="education"
+        className="text-center font-medium sm:text-left"
+      >
         Start & End Date
       </label>
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
         <DatePicker
           onChange={onChangeStartDate}
-          props={{ id: startDate, defaultValue: startDateDefaultValue }}
+          props={{
+            id: startDate,
+            defaultValue: startDateDefaultValue,
+            className: "w-full",
+          }}
           register={register}
           name={startDate}
         />
         <span className="text-gray-300">to</span>
         <DatePicker
           onChange={onChangeEndDate}
-          props={{ id: endDate, defaultValue: endDateDefaultValue }}
+          props={{
+            id: endDate,
+            defaultValue: endDateDefaultValue,
+            className: "w-full",
+          }}
           register={register}
           name={endDate}
         />
