@@ -144,8 +144,6 @@ function Chat({
       socket.on("user_message_seen", handleSeenMessage);
       socket.on("user_delivered_message", handleDeliveredMessage);
     }
-
-    // TODO: there is a bug when any user refresh the last message still unseen => need handling from backend
     socket.on("my_message_is_delivered", handleSeenMessage);
 
     return () => {

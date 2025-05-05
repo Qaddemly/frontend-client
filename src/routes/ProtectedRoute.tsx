@@ -24,23 +24,6 @@ function ProtectedRoute({ children }: { children: ReactNode }) {
       const handleConnect = () => {
         if (!hasEmitted.current) {
           socket.emit("connect_user", data?.user?.id);
-          // socket.on(
-          //   "business_delivered_message",
-          //   ({ chatId, userId, businessId }) => {
-          //     console.log(
-          //       `Message delivered to chat ${chatId} for user ${userId} in business ${businessId}`,
-          //     );
-          //   },
-          // );
-          // socket.on(
-          //   "user_delivered_message",
-          //   ({ chatId, userId, businessId }) => {
-          //     console.log(
-          //       `Message delivered to chat ${chatId} for user ${userId} in business ${businessId}`,
-          //     );
-          //   },
-          // );
-
           hasEmitted.current = true;
         }
       };
