@@ -8,14 +8,14 @@ import {
 import Logo from "../common/Logo";
 import UserMenu from "../user settings/UserMenu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../common/Button";
 import { useGetBusinessAccountInfoQuery } from "../../services/businessAccountApi";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 
 function NavbarBusiness() {
-  const { companyId } = useParams();
+  const companyId = localStorage.getItem("businessAccountId");
   const navigate = useNavigate();
   const { data } = useGetBusinessAccountInfoQuery({
     id: companyId?.toString() || "",

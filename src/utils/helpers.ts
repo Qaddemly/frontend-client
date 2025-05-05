@@ -212,3 +212,16 @@ export function formatTimeAgo(timestamp: string): string {
   if (minutes > 0) return `${minutes} mins ago`;
   return "Just now";
 }
+
+export function formatTimestampTo12Hour(time: string): string {
+  if (time === "") return "";
+  const date = new Date(time);
+  let hours = date.getHours();
+  const minutes = date.getMinutes();
+  const ampm = hours >= 12 ? "pm" : "am";
+
+  hours = hours % 12 || 12;
+  const minutesStr = minutes < 10 ? "0" + minutes : minutes;
+
+  return `${hours}:${minutesStr} ${ampm}`;
+}

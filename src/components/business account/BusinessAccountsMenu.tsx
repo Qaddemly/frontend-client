@@ -3,8 +3,10 @@ import Button from "../common/Button";
 
 import { RefObject } from "react";
 import { IBusinesses } from "../../interfaces/BusinessAccount.interfaces";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUserBusinessAccount } from "./BusinessAccountSlice";
+import { socket } from "../../services/socket.ts";
+import { RootState } from "../../store/store.ts";
 
 function BusinessAccountsMenu({
   menuRef,
@@ -15,6 +17,7 @@ function BusinessAccountsMenu({
 }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { id: userId } = useSelector((state: RootState) => state.user.user);
   return (
     <ul
       ref={menuRef}
@@ -25,9 +28,14 @@ function BusinessAccountsMenu({
           key={company.id}
           onClick={() => {
             dispatch(setUserBusinessAccount(company));
+            localStorage.setItem("businessAccountId", company.id.toString());
             navigate(
               `/businessDashboard/companySettings/companyAccount/${company.id}`,
             );
+            socket.emit("connect_user_in_business", {
+              userId,
+              businessId: company.id,
+            });
           }}
           className="flex cursor-pointer flex-col rounded-tl-md rounded-tr-md border-b border-gray-100 px-4 py-2 font-medium hover:bg-[#eee]"
         >

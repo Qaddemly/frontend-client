@@ -15,8 +15,10 @@ import {
   faStar as faStarFilled,
   faStarHalfStroke,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
-import Chat from "../messages/Chat";
+import { useCreateNewChatMutation } from "../../services/messagesApi.ts";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store.ts";
+import { useNavigate } from "react-router-dom";
 
 function CompanyProfileHeader({
   data,
@@ -27,35 +29,38 @@ function CompanyProfileHeader({
   isFollowed: IIfFollowedByLoggedInUser | null;
   refetch: () => void;
 }) {
+  const { id: userId } = useSelector((state: RootState) => state.user.user);
+  const navigate = useNavigate();
   const [followBusiness] = useFollowBusinessMutation();
   const [unFollowBusiness] = useUnfollowBusinessMutation();
 
-  const [isChatOpen, setIsChatOpen] = useState(false);
+  // const [isChatOpen, setIsChatOpen] = useState(false);
+  // const [chat, setChat] = useState<IChat | null>(null);
 
-  const handleOpenChat = () => {
-    setIsChatOpen(true);
+  const [createNewChat] = useCreateNewChatMutation();
+  const businessId = data?.id;
+
+  // const { data: allMessagesOfUser } = useGetAllMessagesOfUserQuery({
+  //   chatId: chat?.id.toString() || "1",
+  //   page: "1",
+  // });
+
+  const handleOpenChat = async () => {
+    // setIsChatOpen(true);
+    try {
+      await createNewChat({
+        data: { businessId: businessId ?? 0, accountId: userId },
+      }).unwrap();
+      // const newChat = {
+      //   ...res?.chat,
+      //   business: data ?? ({} as IBusinessAccount),
+      // };
+      // setChat(newChat as IChat);
+      navigate("/message");
+    } catch (error) {
+      handleApiError(error);
+    }
   };
-  const chatMessages: {
-    text: string;
-    sender: "user" | "business";
-    time: string;
-  }[] = [
-    {
-      text: "Hello, how can we help you?",
-      sender: "business",
-      time: "10:00 AM",
-    },
-    {
-      text: "I need some information.",
-      sender: "user",
-      time: "10:02 AM",
-    },
-    {
-      text: "Sure! Please tell us what you need.",
-      sender: "business",
-      time: "10:03 AM",
-    },
-  ];
 
   async function handleFollowBusiness() {
     try {
@@ -132,21 +137,22 @@ function CompanyProfileHeader({
               Unfollow
             </Button>
           )}
-          {/* Message */}
 
+          {/* Message */}
           <Button className="px-2" onClick={handleOpenChat}>
             Message
           </Button>
-          <div className="fixed bottom-0 right-4 w-full max-w-lg rounded-t-xl border border-gray-300 bg-white shadow-xl">
-            {isChatOpen && (
-              <Chat
-                title={data?.name || "Company Chat"}
-                website={data?.website}
-                messages={chatMessages}
-                onBack={() => setIsChatOpen(false)}
-              />
-            )}
-          </div>
+          {/*<div className="fixed bottom-0 right-20 z-10 w-1/3 rounded-t-xl border border-gray-300 bg-white shadow-xl 2xl:w-1/4">*/}
+          {/*  {isChatOpen && (*/}
+          {/*    <Chat*/}
+          {/*      chat={chat || ({} as IChat)}*/}
+          {/*      chatType="USER"*/}
+          {/*      businessId={businessId ?? 0}*/}
+          {/*      onBack={() => setIsChatOpen(false)}*/}
+          {/*      messages={allMessagesOfUser?.messages || []}*/}
+          {/*    />*/}
+          {/*  )}*/}
+          {/*</div>*/}
         </div>
       </div>
       {/* Navigation Section */}

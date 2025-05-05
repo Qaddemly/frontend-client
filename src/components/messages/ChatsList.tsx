@@ -2,14 +2,66 @@ import { useState } from "react";
 import Chat from "./Chat";
 import StartMessage from "./StartMessage";
 import ChatItem from "./ChatItem";
-import { Chat as ChatType } from "./types";
+import {
+  ChatType,
+  IChat,
+  IMessage,
+} from "../../interfaces/Messages.interfaces.ts";
+import {
+  useGetAllMessagesOfBusinessQuery,
+  useGetAllMessagesOfUserQuery,
+} from "../../services/messagesApi.ts";
+import { socket } from "../../services/socket.ts";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store.ts";
 
-type ChatsListProps = {
-  chats: ChatType[];
-};
+function ChatsList({
+  chats,
+  chatType,
+}: {
+  chats: IChat[];
+  chatType: ChatType;
+}) {
+  const { id: userId } = useSelector((state: RootState) => state.user.user);
 
-function ChatsList({ chats }: ChatsListProps) {
-  const [selectedChat, setSelectedChat] = useState<ChatType | null>(null);
+  const [selectedChat, setSelectedChat] = useState<IChat | null>(null);
+  const [unreadMessages, setUnreadMessages] = useState<IMessage[] | null>(null);
+  const [lastMessage, setLastMessage] = useState<IMessage | null>(null);
+
+  const { data: allMessagesOfUser } = useGetAllMessagesOfUserQuery(
+    {
+      chatId: selectedChat?.id?.toString() ?? "1",
+      page: "1",
+    },
+    {
+      skip: !selectedChat?.id || chatType === "BUSINESS",
+    },
+  );
+  const { data: allMessagesOfBusiness } = useGetAllMessagesOfBusinessQuery(
+    {
+      businessId: selectedChat?.business_id?.toString() || "",
+      chatId: selectedChat?.id?.toString() || "1",
+    },
+    { skip: !selectedChat?.id || chatType === "USER" },
+  );
+
+  function handleOpenChat(chat: IChat) {
+    setSelectedChat(chat);
+    if (chatType === "USER") {
+      socket.emit("user_message_seen", {
+        chatId: chat.id,
+        userId,
+        businessId: chat.business_id,
+      });
+    } else {
+      socket.emit("business_seen_message", {
+        chatId: chat.id,
+        userId: chat.account_id,
+        businessId: chat.business_id,
+      });
+    }
+    setUnreadMessages([]);
+  }
 
   return (
     <div
@@ -24,10 +76,15 @@ function ChatsList({ chats }: ChatsListProps) {
       >
         {chats.map((chat) => (
           <ChatItem
-            key={chat.name}
+            key={chat.id}
             chat={chat}
-            isSelected={selectedChat?.name === chat.name}
-            onClick={() => setSelectedChat(chat)}
+            chatType={chatType}
+            unreadMessages={unreadMessages}
+            setUnreadMessages={setUnreadMessages}
+            lastMessage={lastMessage}
+            setLastMessage={setLastMessage}
+            isSelected={selectedChat?.id === chat.id}
+            onClick={() => handleOpenChat(chat)}
           />
         ))}
       </div>
@@ -39,14 +96,19 @@ function ChatsList({ chats }: ChatsListProps) {
       >
         {selectedChat ? (
           <Chat
-            title={selectedChat.name}
-            website={selectedChat.website}
-            messages={selectedChat.messages}
+            key={selectedChat.id}
+            chat={selectedChat}
+            businessId={selectedChat.business_id}
+            chatType={chatType}
             isCloseButton={true}
             onClose={() => setSelectedChat(null)}
-            isStarred={selectedChat.isStarred}
-            key={selectedChat.name}
             onBack={() => setSelectedChat(null)}
+            setLastMessage={setLastMessage}
+            messages={
+              chatType === "USER"
+                ? (allMessagesOfUser?.messages ?? [])
+                : (allMessagesOfBusiness?.messages ?? [])
+            }
           />
         ) : (
           <StartMessage />

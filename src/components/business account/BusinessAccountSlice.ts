@@ -32,6 +32,5 @@ const businessAccountSlice = createSlice({
   // },
 });
 
-export const { setUserBusinessesAccounts, setUserBusinessAccount } =
-  businessAccountSlice.actions;
+export const { setUserBusinessAccount } = businessAccountSlice.actions;
 export default businessAccountSlice.reducer;
