@@ -31,42 +31,56 @@ function CustomApplicationForm() {
   const totalSteps = hasQuestions ? 6 : 5;
   const isLastStep = currentStep === totalSteps;
   const methods = useForm<IApplicationData>({
-    mode: "onChange",
+    mode: "onTouched",
   });
 
-  const { watch } = methods;
-  const watchedValues = watch();
-  console.log("watchedValues", watchedValues);
-  const validateStep = (): boolean => {
+  const validateStep = async (): Promise<boolean> => {
     switch (currentStep) {
       case 1: // Personal Info
-        return Boolean(
-          watchedValues.personal?.firstName &&
-            watchedValues.personal?.lastName &&
-            watchedValues.personal?.email &&
-            watchedValues.personal?.phone?.number &&
-            watchedValues.personal?.dob,
-        );
+        return await methods.trigger([
+          "personal.firstName",
+          "personal.lastName",
+          "personal.email",
+          "personal.phone.number",
+          "personal.dob",
+        ]);
 
       case 2: // Education
-        return true;
-      // !errors.education?.university &&
-      // !errors.education?.fieldOfStudy &&
-      // !errors.education?.gpa &&
-      // !errors.education?.startDate &&
-      // !errors.education?.endDate
+        return await methods.trigger([
+          "education.university",
+          "education.fieldOfStudy",
+          "education.gpa",
+          "education.startDate",
+          "education.endDate",
+        ]);
 
-      case 3: // Experience
-        return experience.length > 0; // At least one experience added
+      case 3: {
+        // Experience
+        if (experience.length === 0) return false;
+        const experienceValidations = await Promise.all(
+          experience.map((_, index) =>
+            methods.trigger([
+              `experience.${index}.jobTitle`,
+              `experience.${index}.companyName`,
+              `experience.${index}.location`,
+              `experience.${index}.city`,
+              `experience.${index}.locationType`,
+              `experience.${index}.startDate`,
+              `experience.${index}.endDate`,
+            ]),
+          ),
+        );
+        return experienceValidations.every((valid) => valid);
+      }
 
       case 4: // Skills & Languages
-        return skills.length > 0 && languages.length > 0; // At least one skill and language
+        return skills.length > 0 && languages.length > 0;
 
       case 5: // Resume
-        return !!resume; // Resume must be uploaded
+        return !!resume;
 
-      // case 6: // Questions
-      //   return answers.length === questions.length && !answers.includes(""); // All questions must be answered
+      // case 6: Application Questions
+      //   return answers.length === questions.length && !answers.includes("");
 
       default:
         return false;
@@ -121,7 +135,7 @@ function CustomApplicationForm() {
                 onSubmit={methods.handleSubmit(onSubmit)}
                 isLastStep={isLastStep}
                 isSubmitting={isSubmitting}
-                isStepValid={validateStep()}
+                validateStep={validateStep}
               />
             </form>
           </div>

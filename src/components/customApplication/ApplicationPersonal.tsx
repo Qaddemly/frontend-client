@@ -1,10 +1,9 @@
-import { useFormContext } from "react-hook-form";
+import { FieldErrors, useFormContext } from "react-hook-form";
 import { Prefixes } from "../../enums/index.enums";
 import InputField from "../common/InputField";
 import Input from "../common/Input";
 import Select from "../common/Select";
 import DatePicker from "../common/DatePicker";
-// import { ICustomPersonal } from "../../interfaces/CustomApplication.interfaces";
 
 function ApplicationPersonal() {
   const prefixValues = Object.values(Prefixes).filter(
@@ -17,33 +16,33 @@ function ApplicationPersonal() {
 
   return (
     <>
-      <InputField errors={errors} id="customfName">
+      <InputField errors={errors?.personal as FieldErrors} id="firstName">
         <Input
           register={register}
           name={"personal.firstName"}
           options={{ required: "First Name field is required" }}
           props={{
-            id: "customfName",
+            id: "firstName",
             type: "text",
             placeholder: "First name",
           }}
         />
       </InputField>
 
-      <InputField errors={errors} id="customlName">
+      <InputField errors={errors?.personal as FieldErrors} id="lastName">
         <Input
           register={register}
           name={"personal.lastName"}
           options={{ required: "Last Name field is required" }}
           props={{
-            id: "customlName",
+            id: "lastName",
             type: "text",
             placeholder: "Last name",
           }}
         />
       </InputField>
 
-      <InputField errors={errors} id="customeMail">
+      <InputField errors={errors?.personal as FieldErrors} id="email">
         <Input
           register={register}
           name={"personal.email"}
@@ -55,7 +54,7 @@ function ApplicationPersonal() {
             },
           }}
           props={{
-            id: "customeMail",
+            id: "email",
             type: "text",
             placeholder: "Email",
           }}
@@ -66,8 +65,10 @@ function ApplicationPersonal() {
         <Select
           register={register}
           name="personal.phone.countryCode"
-          id="customphone"
-          className="w-3 sm:w-fit"
+          id="phone"
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error
+          className={`${errors?.personal?.phone ? "mb-6" : ""} w-3 sm:w-fit`}
         >
           {prefixValues.map((value) => (
             <option
@@ -80,8 +81,10 @@ function ApplicationPersonal() {
         </Select>
 
         <InputField
-          errors={errors}
-          id="customphone"
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error
+          errors={errors?.personal?.phone as FieldErrors}
+          id="number"
           props={{
             className: "w-full",
           }}
@@ -102,7 +105,7 @@ function ApplicationPersonal() {
             }}
             props={{
               placeholder: "Phone number",
-              id: "customphone",
+              id: "number",
               type: "number",
             }}
           />
@@ -111,12 +114,21 @@ function ApplicationPersonal() {
 
       <div className="flex flex-col gap-1">
         <DatePicker
+          options={{
+            required: "Date of Birth is required",
+          }}
           register={register}
           name={"personal.dob"}
-          props={{ id: "customdob", className: "w-full" }}
+          props={{ id: "dob", className: "w-full" }}
         />
-        {errors.dob && typeof errors.dob?.message === "string" && (
-          <span className="text-sm text-danger-300">{errors.dob.message}</span>
+        {/*eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
+        {/* @ts-ignore */}
+        {errors?.personal?.dob && (
+          <span className="text-sm font-medium text-danger-300">
+            {/*eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
+            {/* @ts-ignore */}
+            {errors?.personal?.dob?.message as string}
+          </span>
         )}
       </div>
     </>
