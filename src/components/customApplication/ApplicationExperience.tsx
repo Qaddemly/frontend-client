@@ -1,5 +1,5 @@
 import { useApplication } from "../../context/ApplicationContext";
-import { useFormContext } from "react-hook-form";
+import { FieldErrors, useFormContext } from "react-hook-form";
 import { LocationType, Country } from "../../enums/index.enums";
 import Input from "../common/Input";
 import InputField from "../common/InputField";
@@ -54,24 +54,24 @@ function ApplicationExperience() {
   return (
     <>
       <div className="flex flex-col gap-4 text-left">
-        <InputField errors={errors} id="customJobTitle">
+        <InputField errors={errors.experience as FieldErrors} id="jobTitle">
           <Input
             register={register}
             name={"experience.jobTitle"}
             props={{
-              id: "customJobTitle",
+              id: "jobTitle",
               type: "text",
               placeholder: "Job Title",
             }}
           />
         </InputField>
 
-        <InputField errors={errors} id="customCompanyName">
+        <InputField errors={errors.experience as FieldErrors} id="companyName">
           <Input
             register={register}
             name={"experience.companyName"}
             props={{
-              id: "customCompanyName",
+              id: "companyName",
               type: "text",
               placeholder: "Company Name",
             }}
@@ -79,11 +79,7 @@ function ApplicationExperience() {
         </InputField>
 
         <div className="flex w-full items-center gap-3">
-          <Select
-            register={register}
-            name="experience.location"
-            id="customLocation"
-          >
+          <Select register={register} name="experience.location" id="location">
             {countryValues.map((value) => (
               <option key={value} value={value}>
                 {value}
@@ -92,15 +88,15 @@ function ApplicationExperience() {
           </Select>
 
           <InputField
-            errors={errors}
-            id="customCity"
+            errors={errors.experience as FieldErrors}
+            id="city"
             props={{ className: "w-full" }}
           >
             <Input
               register={register}
               name={"experience.city"}
               props={{
-                id: "customCity",
+                id: "city",
                 type: "text",
                 placeholder: "City",
               }}

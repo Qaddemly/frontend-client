@@ -1,4 +1,4 @@
-import { useFormContext } from "react-hook-form";
+import { FieldErrors, useFormContext } from "react-hook-form";
 import InputField from "../common/InputField";
 import Input from "../common/Input";
 import StartToEndDate from "../common/StartToEndDate";
@@ -6,39 +6,38 @@ import StartToEndDate from "../common/StartToEndDate";
 function ApplicationEducation() {
   const {
     register,
-    // watch,
     formState: { errors },
   } = useFormContext();
 
   return (
     <>
-      <InputField errors={errors} id="customUniversity">
+      <InputField errors={errors.education as FieldErrors} id="university">
         <Input
           register={register}
           name={"education.university"}
           options={{ required: "University is required" }}
           props={{
-            id: "customUniversity",
+            id: "university",
             type: "text",
             placeholder: "University",
           }}
         />
       </InputField>
 
-      <InputField errors={errors} id="customFieldOfStudy">
+      <InputField errors={errors.education as FieldErrors} id="fieldOfStudy">
         <Input
           register={register}
           name={"education.fieldOfStudy"}
           options={{ required: "Field Of Study is required" }}
           props={{
-            id: "customFieldOfStudy",
+            id: "fieldOfStudy",
             type: "text",
             placeholder: "Field Of Study",
           }}
         />
       </InputField>
 
-      <InputField errors={errors} id="customGpa">
+      <InputField errors={errors.education as FieldErrors} id="gpa">
         <Input
           register={register}
           name={"education.gpa"}
@@ -50,7 +49,7 @@ function ApplicationEducation() {
             },
           }}
           props={{
-            id: "customGpa",
+            id: "gpa",
             type: "number",
             placeholder: "GPA",
           }}

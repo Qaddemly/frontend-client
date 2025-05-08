@@ -1,5 +1,3 @@
-import { useForm } from "react-hook-form";
-import { IApplicationData } from "../../interfaces/CustomApplication.interfaces";
 import Button from "../common/Button";
 
 interface SliderControllersProps {
@@ -10,7 +8,7 @@ interface SliderControllersProps {
   onSubmit: () => void;
   isLastStep: boolean;
   isSubmitting?: boolean;
-  isStepValid: boolean;
+  validateStep: () => Promise<boolean>;
 }
 
 function SliderControllers({
@@ -20,44 +18,44 @@ function SliderControllers({
   onSubmit,
   isLastStep,
   isSubmitting = false,
-  isStepValid,
+  validateStep,
 }: SliderControllersProps) {
-  const { handleSubmit } = useForm<IApplicationData>();
+  const handleClick = async () => {
+    const isValid = await validateStep();
+    if (!isValid) {
+      return;
+    }
+    if (isLastStep) {
+      onSubmit();
+    } else {
+      onNext();
+    }
+  };
 
   return (
     <>
-      <div className="mt-6 flex justify-between gap-2 sm:gap-4 md:gap-6">
-        {currentStep > 1 && (
-          <Button onClick={onPrev} type="button" className="w-full">
-            Previous
-          </Button>
-        )}
+      <div className="mt-6 flex flex-col gap-4">
+        <div className="flex justify-between gap-2 sm:gap-4 md:gap-6">
+          {currentStep > 1 && (
+            <Button onClick={onPrev} type="button" className="w-full">
+              Previous
+            </Button>
+          )}
 
-        <Button
-          onClick={handleSubmit(() => {
-            if (!isLastStep) {
-              onNext();
-            } else {
-              onSubmit();
-            }
-          })}
-          type="button"
-          className={`w-full ${isLastStep ? "bg-green-100 hover:bg-green-200" : ""}`}
-          disabled={isSubmitting}
-          // || !isStepValid}
-        >
-          {isSubmitting
-            ? "Submitting..."
-            : isLastStep
-              ? "Submit Application"
-              : "Next"}
-        </Button>
-      </div>
-      {!isStepValid && (
-        <div className="text-center text-xl font-semibold text-danger-300">
-          Please fill out all fields.
+          <Button
+            onClick={handleClick}
+            type="button"
+            className={`w-full ${isLastStep ? "bg-green-100 hover:bg-green-200" : ""}`}
+            disabled={isSubmitting}
+          >
+            {isSubmitting
+              ? "Submitting..."
+              : isLastStep
+                ? "Submit Application"
+                : "Next"}
+          </Button>
         </div>
-      )}
+      </div>
     </>
   );
 }
