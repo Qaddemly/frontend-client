@@ -34,5 +34,5 @@ export interface ICustomExperience {
   locationType: string;
   startDate: string;
   endDate?: string;
-  // currentlyWorking: boolean;
+  currentlyWorking: boolean;
 }

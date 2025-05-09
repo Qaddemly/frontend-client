@@ -92,20 +92,21 @@ function CustomApplicationForm() {
   return (
     <MainLayout>
       <FormProvider {...methods}>
-        <div className="relative p-6">
-          <div className="flex flex-col gap-6">
-            <h2 className="text-center text-3xl font-bold">
-              {currentStep === 1 && "Personal Info"}
-              {currentStep === 2 && "Education"}
-              {currentStep === 3 && "Experiences"}
-              {currentStep === 4 && "Skills & Languages"}
-              {currentStep === 5 && "Upload Your Resume"}
-              {hasQuestions && currentStep === 6 && "Application Questions"}
-            </h2>
-            <form
-              onSubmit={methods.handleSubmit(onSubmit)}
-              className="flex flex-col gap-4"
-            >
+        <form
+          onSubmit={methods.handleSubmit(onSubmit)}
+          className="flex flex-col gap-4"
+        >
+          <div className="relative m-6 mx-auto w-full max-w-md rounded-lg bg-white p-6 shadow-md">
+            <div className="flex flex-col gap-6">
+              <h2 className="text-center text-2xl font-bold">
+                {currentStep === 1 && "Personal Info"}
+                {currentStep === 2 && "Education"}
+                {currentStep === 3 && "Experiences"}
+                {currentStep === 4 && "Skills & Languages"}
+                {currentStep === 5 && "Upload Your Resume"}
+                {hasQuestions && currentStep === 6 && "Application Questions"}
+              </h2>
+
               {currentStep === 1 && <ApplicationPersonal />}
               {currentStep === 2 && <ApplicationEducation />}
               {currentStep === 3 && <ApplicationExperience />}
@@ -123,9 +124,9 @@ function CustomApplicationForm() {
                 isSubmitting={isSubmitting}
                 isStepValid={validateStep()}
               />
-            </form>
+            </div>
           </div>
-        </div>
+        </form>
       </FormProvider>
     </MainLayout>
   );
