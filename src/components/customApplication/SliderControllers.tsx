@@ -1,4 +1,3 @@
-import { useFormContext } from "react-hook-form";
 import Button from "../common/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
@@ -12,7 +11,7 @@ interface SliderControllersProps {
   onSubmit: (data: IApplicationData) => void;
   isLastStep: boolean;
   isSubmitting?: boolean;
-  isStepValid: boolean;
+  validateStep: () => Promise<boolean>;
 }
 
 function SliderControllers({
@@ -22,14 +21,15 @@ function SliderControllers({
   onSubmit,
   isLastStep,
   isSubmitting = false,
-  isStepValid,
+  validateStep,
 }: SliderControllersProps) {
-  const { handleSubmit, getValues } = useFormContext<IApplicationData>(); // استخدام useFormContext للوصول إلى البيانات
-
-  const handleNext = () => {
+  const handleClick = async () => {
+    const isValid = await validateStep();
+    if (!isValid) {
+      return;
+    }
     if (isLastStep) {
-      const data = getValues();
-      onSubmit(data);
+      onSubmit();
     } else {
       onNext();
     }
@@ -37,52 +37,28 @@ function SliderControllers({
 
   return (
     <>
-      <div className="mt-6 flex justify-between gap-2 sm:gap-4 md:gap-6">
-        {currentStep > 1 ? (
-          <>
-            <Button onClick={onPrev} type="button" className="p-3">
-              <FontAwesomeIcon icon={faArrowLeft} className="px-2" />
+      <div className="mt-6 flex flex-col gap-4">
+        <div className="flex justify-between gap-2 sm:gap-4 md:gap-6">
+          {currentStep > 1 && (
+            <Button onClick={onPrev} type="button" className="w-full">
               Previous
             </Button>
+          )}
 
-            <Button
-              onClick={handleSubmit(handleNext)}
-              type="button"
-              className={`p-3 ${isLastStep ? "bg-green-100 hover:bg-green-200" : ""}`}
-              disabled={isSubmitting}
-            >
-              {isSubmitting
-                ? "Submitting..."
-                : isLastStep
-                  ? "Submit Application"
-                  : "Next"}
-              {isLastStep ? (
-                ""
-              ) : (
-                <FontAwesomeIcon icon={faArrowRight} className="px-2" />
-              )}
-            </Button>
-          </>
-        ) : (
-          <div className="flex w-full justify-center">
-            <Button
-              onClick={handleSubmit(handleNext)}
-              type="button"
-              className="w-1/2 max-w-[200px] p-3"
-              disabled={isSubmitting}
-            >
-              Next
-              <FontAwesomeIcon icon={faArrowRight} className="px-2" />
-            </Button>
-          </div>
-        )}
-      </div>
-
-      {!isStepValid && (
-        <div className="text-center text-xl font-semibold text-danger-300">
-          Please fill out all fields.
+          <Button
+            onClick={handleClick}
+            type="button"
+            className={`w-full ${isLastStep ? "bg-green-100 hover:bg-green-200" : ""}`}
+            disabled={isSubmitting}
+          >
+            {isSubmitting
+              ? "Submitting..."
+              : isLastStep
+                ? "Submit Application"
+                : "Next"}
+          </Button>
         </div>
-      )}
+      </div>
     </>
   );
 }

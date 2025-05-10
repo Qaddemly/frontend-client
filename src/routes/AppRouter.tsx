@@ -200,7 +200,11 @@ const router = createBrowserRouter([
             element: <JobApplications />,
             children: [{ path: "jobTracker", element: <JobTrackerBusiness /> }],
           },
-          { path: "postjob", element: <PostJob /> },
+          { path: "postJobEasyApply", element: <PostJob type="easyApply" /> },
+          {
+            path: "postJobExternalLink",
+            element: <PostJob type="externalLink" />,
+          },
           {
             path: "archived",
             element: <ArchivedCompanyJobs />,

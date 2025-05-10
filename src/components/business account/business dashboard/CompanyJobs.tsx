@@ -1,5 +1,5 @@
 // CompanyJobs should take jobs from Backend and pass each one to EditJobCard
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate, useParams } from "react-router-dom";
 import EditJobCard from "../../job/EditJobCard";
 import Loader from "../../common/Loader";
@@ -14,6 +14,7 @@ import {
 import toast from "react-hot-toast";
 import { handleApiError } from "../../../utils/helpers";
 import Pagination from "../../common/Pagination";
+import Modal from "../../common/Modal.tsx";
 
 function CompanyJobs() {
   const [makeJobArchived] = useMakeJobArchivedMutation();
@@ -37,7 +38,9 @@ function CompanyJobs() {
   );
   const isJobRoute = location.pathname.endsWith("/active");
   const isJobRouteArchived = location.pathname.endsWith("/archived");
-  const isPostJobRoute = location.pathname.endsWith(`/postjob`);
+  const isPostJobRoute =
+    location.pathname.endsWith(`/postJobEasyApply`) ||
+    location.pathname.endsWith("/postJobExternalLink");
 
   const filteredJobCards = jobs?.filter((job) => {
     if (selectedValue === "available") return job.status === "Opened";
@@ -46,6 +49,8 @@ function CompanyJobs() {
   });
 
   const navigate = useNavigate();
+
+  const [showModal, setShowModal] = useState(false);
 
   async function handleJobStatus(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -347,16 +352,47 @@ function CompanyJobs() {
             className={`mx-5 flex justify-center md:justify-end ${filteredJobCards ? "" : "md:justify-center"}`}
           >
             <Button
-              onClick={() =>
-                navigate(
-                  `/businessDashboard/companyJobs/${companyId}/active/postjob`,
-                )
-              }
+              onClick={() => setShowModal(true)}
               className={`border-2 border-main bg-main px-6 py-1 text-base text-white hover:bg-white hover:text-main`}
             >
               Post New Job
             </Button>
           </div>
+          {showModal && (
+            <Modal setClose={setShowModal}>
+              <div className="flex flex-col justify-center gap-9 p-5 md:p-10 lg:gap-16 lg:p-14">
+                <p className="pt-3 text-center text-3xl font-semibold sm:pt-0 sm:text-5xl">
+                  How applicants will apply?
+                </p>
+                <div className="flex flex-col gap-5 lg:gap-9">
+                  <Button
+                    className="px-2"
+                    onClick={() =>
+                      navigate(
+                        `/businessDashboard/companyJobs/${companyId}/active/postJobEasyApply`,
+                      )
+                    }
+                  >
+                    <p className="text-2xl sm:text-3xl">Easy Apply</p>
+                    <p className="text-xl sm:text-2xl">(Our website)</p>
+                  </Button>
+                  <Button
+                    className="px-2"
+                    onClick={() =>
+                      navigate(
+                        `/businessDashboard/companyJobs/${companyId}/active/postJobExternalLink`,
+                      )
+                    }
+                  >
+                    <p className="text-2xl sm:text-3xl">External Website</p>
+                    <p className="text-xl sm:text-2xl">
+                      (Your company's career page)
+                    </p>
+                  </Button>
+                </div>
+              </div>
+            </Modal>
+          )}
         </div>
       )}
     </>

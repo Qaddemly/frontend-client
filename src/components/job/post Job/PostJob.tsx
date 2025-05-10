@@ -1,6 +1,6 @@
 import PostJobForm from "./PostJobForm";
 
-function PostJob() {
+function PostJob({ type }: { type: "easyApply" | "externalLink" }) {
   return (
     <>
       <h2 className="m-4 pt-2 text-center text-3xl font-bold">
@@ -9,7 +9,7 @@ function PostJob() {
       <p className="m-4 text-center text-2xl opacity-50">
         Few steps give the power to your Job
       </p>
-      <PostJobForm />
+      <PostJobForm type={type} />
     </>
   );
 }
