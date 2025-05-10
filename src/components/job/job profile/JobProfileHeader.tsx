@@ -15,17 +15,11 @@ import {
   useSaveJobMutation,
   useUnSaveJobMutation,
 } from "../../../services/jobApi";
-import { useParams } from "react-router-dom";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
 import { useGetAllResumesQuery } from "../../../services/profileApi";
 
-function JobProfileHeader({
-  job,
-  setShowModal,
-}: {
-  job: IJob;
-  setShowModal: Dispatch<SetStateAction<boolean>>;
-}) {
+function JobProfileHeader({ job }: { job: IJob }) {
   const [close, setClose] = useState(false);
   const { jobId } = useParams();
   const [saveJob, { isLoading: loadingSaveJob }] = useSaveJobMutation();
@@ -33,6 +27,7 @@ function JobProfileHeader({
   const { refetch } = useGetJobDetailsQuery({ id: jobId || "" });
   const { data } = useGetAllResumesQuery();
   const [applyToJob, { isLoading: loadingApplyJob }] = useApplyToJobMutation();
+  const navigate = useNavigate();
 
   async function handleSaveJob(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -107,7 +102,7 @@ function JobProfileHeader({
             className="rounded-lg px-6 py-3 text-xl text-white"
             onClick={() => {
               // setClose(true);
-              setShowModal(true);
+              navigate("/apply/custom/1"); //temp until api linked
             }}
           >
             Apply Now <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
