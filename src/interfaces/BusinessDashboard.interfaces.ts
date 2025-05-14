@@ -31,6 +31,16 @@ export interface IPostNewJobInputs {
   keywords: string[];
   experience: number;
   skills: string[];
+  has_extra_link_application: boolean;
+  extra_application_link: string;
+  questions: Iquestion[];
+}
+
+export interface Iquestion {
+  questionText: string;
+  questionType: string;
+  options: string[];
+  isRequired: boolean;
 }
 
 export interface IUpdateJobInputs {

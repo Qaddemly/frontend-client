@@ -29,7 +29,6 @@ function InputField<T extends FieldValues>({
   required,
   setShowPassword,
 }: AuthInputProps<T>) {
-  console.log(errors);
   return (
     <div className={`${props?.className ? props?.className : ""}`}>
       <label htmlFor={id} className="font-medium">

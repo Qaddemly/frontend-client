@@ -9,7 +9,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { usePostNewJobMutation } from "../../../services/businessDashboardApi";
 import { handleApiError } from "../../../utils/helpers";
 import toast from "react-hot-toast";
-import { IPostNewJobInputs } from "../../../interfaces/BusinessDashboard.interfaces";
+import {
+  IPostNewJobInputs,
+  Iquestion,
+} from "../../../interfaces/BusinessDashboard.interfaces";
 import Loader from "../../common/Loader";
 import { useGetAllJobsQuery } from "../../../services/jobApi";
 import PostJobQuestions from "./PostJobQuestions.tsx";
@@ -22,8 +25,7 @@ function PostJobForm({ type }: { type: "easyApply" | "externalLink" }) {
   const [locationType, setLocationType] = useState("Location type");
   const [salary, setSalary] = useState({
     currency: "Currency",
-    min: "",
-    max: "",
+    salary: "",
     otherCurrency: "",
   });
   const [employeeType, setEmployeeType] = useState("Employee type");
@@ -37,9 +39,11 @@ function PostJobForm({ type }: { type: "easyApply" | "externalLink" }) {
 
   const { companyId } = useParams();
 
+  const [questions, setQuestions] = useState<Iquestion[]>([]);
   const [addQuestions, setAddQuestions] = useState(false);
   const [showQuestions, setShowQuestions] = useState(false);
 
+  const [externalLink, setExternalLink] = useState("");
   const [showExternalLink, setShowExternalLink] = useState(false);
 
   const [inputValue, setInputValue] = useState("");
@@ -81,7 +85,6 @@ function PostJobForm({ type }: { type: "easyApply" | "externalLink" }) {
     setSkills(skills.filter((_, i) => i !== index));
   };
 
-  // TODO: handle submit with questions
   async function handleOnSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (
@@ -89,15 +92,17 @@ function PostJobForm({ type }: { type: "easyApply" | "externalLink" }) {
       !description ||
       !country ||
       !locationType ||
-      !salary.min ||
-      !salary.max ||
+      !salary.salary ||
       !salary.currency ||
       !employeeType ||
       !experience ||
       !city ||
       !skills.length ||
-      !keywords.length
+      !keywords.length ||
+      (type === "externalLink" && !externalLink) ||
+      (type === "easyApply" && addQuestions && !questions.length)
     ) {
+      toast.error("Please fill all required fields");
       return;
     }
 
@@ -106,12 +111,15 @@ function PostJobForm({ type }: { type: "easyApply" | "externalLink" }) {
       description,
       location: { country, city },
       location_type: locationType,
-      salary: 5000, // TODO GAD : min, max, currency, other currency
+      salary: parseInt(salary.salary), // TODO : currency, other currency
       employee_type: employeeType,
       keywords,
       experience: 2,
       business_id: companyId ? parseInt(companyId) : undefined,
       skills,
+      has_extra_link_application: type === "externalLink",
+      extra_application_link: type === "externalLink" ? externalLink : "",
+      questions: type === "easyApply" ? questions : [],
     };
     console.log(data);
     try {
@@ -124,6 +132,18 @@ function PostJobForm({ type }: { type: "easyApply" | "externalLink" }) {
     }
   }
 
+  const handleQuestionsSubmit = () => {
+    handleOnSubmit({
+      preventDefault: () => {},
+    } as React.FormEvent<HTMLFormElement>);
+  };
+
+  const handleExternalLinkSubmit = () => {
+    handleOnSubmit({
+      preventDefault: () => {},
+    } as React.FormEvent<HTMLFormElement>);
+  };
+
   if (isLoading) return <Loader />;
 
   return (
@@ -133,9 +153,19 @@ function PostJobForm({ type }: { type: "easyApply" | "externalLink" }) {
         onSubmit={handleOnSubmit}
       >
         {showQuestions ? (
-          <PostJobQuestions />
+          <PostJobQuestions
+            questions={questions}
+            setQuestions={setQuestions}
+            onSubmit={handleQuestionsSubmit}
+            onBack={() => setShowQuestions(false)}
+          />
         ) : showExternalLink ? (
-          <PostJobExternalLink />
+          <PostJobExternalLink
+            externalLink={externalLink}
+            setExternalLink={setExternalLink}
+            onSubmit={handleExternalLinkSubmit}
+            onBack={() => setShowExternalLink(false)}
+          />
         ) : (
           <>
             {/* Left Column */}
@@ -191,7 +221,7 @@ function PostJobForm({ type }: { type: "easyApply" | "externalLink" }) {
               <div>
                 <input
                   type="text"
-                  placeholder="Skills"
+                  placeholder="Skills (Press enter to add)"
                   className="w-full rounded-md border border-gray-300 p-2 focus:border-none focus:ring-main"
                   value={skillInputValue}
                   onChange={(e) => setSkillInputValue(e.target.value)}
@@ -217,25 +247,17 @@ function PostJobForm({ type }: { type: "easyApply" | "externalLink" }) {
               </div>
 
               {/* Salary */}
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 gap-2">
                 <input
                   type="number"
-                  placeholder="Min Salary"
+                  placeholder="Salary"
                   className="w-full rounded-md border border-gray-300 p-2 focus:border-none focus:ring-main"
-                  value={salary.min}
+                  value={salary.salary}
                   onChange={(e) =>
-                    setSalary({ ...salary, min: e.target.value })
+                    setSalary({ ...salary, salary: e.target.value })
                   }
                 />
-                <input
-                  type="number"
-                  placeholder="Max Salary"
-                  className="w-full rounded-md border border-gray-300 p-2 focus:border-none focus:ring-main"
-                  value={salary.max}
-                  onChange={(e) =>
-                    setSalary({ ...salary, max: e.target.value })
-                  }
-                />
+
                 <select
                   className="w-full rounded-md border border-gray-300 p-2 focus:border-none focus:ring-main"
                   value={salary.currency}
@@ -296,7 +318,7 @@ function PostJobForm({ type }: { type: "easyApply" | "externalLink" }) {
               <div>
                 <input
                   type="text"
-                  placeholder="Keywords"
+                  placeholder="Keywords (Press enter to add)"
                   className="w-full rounded-md border border-gray-300 p-2 focus:border-none focus:ring-main"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
@@ -330,7 +352,9 @@ function PostJobForm({ type }: { type: "easyApply" | "externalLink" }) {
               />
 
               {/* Questions */}
-              <div className="flex items-center gap-2 py-3">
+              <div
+                className={`${type === "externalLink" ? "hidden" : "flex items-center gap-2 py-3"} `}
+              >
                 <input
                   type="checkbox"
                   disabled={type === "externalLink"}
