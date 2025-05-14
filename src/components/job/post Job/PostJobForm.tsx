@@ -6,7 +6,10 @@ import {
   LocationType,
 } from "../../../enums/index.enums";
 import { useNavigate, useParams } from "react-router-dom";
-import { usePostNewJobMutation } from "../../../services/businessDashboardApi";
+import {
+  useGetAllJobsOfBusinessQuery,
+  usePostNewJobMutation,
+} from "../../../services/businessDashboardApi";
 import { handleApiError } from "../../../utils/helpers";
 import toast from "react-hot-toast";
 import {
@@ -14,7 +17,6 @@ import {
   Iquestion,
 } from "../../../interfaces/BusinessDashboard.interfaces";
 import Loader from "../../common/Loader";
-import { useGetAllJobsQuery } from "../../../services/jobApi";
 import PostJobQuestions from "./PostJobQuestions.tsx";
 import PostJobExternalLink from "./PostJobExternalLink.tsx";
 
@@ -54,7 +56,11 @@ function PostJobForm({ type }: { type: "easyApply" | "externalLink" }) {
   const employmentType = Object.keys(EmploymentType);
 
   const [postNewJob, { isLoading }] = usePostNewJobMutation();
-  const { refetch } = useGetAllJobsQuery({});
+  const { refetch } = useGetAllJobsOfBusinessQuery({
+    id: companyId || "",
+    page: 1,
+    limit: 9,
+  });
   const navigate = useNavigate();
 
   const addKeyword = (event: React.KeyboardEvent<HTMLInputElement>) => {

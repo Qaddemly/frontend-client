@@ -183,6 +183,7 @@ export const {
   useGetJobApplicationsQuery,
   useLazyGetJobApplicationsQuery,
   useLazyGetAllJobsOfBusinessQuery,
+  useGetAllJobsOfBusinessQuery,
   useGetAllArchivedJobsOfBusinessQuery,
   useLazyGetAllArchivedJobsOfBusinessQuery,
   useUpdateJobApplicationStatusMutation,
