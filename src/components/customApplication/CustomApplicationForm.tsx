@@ -11,6 +11,8 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { IApplicationData } from "../../interfaces/CustomApplication.interfaces";
 import { useParams } from "react-router-dom";
 import MainLayout from "../../layout/MainLayout";
+import { useApplyToJobMutation } from "../../services/jobApi";
+import toast from "react-hot-toast";
 
 function CustomApplicationForm() {
   const {
@@ -77,6 +79,7 @@ function CustomApplicationForm() {
         return skills.length > 0 && languages.length > 0;
 
       case 5: // Resume
+        console.log("Resume:", resume);
         return !!resume;
 
       // case 6: Application Questions
@@ -87,10 +90,18 @@ function CustomApplicationForm() {
     }
   };
 
-  const onSubmit: SubmitHandler<IApplicationData> = (data) => {
+  const [applyToJob, { isLoading, isError, error }] = useApplyToJobMutation();
+
+  const onSubmit: SubmitHandler<IApplicationData> = async (data) => {
     setIsSubmitting(true);
     const appData = { ...data, skills, languages, experience };
     const appAnswers = hasQuestions ? answers : null;
+    if (!jobId) {
+      console.error("Job ID is missing");
+      toast.error("Job ID is required to submit the application.");
+      setIsSubmitting(false);
+      return;
+    }
 
     console.log("Submitting application:", {
       jobId,
@@ -99,8 +110,19 @@ function CustomApplicationForm() {
       appAnswers,
     });
 
-    setCurrentStep(1);
-    setIsSubmitting(false);
+    try {
+      await applyToJob({
+        id: jobId,
+      }).unwrap();
+
+      toast.success("Application submitted successfully!");
+      setCurrentStep(1);
+    } catch (err) {
+      console.error("Submission failed:", err);
+      toast.error("Failed to submit application.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -133,7 +155,8 @@ function CustomApplicationForm() {
                 totalSteps={totalSteps}
                 onNext={nextStep}
                 onPrev={prevStep}
-                onSubmit={methods.handleSubmit(onSubmit)}
+                onSubmit={handleSubmit(onSubmit)}
+                isLoading={isSubmitting || isLoading}
                 isLastStep={isLastStep}
                 isSubmitting={isSubmitting}
                 validateStep={validateStep}

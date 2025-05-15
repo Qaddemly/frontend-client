@@ -1,12 +1,12 @@
 import { IResponse } from "../interfaces/Common.interfaces";
 import {
-  IApplyToJobResponse,
   IGetAllJobsResponse,
   IGetArchivedJobApplicationsResponse,
   IGetJobApplicationsResponse,
   IGetJobDetailsResponse,
   IGetRecommendedJobs,
   ISavedJobsResponse,
+  IValidationErrorDetail,
 } from "../interfaces/Job.interfaces";
 import { apiSlice } from "./apiSlice";
 
@@ -92,14 +92,10 @@ export const jobApi = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
-    applyToJob: builder.mutation<
-      IApplyToJobResponse,
-      { id: string; resume_id: number }
-    >({
-      query: ({ resume_id, id }) => ({
-        url: `${BASE_JOB_URL}/applyToJob/${id}`,
+    applyToJob: builder.mutation<IValidationErrorDetail, { id: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_JOB_URL}/${id}/jobApplicationForm/jobApplication`,
         method: "POST",
-        body: { resume_id },
       }),
     }),
     getUserJobApplications: builder.query<
