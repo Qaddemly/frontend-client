@@ -1,5 +1,5 @@
 import { useApplication } from "../../context/ApplicationContext";
-import { FieldErrors, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { LocationType, Country } from "../../enums/index.enums";
 import Input from "../common/Input";
 import InputField from "../common/InputField";
@@ -8,13 +8,10 @@ import Button from "../common/Button";
 import StartToEndDate from "../common/StartToEndDate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlasses, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
-import {
-  useCreateExperienceMutation,
-  useDeleteExperienceMutation,
-} from "../../services/profileApi";
+import { useState, useEffect } from "react";
+import { useGetExperienceQuery } from "../../services/profileApi";
 import { IExperience } from "../../interfaces/Auth.interfaces";
-import { ICustomExperience } from "../../interfaces/CustomApplication.interfaces";
+import Loader from "../common/Loader";
 
 function ApplicationExperience() {
   const {
@@ -22,114 +19,98 @@ function ApplicationExperience() {
     formState: { errors },
     getValues,
     setValue,
-    resetField,
+    clearErrors,
+    trigger,
   } = useFormContext();
   const { setExperience, experience } = useApplication();
 
   const locationTypeValues = Object.values(LocationType);
   const countryValues = Object.values(Country);
 
-  const [createExperience] = useCreateExperienceMutation();
-  const [deleteExperience] = useDeleteExperienceMutation();
+  const { data: experienceData, isLoading } = useGetExperienceQuery({});
 
-  const transformToCustomExperience = (
-    experience: IExperience,
-  ): ICustomExperience => ({
-    id: experience.id,
-    jobTitle: experience.job_title,
-    companyName: experience.company_name,
-    location: experience.location,
-    city: "",
-    locationType: experience.location_type,
-    startDate: experience.start_date,
-    endDate: experience.end_date,
-    currentlyWorking: experience.still_working,
-  });
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [autofillOptions, setAutofillOptions] = useState<IExperience[]>([]);
+
+  useEffect(() => {
+    if (experienceData) {
+      setAutofillOptions(experienceData.experiences || []);
+    }
+  }, [experienceData]);
 
   const handleAddExperience = async () => {
-    const newExperience = {
-      jobTitle: getValues("experience.jobTitle"),
-      companyName: getValues("experience.companyName"),
-      location: getValues("experience.location"),
-      city: getValues("experience.city") || "",
-      locationType: getValues("experience.locationType"),
-      startDate: getValues("experience.startDate"),
-      endDate: getValues("experience.endDate"),
-      employmentType: getValues("experience.employmentType"),
-      stillWorking: getValues("experience.stillWorking") || false,
+    const isValid = await trigger("experience");
+    if (!isValid) {
+      setErrorMessage("Please fill in all fields correctly.");
+      return;
+    }
+
+    const jobTitle = getValues("experience.jobTitle");
+    const companyName = getValues("experience.companyName");
+    const location = getValues("experience.location");
+    // const city = getValues("experience.city");
+    const locationType = getValues("experience.locationType");
+    const startDate = getValues("experience.startDate");
+    const endDate = getValues("experience.endDate");
+    const stillWorking = getValues("experience.stillWorking");
+    const employmentType = getValues("experience.employmentType");
+
+    if (
+      !jobTitle ||
+      !companyName ||
+      !location ||
+      !locationType ||
+      !startDate ||
+      !endDate
+    ) {
+      setErrorMessage("Please fill in all fields.");
+      return;
+    }
+
+    const newExperience: IExperience = {
+      id: Date.now(),
+      job_title: jobTitle,
+      company_name: companyName,
+      location,
+      // city,
+      location_type: locationType,
+      start_date: startDate,
+      end_date: endDate,
+      still_working: stillWorking || false,
+      employment_type: employmentType,
+      // account_id: 0,
     };
 
-    console.log("newExperience:", newExperience);
+    setExperience([...experience, newExperience]);
 
-    try {
-      const res = await createExperience({ data: newExperience }).unwrap();
-
-      const transformedExperience = transformToCustomExperience(res.experience);
-
-      setExperience((prev) => [...prev, transformedExperience]);
-
-      resetField("experience.jobTitle");
-      resetField("experience.companyName");
-      resetField("experience.location");
-      resetField("experience.city");
-      resetField("experience.locationType");
-      resetField("experience.startDate");
-      resetField("experience.endDate");
-    } catch (error) {
-      console.error("Failed to add experience:", error);
-    }
+    clearErrors("experience");
+    setErrorMessage("");
+    setValue("experience.jobTitle", "");
+    setValue("experience.companyName", "");
+    setValue("experience.location", "");
+    setValue("experience.city", "");
+    setValue("experience.locationType", "");
+    setValue("experience.startDate", "");
+    setValue("experience.endDate", "");
   };
 
-  const handleRemoveExperience = async (id: number | string) => {
-    try {
-      await deleteExperience({ id }).unwrap();
-      setExperience((prev) => prev.filter((exp) => exp.id !== id));
-    } catch (error) {
-      console.error("Failed to delete experience:", error);
-    }
+  const handleRemoveExperience = (id: number) => {
+    setExperience((prev: IExperience[]) => prev.filter((exp) => exp.id !== id));
   };
 
-  const autofillOptions = [
-    {
-      label: "Software Engineer at Google",
-      data: {
-        jobTitle: "Software Engineer",
-        companyName: "Google",
-        location: "United States",
-        city: "Mountain View",
-        locationType: "Onsite",
-        startDate: { month: "06", year: "2021" },
-        endDate: { month: "04", year: "2023" },
-      },
-    },
-    {
-      label: "Data Analyst at Microsoft",
-      data: {
-        jobTitle: "Data Analyst",
-        companyName: "Microsoft",
-        location: "United States",
-        city: "Redmond",
-        locationType: "Hybrid",
-        startDate: { month: "01", year: "2020" },
-        endDate: { month: "12", year: "2022" },
-      },
-    },
-  ];
-
-  const [showDropdown, setShowDropdown] = useState(false);
-
-  const handleAutofill = (data) => {
-    setValue("experience.jobTitle", data.jobTitle);
-    setValue("experience.companyName", data.companyName);
+  const handleAutofill = (data: IExperience) => {
+    setValue("experience.jobTitle", data.job_title);
+    setValue("experience.companyName", data.company_name);
     setValue("experience.location", data.location);
-    setValue("experience.city", data.city);
-    setValue("experience.locationType", data.locationType);
-    setValue("experience.startDate.month", data.startDate.month);
-    setValue("experience.startDate.year", data.startDate.year);
-    setValue("experience.endDate.month", data.endDate.month);
-    setValue("experience.endDate.year", data.endDate.year);
+    // setValue("experience.city", data.city);
+    setValue("experience.locationType", data.location_type);
+    setValue("experience.startDate", data.start_date);
+    setValue("experience.endDate", data.end_date);
     setShowDropdown(false);
   };
+
+  if (isLoading) return <Loader />;
 
   return (
     <>
@@ -151,16 +132,16 @@ function ApplicationExperience() {
                   key={index}
                   type="button"
                   className="block w-full px-4 py-2 text-left hover:bg-gray-100"
-                  onClick={() => handleAutofill(option.data)}
+                  onClick={() => handleAutofill(option)}
                 >
-                  {option.label}
+                  {option.job_title} - {option.company_name}
                 </button>
               ))}
             </div>
           )}
         </div>
 
-        <InputField errors={errors} id="customJobTitle">
+        <InputField errors={errors} id="jobTitle">
           <Input
             register={register}
             name={"experience.jobTitle"}
@@ -172,7 +153,7 @@ function ApplicationExperience() {
           />
         </InputField>
 
-        <InputField errors={errors.experience as FieldErrors} id="companyName">
+        <InputField errors={errors} id="companyName">
           <Input
             register={register}
             name={"experience.companyName"}
@@ -193,11 +174,7 @@ function ApplicationExperience() {
             ))}
           </Select>
 
-          <InputField
-            errors={errors.experience as FieldErrors}
-            id="city"
-            props={{ className: "w-full" }}
-          >
+          <InputField errors={errors} id="city" props={{ className: "w-full" }}>
             <Input
               register={register}
               name={"experience.city"}
@@ -211,8 +188,8 @@ function ApplicationExperience() {
         </div>
 
         <Select
-          name="experience.locationType"
           register={register}
+          name="experience.locationType"
           id="locationType"
         >
           {locationTypeValues.map((value) => (
@@ -235,28 +212,34 @@ function ApplicationExperience() {
         >
           Add Experience
         </Button>
-      </div>
 
-      {experience?.length ? (
-        <div className="mt-4">
-          <h3 className="mb-2 text-base font-medium">Experiences Added</h3>
-          <div className="flex flex-row flex-wrap gap-2">
-            {experience.map((exp) => (
-              <div
-                key={exp.id}
-                className="flex w-fit flex-row items-center justify-between gap-3 rounded-full bg-green-200 p-3 text-white"
-              >
-                <p>{exp.jobTitle}</p>
-                <FontAwesomeIcon
-                  icon={faXmark}
-                  className="cursor-pointer"
-                  onClick={() => handleRemoveExperience(exp.id)}
-                />
-              </div>
-            ))}
+        {errorMessage && (
+          <p className="text-red-600 mt-2 text-sm">{errorMessage}</p>
+        )}
+
+        {experience.length > 0 && (
+          <div className="mt-4">
+            <h3 className="mb-2 text-base font-medium">Experiences Added</h3>
+            <div className="flex flex-row flex-wrap gap-2">
+              {experience.map((exp) => (
+                <div
+                  key={exp.id}
+                  className="flex w-fit flex-row items-center justify-between gap-3 rounded-full bg-green-200 p-3 text-white"
+                >
+                  <p>
+                    {exp.job_title} - {exp.company_name}
+                  </p>
+                  <FontAwesomeIcon
+                    icon={faXmark}
+                    className="cursor-pointer"
+                    onClick={() => handleRemoveExperience(exp.id)}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      ) : null}
+        )}
+      </div>
     </>
   );
 }

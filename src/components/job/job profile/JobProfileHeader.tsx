@@ -101,12 +101,19 @@ function JobProfileHeader({ job }: { job: IJob }) {
           <Button
             className="rounded-lg px-6 py-3 text-xl text-white"
             onClick={() => {
-              // setClose(true);
-              navigate("/apply/custom/1"); //temp until api linked
+              const isExternalLink = true;
+              const externalLink = "http://example.com";
+
+              if (isExternalLink) {
+                window.location.href = externalLink;
+              } else {
+                navigate("/apply/custom/1");
+              }
             }}
           >
             Apply Now <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
           </Button>
+
           {!job?.isSaved ? (
             <button onClick={(e) => handleSaveJob(e)}>
               <FontAwesomeIcon
