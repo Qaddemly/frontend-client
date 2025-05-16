@@ -367,22 +367,24 @@ function CompanyJobs() {
                 <div className="flex flex-col gap-5 lg:gap-9">
                   <Button
                     className="px-2"
-                    onClick={() =>
+                    onClick={() => {
                       navigate(
                         `/businessDashboard/companyJobs/${companyId}/active/postJobEasyApply`,
-                      )
-                    }
+                      );
+                      setShowModal(false);
+                    }}
                   >
                     <p className="text-2xl sm:text-3xl">Easy Apply</p>
                     <p className="text-xl sm:text-2xl">(Our website)</p>
                   </Button>
                   <Button
                     className="px-2"
-                    onClick={() =>
+                    onClick={() => {
                       navigate(
                         `/businessDashboard/companyJobs/${companyId}/active/postJobExternalLink`,
-                      )
-                    }
+                      );
+                      setShowModal(false);
+                    }}
                   >
                     <p className="text-2xl sm:text-3xl">External Website</p>
                     <p className="text-xl sm:text-2xl">
