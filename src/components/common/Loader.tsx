@@ -1,7 +1,13 @@
-function Loader({ forSection = false }: { forSection?: boolean }) {
+function Loader({
+  forSection = false,
+  bgWhite = false,
+}: {
+  forSection?: boolean;
+  bgWhite?: boolean;
+}) {
   return (
     <div
-      className={`bg-slate-200/20 inset-0 z-50 flex items-center justify-center ${forSection ? "" : "absolute min-h-screen backdrop-blur-sm"}`}
+      className={`${bgWhite ? "bg-white" : "bg-slate-200/20"} inset-0 z-50 flex items-center justify-center ${forSection ? "" : "absolute min-h-screen backdrop-blur-sm"}`}
     >
       <div className="loader">
         <div className="flex items-center justify-center">

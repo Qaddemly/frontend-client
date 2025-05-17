@@ -32,7 +32,7 @@ function Navbar() {
   const { user } = useSelector((state: RootState) => state.user);
   const { data } = useGetUserBusinessesQuery(undefined, {
     skip: Object.entries(user).length === 0,
-  }); // this api can be handled with getMe api instead (ask backend)
+  }); // TODO: this api can be handled with getMe api instead (ask backend)
   const [showMenu, setShowMenu] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const divRef = useRef<HTMLDivElement>(null);
