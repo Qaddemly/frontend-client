@@ -11,7 +11,7 @@ function ApplicationSkills() {
   const {
     register,
     formState: { errors },
-  } = useFormContext();
+  } = useFormContext(); // register
   const { setSkills, setLanguages, skills, languages } = useApplication();
   const [skillInput, setSkillInput] = useState("");
   const [languageInput, setLanguageInput] = useState("");

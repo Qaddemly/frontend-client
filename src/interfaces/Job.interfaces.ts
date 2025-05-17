@@ -104,21 +104,3 @@ export interface IGetRecommendedJobs {
   success: boolean;
   recommendedJobs: IJob[];
 }
-export interface IAnswer {
-  questionId: number;
-  answer: string;
-}
-export interface IValidationErrorDetail {
-  type: string;
-  value: IAnswer[];
-  msg: string;
-  path: string;
-  location: string;
-}
-
-export interface ErrorResponse {
-  status: string;
-  name: string;
-  message: string;
-  details: IValidationErrorDetail[];
-}
