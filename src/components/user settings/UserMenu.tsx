@@ -13,6 +13,7 @@ import { useLogoutMutation } from "../../services/authApi";
 import toast from "react-hot-toast";
 import { ReactNode, useRef, useState } from "react";
 import { handleApiError } from "../../utils/helpers";
+import { socket } from "../../services/socket.ts";
 
 type UserMenuProps = {
   children: ReactNode;
@@ -35,6 +36,7 @@ function UserMenu({ children, type }: UserMenuProps) {
       const res = await logout().unwrap();
       toast.success(res.message);
       navigate("/login");
+      socket.disconnect();
     } catch (err) {
       handleApiError(err);
     }

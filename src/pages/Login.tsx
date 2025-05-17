@@ -11,25 +11,25 @@ import { useLoginMutation } from "../services/authApi";
 import toast from "react-hot-toast";
 import { ILoginInputs } from "../interfaces/Auth.interfaces";
 import Loader from "../components/common/Loader";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setUser } from "../components/auth/UserSlice";
-import { RootState } from "../store/store";
 import InputField from "../components/common/InputField";
 import Button from "../components/common/Button";
 import { handleApiError } from "../utils/helpers";
+import { socket } from "../services/socket.ts";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [login, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user } = useSelector((state: RootState) => state.user);
-  const createAtMin = new Date(user.created_at)
-    .toTimeString()
-    .split(" ")[0]
-    .split(":")[1];
-  const now = new Date();
-  const currentMin = now.getMinutes();
+  // const { user } = useSelector((state: RootState) => state.user);
+  // const createAtMin = new Date(user.created_at)
+  //   .toTimeString()
+  //   .split(" ")[0]
+  //   .split(":")[1];
+  // const now = new Date();
+  // const currentMin = now.getMinutes();
 
   const {
     register,
@@ -40,10 +40,21 @@ function Login() {
   const onSubmit: SubmitHandler<ILoginInputs> = async (data) => {
     try {
       const res = await login(data).unwrap();
+
       toast.success(`Welcome ${res.user.first_name}`);
-      if (currentMin - Number(createAtMin) < 10) navigate("/userInfo");
-      else navigate("/");
       dispatch(setUser(res.user));
+
+      // Connect to socket (if not already connected)
+      if (!socket.connected) {
+        socket.connect();
+      }
+
+      // Emit "connect_user" once socket is connected
+      socket.once("connect", () => {
+        socket.emit("connect_user", res.user.id);
+      });
+
+      navigate("/");
     } catch (err) {
       handleApiError(err);
     }

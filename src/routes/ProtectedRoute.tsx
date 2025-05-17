@@ -17,28 +17,26 @@ function ProtectedRoute({ children }: { children: ReactNode }) {
   const hasEmitted = useRef(false);
 
   useEffect(() => {
-    if (data) {
-      dispatch(setUser(data.user));
+    if (!data?.user?.id || hasEmitted.current) return;
+    dispatch(setUser(data.user));
 
-      // handle user connection to socket
-      const handleConnect = () => {
-        if (!hasEmitted.current) {
-          socket.emit("connect_user", data?.user?.id);
-          hasEmitted.current = true;
-        }
-      };
-
-      if (socket.connected) {
-        handleConnect();
-      } else {
-        socket.on("connect", handleConnect);
+    const handleConnect = () => {
+      if (!hasEmitted.current) {
+        socket.emit("connect_user", data.user.id);
+        hasEmitted.current = true;
       }
+    };
 
-      return () => {
-        socket.off("connect", handleConnect);
-      };
+    if (socket.connected) {
+      handleConnect();
+    } else {
+      socket.once("connect", handleConnect);
     }
-  }, [data, dispatch]);
+
+    return () => {
+      socket.off("connect", handleConnect);
+    };
+  }, [data?.user?.id]);
 
   if (location.pathname !== "/")
     if (!user || isError) return <Navigate to="/login" replace />;
