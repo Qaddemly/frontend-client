@@ -54,24 +54,16 @@ function CustomApplicationForm() {
           "education.endDate",
         ]);
 
-      case 3: {
-        // Experience
-        if (experience.length === 0) return false;
-        const experienceValidations = await Promise.all(
-          experience.map((_, index) =>
-            methods.trigger([
-              `experience.${index}.jobTitle`,
-              `experience.${index}.companyName`,
-              `experience.${index}.location`,
-              `experience.${index}.city`,
-              `experience.${index}.locationType`,
-              `experience.${index}.startDate`,
-              `experience.${index}.endDate`,
-            ]),
-          ),
-        );
-        return experienceValidations.every((valid) => valid);
-      }
+      case 3: // Experience
+        return await methods.trigger([
+          "experience.jobTitle",
+          "experience.companyName",
+          "experience.location",
+          "experience.city",
+          "experience.locationType",
+          "experience.startDate",
+          "experience.endDate",
+        ]);
 
       case 4: // Skills & Languages
         return skills.length > 0 && languages.length > 0;

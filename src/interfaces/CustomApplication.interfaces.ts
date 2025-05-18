@@ -1,7 +1,7 @@
 export interface IApplicationData {
   personal?: ICustomPersonal;
   education?: ICustomEducation;
-  experience?: ICustomExperience[];
+  experience?: ICustomExperience;
   skills?: string[];
   languages?: string[];
   resume?: File | null;
@@ -35,4 +35,5 @@ export interface ICustomExperience {
   startDate: string;
   endDate?: string;
   currentlyWorking: boolean;
+  employment_type: string;
 }

@@ -1,6 +1,5 @@
 import Button from "../common/Button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+
 import { IApplicationData } from "../../interfaces/CustomApplication.interfaces";
 
 interface SliderControllersProps {
