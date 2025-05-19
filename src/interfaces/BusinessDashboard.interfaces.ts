@@ -22,10 +22,10 @@ export interface IPostNewJobInputs {
   title: string;
   description: string;
   location: {
-    country: LocationType;
+    country: Country;
     city: string;
   };
-  location_type: string;
+  location_type: LocationType;
   salary: number;
   employee_type: string;
   keywords: string[];

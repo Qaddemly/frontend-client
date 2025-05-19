@@ -32,10 +32,7 @@ function PostJobForm({ type }: { type: "easyApply" | "externalLink" }) {
   });
   const [employeeType, setEmployeeType] = useState("Employee type");
   const [keywords, setKeywords] = useState<string[]>([]);
-  const [
-    experience,
-    //  setExperience
-  ] = useState(2);
+  const [experience, setExperience] = useState("");
   const [skills, setSkills] = useState<string[]>([]);
   const [city, setCity] = useState("");
 
@@ -120,7 +117,7 @@ function PostJobForm({ type }: { type: "easyApply" | "externalLink" }) {
       salary: parseInt(salary.salary), // TODO : currency, other currency
       employee_type: employeeType,
       keywords,
-      experience: 2,
+      experience: parseInt(experience),
       business_id: companyId ? parseInt(companyId) : undefined,
       skills,
       has_extra_link_application: type === "externalLink",
@@ -307,18 +304,13 @@ function PostJobForm({ type }: { type: "easyApply" | "externalLink" }) {
                 ))}
               </select>
               {/* Job Experience */}
-              {/* <select
-            className="w-full rounded-md border border-gray-300 p-2 focus:border-main"
-            value={experience}
-            onChange={(e) => setExperience(e.target.value)}
-          >
-            <option>Job Experience</option>
-            <option>Student</option>
-            <option>Fresh Graduate (Junior)</option>
-            <option>2-5 years</option>
-            <option>5-10 years (Senior)</option>
-            <option>10+ years</option>
-          </select> */}
+              <input
+                type="number"
+                placeholder="Experience"
+                className="w-full rounded-md border border-gray-300 p-2 focus:border-none focus:ring-main"
+                onChange={(e) => setExperience(e.target.value)}
+                value={experience}
+              />
 
               {/* Keywords */}
               <div>
@@ -363,7 +355,6 @@ function PostJobForm({ type }: { type: "easyApply" | "externalLink" }) {
               >
                 <input
                   type="checkbox"
-                  disabled={type === "externalLink"}
                   checked={addQuestions}
                   onChange={(e) => setAddQuestions(e.target.checked)}
                 />
