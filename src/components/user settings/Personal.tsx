@@ -45,18 +45,18 @@ function Personal() {
   const submitForm: SubmitHandler<IUser> = async (data) => {
     const formData = createFormData(data as unknown as Record<string, unknown>);
 
-    if (Object.values(data).some((value) => value === null)) {
-      toast.error("No changes detected or invalid data");
-    } else {
-      try {
-        const res = await updatePersonal({ data: formData }).unwrap();
-        console.log(res);
-        toast.success("Profile updated successfully");
-        refetch();
-      } catch (error) {
-        handleApiError(error);
-      }
+    // if (Object.values(data).some((value) => value === null)) {
+    //   toast.error("No changes detected or invalid data");
+    // } else {
+    try {
+      const res = await updatePersonal({ data: formData }).unwrap();
+      console.log(res);
+      toast.success("Profile updated successfully");
+      refetch();
+    } catch (error) {
+      handleApiError(error);
     }
+    // }
   };
 
   useEffect(() => {

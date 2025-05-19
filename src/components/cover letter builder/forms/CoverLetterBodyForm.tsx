@@ -6,7 +6,10 @@ import FormPreviewSection from "../../resume builder/forms/FormPreviewSection.ts
 import RichTextEditor from "../../common/RichTextEditor.tsx";
 import { useCoverLetter } from "../../../context/CoverLetterContext.tsx";
 import { FormMode } from "../../../interfaces/ResumeBuilder.interfaces.ts";
-import { useUpdateCoverLetterMutation } from "../../../services/coverLetterBuilderApi.ts";
+import {
+  useGetCoverLettersQuery,
+  useUpdateCoverLetterMutation,
+} from "../../../services/coverLetterBuilderApi.ts";
 import CoverLetterFormButtons from "../CoverLetterFormButtons.tsx";
 
 function CoverLetterBodyForm({ mode }: { mode: FormMode }) {
@@ -22,6 +25,7 @@ function CoverLetterBodyForm({ mode }: { mode: FormMode }) {
   );
 
   const [updateCoverLetter] = useUpdateCoverLetterMutation();
+  const { refetch } = useGetCoverLettersQuery();
 
   function handleOnChange(e: ContentEditableEvent) {
     const { value } = e.target;
@@ -49,6 +53,7 @@ function CoverLetterBodyForm({ mode }: { mode: FormMode }) {
         mode,
       );
       setStatus(["normal"]);
+      refetch();
     } catch (error) {
       handleApiError(error);
     }

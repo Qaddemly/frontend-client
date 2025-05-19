@@ -1,7 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useCoverLetter } from "../../../context/CoverLetterContext.tsx";
 import { useState } from "react";
-import { useUpdateCoverLetterMutation } from "../../../services/coverLetterBuilderApi.ts";
+import {
+  useGetCoverLettersQuery,
+  useUpdateCoverLetterMutation,
+} from "../../../services/coverLetterBuilderApi.ts";
 import { handleApiError, handleResumeAction } from "../../../utils/helpers.ts";
 import { FormMode } from "../../../interfaces/ResumeBuilder.interfaces.ts";
 import { IRecipientDetails } from "../../../interfaces/CoverLetter.interfaces.ts";
@@ -30,7 +33,9 @@ function CoverLetterRecipientForm({ mode }: { mode: FormMode }) {
   const [recipientAddress, setRecipientAddress] = useState(
     mode === "edit" ? coverLetterInfo.personal.recipientAddress : "",
   );
+
   const [updateCoverLetter] = useUpdateCoverLetterMutation();
+  const { refetch } = useGetCoverLettersQuery();
 
   function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -75,6 +80,7 @@ function CoverLetterRecipientForm({ mode }: { mode: FormMode }) {
         mode,
       );
       setStatus(["normal"]);
+      refetch();
     } catch (error) {
       handleApiError(error);
     }
