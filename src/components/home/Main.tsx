@@ -231,7 +231,7 @@ function Main() {
                     onClick={() => paginate(number)}
                     className={`mx-1 rounded px-3 py-1 ${
                       currentPage === number
-                        ? "bg-blue-500 text-white"
+                        ? "bg-main text-white"
                         : "bg-gray-200 hover:bg-gray-300"
                     }`}
                   >

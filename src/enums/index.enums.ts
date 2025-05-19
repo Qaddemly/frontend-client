@@ -494,4 +494,5 @@ export enum NotificationType {
   RecommendedJobPosted = "RecommendedJobPosted",
   JobApplicationStatusUpdated = "JobApplicationStatusUpdated",
   NewMessage = "NewMessage",
+  messageSentToBusiness = "messageSentToBusiness",
 }
