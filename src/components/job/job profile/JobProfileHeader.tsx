@@ -18,6 +18,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { useGetAllResumesQuery } from "../../../services/profileApi";
+import BackButton from "../../common/BackButton";
 
 function JobProfileHeader({ job }: { job: IJob }) {
   const [close, setClose] = useState(false);
@@ -71,6 +72,7 @@ function JobProfileHeader({ job }: { job: IJob }) {
   if (loadingSaveJob || loadingUnSaveJob || loadingApplyJob) return <Loader />;
   return (
     <div className="flex w-full flex-col items-center bg-light-secondary py-4">
+      <BackButton />
       <div className="mx-5 flex w-full flex-col items-center justify-evenly gap-2 px-5 py-10 sm:px-20 md:mx-0 md:items-start md:px-52 lg:px-[15rem] xl:px-[25rem]">
         <div className="flex w-full items-center justify-center md:justify-start">
           <img

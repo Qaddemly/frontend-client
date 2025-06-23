@@ -19,6 +19,7 @@ import { useCreateNewChatMutation } from "../../services/messagesApi.ts";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store.ts";
 import { useNavigate } from "react-router-dom";
+import BackButton from "../common/BackButton.tsx";
 
 function CompanyProfileHeader({
   data,
@@ -87,7 +88,8 @@ function CompanyProfileHeader({
   }
   return (
     <div className="mx-auto flex w-full flex-col items-center justify-between bg-light-secondary">
-      {/* Log, Info and Actions */}
+      {/* Logo, Info and Actions */}
+      <BackButton />
       <div className="mx-auto flex w-full max-w-[1000px] flex-col items-center justify-evenly p-6 md:flex-row md:p-12">
         {/* Logo and Info Section */}
         <div className="flex flex-col items-center gap-6 md:flex-row md:gap-12">

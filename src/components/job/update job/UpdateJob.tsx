@@ -29,6 +29,7 @@ function UpdateJob() {
   } = useForm<IUpdateJobInputs>(formSettings);
 
   const onSubmit: SubmitHandler<IUpdateJobInputs> = async (data) => {
+    //TODO GAD from ammar: I think better use IPostNewJobInputs or edit the IUpdateJobInputs interface
     try {
       const res = await updateJob({ data, id: jobId || "" }).unwrap();
       console.log(res);
@@ -43,9 +44,12 @@ function UpdateJob() {
   return (
     <div className="my-20 flex flex-col items-center justify-center">
       <p className="my-10 text-3xl font-medium">Update job</p>
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-5 flex gap-5">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="mt-5 flex flex-col gap-5 lg:flex-row"
+      >
         {/* left side */}
-        <div className="flex w-[25rem] flex-col gap-3 border-r border-r-gray-100 pr-8">
+        <div className="flex w-[25rem] flex-col gap-3">
           <InputField errors={errors} id="title">
             <Input
               register={register}
@@ -81,12 +85,10 @@ function UpdateJob() {
                 </option>
               ))}
             </Select>
-            {/* <InputField ="City" id="address.city" >
+            {/* <InputField errors={errors} id="address.city">
               <Input
                 register={register}
-                options={
-                  { required: "this field is required" }
-                }
+                options={{ required: "this field is required" }}
                 name="address.city"
                 props={{
                   type: "text",
