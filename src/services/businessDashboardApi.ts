@@ -23,7 +23,7 @@ export const businessDashboardApi = apiSlice.injectEndpoints({
       { id: string; data: FormData }
     >({
       query: ({ id, data }) => ({
-        url: `${BASE_BUSINESS_URL}/myBusiness/dashboard/edit/${id}`,
+        url: `${BASE_BUSINESS_URL}/myBusiness/dashboard/settings/${id}`,
         method: "PUT",
         body: data,
       }),
