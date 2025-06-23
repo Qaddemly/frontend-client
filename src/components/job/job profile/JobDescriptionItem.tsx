@@ -17,7 +17,16 @@ function JobDescriptionItem({ title, content }: JobDescriptionItemProps) {
         ) : (
           ""
         )}
-        {content}
+        {title === "Experience" && content === 0
+          ? "None"
+          : title === "Employment Type" && content === "SelfEmployed"
+            ? "Self Employed"
+            : content}
+        {title === "Experience" && content === 1
+          ? " year"
+          : title === "Experience" && typeof content === "number" && content > 1
+            ? " years"
+            : ""}
       </p>
       <hr className="border-gray-200 pb-2" />
     </div>
