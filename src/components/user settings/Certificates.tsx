@@ -32,7 +32,11 @@ function Certificates() {
     useCreateCertificateMutation();
   const [updateCertificate, { isLoading: isLoading2 }] =
     useUpdateCertificateMutation();
-  const { data, isLoading: isLoading3 } = useGetCertificateQuery({
+  const {
+    data,
+    isLoading: isLoading3,
+    refetch: refetchCertificates,
+  } = useGetCertificateQuery({
     id: certificateId || "",
   });
   const certificate = data?.certificate;
@@ -46,6 +50,7 @@ function Certificates() {
           id: certificateId || "",
         }).unwrap();
         toast.success("Certificate updated successfully");
+        refetchCertificates();
       } catch (error) {
         handleApiError(error);
       }
@@ -61,6 +66,7 @@ function Certificates() {
           await createCertificate({ certificates: formData }).unwrap();
           toast.success("Certificate created successfully");
           navigate("/userSettings/profile/certificates");
+          refetchCertificates();
         } catch (error) {
           handleApiError(error);
         }

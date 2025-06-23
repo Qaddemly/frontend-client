@@ -9,7 +9,7 @@ import { IUpdateExperienceInputs } from "../../interfaces/Profile.interfaces";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   useCreateExperienceMutation,
-  useGetUserQuery,
+  useGetExperienceQuery,
   useUpdateExperienceMutation,
 } from "../../services/profileApi";
 import { useDispatch, useSelector } from "react-redux";
@@ -39,7 +39,7 @@ function Experience() {
   const [updateExperience, { isLoading: isLoading2 }] =
     useUpdateExperienceMutation();
 
-  const { refetch } = useGetUserQuery();
+  const { refetch } = useGetExperienceQuery({});
 
   const employmentTypeValues = Object.keys(EmploymentType);
   const locationTypeValues = Object.keys(LocationType);
@@ -55,6 +55,7 @@ function Experience() {
         toast.success("Profile updated successfully");
         navigate("/userSettings/profile/experience");
         dispatch(updateUserExperience(res.experience));
+        refetch();
       } catch (error) {
         handleApiError(error);
       }

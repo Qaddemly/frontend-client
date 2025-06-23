@@ -101,27 +101,31 @@ function CompanyProfileHeader({
           </div>
 
           <div className="text-center md:text-left">
-            {/* need to align center in the y axis */}
             <h1 className="text-xl font-semibold text-gray-800 md:text-2xl">
               {data?.name} {/* Google Inc. */}
             </h1>
-            {/* no rating in backend response */}
-            <span className="text-lg font-medium">
-              {data?.reviewsRatingsQuantity}
-            </span>
+
             <div className="mt-2 flex items-center justify-center gap-2 md:justify-start">
-              <span>
-                <FontAwesomeIcon icon={faStarFilled} />
-                <FontAwesomeIcon icon={faStarFilled} />
-                <FontAwesomeIcon icon={faStarFilled} />
-                <FontAwesomeIcon icon={faStarHalfStroke} />
-                <FontAwesomeIcon icon={faStar} />
+              <span className="text-yellow-400 flex">
+                {[1, 2, 3, 4, 5].map((star) => {
+                  const rating = data?.reviewsRatingsAverage || 0;
+                  if (rating >= star) {
+                    return <FontAwesomeIcon key={star} icon={faStarFilled} />;
+                  } else if (rating >= star - 0.5) {
+                    return (
+                      <FontAwesomeIcon key={star} icon={faStarHalfStroke} />
+                    );
+                  } else {
+                    return <FontAwesomeIcon key={star} icon={faStar} />;
+                  }
+                })}
               </span>
               <span className="text-gray-600">
                 {data?.reviewsRatingsQuantity === 0
                   ? "No Rating"
-                  : data?.reviewsRatingsQuantity}
-                {/* <= 1  ? "review" : "reviews" */}
+                  : `${data?.reviewsRatingsAverage?.toFixed(1)} (${data?.reviewsRatingsQuantity} ${
+                      data?.reviewsRatingsQuantity === 1 ? "review" : "reviews"
+                    })`}
               </span>
             </div>
           </div>
