@@ -26,20 +26,14 @@ function MultiSelect({
       </label>
       <div className="flex flex-wrap justify-center gap-2">
         {types.map((type) => (
-          <button
+          <label
             key={type}
             className={`flex items-center gap-2 rounded-lg px-3 py-1 text-sm font-medium text-gray-700 transition`}
             onClick={() => toggleSelection(type)}
           >
-            <div
-              className={`flex h-5 w-5 items-center justify-center rounded border ${
-                selectedTypes.includes(type)
-                  ? "border-main bg-main"
-                  : "border-gray-200"
-              }`}
-            />
+            <input type="checkbox" className="accent-main" />
             {type}
-          </button>
+          </label>
         ))}
       </div>
     </div>
