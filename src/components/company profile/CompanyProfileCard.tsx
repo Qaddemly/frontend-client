@@ -10,7 +10,11 @@ function CompanyProfileCard({ title, description }: CompanyProfileCardProps) {
         className={`text-left text-lg font-medium text-gray-700 ${description?.includes("Over") ? "font-normal" : ""}`}
         // (Over,More than)  ينفع اخلي الستايل علي الكلمة اللي عايزها بس؟
       >
-        {description}
+        {title === "Website" ? (
+          <a href={description}>{description}</a>
+        ) : (
+          description
+        )}
       </h3>
       <p className="text-left text-sm text-gray-400">{title}</p>
     </div>

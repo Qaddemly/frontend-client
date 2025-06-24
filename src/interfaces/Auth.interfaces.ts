@@ -155,6 +155,15 @@ export interface ISignupInputsStep2 {
   lastName: string;
   password: string;
   confirmPassword: string;
+  date_of_birth: string;
+  address: {
+    country: Country;
+    city: string;
+  };
+  phone: {
+    country_code: Prefixes;
+    number: number;
+  };
 }
 
 export interface ISignupInputs extends ISignupInputsStep1, ISignupInputsStep2 {}

@@ -52,6 +52,7 @@ function Education() {
         toast.success("Education updated successfully");
         navigate("/userSettings/profile/education");
         dispatch(updateUserEducation(res.education));
+        refetchEducations();
       } catch (error) {
         handleApiError(error);
       }

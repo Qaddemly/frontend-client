@@ -21,6 +21,7 @@ export interface IJob {
   location_type: string;
   skills: string[];
   salary: number;
+  currency: string;
   employee_type: string;
   keywords: string[];
   experience: number;
