@@ -5,79 +5,76 @@ import StartToEndDate from "../common/StartToEndDate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlasses, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import { useCreateEducationMutation } from "../../services/profileApi";
 import { IEducation } from "../../interfaces/Auth.interfaces";
-import { IApplicationData } from "../../interfaces/CustomApplication.interfaces";
 import { useGetEducationQuery } from "../../services/profileApi";
 import Button from "../common/Button";
+import { useApplication } from "../../context/ApplicationContext";
+import { ICustomEducation } from "../../interfaces/CustomApplication.interfaces";
 
 function ApplicationEducation() {
   const {
     register,
     setValue,
-    handleSubmit,
+    getValues,
     formState: { errors },
   } = useFormContext();
   const { data: educationData, isLoading } = useGetEducationQuery({});
-  const [educations, setEducations] = useState<IEducation[]>([]);
-
-  const [createEducation] = useCreateEducationMutation();
+  const { educations, setEducations } = useApplication();
   const [showDropdown, setShowDropdown] = useState(false);
-  // const toggleDropdown = () => setShowDropdown((prev) => !prev);
-  // const autofillProfile = educationData?.educations?.[0];
 
   const handleAutofill = (edu: IEducation) => {
     setValue("education.university", edu.university || "");
     setValue("education.fieldOfStudy", edu.field_of_study || "");
     setValue("education.gpa", String(edu.gpa || ""));
-    setValue("education.startDate.month", edu.start_date || "");
-
-    setValue("education.endDate.month", edu.end_date || "");
-
+    setValue("education.startDate", edu.start_date || "");
+    setValue("education.endDate", edu.end_date || "");
     setShowDropdown(false);
   };
-  const handleAddExperience = () => {
-    handleSubmit(onSubmit)();
+
+  const handleAddEducation = () => {
+    const edu = getValues("education");
+
+    if (
+      !edu.university ||
+      !edu.fieldOfStudy ||
+      !edu.gpa ||
+      !edu.startDate ||
+      !edu.endDate
+    )
+      return;
+
+    const newEducation: ICustomEducation = {
+      id: educations.length + 1,
+      university: edu.university,
+      fieldOfStudy: edu.fieldOfStudy,
+      gpa: edu.gpa,
+      startDate: edu.startDate,
+      endDate: edu.endDate,
+    };
+
+    setEducations((prev) => [...prev, newEducation]);
+
+    setValue("education.university", "");
+    setValue("education.fieldOfStudy", "");
+    setValue("education.gpa", "");
+    setValue("education.startDate", "");
+    setValue("education.endDate", "");
   };
 
   const handleRemoveEducation = (id: number) => {
     setEducations((prev) => prev.filter((edu) => edu.id !== id));
   };
 
-  const onSubmit = async (data: IApplicationData) => {
-    const education: IEducation = {
-      university: data.education?.university || "",
-      field_of_study: data.education?.fieldOfStudy || "",
-      gpa: parseFloat(data.education?.gpa || ""),
-      start_date: data.education?.startDate || "",
-      end_date: data.education?.endDate || "",
-      id: 0,
-      account_id: 0,
-    };
-
-    try {
-      await createEducation({ data: education }).unwrap();
-      setEducations((prev) => [...prev, education]);
-
-      console.log("Education added successfully!");
-    } catch (error) {
-      console.error("Error adding education:", error);
-      console.log("Something went wrong.");
-    }
-  };
   const educationList = educationData?.educations ?? [];
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-4 text-left"
-    >
+    <>
       <div className="relative mx-2 mb-4 flex items-center justify-end">
         {!isLoading && educationList.length > 0 && (
           <button
             type="button"
             onClick={() => setShowDropdown((prev) => !prev)}
-            className="text-blue-600 flex items-center text-sm underline"
+            className="flex items-center text-sm text-gray-600 underline"
           >
             <FontAwesomeIcon icon={faGlasses} className="mr-2" />
             Autofill?
@@ -154,7 +151,7 @@ function ApplicationEducation() {
         register={register}
       />
       <Button
-        onClick={handleAddExperience}
+        onClick={handleAddEducation}
         type="button"
         className="m-auto mt-2 w-fit px-4 py-2 md:mt-6"
       >
@@ -170,7 +167,7 @@ function ApplicationEducation() {
                 className="flex w-fit flex-row items-center justify-between gap-3 rounded-full bg-green-200 p-3 text-white"
               >
                 <p>
-                  {edu.university} - {edu.field_of_study}
+                  {edu.university} - {edu.fieldOfStudy}
                 </p>
                 <FontAwesomeIcon
                   icon={faXmark}
@@ -182,7 +179,7 @@ function ApplicationEducation() {
           </div>
         </div>
       ) : null}
-    </form>
+    </>
   );
 }
 

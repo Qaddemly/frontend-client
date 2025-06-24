@@ -17,7 +17,8 @@ export interface ICustomPersonal {
   };
   dob: string;
 }
-interface ICustomEducation {
+export interface ICustomEducation {
+  id: number;
   university: string;
   fieldOfStudy: string;
   gpa: string;
@@ -30,10 +31,9 @@ export interface ICustomExperience {
   jobTitle: string;
   companyName: string;
   location: string;
-  city: string;
   locationType: string;
   startDate: string;
   endDate?: string;
-  currentlyWorking: boolean;
-  employment_type: string;
+  stillWorking: boolean;
+  employmentType: string;
 }

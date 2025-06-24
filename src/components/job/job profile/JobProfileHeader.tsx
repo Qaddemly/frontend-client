@@ -10,23 +10,17 @@ import { formatDate, handleApiError } from "../../../utils/helpers";
 import Loader from "../../common/Loader";
 import toast from "react-hot-toast";
 import {
-  useApplyToJobMutation,
   useGetJobDetailsQuery,
   useSaveJobMutation,
   useUnSaveJobMutation,
 } from "../../../services/jobApi";
 import { useNavigate, useParams } from "react-router-dom";
-import { useState } from "react";
-import { useGetAllResumesQuery } from "../../../services/profileApi";
 
 function JobProfileHeader({ job }: { job: IJob }) {
-  const [close, setClose] = useState(false);
   const { jobId } = useParams();
   const [saveJob, { isLoading: loadingSaveJob }] = useSaveJobMutation();
   const [unSaveJob, { isLoading: loadingUnSaveJob }] = useUnSaveJobMutation();
   const { refetch } = useGetJobDetailsQuery({ id: jobId || "" });
-  const { data } = useGetAllResumesQuery();
-  const [applyToJob, { isLoading: loadingApplyJob }] = useApplyToJobMutation();
   const navigate = useNavigate();
 
   async function handleSaveJob(
@@ -55,20 +49,7 @@ function JobProfileHeader({ job }: { job: IJob }) {
     }
   }
 
-  async function handleApplyToJob(resumeId: number) {
-    try {
-      const res = await applyToJob({
-        resume_id: resumeId,
-        id: jobId || "",
-      }).unwrap();
-      toast.success(res.message);
-      setClose(false);
-    } catch (error) {
-      handleApiError(error);
-    }
-  }
-
-  if (loadingSaveJob || loadingUnSaveJob || loadingApplyJob) return <Loader />;
+  if (loadingSaveJob || loadingUnSaveJob) return <Loader />;
   return (
     <div className="flex w-full flex-col items-center bg-light-secondary py-4">
       <div className="mx-5 flex w-full flex-col items-center justify-evenly gap-2 px-5 py-10 sm:px-20 md:mx-0 md:items-start md:px-52 lg:px-[15rem] xl:px-[25rem]">
@@ -98,15 +79,22 @@ function JobProfileHeader({ job }: { job: IJob }) {
           {/* <FontAwesomeIcon icon={faStar} /> */}
         </div>
         <div className="flex w-full items-center justify-evenly md:justify-between">
-          <Button
-            className="rounded-lg px-6 py-3 text-xl text-white"
-            onClick={() => {
-              // setClose(true);
-              navigate("/apply/custom/1"); //temp until api linked
-            }}
-          >
-            Apply Now <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
-          </Button>
+          {job.has_extra_link_application ? (
+            <a
+              className="rounded-lg bg-main px-6 py-3 text-xl text-white"
+              target="_blank"
+              href={job.extra_application_link}
+            >
+              Apply Now <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
+            </a>
+          ) : (
+            <Button
+              className="rounded-lg px-6 py-3 text-xl text-white"
+              onClick={() => navigate(`/apply/custom/${job.id}`)}
+            >
+              Apply Now <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
+            </Button>
+          )}
           {!job?.isSaved ? (
             <button onClick={(e) => handleSaveJob(e)}>
               <FontAwesomeIcon
@@ -123,29 +111,6 @@ function JobProfileHeader({ job }: { job: IJob }) {
             </button>
           )}
         </div>
-
-        {close && (data?.resumes?.length || 0) === 0 && (
-          <p className="w-[20rem] rounded-md bg-[#eee] p-5 text-gray-500">
-            You currently have no resumes uploaded. Please add a resume to apply
-            for jobs.
-          </p>
-        )}
-
-        {close && (data?.resumes?.length || 0) > 0 && (
-          <div className="min-h-50 w-[20rem] rounded-md bg-[#eee] p-5 shadow-lg">
-            <p className="text-gray-300">Choose resume</p>
-            {data?.resumes.map((resume) => (
-              <>
-                <div
-                  className="cursor-pointer rounded-md px-1 py-2 hover:bg-gray-200"
-                  onClick={() => handleApplyToJob(resume.id)}
-                >
-                  {resume.name}
-                </div>
-              </>
-            ))}
-          </div>
-        )}
       </div>
     </div>
   );

@@ -1,13 +1,12 @@
 import Button from "../common/Button";
-
-import { IApplicationData } from "../../interfaces/CustomApplication.interfaces";
+import toast from "react-hot-toast";
 
 interface SliderControllersProps {
   currentStep: number;
   totalSteps: number;
   onNext: () => void;
   onPrev: () => void;
-  onSubmit: (data: IApplicationData) => void;
+  onSubmit: () => void;
   isLastStep: boolean;
   isSubmitting?: boolean;
   validateStep: () => Promise<boolean>;
@@ -16,22 +15,18 @@ interface SliderControllersProps {
 function SliderControllers({
   currentStep,
   onNext,
-  onPrev,
   onSubmit,
+  onPrev,
   isLastStep,
-  isSubmitting = false,
+  isSubmitting,
   validateStep,
 }: SliderControllersProps) {
   const handleClick = async () => {
     const isValid = await validateStep();
     if (!isValid) {
+      toast.error("Please fill all required fields ");
       return;
-    }
-    if (isLastStep) {
-      onSubmit();
-    } else {
-      onNext();
-    }
+    } else onNext();
   };
 
   return (
@@ -44,18 +39,23 @@ function SliderControllers({
             </Button>
           )}
 
-          <Button
-            onClick={handleClick}
-            type="button"
-            className={`w-full ${isLastStep ? "bg-green-100 hover:bg-green-200" : ""}`}
-            disabled={isSubmitting}
-          >
-            {isSubmitting
-              ? "Submitting..."
-              : isLastStep
-                ? "Submit Application"
-                : "Next"}
-          </Button>
+          {!isLastStep ? (
+            <Button
+              type="button"
+              onClick={() => handleClick()}
+              className="w-full"
+            >
+              Next
+            </Button>
+          ) : (
+            <Button
+              className="w-full bg-green-100 hover:bg-green-200"
+              onClick={() => onSubmit()}
+              disabled={isSubmitting}
+            >
+              Submit Application
+            </Button>
+          )}
         </div>
       </div>
     </>

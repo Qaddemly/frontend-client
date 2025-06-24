@@ -8,7 +8,6 @@ import ForgetPassword from "../pages/ForgetPassword";
 import SetNewPassword from "../pages/SetNewPassword";
 import { Toaster } from "react-hot-toast";
 import ProtectedRoute from "./ProtectedRoute";
-import Apply from "../components/job/apply job/ApplyJob";
 import Message from "../components/messages/Message";
 import FindCompany from "../pages/FindCompany";
 import CompanyProfile from "../pages/CompanyProfile";
@@ -115,7 +114,6 @@ const router = createBrowserRouter([
   { path: "/userInfo", element: <UserInfo /> },
   { path: "/forgetPassword", element: <ForgetPassword /> },
   { path: "/setNewPassword", element: <SetNewPassword /> },
-  { path: "/apply-job", element: <Apply /> },
   {
     path: "/message",
     element: (

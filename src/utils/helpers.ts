@@ -57,26 +57,34 @@ export const validateStartToEndDate = (
   else return true;
 };
 
-export const createFormData = (data: Record<string, unknown>) => {
+export const createFormData = (data: Record<string, any>): FormData => {
   const formData = new FormData();
 
-  const appendToFormData = (key: string, value: unknown) => {
-    if (Array.isArray(value)) {
+  const appendToFormData = (key: string, value: any) => {
+    if (value instanceof File) {
+      formData.append(key, value);
+    } else if (Array.isArray(value)) {
       value.forEach((item, index) => {
-        appendToFormData(`${key}[${index}]`, item);
+        const arrayKey = `${key}[${index}]`;
+        if (
+          typeof item === "string" ||
+          typeof item === "number" ||
+          typeof item === "boolean"
+        ) {
+          formData.append(arrayKey, String(item));
+        } else {
+          appendToFormData(arrayKey, item);
+        }
       });
-    } else if (value instanceof FileList) {
-      console.log("file");
-      formData.append(key, value[0]);
-    } else if (typeof value === "object" && value !== null) {
-      console.log("obj");
+    } else if (value !== null && typeof value === "object") {
       Object.entries(value).forEach(([nestedKey, nestedValue]) => {
         appendToFormData(`${key}[${nestedKey}]`, nestedValue);
       });
-    } else {
+    } else if (value !== undefined && value !== null) {
       formData.append(key, String(value));
     }
   };
+
   Object.entries(data).forEach(([key, value]) => {
     appendToFormData(key, value);
   });

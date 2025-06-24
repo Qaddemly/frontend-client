@@ -1,10 +1,10 @@
 import { IResponse } from "../interfaces/Common.interfaces";
 import {
-  IApplyToJobResponse,
   IGetAllJobsResponse,
   IGetArchivedJobApplicationsResponse,
   IGetJobApplicationsResponse,
   IGetJobDetailsResponse,
+  IGetJobQuestionsResponse,
   IGetRecommendedJobs,
   ISavedJobsResponse,
 } from "../interfaces/Job.interfaces";
@@ -92,16 +92,21 @@ export const jobApi = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
-    applyToJob: builder.mutation<
-      IApplyToJobResponse,
-      { id: string; resume_id: number }
-    >({
-      query: ({ resume_id, id }) => ({
-        url: `${BASE_JOB_URL}/applyToJob/${id}`,
+    applyToJob: builder.mutation<IResponse, { data: FormData; jobId: string }>({
+      query: ({ jobId, data }) => ({
+        url: `${BASE_JOB_URL}/${jobId}/jobApplication`,
         method: "POST",
-        body: { resume_id },
+        body: data,
       }),
     }),
+    getJobQuestions: builder.query<IGetJobQuestionsResponse, { jobId: string }>(
+      {
+        query: ({ jobId }) => ({
+          url: `${BASE_JOB_URL}/${jobId}/questions`,
+          method: "GET",
+        }),
+      },
+    ),
     getUserJobApplications: builder.query<
       IGetJobApplicationsResponse,
       { search?: string; page?: number; limit?: number }
@@ -164,6 +169,7 @@ export const {
   useSaveJobMutation,
   useUnSaveJobMutation,
   useApplyToJobMutation,
+  useGetJobQuestionsQuery,
   useArchiveJobApplicationMutation,
   useGetRecommendedJobsQuery,
   useGetOneJobApplicationQuery,
