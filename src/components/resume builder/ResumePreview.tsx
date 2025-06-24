@@ -16,7 +16,10 @@ import ResumeOrganizationPreview from "./previews/ResumeVolunteeringPreview.tsx"
 function ResumePreview() {
   return (
     <div className="print-area w-full space-y-8 md:w-1/2">
-      <div className="min-h-screen rounded-md bg-white p-14 font-[Arial] shadow-lg">
+      <div
+        className="min-h-screen rounded-md bg-white p-14 font-[Arial] shadow-lg"
+        id="resume"
+      >
         <ResumePersonalPreview />
         <ResumeAboutmePreview />
         <ResumeEducationPreview />

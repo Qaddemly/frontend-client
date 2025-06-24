@@ -25,6 +25,9 @@ import { useParams } from "react-router-dom";
 import ResumeAwardsForm from "./forms/ResumeAwardsForm.tsx";
 import ResumePublicationsForm from "./forms/ResumePublicationsForm.tsx";
 import ResumeOrganizationForm from "./forms/ResumeVolunteeringForm.tsx";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+import html2pdf from "html2pdf.js";
 
 function FormPreview() {
   const {
@@ -42,6 +45,21 @@ function FormPreview() {
   // TODO: Edit resume name need handle from backend
   // const [resumeName, setResumeName] = useState(currentResumeTemplate[0].name);
   // const [showEditResumeName, setShowEditResumeName] = useState(false);
+
+  function handleDownload() {
+    const element = document.getElementById("resume");
+    if (!element) return;
+
+    const opt = {
+      margin: 0.5,
+      filename: "resume.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+    };
+
+    html2pdf().set(opt).from(element).save();
+  }
 
   return (
     <div className="no-print flex w-1/3 flex-col gap-10">
@@ -70,9 +88,10 @@ function FormPreview() {
           {/*/>*/}
         </p>
         <Button
-          onClick={() => {
-            window.print();
-          }}
+          // onClick={() => {
+          //   window.print();
+          // }}
+          onClick={handleDownload}
           className="flex items-center gap-3 px-3"
         >
           Download
