@@ -5,6 +5,9 @@ import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 function ResumeCertificatesPreview() {
   const { resumeInfo } = useResumeBuilder();
   const certificatesInfo = resumeInfo?.certificates;
+  if (!certificatesInfo || certificatesInfo.length === 0) {
+    return null;
+  }
   return (
     <div className="mt-5">
       {certificatesInfo?.length > 0 && (

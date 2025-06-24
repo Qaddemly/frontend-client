@@ -4,6 +4,9 @@ import { formatDateByYearAndMonth } from "../../../utils/helpers.ts";
 function ResumeCustomPreview() {
   const { resumeInfo } = useResumeBuilder();
   const customInfo = resumeInfo?.custom;
+  if (!customInfo || customInfo.length === 0) {
+    return null;
+  }
   return (
     <div className="mt-5 text-sm">
       <div className="flex flex-col gap-3">

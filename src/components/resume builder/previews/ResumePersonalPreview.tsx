@@ -3,6 +3,15 @@ import { useResumeBuilder } from "../../../context/ResumeBuilderContext.tsx";
 function ResumePersonalPreview() {
   const { resumeInfo } = useResumeBuilder();
   const personalInfo = resumeInfo?.personal;
+  if (
+    !personalInfo ||
+    Object.values(personalInfo).every(
+      (value) => value === undefined || value === null || value === "",
+    )
+  ) {
+    return null;
+  }
+
   return (
     <div>
       <h2 className="text-center text-xl font-bold">

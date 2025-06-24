@@ -49,7 +49,6 @@ function Navbar() {
   const [makeNotificationsSeen] = useMakeNotificationsSeenMutation();
 
   const [showSideNav, setShowSideNav] = useState(false);
-
   return (
     <>
       <SidebarNotifications
@@ -96,15 +95,7 @@ function Navbar() {
             </li>
           </ul>
         </div>
-        <button
-          className="lg:hidden"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          <FontAwesomeIcon
-            icon={mobileMenuOpen ? faTimes : faBars}
-            className="text-2xl text-main"
-          />
-        </button>
+
         {mobileMenuOpen && (
           <div className="absolute left-0 top-14 w-full bg-white shadow-lg lg:hidden">
             <ul className="flex flex-col space-y-4 p-4">
@@ -119,20 +110,6 @@ function Navbar() {
               </li>
               <li>
                 <NavbarLink to="/resumeBuilder" content="Build Resume" />
-              </li>
-              <li>
-                <Button
-                  onClick={() => setShowMenu((s) => !s)}
-                  className="border border-main bg-white px-2 text-sm text-main hover:bg-main hover:text-white lg:px-5 lg:text-base"
-                >
-                  Business
-                </Button>
-                {showMenu && (
-                  <BusinessAccountsMenu
-                    menuRef={menuRef}
-                    data={data?.businesses ?? []}
-                  />
-                )}
               </li>
               {!user.is_activated && (
                 <div className="flex flex-col space-y-2">
@@ -170,6 +147,15 @@ function Navbar() {
           </div>
         ) : (
           <div className="relative flex items-center gap-6">
+            <button
+              className="lg:hidden"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              <FontAwesomeIcon
+                icon={mobileMenuOpen ? faTimes : faBars}
+                className="text-2xl text-main"
+              />
+            </button>
             <div className="flex gap-4">
               <div
                 className="relative cursor-pointer"
@@ -192,7 +178,7 @@ function Navbar() {
               </Link>
             </div>
 
-            <div className="hidden lg:block">
+            <div>
               <Button
                 onClick={() => setShowMenu((s) => !s)}
                 className="border border-main bg-white px-2 text-sm text-main hover:bg-main hover:text-white lg:px-5 lg:text-base"

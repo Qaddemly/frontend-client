@@ -6,7 +6,9 @@ function ResumeBuilderLayout({ children }: { children: React.ReactNode }) {
       <div className="no-print">
         <Navbar />
       </div>
-      <div className="min-h-screen bg-background p-20">{children}</div>
+      <div className="min-h-screen bg-background px-4 py-10 md:px-20">
+        {children}
+      </div>
     </>
   );
 }

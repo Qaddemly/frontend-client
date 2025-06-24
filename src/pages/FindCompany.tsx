@@ -46,6 +46,7 @@ function FindCompany() {
     setLocation("");
     setLocationType("");
     setIndustryType("");
+    setRating(0);
   }
 
   useEffect(() => {
@@ -129,15 +130,16 @@ function FindCompany() {
 
           {/* Sidebar filter */}
           <SidebarFilter
+            handleResetAll={handleReset}
             setIsOpen={setIsOpen}
             isOpen={isOpen}
             title="Company filter"
-            handleResetAll={handleReset}
           >
             <Select
               isFilter={true}
               label="Location Type"
               id="locationType"
+              defaultValue=""
               onChange={(e) => setLocationType(e.target.value)}
               value={locationType}
             >
@@ -152,6 +154,7 @@ function FindCompany() {
               isFilter={true}
               label="Location"
               id="location"
+              defaultValue=""
               onChange={(e) => setLocation(e.target.value)}
               value={location}
             >
@@ -166,6 +169,7 @@ function FindCompany() {
               isFilter={true}
               label="Industry type"
               id="industryType"
+              defaultValue=""
               value={industryType}
               onChange={(e) => setIndustryType(e.target.value)}
             >
@@ -179,17 +183,11 @@ function FindCompany() {
             <Slider
               label="Rating"
               min={0}
-              max={10}
+              max={5}
               value={rating}
               setValue={setRating}
             />
-            <Button
-              className="my-5"
-              onClick={() => {
-                handleFilters();
-                setIsOpen(false);
-              }}
-            >
+            <Button className="my-5" onClick={handleFilters}>
               Filter Companies
             </Button>
           </SidebarFilter>

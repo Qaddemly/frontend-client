@@ -3,6 +3,9 @@ import { useResumeBuilder } from "../../../context/ResumeBuilderContext.tsx";
 function ResumeLanguagePreview() {
   const { resumeInfo } = useResumeBuilder();
   const languageInfo = resumeInfo?.languages;
+  if (!languageInfo || languageInfo.length === 0) {
+    return null;
+  }
 
   return (
     <div className="mt-5 text-sm">

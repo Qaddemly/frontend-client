@@ -6,6 +6,9 @@ import { formatDateByYearAndMonth } from "../../../utils/helpers.ts";
 function ResumeOrganizationPreview() {
   const { resumeInfo } = useResumeBuilder();
   const organizationInfo = resumeInfo?.volunteering;
+  if (!organizationInfo || organizationInfo.length === 0) {
+    return null;
+  }
   return (
     <div className="mt-5">
       {organizationInfo?.length > 0 && (

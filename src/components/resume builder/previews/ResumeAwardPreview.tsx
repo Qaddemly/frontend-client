@@ -4,6 +4,9 @@ import { useResumeBuilder } from "../../../context/ResumeBuilderContext.tsx";
 function ResumeAwardPreview() {
   const { resumeInfo } = useResumeBuilder();
   const awardInfo = resumeInfo?.awards;
+  if (!awardInfo || awardInfo.length === 0) {
+    return null;
+  }
   return (
     <div className="mt-5 text-sm">
       {awardInfo?.length > 0 && (
