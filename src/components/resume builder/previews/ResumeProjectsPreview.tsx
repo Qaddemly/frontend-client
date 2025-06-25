@@ -4,6 +4,10 @@ import { formatDateByYearAndMonth } from "../../../utils/helpers.ts";
 function ResumeProjectsPreview() {
   const { resumeInfo } = useResumeBuilder();
   const ProjectsInfo = resumeInfo?.projects;
+  if (!ProjectsInfo || ProjectsInfo.length === 0) {
+    return null;
+  }
+
   return (
     <div className="mt-5 text-sm">
       {ProjectsInfo?.length > 0 && (
