@@ -1,25 +1,16 @@
 import React, { useState, useEffect } from "react";
-import {
-  faCloudArrowUp,
-  faDeleteLeft,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons";
 import FileUpload from "../common/FileUpload";
 import { useApplication } from "../../context/ApplicationContext";
-import {
-  useAddResumeMutation,
-  useDeleteResumeMutation,
-  useGetAllResumesQuery,
-} from "../../services/profileApi";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useGetAllResumesQuery } from "../../services/profileApi";
 import { IResume } from "../../interfaces/BusinessDashboard.interfaces";
 
 function ApplicationResume() {
   const { setResume } = useApplication();
-  const [addResume] = useAddResumeMutation();
-  const [deleteResume] = useDeleteResumeMutation();
 
+  const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
   const [resumes, setResumes] = useState<IResume[]>([]);
-  const { data, isLoading, refetch } = useGetAllResumesQuery();
+  const { data, isLoading } = useGetAllResumesQuery();
 
   useEffect(() => {
     if (data) {
@@ -30,30 +21,21 @@ function ApplicationResume() {
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     setResume(file);
-
+    setSelectedFileName(file.name);
     const formData = new FormData();
     formData.append("resume", file);
-
-    try {
-      await addResume({ resumes: formData });
-      console.log("Resume uploaded successfully.");
-
-      await refetch();
-    } catch (error) {
-      console.error("Error uploading resume:", error);
-    }
   };
 
-  const handleDelete = async (id: number) => {
+  const handleResumeSelect = async (resume: IResume) => {
     try {
-      await deleteResume({ id: id.toString() });
-      console.log("Resume deleted successfully.");
-
-      setResumes(resumes.filter((resume) => resume.id !== id));
+      const response = await fetch(resume.url);
+      const blob = await response.blob();
+      const file = new File([blob], resume.name, { type: blob.type });
+      setResume(file);
+      setSelectedFileName(file.name);
     } catch (error) {
-      console.error("Error deleting resume:", error);
+      console.error("Failed to load resume file", error);
     }
   };
 
@@ -62,6 +44,7 @@ function ApplicationResume() {
       <FileUpload
         icon={faCloudArrowUp}
         onChange={handleFileChange}
+        fileName={selectedFileName}
         options={{ required: "this field is required" }}
       />
 
@@ -69,17 +52,14 @@ function ApplicationResume() {
         <p>Loading resumes...</p>
       ) : (
         <ul>
+          <p>Your resumes</p>
           {resumes?.map((resume) => (
-            <li key={resume.id} className="flex items-center justify-between">
-              <a href={resume.url} target="_blank" rel="noopener noreferrer">
-                {resume.name}
-              </a>
-              <button onClick={() => handleDelete(resume.id)}>
-                <FontAwesomeIcon
-                  icon={faDeleteLeft}
-                  className="text-danger-300"
-                />
-              </button>
+            <li
+              key={resume.id}
+              className="flex cursor-pointer items-center justify-between gap-2 rounded-md bg-[#eee] p-3"
+              onClick={() => handleResumeSelect(resume)}
+            >
+              {resume.name}
             </li>
           ))}
         </ul>

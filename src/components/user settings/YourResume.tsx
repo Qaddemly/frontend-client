@@ -58,7 +58,10 @@ function YourResume() {
 
       <ul className="mt-5 grid grid-cols-3 items-center gap-5">
         {data?.resumes.map((resume) => (
-          <li className="flex flex-col space-x-2 rounded-md bg-[#eee] px-5 py-3">
+          <li
+            key={resume.id}
+            className="flex flex-col space-x-2 rounded-md bg-[#eee] px-5 py-3"
+          >
             <div className="flex items-center gap-5">
               <FontAwesomeIcon
                 icon={faFileLines}

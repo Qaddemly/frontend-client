@@ -32,7 +32,7 @@ function ResumePreview() {
       </div>
       {showPreview && (
         <div className="bg-black/30 fixed inset-0 z-50 flex justify-center overflow-y-auto py-6 backdrop-blur-sm md:hidden">
-          <div className="flex min-h-screen w-[90%] flex-col rounded-md bg-white p-6 shadow-xl">
+          <div className="flex min-h-screen w-[90%] flex-col rounded-md bg-white p-6 shadow-xl" id="resume">
             <ResumePersonalPreview />
             <ResumeAboutmePreview />
             <ResumeEducationPreview />
@@ -60,7 +60,7 @@ function ResumePreview() {
 
       {/* big screens*/}
       <div className="print-area hidden w-full flex-col gap-8 md:flex">
-        <div className="mx-auto min-h-screen w-full rounded-md bg-white p-14 font-[Arial] shadow-lg md:w-3/4">
+        <div className="mx-auto min-h-screen w-full rounded-md bg-white p-14 font-[Arial] shadow-lg md:w-3/4" id="resume">
           <ResumePersonalPreview />
           <ResumeAboutmePreview />
           <ResumeEducationPreview />

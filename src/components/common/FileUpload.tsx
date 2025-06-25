@@ -13,6 +13,7 @@ type FileUploadProps<T extends FieldValues> = {
   register?: UseFormRegister<T>;
   options?: RegisterOptions<T>;
   name?: Path<T>;
+  fileName?: string | null;
 };
 function FileUpload<T extends FieldValues>({
   icon,
@@ -20,6 +21,7 @@ function FileUpload<T extends FieldValues>({
   register,
   options,
   name,
+  fileName,
 }: FileUploadProps<T>) {
   return (
     <div className="flex w-full items-center justify-center">
@@ -34,6 +36,7 @@ function FileUpload<T extends FieldValues>({
               Click to upload
             </span>
           </p>
+
           <p className="text-xs text-gray-500">
             PDF, DOC, DOCX (Max. File Size: 100MB)
           </p>
@@ -41,12 +44,17 @@ function FileUpload<T extends FieldValues>({
             SVG, PNG, JPG or GIF (MAX. 800x400px)
           </p>
         </div>
+        <label htmlFor="resumeUpload" className="text-gray-50 mb-2 text-sm">
+          <span className="font-semibold text-main">
+            {fileName || "No file chosen"}
+          </span>
+        </label>
         <input
           {...(register && name ? register(name, options) : {})}
           onChange={onChange}
           id="dropzone-file"
           type="file"
-          className="absolute bottom-0 left-0 text-sm text-gray-500 focus:outline-none"
+          className="absolute bottom-0 left-0 hidden text-sm text-gray-500 focus:outline-none"
         />
       </label>
     </div>

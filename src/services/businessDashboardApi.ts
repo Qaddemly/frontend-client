@@ -23,7 +23,7 @@ export const businessDashboardApi = apiSlice.injectEndpoints({
       { id: string; data: FormData }
     >({
       query: ({ id, data }) => ({
-        url: `${BASE_BUSINESS_URL}/myBusiness/dashboard/edit/${id}`,
+        url: `${BASE_BUSINESS_URL}/myBusiness/dashboard/settings/${id}`,
         method: "PUT",
         body: data,
       }),
@@ -118,7 +118,7 @@ export const businessDashboardApi = apiSlice.injectEndpoints({
           params.append("filter.job_application_state.state", filterByState);
 
         return {
-          url: `${BASE_BUSINESS_URL}/jobApplication/getAllJobApplications/job/${id}${params.toString() ? `?${params.toString()}` : ""}`,
+          url: `${BASE_BUSINESS_URL}/dashboard/job/${id}/jobApplications${params.toString() ? `?${params.toString()}` : ""}`,
           method: "GET",
         };
       },

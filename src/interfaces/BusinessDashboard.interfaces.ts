@@ -2,7 +2,7 @@ import { Country, EmploymentType, LocationType } from "../enums/index.enums";
 import { IUser } from "./Auth.interfaces";
 import { IBusinessAccount } from "./BusinessAccount.interfaces";
 import { IResponse } from "./Common.interfaces";
-import { IJob } from "./Job.interfaces";
+import { IJob, IQuestion } from "./Job.interfaces";
 
 export interface IHRs {
   id: string;
@@ -33,14 +33,7 @@ export interface IPostNewJobInputs {
   skills: string[];
   has_extra_link_application: boolean;
   extra_application_link: string;
-  questions: Iquestion[];
-}
-
-export interface Iquestion {
-  questionText: string;
-  questionType: string;
-  options: string[];
-  isRequired: boolean;
+  questions: IQuestion[];
 }
 
 export interface IUpdateJobInputs {
@@ -76,13 +69,19 @@ export interface IResume {
 
 export interface IJobApplication {
   id: number;
-  jop_application_state: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  birth_date: string;
+  skills: string[];
+  languages: string[];
+  phone: {
+    country_code: number;
+    number: number;
+  };
+  job_application_state: IJobApplicationState;
   created_at: string;
   updated_at: string;
-  account: IUser;
-  job: IJob;
-  resume: IResume;
-  job_application_state: IJobApplicationState;
 }
 
 export interface IJobApplicationState {

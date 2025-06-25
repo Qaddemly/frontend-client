@@ -41,6 +41,7 @@ function CompanyJobs() {
   const isPostJobRoute =
     location.pathname.endsWith(`/postJobEasyApply`) ||
     location.pathname.endsWith("/postJobExternalLink");
+  const isEditJobRoute = location.pathname.includes("/updatejob");
 
   const filteredJobCards = jobs?.filter((job) => {
     if (selectedValue === "available") return job.status === "Opened";
@@ -115,14 +116,14 @@ function CompanyJobs() {
         <div className="flex gap-5 pl-5 text-lg font-medium">
           <NavLink
             to={`/businessDashboard/companyJobs/${companyId}/active`}
-            className={`px-2 py-1 ${isJobApplicationsRoute || isJobRoute || isPostJobRoute || isJobRouteArchived ? "rounded-md bg-main text-white" : ""}`}
+            className={`px-2 py-1 ${isJobApplicationsRoute || isJobRoute || isPostJobRoute || isJobRouteArchived || isEditJobRoute ? "rounded-md bg-main text-white" : ""}`}
           >
             Jobs
           </NavLink>
         </div>
       </div>
 
-      {isJobApplicationsRoute || isPostJobRoute ? (
+      {isJobApplicationsRoute || isPostJobRoute || isEditJobRoute ? (
         <Outlet />
       ) : (
         <div className="my-10 flex max-w-screen-xl flex-col-reverse justify-center gap-20 px-2 md:mx-auto md:flex-col md:px-7">
@@ -294,7 +295,7 @@ function CompanyJobs() {
                                       onClick={(e) => {
                                         e.stopPropagation();
                                         navigate(
-                                          `/businessDashboard/updatejob/${job.id}`,
+                                          `/businessDashboard/companyJobs/${companyId}/active/updatejob/${job.id}`,
                                         );
                                       }}
                                       className="border border-main bg-white px-3 py-1 text-base text-main hover:bg-main hover:text-white"

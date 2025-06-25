@@ -6,74 +6,90 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlasses, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { IExperience } from "../../interfaces/Auth.interfaces";
-import { IApplicationData } from "../../interfaces/CustomApplication.interfaces";
 import { useGetExperienceQuery } from "../../services/profileApi";
 import Button from "../common/Button";
 import { Country, EmploymentType, LocationType } from "../../enums/index.enums";
+import { ICustomExperience } from "../../interfaces/CustomApplication.interfaces";
+import { useApplication } from "../../context/ApplicationContext";
+import Select from "../common/Select.tsx";
 
 function ApplicationExperience() {
   const {
     register,
     setValue,
-    handleSubmit,
+    getValues,
     formState: { errors },
   } = useFormContext();
 
   const { data: experienceData, isLoading } = useGetExperienceQuery({});
-  const [experiences, setExperiences] = useState<IExperience[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const { experiences, setExperiences } = useApplication();
+  const employmentType = Object.keys(EmploymentType);
 
   const handleAutofill = (exp: IExperience) => {
     setValue("experience.jobTitle", exp.job_title || "");
     setValue("experience.companyName", exp.company_name || "");
     setValue("experience.location", exp.location || "");
-    // setValue("experience.city", exp.city || "");
     setValue("experience.locationType", exp.location_type || "");
     setValue("experience.startDate", exp.start_date || "");
     setValue("experience.endDate", exp.end_date || "");
     setValue("experience.stillWorking", exp.still_working);
+    setValue("experience.employmentType", exp.employment_type || "");
     setShowDropdown(false);
   };
 
   const handleAddExperience = () => {
-    handleSubmit(onSubmit)();
+    const exp = getValues("experience");
+
+    if (
+      !exp.jobTitle ||
+      !exp.companyName ||
+      !exp.location ||
+      !exp.locationType ||
+      !exp.startDate ||
+      (exp.endDate && exp.endDate < exp.startDate) ||
+      (exp.stillWorking && exp.endDate)
+    )
+      return;
+
+    const experience: ICustomExperience = {
+      id: experiences.length + 1,
+      employmentType: exp?.employmentType,
+      jobTitle: exp?.jobTitle || "",
+      companyName: exp?.companyName || "",
+      location: exp?.location as Country,
+      locationType: exp?.locationType as LocationType,
+      startDate: exp?.startDate || "",
+      endDate: exp?.endDate || "",
+      stillWorking: exp?.stillWorking || false,
+    };
+
+    setExperiences((prev) => [...prev, experience]);
+
+    setValue("experience.jobTitle", "");
+    setValue("experience.employmentType", "");
+    setValue("experience.companyName", "");
+    setValue("experience.location", "");
+    setValue("experience.locationType", "");
+    setValue("experience.startDate", "");
+    setValue("experience.endDate", "");
+    setValue("experience.stillWorking", false);
   };
 
   const handleRemoveExperience = (id: number) => {
     setExperiences((prev) => prev.filter((exp) => exp.id !== id));
   };
 
-  const onSubmit = (data: IApplicationData) => {
-    const experience: IExperience = {
-      job_title: data.experience?.jobTitle || "",
-      company_name: data.experience?.companyName || "",
-      location: data.experience?.location as Country,
-      // city: data.experience?.city || "",
-      location_type: data.experience?.locationType as LocationType,
-      start_date: data.experience?.startDate || "",
-      end_date: data.experience?.endDate || "",
-      still_working: data.experience?.currentlyWorking || false,
-      id: Math.random(),
-      employment_type: data.experience?.employment_type as EmploymentType,
-    };
-
-    setExperiences((prev) => [...prev, experience]);
-    console.log("Experience added:", experience);
-  };
-
   const experienceList = experienceData?.experiences ?? [];
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-4 text-left"
-    >
+    <>
       <div className="relative mx-2 mb-4 flex items-center justify-end">
         {!isLoading && experienceList.length > 0 && (
           <button
             type="button"
             onClick={() => setShowDropdown((prev) => !prev)}
-            className="text-blue-600 flex items-center text-sm underline"
+            className="flex items-center text-sm text-gray-600 underline"
           >
             <FontAwesomeIcon icon={faGlasses} className="mr-2" />
             Autofill?
@@ -118,21 +134,23 @@ function ApplicationExperience() {
         />
       </InputField>
 
+      <div className="flex flex-col space-y-3">
+        <Select register={register} name={"experience.employmentType"}>
+          <option disabled>Employee type</option>
+          {employmentType.map((employmentType) => (
+            <option key={employmentType} value={employmentType}>
+              {employmentType}
+            </option>
+          ))}
+        </Select>
+      </div>
+
       <InputField errors={errors.experience as FieldErrors} id="location">
         <Input
           register={register}
           name={"experience.location"}
           options={{ required: "Location is required" }}
           props={{ id: "location", type: "text", placeholder: "Location" }}
-        />
-      </InputField>
-
-      <InputField errors={errors.experience as FieldErrors} id="city">
-        <Input
-          register={register}
-          name={"experience.city"}
-          options={{ required: "City is required" }}
-          props={{ id: "city", type: "text", placeholder: "City" }}
         />
       </InputField>
 
@@ -155,6 +173,19 @@ function ApplicationExperience() {
         register={register}
       />
 
+      <div className="mb-4 flex items-center">
+        <input
+          {...register("experience.stillWorking")}
+          type="checkbox"
+          id="still_working"
+          className="text-green-600 focus:ring-green-500 h-4 w-4 rounded border-gray-300"
+        />
+
+        <label htmlFor="stillWorking" className="ms-2 font-medium">
+          I am currently working in this role
+        </label>
+      </div>
+
       <Button
         onClick={handleAddExperience}
         type="button"
@@ -173,7 +204,7 @@ function ApplicationExperience() {
                 className="flex w-fit flex-row items-center justify-between gap-3 rounded-full bg-green-200 p-3 text-white"
               >
                 <p>
-                  {exp.job_title} - {exp.company_name}
+                  {exp.jobTitle} - {exp.companyName}
                 </p>
                 <FontAwesomeIcon
                   icon={faXmark}
@@ -185,7 +216,7 @@ function ApplicationExperience() {
           </div>
         </div>
       )}
-    </form>
+    </>
   );
 }
 

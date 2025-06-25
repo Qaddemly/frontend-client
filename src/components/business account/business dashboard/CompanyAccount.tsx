@@ -5,11 +5,8 @@ import { useGetBusinessAccountInfoQuery } from "../../../services/businessAccoun
 import Loader from "../../common/Loader";
 import { useParams } from "react-router-dom";
 
-// this page need more handling for ui
+// TODO: this page need more handling for ui
 function CompanyAccount() {
-  // const { businessAccount } = useSelector(
-  //   (state: RootState) => state.businessAccount,
-  // );
   const { companyId } = useParams();
   const { data, isLoading } = useGetBusinessAccountInfoQuery({
     id: companyId || "",
