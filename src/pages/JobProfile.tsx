@@ -37,6 +37,10 @@ function JobProfile() {
               content={job?.employee_type}
             />
             <JobDescriptionItem
+              title="Location Type"
+              content={job?.location_type}
+            />
+            <JobDescriptionItem
               title="Skills"
               // عايزين نخليهم ليستتين جنب بعض
               content={
@@ -51,7 +55,12 @@ function JobProfile() {
               }
             />
 
-            <JobDescriptionItem title="Expected Salary" content={job?.salary} />
+            <JobDescriptionItem
+              title="Expected Salary"
+              content={
+                job?.currency ? `${job?.salary} ${job?.currency}` : job?.salary
+              }
+            />
             {/*TODO: ask backend about position */}
             {/* <JobDescriptionItem title="Position" content={job.position} /> */}
             <JobDescriptionItem title="Experience" content={job?.experience} />

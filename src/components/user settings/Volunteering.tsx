@@ -66,6 +66,7 @@ function Volunteering() {
           }).unwrap();
           toast.success("Profile updated successfully");
           navigate("/userSettings/profile/volunteering");
+          refetchVolunteering();
         } catch (error) {
           handleApiError(error);
         }

@@ -3,6 +3,9 @@ import { useResumeBuilder } from "../../../context/ResumeBuilderContext.tsx";
 function ResumeInterestPreview() {
   const { resumeInfo } = useResumeBuilder();
   const interestInfo = resumeInfo?.hobbies;
+  if (!interestInfo || interestInfo.length === 0) {
+    return null;
+  }
 
   return (
     <div className="mt-5 text-sm">

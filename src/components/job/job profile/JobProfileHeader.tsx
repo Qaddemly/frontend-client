@@ -15,6 +15,9 @@ import {
   useUnSaveJobMutation,
 } from "../../../services/jobApi";
 import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import { useGetAllResumesQuery } from "../../../services/profileApi";
+import BackButton from "../../common/BackButton";
 
 function JobProfileHeader({ job }: { job: IJob }) {
   const { jobId } = useParams();
@@ -52,14 +55,17 @@ function JobProfileHeader({ job }: { job: IJob }) {
   if (loadingSaveJob || loadingUnSaveJob) return <Loader />;
   return (
     <div className="flex w-full flex-col items-center bg-light-secondary py-4">
+      <BackButton />
       <div className="mx-5 flex w-full flex-col items-center justify-evenly gap-2 px-5 py-10 sm:px-20 md:mx-0 md:items-start md:px-52 lg:px-[15rem] xl:px-[25rem]">
-        <img
-          src={job?.business.logo}
-          alt={job.title}
-          className="mr-4 h-20 w-20 rounded-full"
-        />
-        <div className="flex w-full flex-col items-center justify-between gap-2 lg:flex-row lg:gap-0">
-          <h2 className="text-center text-4xl font-bold md:text-left md:text-5xl">
+        <div className="flex w-full items-center justify-center md:justify-start">
+          <img
+            src={job?.business.logo}
+            alt={job.title}
+            className="mr-4 h-20 w-20 rounded-full"
+          />
+        </div>
+        <div className="flex w-full flex-col items-center justify-between gap-2 md:flex-row md:gap-0">
+          <h2 className="text-center text-4xl font-bold md:text-left lg:text-5xl">
             {job?.title}
           </h2>
           <p className="text-base text-gray-500">

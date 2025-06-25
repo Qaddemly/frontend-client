@@ -43,7 +43,7 @@ function JobCard({ job }: { job: IJob }) {
   // if (loadingSaveJob || loadingUnSaveJob) return <Loader />;
   return (
     <div
-      className="cursor-pointer rounded-lg bg-white p-4 shadow-md transition hover:shadow-lg"
+      className="w-full cursor-pointer rounded-lg bg-white p-4 shadow-md transition hover:shadow-lg"
       onClick={() => navigate(`/findJob/jobProfile/${job?.id}`)}
     >
       <h3 className="my-2 text-lg font-medium">{job?.title}</h3>

@@ -62,7 +62,7 @@ function AddResume() {
   }
 
   return (
-    <div className="flex gap-10">
+    <div className="flex flex-wrap justify-center gap-6 md:justify-start">
       <div
         onClick={() => setShowModal(true)}
         className="flex h-[400px] w-[18rem] cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border border-dashed bg-white p-14 py-24 text-gray-500 transition-all hover:scale-105 hover:shadow-md"

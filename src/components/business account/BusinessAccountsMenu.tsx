@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import Button from "../common/Button";
-
 import { RefObject } from "react";
 import { IBusinesses } from "../../interfaces/BusinessAccount.interfaces";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,9 +10,11 @@ import { RootState } from "../../store/store.ts";
 function BusinessAccountsMenu({
   menuRef,
   data,
+  setShowMenu,
 }: {
   menuRef: RefObject<HTMLUListElement>;
   data: IBusinesses[];
+  setShowMenu?: (val: boolean) => void;
 }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -21,14 +22,16 @@ function BusinessAccountsMenu({
   return (
     <ul
       ref={menuRef}
-      className="absolute top-[4rem] z-10 flex min-h-[15rem] flex-col justify-between rounded-md border bg-white pb-5 shadow-lg"
+      className="absolute left-1/2 top-[4rem] z-[9999] flex min-h-[15rem] w-[90%] -translate-x-1/2 flex-col justify-between rounded-md border bg-white pb-5 shadow-lg"
     >
       {data.map((company) => (
         <li
           key={company.id}
           onClick={() => {
+            console.log("Button clicked");
             dispatch(setUserBusinessAccount(company));
             localStorage.setItem("businessAccountId", company.id.toString());
+            setShowMenu?.(false);
             navigate(
               `/businessDashboard/companySettings/companyAccount/${company.id}`,
             );

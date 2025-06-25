@@ -3,6 +3,14 @@ import { useResumeBuilder } from "../../../context/ResumeBuilderContext.tsx";
 function ResumeAboutmePreview() {
   const { resumeInfo } = useResumeBuilder();
   const personalInfo = resumeInfo?.personal;
+  if (
+    !personalInfo ||
+    Object.values(personalInfo).every(
+      (value) => value === undefined || value === null || value === "",
+    )
+  ) {
+    return null;
+  }
   return (
     <div>
       {personalInfo?.aboutMe?.length > 0 && (

@@ -62,7 +62,7 @@ function FormPreview() {
   }
 
   return (
-    <div className="no-print flex w-1/3 flex-col gap-10">
+    <div className="no-print flex w-full flex-col gap-10 md:w-1/3">
       <div className="flex items-center justify-between rounded-lg bg-white px-8 py-5 shadow-md">
         {/*{showEditResumeName ? (*/}
         {/*  <div className="flex items-center gap-5">*/}
