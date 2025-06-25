@@ -92,6 +92,7 @@ function UpdateCompanyAccount() {
     companyInfo?.company_size,
     companyInfo?.description,
     companyInfo?.email,
+    companyInfo?.founded,
     companyInfo?.founder,
     companyInfo?.headquarter,
     companyInfo?.industry,

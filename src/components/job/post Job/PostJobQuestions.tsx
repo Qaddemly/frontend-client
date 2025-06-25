@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import Select from "../../common/Select.tsx";
 import Input from "../../common/Input.tsx";
-import { Iquestion } from "../../../interfaces/BusinessDashboard.interfaces.ts";
+import { IQuestion } from "../../../interfaces/Job.interfaces.ts";
 
 function PostJobQuestions({
   questions,
@@ -12,8 +12,8 @@ function PostJobQuestions({
   onSubmit,
   onBack,
 }: {
-  questions: Iquestion[];
-  setQuestions: React.Dispatch<React.SetStateAction<Iquestion[]>>;
+  questions: IQuestion[];
+  setQuestions: React.Dispatch<React.SetStateAction<IQuestion[]>>;
   onSubmit: () => void;
   onBack: () => void;
 }) {
@@ -29,7 +29,7 @@ function PostJobQuestions({
       return;
     }
 
-    const newQuestion: Iquestion = {
+    const newQuestion: IQuestion = {
       questionText: questionInput,
       questionType: questionType,
       options: questionType === "multiple_choice" ? answers : [],

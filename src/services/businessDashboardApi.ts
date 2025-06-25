@@ -118,7 +118,7 @@ export const businessDashboardApi = apiSlice.injectEndpoints({
           params.append("filter.job_application_state.state", filterByState);
 
         return {
-          url: `${BASE_BUSINESS_URL}/jobApplication/getAllJobApplications/job/${id}${params.toString() ? `?${params.toString()}` : ""}`,
+          url: `${BASE_BUSINESS_URL}/dashboard/job/${id}/jobApplications${params.toString() ? `?${params.toString()}` : ""}`,
           method: "GET",
         };
       },

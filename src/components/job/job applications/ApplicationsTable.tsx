@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUsers } from "@fortawesome/free-solid-svg-icons";
-import { IJob } from "../../../interfaces/Job.interfaces";
 import { useLazyGetJobApplicationsQuery } from "../../../services/businessDashboardApi";
 import Loader from "../../common/Loader";
 import { useEffect, useState } from "react";
@@ -20,9 +19,9 @@ function ApplicationsTable() {
   const [currentPage, setCurrentPage] = useState(meta?.currentPage);
   const [sort, setSort] = useState("");
 
-  const currentJob: IJob | undefined = jobApplications?.find(
-    (application) => application?.job?.id.toString() === jobId,
-  )?.job;
+  // const currentJob: IJob | undefined = jobApplications?.find(
+  //   (application) => application?.job?.id.toString() === jobId,
+  // )?.job;
 
   useEffect(() => {
     if (sort === "oldest")
@@ -38,9 +37,9 @@ function ApplicationsTable() {
         <p className="mt-10 text-xl italic text-gray-400">No applications</p>
       ) : (
         <>
-          <h2 className="text-center text-4xl font-bold">
-            {currentJob && currentJob.title}
-          </h2>
+          {/*<h2 className="text-center text-4xl font-bold">*/}
+          {/*  {currentJob && currentJob.title}*/}
+          {/*</h2>*/}
           <div className="flex w-fit flex-row rounded-lg bg-white p-5 shadow-md">
             <div className="flex items-center rounded-full bg-light-secondary p-4 text-center text-4xl text-main">
               <FontAwesomeIcon icon={faUsers} />
@@ -94,9 +93,9 @@ function ApplicationsTable() {
                     <th className="p-3 text-sm font-bold text-gray-500">
                       Email
                     </th>
-                    <th className="p-3 text-sm font-bold text-gray-500">
-                      Country
-                    </th>
+                    {/*<th className="p-3 text-sm font-bold text-gray-500">*/}
+                    {/*  Country*/}
+                    {/*</th>*/}
                     <th className="p-3 text-sm font-bold text-gray-500">
                       Actions
                     </th>
@@ -109,35 +108,34 @@ function ApplicationsTable() {
                       className="cursor-pointer border-t border-gray-100 transition hover:bg-gray-100 hover:bg-opacity-30"
                     >
                       <td className="px-6 py-4 text-sm font-normal">
-                        {application.account.first_name}{" "}
-                        {application.account.last_name}
+                        {application.first_name} {application.last_name}
                       </td>
                       <td className="px-6 py-4 text-sm font-normal">
-                        +{application.account.phone.country_code}{" "}
-                        {application.account.phone.number}
+                        +{application.phone.country_code}{" "}
+                        {application.phone.number}
                       </td>
                       <td className="px-6 py-4 text-sm font-normal">
-                        {application.account.email}
+                        {application.email}
                       </td>
-                      <td className="px-6 py-4 text-sm font-normal">
-                        {application.account.address.country},{" "}
-                        {application.account.address.city}
-                      </td>
+                      {/*<td className="px-6 py-4 text-sm font-normal">*/}
+                      {/*  {application.address.country},{" "}*/}
+                      {/*  {application.address.city}*/}
+                      {/*</td>*/}
                       <td className="flex gap-2 px-6 py-4 text-sm font-normal">
                         <button
                           onClick={() =>
-                            navigate(`/userProfile/${application.account.id}`)
+                            navigate(`/userProfile/${application.id}`)
                           }
                           className="rounded-lg border border-main px-3 py-1 text-sm font-medium text-main hover:bg-main hover:text-white"
                         >
                           Show Profile
                         </button>
-                        <a
-                          href={application.resume.url}
-                          className="rounded-lg border border-main px-3 py-[0.4rem] text-sm font-medium text-main hover:bg-main hover:text-white"
-                        >
-                          Show Resume
-                        </a>
+                        {/*<a*/}
+                        {/*  href={application.resume.url}*/}
+                        {/*  className="rounded-lg border border-main px-3 py-[0.4rem] text-sm font-medium text-main hover:bg-main hover:text-white"*/}
+                        {/*>*/}
+                        {/*  Show Resume*/}
+                        {/*</a>*/}
                       </td>
                     </tr>
                   ))}

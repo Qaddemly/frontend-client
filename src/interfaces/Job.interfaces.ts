@@ -96,7 +96,7 @@ export interface IGetJobQuestionsResponse extends IResponse {
 }
 
 export interface IQuestion {
-  _id: string;
+  _id?: string;
   questionText: string;
   questionType: "short_answer" | "multiple_choice" | "long_answer";
   isRequired: boolean;
