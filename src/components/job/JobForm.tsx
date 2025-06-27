@@ -11,6 +11,14 @@ import PostJobQuestions from "./post Job/PostJobQuestions.tsx";
 import PostJobExternalLink from "./post Job/PostJobExternalLink.tsx";
 import Button from "../common/Button.tsx";
 import { IQuestion } from "../../interfaces/Job.interfaces.ts";
+import GenerateOrEnhanceButton from "../common/GenerateOrEnhanceButton.tsx";
+import {
+  useEnhanceJobPostDescriptionMutation,
+  useEnhanceOrGenerateJobPostKeywordsMutation,
+  useEnhanceOrGenerateJobPostSkillsMutation,
+  useGenerateJobPostMutation,
+} from "../../services/businessDashboardApi.ts";
+import { handleApiError } from "../../utils/helpers.ts";
 
 interface JobFormProps {
   type: "easyApply" | "externalLink";
@@ -173,6 +181,104 @@ function JobForm({
     } as React.FormEvent<HTMLFormElement>);
   };
 
+  //////////////////// Post Enhancement (AI Feature) ////////////////////
+  const [prompt, setPrompt] = useState("");
+
+  const [enhanceJobPostDescription] = useEnhanceJobPostDescriptionMutation();
+  const [enhanceOrGenerateJobPostSkills] =
+    useEnhanceOrGenerateJobPostSkillsMutation();
+  const [enhanceOrGenerateJobPostKeywords] =
+    useEnhanceOrGenerateJobPostKeywordsMutation();
+  const [generateJobPost] = useGenerateJobPostMutation();
+
+  async function handleEnhanceDescription() {
+    if (description.length > 0) {
+      try {
+        const promise = enhanceJobPostDescription({
+          data: { title, description },
+        }).unwrap();
+        toast.promise(promise, {
+          loading: "Enhancing description",
+          success: "Description enhanced successfully",
+          error: "Could not enhance description",
+        });
+        const res = await promise;
+        const enhancedDescription = res?.enhancedDescription?.description;
+        if (enhancedDescription) {
+          setDescription(enhancedDescription);
+        }
+      } catch (error) {
+        handleApiError(error);
+      }
+    }
+  }
+
+  async function handleEnhanceOrGenerateSkills() {
+    try {
+      const promise = enhanceOrGenerateJobPostSkills({
+        data: { title, description, skills },
+      }).unwrap();
+      toast.promise(promise, {
+        loading: `${skills.length > 0 ? "Enhancing" : "Generating"}  skills`,
+        success: `Skills ${skills.length > 0 ? "enhanced" : "generated"} successfully`,
+        error: `Could not ${skills.length > 0 ? "enhance" : "generate"} skills`,
+      });
+      const res = await promise;
+      const enhancedSkills = res?.enhancedSkills?.skills;
+      if (enhancedSkills) {
+        setSkills(enhancedSkills);
+      }
+    } catch (error) {
+      handleApiError(error);
+    }
+  }
+
+  async function handleEnhanceOrGenerateKeywords() {
+    try {
+      const promise = enhanceOrGenerateJobPostKeywords({
+        data: { title, description, keywords },
+      }).unwrap();
+      toast.promise(promise, {
+        loading: `${keywords.length > 0 ? "Enhancing" : "Generating"}  keywords`,
+        success: `Keywords ${keywords.length > 0 ? "enhanced" : "generated"} successfully`,
+        error: `Could not ${keywords.length > 0 ? "enhance" : "generate"} keywords`,
+      });
+      const res = await promise;
+      const enhancedKeywords = res?.enhancedKeywords?.keywords;
+      if (enhancedKeywords) {
+        setKeywords(enhancedKeywords);
+      }
+    } catch (error) {
+      handleApiError(error);
+    }
+  }
+
+  async function handleGenerateJobPost() {
+    if (prompt.length > 0) {
+      try {
+        const promise = generateJobPost({
+          data: { prompt },
+        }).unwrap();
+        toast.promise(promise, {
+          loading: "Generating details",
+          success: "Details generated successfully",
+          error: "Could not generate details",
+        });
+        const res = await promise;
+        const generatedDetails = res?.generatedJobPost;
+        if (generatedDetails) {
+          setTitle(generatedDetails.title);
+          setDescription(generatedDetails.description);
+          setSkills(generatedDetails.skills);
+          setKeywords(generatedDetails.keywords);
+        }
+        setPrompt("");
+      } catch (error) {
+        handleApiError(error);
+      }
+    }
+  }
+
   if (isSubmitting) return <Loader />;
 
   return (
@@ -203,10 +309,28 @@ function JobForm({
               <input
                 type="text"
                 placeholder="Job Title"
-                className="w-full rounded-md border border-gray-300 p-2 focus:border-none focus:ring-main"
+                className="w-full rounded-md border border-gray-300 p-2 focus:border-main focus:outline-none focus:ring-1 focus:ring-main"
                 onChange={(e) => setTitle(e.target.value)}
                 value={title}
               />
+
+              {/* Description */}
+              <div className="relative">
+                <textarea
+                  placeholder="Description"
+                  className="h-[13rem] w-full rounded-md border border-gray-300 p-2 focus:border-main focus:outline-none focus:ring-1 focus:ring-main"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+
+                {!updateForm && description.length > 5 && title.length > 0 && (
+                  <GenerateOrEnhanceButton
+                    text="Enhance description with AI"
+                    className="bottom-4 right-5"
+                    onClick={handleEnhanceDescription}
+                  />
+                )}
+              </div>
 
               {/* Location Type */}
               <select
@@ -240,47 +364,44 @@ function JobForm({
                 <input
                   type="text"
                   placeholder="City"
-                  className="w-full rounded-md border border-gray-300 p-2 focus:border-none focus:ring-main"
+                  className="w-full rounded-md border border-gray-300 p-2 focus:border-main focus:outline-none focus:ring-1 focus:ring-main"
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                 />
               </div>
+            </div>
 
-              {/* Skills */}
-              <div>
-                <input
-                  type="text"
-                  placeholder="Skills (Press enter to add)"
-                  className="w-full rounded-md border border-gray-300 p-2 focus:border-none focus:ring-main"
-                  value={skillInputValue}
-                  onChange={(e) => setSkillInputValue(e.target.value)}
-                  onKeyDown={addSkill}
-                />
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {skills.map((skill, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center rounded-full bg-green-200 px-3 py-1 text-white hover:bg-green-100"
-                    >
-                      {skill}{" "}
-                      <button
-                        type="button"
-                        onClick={() => removeSkill(index)}
-                        className="ml-2"
-                      >
-                        x
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
+            {/* Right Column */}
+            <div className="flex flex-col space-y-3">
+              {/* Employment type */}
+              <select
+                className="w-full rounded-md border border-gray-300 p-2 focus:border-main"
+                value={employeeType}
+                onChange={(e) => setEmployeeType(e.target.value)}
+              >
+                <option disabled>Employee type</option>
+                {employmentType.map((employmentType) => (
+                  <option key={employmentType} value={employmentType}>
+                    {employmentType}
+                  </option>
+                ))}
+              </select>
+
+              {/* Job Experience */}
+              <input
+                type="number"
+                placeholder="Experience"
+                className="w-full rounded-md border border-gray-300 p-2 focus:border-main focus:outline-none focus:ring-1 focus:ring-main"
+                onChange={(e) => setExperience(e.target.value)}
+                value={experience}
+              />
 
               {/* Salary */}
               <div className="grid grid-cols-2 gap-2">
                 <input
                   type="number"
                   placeholder="Salary"
-                  className="w-full rounded-md border border-gray-300 p-2 focus:border-none focus:ring-main"
+                  className="w-full rounded-md border border-gray-300 p-2 focus:border-main focus:outline-none focus:ring-1 focus:ring-main"
                   value={salary.salary}
                   onChange={(e) =>
                     setSalary({ ...salary, salary: e.target.value })
@@ -288,7 +409,7 @@ function JobForm({
                 />
 
                 <select
-                  className="w-full rounded-md border border-gray-300 p-2 focus:border-none focus:ring-main"
+                  className="w-full rounded-md border border-gray-300 p-2 focus:border-main focus:outline-none focus:ring-1 focus:ring-main"
                   value={salary.currency}
                   onChange={(e) =>
                     setSalary({ ...salary, currency: e.target.value })
@@ -312,42 +433,68 @@ function JobForm({
                   />
                 )}
               </div>
-            </div>
 
-            {/* Right Column */}
-            <div className="flex flex-col space-y-3">
-              {/* Employment type */}
-              <select
-                className="w-full rounded-md border border-gray-300 p-2 focus:border-main"
-                value={employeeType}
-                onChange={(e) => setEmployeeType(e.target.value)}
-              >
-                <option disabled>Employee type</option>
-                {employmentType.map((employmentType) => (
-                  <option key={employmentType} value={employmentType}>
-                    {employmentType}
-                  </option>
-                ))}
-              </select>
-              {/* Job Experience */}
-              <input
-                type="number"
-                placeholder="Experience"
-                className="w-full rounded-md border border-gray-300 p-2 focus:border-none focus:ring-main"
-                onChange={(e) => setExperience(e.target.value)}
-                value={experience}
-              />
+              {/* Skills */}
+              <div>
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Skills (Press enter to add)"
+                    className="w-full rounded-md border border-gray-300 p-5 focus:border-main focus:outline-none focus:ring-1 focus:ring-main"
+                    value={skillInputValue}
+                    onChange={(e) => setSkillInputValue(e.target.value)}
+                    onKeyDown={addSkill}
+                  />
+                  {!updateForm &&
+                    description.length > 5 &&
+                    title.length > 0 && (
+                      <GenerateOrEnhanceButton
+                        text={`${skills.length === 0 ? "Generate" : "Enhance"} skills with AI`}
+                        className="bottom-2 right-2"
+                        onClick={handleEnhanceOrGenerateSkills}
+                      />
+                    )}
+                </div>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {skills.map((skill, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center rounded-full bg-green-200 px-3 py-1 text-white hover:bg-green-100"
+                    >
+                      {skill}{" "}
+                      <button
+                        type="button"
+                        onClick={() => removeSkill(index)}
+                        className="ml-2"
+                      >
+                        x
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
 
               {/* Keywords */}
               <div>
-                <input
-                  type="text"
-                  placeholder="Keywords (Press enter to add)"
-                  className="w-full rounded-md border border-gray-300 p-2 focus:border-none focus:ring-main"
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  onKeyDown={addKeyword}
-                />
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Keywords (Press enter to add)"
+                    className="w-full rounded-md border border-gray-300 p-5 focus:border-main focus:outline-none focus:ring-1 focus:ring-main"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onKeyDown={addKeyword}
+                  />
+                  {!updateForm &&
+                    description.length > 5 &&
+                    title.length > 0 && (
+                      <GenerateOrEnhanceButton
+                        text={`${keywords.length === 0 ? "Generate" : "Enhance"} keywords with AI`}
+                        className="bottom-2 right-2"
+                        onClick={handleEnhanceOrGenerateKeywords}
+                      />
+                    )}
+                </div>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {keywords.map((keyword, index) => (
                     <div
@@ -366,14 +513,6 @@ function JobForm({
                   ))}
                 </div>
               </div>
-
-              {/* Description */}
-              <textarea
-                placeholder="Description"
-                className="h-24 w-full rounded-md border border-gray-300 p-2 focus:border-2 focus:border-main focus:outline-none"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
 
               {/* Questions */}
               {!updateForm && (
@@ -416,6 +555,22 @@ function JobForm({
           </>
         )}
       </form>
+
+      <div className="relative mt-10">
+        <input
+          className="w-full rounded-md border border-gray-300 p-4 focus:border-main focus:outline-none focus:ring-1 focus:ring-main"
+          placeholder="Tell me about the job and I will do everything for you"
+          type="text"
+          value={prompt}
+          onChange={(e) => setPrompt(e.target.value)}
+        />
+        <GenerateOrEnhanceButton
+          className="bottom-2 right-5"
+          text="Generate all details with AI"
+          noAnimation={true}
+          onClick={handleGenerateJobPost}
+        />
+      </div>
     </div>
   );
 }
