@@ -1,6 +1,63 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.light {
+  --main: 19, 62, 135;
+  --light-main: 66, 101, 159;
+  --secondary: 96, 139, 193;
+  --light-secondary: 203, 220, 235;
+  --light-secondary-200: 152, 160, 180;
+  --light-secondary-300: 186, 202, 228;
+  --danger-300: 217, 58, 64;
+  --danger-200: 225, 97, 102;
+  --white: 255, 255, 255;
+  --background: 243, 242, 240;
+  --yellow: 238, 204, 0;
+  --light-danger: 254, 238, 239;
+  --offWhite: 228, 229, 232;
+  --gray-100: 204, 204, 204;
+  --gray-200: 217, 217, 217;
+  --gray-300: 153, 153, 153;
+  --gray-400: 155, 161, 170;
+  --gray-500: 118, 127, 140;
+  --gray-600: 94, 102, 112;
+  --gray-700: 79, 79, 79;
+  --gray-800: 45, 45, 45;
+  --green-100: 11, 160, 44;
+  --green-200: 1, 117, 80;
+  --light-green: 231, 246, 234;
+  --main-dark: 27, 31, 35;
+}
+
+.dark {
+  --main: 79, 139, 255;
+  --light-main: 58, 106, 201;
+  --secondary: 123, 163, 217;
+  --light-secondary: 42, 60, 82;
+  --light-secondary-200: 106, 120, 146;
+  --light-secondary-300: 68, 81, 102;
+  --danger-300: 255, 107, 107;
+  --danger-200: 255, 140, 143;
+  --white: 26, 26, 26;
+  --background: 18, 18, 18;
+  --yellow: 255, 215, 0;
+  --light-danger: 74, 28, 29;
+  --offWhite: 42, 43, 46;
+  --gray-100: 44, 44, 44;
+  --gray-200: 68, 68, 68;
+  --gray-300: 102, 102, 102;
+  --gray-400: 136, 136, 136;
+  --gray-500: 160, 160, 160;
+  --gray-600: 192, 192, 192;
+  --gray-700: 224, 224, 224;
+  --gray-800: 245, 245, 245;
+  --green-100: 65, 243, 117;
+  --green-200: 40, 180, 99;
+  --light-green: 28, 47, 33;
+  --main-dark: 255, 255, 255;
+}
+
+
 * {
   transition:
     background-color 0.3s,
