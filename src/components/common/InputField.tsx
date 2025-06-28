@@ -38,7 +38,7 @@ function InputField<T extends FieldValues>({
         {icon && (
           <FontAwesomeIcon
             icon={icon}
-            className="absolute top-3 ml-2 h-[22px] w-[22px] text-gray-300"
+            className="absolute top-[0.6rem] ml-2 h-[22px] w-[22px] text-gray-300"
           />
         )}
         {(id == "password" ||

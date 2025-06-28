@@ -63,9 +63,11 @@ const router = createBrowserRouter([
   {
     path: "/apply/custom/:jobId",
     element: (
-      <ApplicationProvider>
-        <CustomApplicationForm />
-      </ApplicationProvider>
+      <ProtectedRoute>
+        <ApplicationProvider>
+          <CustomApplicationForm />
+        </ApplicationProvider>
+      </ProtectedRoute>
     ),
   },
   {

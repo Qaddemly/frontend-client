@@ -21,6 +21,8 @@ function ApplicationExperience() {
     formState: { errors },
   } = useFormContext();
 
+  const locationTypeValues = Object.keys(LocationType);
+
   const { data: experienceData, isLoading } = useGetExperienceQuery({});
   const [showDropdown, setShowDropdown] = useState(false);
   const { experiences, setExperiences } = useApplication();
@@ -154,18 +156,21 @@ function ApplicationExperience() {
         />
       </InputField>
 
-      <InputField errors={errors.experience as FieldErrors} id="locationType">
-        <Input
-          register={register}
-          name={"experience.locationType"}
-          options={{ required: "Location type is required" }}
-          props={{
-            id: "locationType",
-            type: "text",
-            placeholder: "Location Type",
-          }}
-        />
-      </InputField>
+      <Select
+        name={"experience.locationType"}
+        register={register}
+        id="locationType"
+        defaultValue=""
+      >
+        <option value="" disabled>
+          Select a location type
+        </option>
+        {locationTypeValues.map((value) => (
+          <option value={value} key={value}>
+            {value}
+          </option>
+        ))}
+      </Select>
 
       <StartToEndDate
         startDate="experience.startDate"
