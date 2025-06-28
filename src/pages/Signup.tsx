@@ -77,9 +77,8 @@ function Signup() {
     <AuthLayout>
       <Logo />
       {isLoading && <Loader />}
-      <p className="text-secondary">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci
-        laudantium cum amet
+      <p className="mt-2 text-secondary">
+        Join us and take the next step in your career.
       </p>
 
       {step == 1 && (
@@ -170,7 +169,7 @@ function Signup() {
                 register={register2}
                 options={{
                   required: "password is required",
-                  minLength: { value: 8, message: "min value 8 charcters" },
+                  minLength: { value: 8, message: "min value 8 characters" },
                 }}
                 name="password"
                 props={{
@@ -195,7 +194,7 @@ function Signup() {
                 register={register2}
                 options={{
                   required: "confirm password is required",
-                  minLength: { value: 8, message: "min value 8 charcters" },
+                  minLength: { value: 8, message: "min value 8 characters" },
                   validate: (value) =>
                     getValues2("password") === value || "password do not match",
                 }}
@@ -223,7 +222,7 @@ function Signup() {
               />
             </InputField>
 
-            <InputField id="country" label="Country" icon={faMapMarkerAlt}>
+            <InputField id="country" label="Country">
               <Select register={register2} name="address.country">
                 {countryValues.map((value) => (
                   <option key={value} value={value}>

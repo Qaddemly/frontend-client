@@ -72,10 +72,7 @@ function ApplicationPersonal() {
           className={`${errors?.personal?.phone ? "mb-6" : ""} w-3 sm:w-fit`}
         >
           {prefixValues.map((value) => (
-            <option
-              key={value}
-              value={Prefixes[value as keyof typeof Prefixes]}
-            >
+            <option key={value} value={value}>
               {value}
             </option>
           ))}
