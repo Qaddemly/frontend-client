@@ -156,7 +156,7 @@ function Navbar() {
                 className="text-2xl text-main"
               />
             </button>
-            <div className="flex gap-4">
+            <div className="flex gap-2 sm:gap-4">
               <div
                 className="relative cursor-pointer"
                 onClick={async () => {
@@ -165,7 +165,10 @@ function Navbar() {
                   refetchNotificatins();
                 }}
               >
-                <FontAwesomeIcon icon={faBell} className="text-2xl" />
+                <FontAwesomeIcon
+                  icon={faBell}
+                  className="text-lg sm:text-2xl"
+                />
                 {(notifications?.filter((n) => !n.isSeen)?.length ?? 0) > 0 && (
                   <div className="absolute bottom-4 left-2 rounded-full bg-danger-300 px-2 py-1 text-xs font-medium text-white">
                     {notifications?.filter((n) => !n.isSeen)?.length ?? 0}
@@ -174,7 +177,10 @@ function Navbar() {
               </div>
 
               <Link to="/message">
-                <FontAwesomeIcon icon={faMessage} className="text-2xl" />
+                <FontAwesomeIcon
+                  icon={faMessage}
+                  className="text-lg sm:text-2xl"
+                />
               </Link>
             </div>
 

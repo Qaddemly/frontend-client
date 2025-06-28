@@ -40,6 +40,7 @@ function FindJob() {
       locationType,
       employmentType: selectedEmploymentTypes,
       salary,
+      country: location,
     });
   }
 
@@ -57,6 +58,7 @@ function FindJob() {
       locationType,
       employmentType: selectedEmploymentTypes,
       salary,
+      country: location,
     });
   }, [fetchJobs]);
 

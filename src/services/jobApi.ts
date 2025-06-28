@@ -23,6 +23,7 @@ export const jobApi = apiSlice.injectEndpoints({
         locationType?: string;
         employmentType?: string[];
         salary?: number;
+        country?: string;
       }
     >({
       query: ({
@@ -32,6 +33,7 @@ export const jobApi = apiSlice.injectEndpoints({
         locationType,
         employmentType,
         salary,
+        country,
       }) => {
         const params = new URLSearchParams();
 
@@ -41,6 +43,9 @@ export const jobApi = apiSlice.injectEndpoints({
 
         if (locationType?.length) {
           params.append("filter.location_type[in]", locationType);
+        }
+        if (country?.length) {
+          params.append("filter.country", country);
         }
 
         if (employmentType?.length) {
