@@ -7,40 +7,40 @@ import {
 import { useNavigate } from "react-router-dom";
 import { IJob } from "../../interfaces/Job.interfaces";
 
+function formatSalary(currency?: string, salary?: number): string {
+  if (!currency || salary === undefined || salary === null)
+    return "Not specified";
+
+  const normalizedCurrency = currency.toLowerCase();
+  let symbol = "";
+  let suffix = "";
+
+  switch (normalizedCurrency) {
+    case "usd":
+      symbol = "$";
+      break;
+    case "eur":
+      symbol = "€";
+      break;
+    case "gbp":
+      symbol = "£";
+      break;
+    case "jpy":
+      symbol = "¥";
+      break;
+    // Add more currencies as needed
+    default:
+      suffix = ` ${currency.toUpperCase()}`;
+  }
+
+  // Format salary with commas (optional)
+  const formattedSalary = salary.toLocaleString();
+
+  return `${symbol}${formattedSalary}${suffix}`;
+}
+
 function JobCard({ job }: { job: IJob }) {
   const navigate = useNavigate();
-  // ask backend to put isSaved in getAlljobs api
-  // const savedJobs = useSelector((state: RootState) => state.user.savedJobs);
-  // const isSavedJob = savedJobs?.some((j) => job.id === j.id);
-
-  // const [saveJob, { isLoading: loadingSaveJob }] = useSaveJobMutation();
-  // const [unSaveJob, { isLoading: loadingUnSaveJob }] = useUnSaveJobMutation();
-
-  // async function handleSaveJob(
-  //   e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  // ) {
-  //   e.stopPropagation();
-  //   try {
-  //     const res = await saveJob({ id: job.id.toString() }).unwrap();
-  //     toast.success(res.message);
-  //   } catch (error) {
-  //     handleApiError(error);
-  //   }
-  // }
-
-  // async function handleUnSaveJob(
-  //   e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  // ) {
-  //   e.stopPropagation();
-  //   try {
-  //     const res = await unSaveJob({ id: job.id.toString() }).unwrap();
-  //     toast.success(res.message);
-  //   } catch (error) {
-  //     handleApiError(error);
-  //   }
-  // }
-
-  // if (loadingSaveJob || loadingUnSaveJob) return <Loader />;
   return (
     <div
       className="w-full cursor-pointer rounded-lg bg-white p-4 shadow-md transition hover:shadow-lg"
@@ -55,7 +55,7 @@ function JobCard({ job }: { job: IJob }) {
             {job?.employee_type.toUpperCase()}
           </span>
           <span className="block text-sm text-gray-600">
-            Salary: {job?.salary}
+            Salary: {formatSalary(job?.currency, job?.salary)}
           </span>
         </div>
         <div className="flex items-center justify-between">
@@ -71,7 +71,7 @@ function JobCard({ job }: { job: IJob }) {
                   icon={faLocationDot}
                 />
                 <p className="text-sm">
-                  {job?.business.address.country} {job?.business.address.city}
+                  {job?.country} {job?.city}
                 </p>
               </div>
             </div>

@@ -11,7 +11,7 @@ import {
 
 function UserProfileConnections({ basicInfo }: { basicInfo: IBasicInfo }) {
   return (
-    <div className="w-[40rem] p-10">
+    <div className="p-10 px-10 sm:w-[40rem] sm:px-20 md:px-10 lg:px-32">
       <p className="mb-5 text-xl font-semibold">Connect</p>
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-2">
