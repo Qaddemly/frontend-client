@@ -11,6 +11,7 @@ import {
 import { apiSlice } from "./apiSlice";
 
 const BASE_JOB_URL = "/job";
+const BASE_AI_FEATURE_URL = "/AI-Feature";
 
 export const jobApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -162,6 +163,16 @@ export const jobApi = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    //////////////////////////////////////////// Matching Score (AI Feature) /////////////////////////////////////////
+    matchScore: builder.query<
+      { score: { similarity_score: number; message: string } },
+      { jobId: number }
+    >({
+      query: ({ jobId }) => ({
+        url: `${BASE_AI_FEATURE_URL}/matchScore/${jobId}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -179,4 +190,6 @@ export const {
   useGetRecommendedJobsQuery,
   useGetOneJobApplicationQuery,
   useGetArchivedJobApplicationQuery,
+  //////////////////////////////////////////// Matching Score (AI Feature) /////////////////////////////////////////
+  useLazyMatchScoreQuery,
 } = jobApi;

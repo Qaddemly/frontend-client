@@ -59,7 +59,7 @@ function Navbar() {
 
       <nav className="flex w-full items-center justify-between border-b border-gray-200 bg-white px-6 py-3 lg:px-8">
         <Logo className="text-3xl font-medium text-main lg:text-4xl" />
-        <div className="hidden lg:flex">
+        <div className="hidden text-sm lg:flex">
           <ul className="flex items-center justify-between space-x-8">
             <li>
               <NavbarLink to="/" content="Home" />

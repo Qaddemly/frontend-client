@@ -11,13 +11,13 @@ import Loader from "../../common/Loader";
 import toast from "react-hot-toast";
 import {
   useGetJobDetailsQuery,
+  useLazyMatchScoreQuery,
   useSaveJobMutation,
   useUnSaveJobMutation,
 } from "../../../services/jobApi";
 import { useNavigate, useParams } from "react-router-dom";
-import { useState } from "react";
-import { useGetAllResumesQuery } from "../../../services/profileApi";
 import BackButton from "../../common/BackButton";
+import { useEffect, useState } from "react";
 
 function JobProfileHeader({ job }: { job: IJob }) {
   const { jobId } = useParams();
@@ -52,6 +52,23 @@ function JobProfileHeader({ job }: { job: IJob }) {
     }
   }
 
+  //////////////////////////////////////////// Matching Score (AI Feature) /////////////////////////////////////////
+  const [matchScore] = useLazyMatchScoreQuery();
+  const [score, setScore] = useState(0);
+
+  useEffect(() => {
+    const fetchMatchScore = async () => {
+      try {
+        const res = await matchScore({ jobId: job.id }).unwrap();
+        setScore(res.score.similarity_score);
+      } catch (error) {
+        handleApiError(error);
+      }
+    };
+
+    fetchMatchScore();
+  }, [job.id, matchScore]);
+
   if (loadingSaveJob || loadingUnSaveJob) return <Loader />;
   return (
     <div className="flex w-full flex-col items-center bg-light-secondary py-4">
@@ -72,6 +89,7 @@ function JobProfileHeader({ job }: { job: IJob }) {
             Updated {formatDate(job.updated_at)}
           </p>
         </div>
+
         <div className="flex w-fit flex-row items-center gap-1 text-lg">
           <a href={job?.business.website} target="_blank" className="underline">
             {job?.business.name}
@@ -84,6 +102,24 @@ function JobProfileHeader({ job }: { job: IJob }) {
           {/* <p className="ml-2">{job.business.rating}</p> */}
           {/* <FontAwesomeIcon icon={faStar} /> */}
         </div>
+        {score > 0 && (
+          <p className="flex items-center gap-2 self-end text-lg text-gray-600">
+            You're about
+            <span
+              className={`relative flex items-center justify-center gap-1 rounded-full px-3 py-1 font-semibold text-white ${
+                Math.floor(score * 100) > 75
+                  ? "bg-green-100"
+                  : Math.floor(score * 100) > 50
+                    ? "bg-yellow"
+                    : "bg-danger-300"
+              }`}
+            >
+              {Math.floor(score * 100)}%
+            </span>
+            match for this role
+          </p>
+        )}
+
         <div className="flex w-full items-center justify-evenly md:justify-between">
           {job.has_extra_link_application ? (
             <a
