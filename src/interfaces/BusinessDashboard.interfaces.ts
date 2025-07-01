@@ -76,12 +76,12 @@ export interface IResume {
 
 export interface IJobApplication {
   id: number;
-  jop_application_state: string;
+  // jop_application_state: string;
   created_at: string;
   updated_at: string;
-  account: IUser;
-  job: IJob;
-  resume: IResume;
+  account: IUser | null;
+  job: IJob | null;
+  resume: IResume | [];
   job_application_state: IJobApplicationState;
 }
 
