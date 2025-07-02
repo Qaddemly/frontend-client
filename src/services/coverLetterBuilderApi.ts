@@ -9,6 +9,7 @@ import {
 } from "../interfaces/CoverLetter.interfaces.ts";
 
 const BASE_COVER_LETTER_URL = "/coverLetter";
+const BASE_AI_FEATURE_URL = "/AI-Feature";
 
 export const coverLetterBuilderApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -87,6 +88,17 @@ export const coverLetterBuilderApi = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
+    ///////////////////////////////////////////// Cover Letter Builder Enhancement (AI Feature) //////////////////////////////////////////////
+    generateOrEnhanceCoverLetterBody: builder.mutation<
+      { coverLetterBody: string },
+      { existingBody: string; jobDescription: string }
+    >({
+      query: ({ existingBody, jobDescription }) => ({
+        url: `${BASE_AI_FEATURE_URL}/coverLetterBuilder`,
+        method: "POST",
+        body: { existingBody, jobDescription },
+      }),
+    }),
   }),
 });
 
@@ -100,4 +112,6 @@ export const {
   useAddPersonalCoverLetterMutation,
   useUpdatePersonalCoverLetterMutation,
   useDeletePersonalCoverLetterMutation,
+  ///////////////////////////////////////////// Cover Letter Builder Enhancement (AI Feature) //////////////////////////////////////////////
+  useGenerateOrEnhanceCoverLetterBodyMutation,
 } = coverLetterBuilderApi;
