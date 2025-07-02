@@ -43,6 +43,7 @@ import {
 } from "../interfaces/ResumeBuilder.interfaces.ts";
 
 const BASE_RESUME_URL = "/resumeTemplate";
+const BASE_AI_FEATURE_URL = "/AI-Feature";
 
 export const resumeBuilderApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -682,7 +683,6 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
-
     ///////////////////////////////////////////// Organization //////////////////////////////////////////////
     getAllResumeOrganization: builder.query<
       IGetResumeOrganizationsInfoResponse,
@@ -732,6 +732,47 @@ export const resumeBuilderApi = apiSlice.injectEndpoints({
       query: ({ resumeId, organizationId }) => ({
         url: `${BASE_RESUME_URL}/${resumeId}/organization/${organizationId}`,
         method: "DELETE",
+      }),
+    }),
+    ///////////////////////////////////////////// Resume Builder Enhancement (AI Feature) //////////////////////////////////////////////
+    generateOrEnhanceAboutMe: builder.mutation<
+      { enhancedAboutMe: string },
+      { aboutMe: string }
+    >({
+      query: ({ aboutMe }) => ({
+        url: `${BASE_AI_FEATURE_URL}/generateOrEnhanceAboutMe`,
+        method: "POST",
+        body: aboutMe,
+      }),
+    }),
+    generateOrEnhanceAboutMeBasedOnJob: builder.mutation<
+      { enhancedAboutMe: string },
+      { aboutMe: string; jobDescription: string }
+    >({
+      query: ({ aboutMe }) => ({
+        url: `${BASE_AI_FEATURE_URL}/generateOrEnhanceAboutMeBasedOnJob`,
+        method: "POST",
+        body: aboutMe,
+      }),
+    }),
+    generateOrEnhanceSkills: builder.mutation<
+      { enhancedSkills: string[] },
+      { skills: string[] }
+    >({
+      query: ({ skills }) => ({
+        url: `${BASE_AI_FEATURE_URL}/generateOrEnhanceSkills`,
+        method: "POST",
+        body: skills,
+      }),
+    }),
+    generateOrEnhanceSkillsBasedOnJob: builder.mutation<
+      { enhancedSkills: string[] },
+      { skills: string[]; jobDescription: string }
+    >({
+      query: ({ skills }) => ({
+        url: `${BASE_AI_FEATURE_URL}/generateOrEnhanceSkillsBasedOnJob`,
+        method: "POST",
+        body: skills,
       }),
     }),
   }),
@@ -821,4 +862,9 @@ export const {
   useGetAllResumeOrganizationQuery,
   useGetResumeOrganizationQuery,
   useUpdateResumeOrganizationMutation,
+  ///////////////////////////////////////////// Resume Builder Enhancement (AI Feature) /////////////////////
+  useGenerateOrEnhanceAboutMeMutation,
+  useGenerateOrEnhanceAboutMeBasedOnJobMutation,
+  useGenerateOrEnhanceSkillsMutation,
+  useGenerateOrEnhanceSkillsBasedOnJobMutation,
 } = resumeBuilderApi;

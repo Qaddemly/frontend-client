@@ -233,3 +233,12 @@ export function formatTimestampTo12Hour(time: string): string {
 
   return `${hours}:${minutesStr} ${ampm}`;
 }
+
+export function isEditorContentEmpty(value?: string) {
+  const cleaned = (value || "")
+    .replace(/<br\s*\/?>/gi, "")
+    .replace(/<p>\s*<\/p>/gi, "")
+    .replace(/&nbsp;/gi, "")
+    .trim();
+  return cleaned === "";
+}
