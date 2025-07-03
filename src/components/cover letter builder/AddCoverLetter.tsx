@@ -57,7 +57,7 @@ function AddCoverLetter() {
       });
       setShowModal(false);
       setCoverLetterTemplates((prev) =>
-        prev.filter((coverLetter) => coverLetter.id.toString() !== id),
+        prev.filter((coverLetter) => coverLetter?.id?.toString() !== id),
       );
     } catch (error) {
       handleApiError(error);
@@ -143,14 +143,16 @@ function AddCoverLetter() {
             <div>
               <p className="text-lg font-semibold">{coverLetter.name}</p>
               <p className="text-sm text-gray-300">
-                {ediTimeAgo(coverLetter.updated_at)}
+                {ediTimeAgo(coverLetter?.updated_at || "")}
               </p>
             </div>
 
             <Button
               onClick={(e) => {
                 e.stopPropagation();
-                handleDeleteCoverLetterTemplate(coverLetter.id.toString());
+                handleDeleteCoverLetterTemplate(
+                  coverLetter?.id?.toString() || "",
+                );
               }}
               className="border border-danger-300 bg-background px-4 text-danger-300 hover:bg-danger-300 hover:text-white"
             >

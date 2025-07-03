@@ -2,7 +2,7 @@ import { IBasicInfo } from "../../interfaces/Auth.interfaces";
 
 function UserProfileHeader({ basicInfo }: { basicInfo: IBasicInfo }) {
   return (
-    <div className="bg-light-secondary px-32 py-10">
+    <div className="flex items-center justify-center bg-light-secondary px-10 py-10 sm:px-20 md:justify-start md:px-10 lg:px-32">
       {/* Log, Info and Actions */}
       <div className="flex items-center justify-between">
         {/* Logo and Info Section */}

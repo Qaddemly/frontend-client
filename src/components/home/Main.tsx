@@ -21,6 +21,7 @@ import {
   useGetNumberOfUsersQuery,
 } from "../../services/homeApi";
 import Loader from "../common/Loader";
+import { useState } from "react";
 
 function Main() {
   const navigate = useNavigate();
@@ -33,29 +34,49 @@ function Main() {
   const { data: newJobs, isLoading: isLoadingNewJobs } =
     useGetNumberOfNewPostedJobsQuery();
   const { data: recommended } = useGetRecommendedJobsQuery();
+
+  // Recommended jobs pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const jobsPerPage = 6; // Adjust based on your grid layout
+
+  // Calculate pagination
+  const indexOfLastJob = currentPage * jobsPerPage;
+  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
+  const currentJobs =
+    recommended?.recommendedJobs?.slice(indexOfFirstJob, indexOfLastJob) || [];
+  const totalPages = Math.ceil(
+    (recommended?.recommendedJobs?.length || 0) / jobsPerPage,
+  );
+
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
   const items = [
     {
       icon: faBriefcase,
       text: "Live Jobs",
       count: liveJobs?.count,
+      emptyText: "No active jobs at the moment",
       isLoading: isLoadingLive,
     },
     {
       icon: faBuilding,
       text: "Companies",
       count: companies?.count,
+      emptyText: "No companies registered yet",
       isLoading: isLoadingCompanies,
     },
     {
       icon: faUsers,
       text: "Candidates",
       count: candidates?.count,
+      emptyText: "No candidates yet",
       isLoading: isLoadingCandidates,
     },
     {
       icon: faArrowsSpin,
       text: "New Jobs",
       count: newJobs?.count,
+      emptyText: "Check back soon for new opportunities",
       isLoading: isLoadingNewJobs,
     },
   ];
@@ -65,7 +86,7 @@ function Main() {
     isLoadingCompanies ||
     isLoadingNewJobs
   )
-    return <Loader />;
+    return <Loader bgWhite={true} />;
   return (
     <>
       <div className="mx-6 my-20 md:my-20">
@@ -97,12 +118,16 @@ function Main() {
               className="mr-3 rounded-md bg-light-secondary p-3 text-3xl text-main"
             />
             <div className="flex flex-col">
-              {item.isLoading ? (
-                <Loader />
+              {item?.count && item?.count > 0 ? (
+                <div className="flex flex-col items-center">
+                  <span className="mr-3 font-bold">{item.count}</span>
+                  <span className="block text-gray-600">{item.text}</span>
+                </div>
               ) : (
-                <span className="mr-3 font-bold">{item.count}</span>
+                <span className="text-sm font-bold text-gray-600">
+                  {item.emptyText}
+                </span>
               )}
-              <span className="block text-gray-600">{item.text}</span>
             </div>
           </li>
         ))}
@@ -175,23 +200,47 @@ function Main() {
         </div>
       </div>
 
+      {/* Recommended Jobs */}
       <div className="bg-background p-10 pb-32">
-        <div className="flex flex-col items-center justify-between md:flex-row">
-          <p className="text-xl font-bold md:text-2xl">Recommended Jobs</p>
-          <button
-            onClick={() => navigate("/findJob")}
-            className="mt-4 rounded-md border-2 px-5 py-2 text-main hover:border-main hover:bg-main hover:text-white md:mt-0"
-          >
-            Find more jobs <FontAwesomeIcon icon={faAnglesRight} />
-          </button>
-        </div>
+        {currentJobs.length > 0 && (
+          <div className="flex flex-col items-center justify-between md:flex-row">
+            <p className="text-xl font-bold md:text-2xl">Recommended Jobs</p>
+            <button
+              onClick={() => navigate("/findJob")}
+              className="mt-4 rounded-md border-2 px-5 py-2 text-main hover:border-main hover:bg-main hover:text-white md:mt-0"
+            >
+              Find more jobs <FontAwesomeIcon icon={faAnglesRight} />
+            </button>
+          </div>
+        )}
 
         <div className="p-4">
           <ul className="mt-5 grid grid-cols-1 gap-5 px-3 sm:grid-cols-2 lg:grid-cols-3">
-            {recommended?.recommendedJobs.map((job) => (
+            {currentJobs.map((job) => (
               <JobCard job={job} key={job.id} />
             ))}
           </ul>
+
+          {/* Pagination controls */}
+          {totalPages > 1 && (
+            <div className="mt-8 flex justify-center">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (number) => (
+                  <button
+                    key={number}
+                    onClick={() => paginate(number)}
+                    className={`mx-1 rounded px-3 py-1 ${
+                      currentPage === number
+                        ? "bg-main text-white"
+                        : "bg-gray-200 hover:bg-gray-300"
+                    }`}
+                  >
+                    {number}
+                  </button>
+                ),
+              )}
+            </div>
+          )}
         </div>
       </div>
     </>

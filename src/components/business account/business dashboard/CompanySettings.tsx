@@ -1,10 +1,11 @@
 import { NavLink, Outlet, useParams } from "react-router-dom";
+import { useGetBusinessAccountInfoQuery } from "../../../services/businessAccountApi";
 
 function CompanySettings() {
-  // const { businessAccount } = useSelector(
-  //   (state: RootState) => state.businessAccount,
-  // );
   const { companyId } = useParams();
+  const { refetch } = useGetBusinessAccountInfoQuery({
+    id: companyId || "",
+  });
   return (
     <>
       <div className="flex items-center bg-[#eee] p-2">
@@ -13,6 +14,7 @@ function CompanySettings() {
         </div>
         <div className="flex gap-5 pl-5 text-lg font-medium">
           <NavLink
+            onClick={() => refetch()}
             to={`/businessDashboard/companySettings/companyAccount/${companyId}`}
             className={({ isActive }) =>
               `px-2 py-1 ${isActive ? "rounded-md bg-main text-white" : ""}`

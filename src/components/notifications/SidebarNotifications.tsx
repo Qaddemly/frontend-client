@@ -24,9 +24,11 @@ function SidebarNotifications({
       <div className="flex items-center justify-between">
         <div>
           <p>Notifications</p>
-          <p className="cursor-pointer text-sm text-gray-300">
-            Mark all as read
-          </p>
+          {notifications.length > 0 && (
+            <p className="cursor-pointer text-sm text-gray-300">
+              Mark all as read
+            </p>
+          )}
         </div>
         <FontAwesomeIcon
           icon={faXmark}

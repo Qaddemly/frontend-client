@@ -162,10 +162,10 @@ function CompanyProfileBody({
             title="Founder"
             description={companyData?.founder}
           />
-          {/* <CompanyProfileCard
+          <CompanyProfileCard
             title="Website"
             description={companyData?.website}
-          /> */}
+          />
           <CompanyProfileCard
             title="Headquarters"
             description={companyData?.headquarter}

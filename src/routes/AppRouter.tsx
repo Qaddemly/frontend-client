@@ -8,7 +8,6 @@ import ForgetPassword from "../pages/ForgetPassword";
 import SetNewPassword from "../pages/SetNewPassword";
 import { Toaster } from "react-hot-toast";
 import ProtectedRoute from "./ProtectedRoute";
-import Apply from "../components/job/apply job/ApplyJob";
 import Message from "../components/messages/Message";
 import FindCompany from "../pages/FindCompany";
 import CompanyProfile from "../pages/CompanyProfile";
@@ -64,9 +63,11 @@ const router = createBrowserRouter([
   {
     path: "/apply/custom/:jobId",
     element: (
-      <ApplicationProvider>
-        <CustomApplicationForm />
-      </ApplicationProvider>
+      <ProtectedRoute>
+        <ApplicationProvider>
+          <CustomApplicationForm />
+        </ApplicationProvider>
+      </ProtectedRoute>
     ),
   },
   {
@@ -115,7 +116,6 @@ const router = createBrowserRouter([
   { path: "/userInfo", element: <UserInfo /> },
   { path: "/forgetPassword", element: <ForgetPassword /> },
   { path: "/setNewPassword", element: <SetNewPassword /> },
-  { path: "/apply-job", element: <Apply /> },
   {
     path: "/message",
     element: (
@@ -200,6 +200,7 @@ const router = createBrowserRouter([
             element: <JobApplications />,
             children: [{ path: "jobTracker", element: <JobTrackerBusiness /> }],
           },
+          { path: "updateJob/:jobId", element: <UpdateJob /> },
           { path: "postJobEasyApply", element: <PostJob type="easyApply" /> },
           {
             path: "postJobExternalLink",
@@ -212,7 +213,6 @@ const router = createBrowserRouter([
         ],
       },
 
-      { path: "updateJob/:jobId", element: <UpdateJob /> },
       { path: "companyCandidates/:companyId", element: <CompanyCandidates /> },
       {
         path: "companySettings",
@@ -292,7 +292,8 @@ const router = createBrowserRouter([
 
 function AppRouter() {
   return (
-    <>
+    // TODO: Handle Dark Mode
+    <div className="light">
       <RouterProvider router={router} />
       <Toaster
         position="top-center"
@@ -311,7 +312,7 @@ function AppRouter() {
         }}
       />
       <ScrollToTop />
-    </>
+    </div>
   );
 }
 

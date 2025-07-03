@@ -1,12 +1,10 @@
 import {
   faBirthdayCake,
-  faBriefcase,
   faCircleUser,
   faEnvelope,
   faLock,
   faMapMarkerAlt,
   faPhone,
-  faUniversity,
 } from "@fortawesome/free-solid-svg-icons";
 import GoogleButton from "../components/auth/GoogleButton";
 import Logo from "../components/common/Logo";
@@ -29,6 +27,8 @@ import Button from "../components/common/Button";
 import InputField from "../components/common/InputField";
 import { formSettings } from "../interfaces/Common.interfaces";
 import { handleApiError } from "../utils/helpers";
+import Select from "../components/common/Select";
+import { Country, Prefixes } from "../enums/index.enums";
 
 function Signup() {
   const [step, setStep] = useState(1);
@@ -36,6 +36,11 @@ function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [signUp, { isLoading }] = useSignUpMutation();
+
+  const countryValues = Object.values(Country);
+  const prefixValues = Object.values(Prefixes).filter(
+    (value) => typeof value == "string",
+  );
 
   const {
     register: register1,
@@ -72,9 +77,8 @@ function Signup() {
     <AuthLayout>
       <Logo />
       {isLoading && <Loader />}
-      <p className="text-secondary">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci
-        laudantium cum amet
+      <p className="mt-2 text-secondary">
+        Join us and take the next step in your career.
       </p>
 
       {step == 1 && (
@@ -165,7 +169,7 @@ function Signup() {
                 register={register2}
                 options={{
                   required: "password is required",
-                  minLength: { value: 8, message: "min value 8 charcters" },
+                  minLength: { value: 8, message: "min value 8 characters" },
                 }}
                 name="password"
                 props={{
@@ -190,7 +194,7 @@ function Signup() {
                 register={register2}
                 options={{
                   required: "confirm password is required",
-                  minLength: { value: 8, message: "min value 8 charcters" },
+                  minLength: { value: 8, message: "min value 8 characters" },
                   validate: (value) =>
                     getValues2("password") === value || "password do not match",
                 }}
@@ -214,53 +218,75 @@ function Signup() {
                 // options={{ required: "birthday is required" }}
                 props={{ id: "dateOfBirth", type: "date" }}
                 icon={faBirthdayCake}
+                name="date_of_birth"
               />
             </InputField>
-            <InputField id="location" label="Location" icon={faMapMarkerAlt}>
+
+            <InputField id="country" label="Country">
+              <Select register={register2} name="address.country">
+                {countryValues.map((value) => (
+                  <option key={value} value={value}>
+                    {value}
+                  </option>
+                ))}
+              </Select>
+            </InputField>
+            <InputField id="address.city" label="City" icon={faMapMarkerAlt}>
               <Input
                 register={register2}
+                name="address.city"
                 props={{
-                  id: "location",
-                  placeholder: "location",
+                  id: "address.city",
+                  placeholder: "City",
                   type: "text",
                 }}
                 icon={faBirthdayCake}
               />
             </InputField>
-            <InputField id="phone" label="Phone" icon={faPhone}>
-              <Input
+
+            <div className="mt-10 flex items-end justify-between gap-3">
+              <Select
                 register={register2}
-                props={{
-                  id: "phone",
-                  placeholder: "123 456 789",
-                  type: "text",
-                }}
-                icon={faBirthdayCake}
-              />
-            </InputField>
-            <InputField id="education" label="University" icon={faUniversity}>
-              <Input
-                register={register2}
-                props={{
-                  id: "education",
-                  placeholder: "Your school / university",
-                  type: "text",
-                }}
-                icon={faUniversity}
-              />
-            </InputField>
-            <InputField id="experience" label="Experience" icon={faBriefcase}>
-              <Input
-                register={register2}
-                props={{
-                  id: "experience",
-                  placeholder: "enter your experience ,please",
-                  type: "text",
-                }}
-                icon={faBriefcase}
-              />
-            </InputField>
-            <Button className="w-full">Continue</Button>
+                name="phone.country_code"
+                label="Phone"
+                id="phone"
+              >
+                {prefixValues.map((value) => (
+                  <option
+                    key={value}
+                    value={Prefixes[value as keyof typeof Prefixes]}
+                  >
+                    {value} +{Prefixes[value as keyof typeof Prefixes]}
+                  </option>
+                ))}
+              </Select>
+
+              <InputField icon={faPhone} id="phone">
+                <Input
+                  register={register2}
+                  name={"phone.number"}
+                  icon={faPhone}
+                  props={{
+                    placeholder: "123-456-789",
+                    id: "phone",
+                    type: "number",
+                  }}
+                />
+              </InputField>
+            </div>
+
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Button
+                type="button"
+                className="w-full"
+                onClick={() => setStep((s) => s - 1)}
+              >
+                Back
+              </Button>
+              <Button type="submit" className="w-full">
+                Continue
+              </Button>
+            </div>
           </form>
         </>
       )}

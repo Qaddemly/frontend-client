@@ -32,7 +32,7 @@ function Navbar() {
   const { user } = useSelector((state: RootState) => state.user);
   const { data } = useGetUserBusinessesQuery(undefined, {
     skip: Object.entries(user).length === 0,
-  }); // this api can be handled with getMe api instead (ask backend)
+  }); // TODO: this api can be handled with getMe api instead (ask backend)
   const [showMenu, setShowMenu] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const divRef = useRef<HTMLDivElement>(null);
@@ -59,7 +59,7 @@ function Navbar() {
 
       <nav className="flex w-full items-center justify-between border-b border-gray-200 bg-white px-6 py-3 lg:px-8">
         <Logo className="text-3xl font-medium text-main lg:text-4xl" />
-        <div className="hidden lg:flex">
+        <div className="hidden text-sm lg:flex">
           <ul className="flex items-center justify-between space-x-8">
             <li>
               <NavbarLink to="/" content="Home" />
@@ -156,7 +156,7 @@ function Navbar() {
                 className="text-2xl text-main"
               />
             </button>
-            <div className="flex gap-4">
+            <div className="flex gap-2 sm:gap-4">
               <div
                 className="relative cursor-pointer"
                 onClick={async () => {
@@ -165,7 +165,10 @@ function Navbar() {
                   refetchNotificatins();
                 }}
               >
-                <FontAwesomeIcon icon={faBell} className="text-2xl" />
+                <FontAwesomeIcon
+                  icon={faBell}
+                  className="text-lg sm:text-2xl"
+                />
                 {(notifications?.filter((n) => !n.isSeen)?.length ?? 0) > 0 && (
                   <div className="absolute bottom-4 left-2 rounded-full bg-danger-300 px-2 py-1 text-xs font-medium text-white">
                     {notifications?.filter((n) => !n.isSeen)?.length ?? 0}
@@ -174,7 +177,10 @@ function Navbar() {
               </div>
 
               <Link to="/message">
-                <FontAwesomeIcon icon={faMessage} className="text-2xl" />
+                <FontAwesomeIcon
+                  icon={faMessage}
+                  className="text-lg sm:text-2xl"
+                />
               </Link>
             </div>
 

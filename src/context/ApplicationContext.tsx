@@ -1,24 +1,28 @@
 import React, { createContext, useContext, useState } from "react";
 import {
   IApplicationData,
+  ICustomEducation,
   ICustomExperience,
 } from "../interfaces/CustomApplication.interfaces";
+import { IAnswer } from "../interfaces/Job.interfaces.ts";
 
 interface ApplicationContextType {
   applicationType: "easy" | "custom" | null;
   setApplicationType: (type: "easy" | "custom" | null) => void;
   resume: File | null;
   setResume: (file: File | null) => void;
-  answers: string[];
-  setAnswers: React.Dispatch<React.SetStateAction<string[]>>;
+  answers: IAnswer[];
+  setAnswers: React.Dispatch<IAnswer[]>;
+  educations: ICustomEducation[];
+  setEducations: React.Dispatch<React.SetStateAction<ICustomEducation[]>>;
   applicationData: IApplicationData;
   setApplicationData: React.Dispatch<React.SetStateAction<IApplicationData>>;
   currentStep: number;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   nextStep: () => void;
   prevStep: () => void;
-  experience: ICustomExperience[];
-  setExperience: React.Dispatch<React.SetStateAction<ICustomExperience[]>>;
+  experiences: ICustomExperience[];
+  setExperiences: React.Dispatch<React.SetStateAction<ICustomExperience[]>>;
   skills: string[];
   setSkills: React.Dispatch<React.SetStateAction<string[]>>;
   languages: string[];
@@ -36,18 +40,18 @@ export const ApplicationProvider: React.FC<{ children: React.ReactNode }> = ({
     "easy" | "custom" | null
   >(null);
   const [resume, setResume] = useState<File | null>(null);
-  const [answers, setAnswers] = useState<string[]>([]);
+  const [answers, setAnswers] = useState<IAnswer[]>([]);
   const [applicationData, setApplicationData] = useState<IApplicationData>({});
   const [currentStep, setCurrentStep] = useState(1);
-
-  const [experience, setExperience] = useState<ICustomExperience[]>([]);
+  const [educations, setEducations] = useState<ICustomEducation[]>([]);
+  const [experiences, setExperiences] = useState<ICustomExperience[]>([]);
   const [skills, setSkills] = useState<string[]>([]);
   const [languages, setLanguages] = useState<string[]>([]);
 
   const nextStep = () => setCurrentStep((prev) => prev + 1);
   const prevStep = () => setCurrentStep((prev) => prev - 1);
 
-  // TODO : finish the submiting function to API
+  // TODO : finish the submitting function to API
 
   return (
     <ApplicationContext.Provider
@@ -60,12 +64,14 @@ export const ApplicationProvider: React.FC<{ children: React.ReactNode }> = ({
         setAnswers,
         applicationData,
         setApplicationData,
+        educations,
+        setEducations,
         currentStep,
         setCurrentStep,
         nextStep,
         prevStep,
-        setExperience,
-        experience,
+        setExperiences,
+        experiences,
         setSkills,
         skills,
         setLanguages,

@@ -21,6 +21,7 @@ export interface IJob {
   location_type: string;
   skills: string[];
   salary: number;
+  currency: string;
   employee_type: string;
   keywords: string[];
   experience: number;
@@ -31,6 +32,8 @@ export interface IJob {
   resume: IResume;
   account: IUser;
   isSaved: boolean;
+  has_extra_link_application: boolean;
+  extra_application_link: string;
 }
 export interface IGetArchivedJobApplication {
   id: number;
@@ -78,16 +81,6 @@ export interface ISavedJobsResponse {
   };
 }
 
-export interface IApplyToJobResponse extends IResponse {
-  id: number;
-  created_at: string;
-  updated_at: string;
-  jobApplication: {
-    job: IJob;
-    business: IBusinessAccount;
-    resume: IResume;
-  };
-}
 export interface IGetJobApplicationsResponse {
   success: boolean;
   jobApplications: {
@@ -101,6 +94,26 @@ export interface IGetJobApplicationResponse {
     data: IJobApplication;
     meta: IMeta;
   };
+}
+
+export interface IGetJobQuestionsResponse extends IResponse {
+  questions: {
+    questions: IQuestion[];
+    jobId: string;
+  };
+}
+
+export interface IQuestion {
+  _id?: string;
+  questionText: string;
+  questionType: "short_answer" | "multiple_choice" | "long_answer";
+  isRequired: boolean;
+  options: string[];
+}
+
+export interface IAnswer {
+  question: IQuestion;
+  answer: string;
 }
 
 export interface IGetArchivedJobApplicationsResponse {

@@ -40,6 +40,7 @@ function FindJob() {
       locationType,
       employmentType: selectedEmploymentTypes,
       salary,
+      country: location,
     });
   }
 
@@ -57,6 +58,7 @@ function FindJob() {
       locationType,
       employmentType: selectedEmploymentTypes,
       salary,
+      country: location,
     });
   }, [fetchJobs]);
 
@@ -106,7 +108,7 @@ function FindJob() {
             {/* Popular jobs */}
             <div className="md:mx-4">
               <div
-                className={`mt-8 grid grid-cols-1 place-items-center gap-6 ${isOpen ? "lg:grid-cols-2 lg:place-items-stretch xl:grid-cols-3 2xl:grid-cols-4" : "sm:grid-cols-2 sm:place-items-stretch lg:grid-cols-3 2xl:grid-cols-4"}`}
+                className={`mx-8 mt-8 grid grid-cols-1 place-items-center gap-6 sm:mx-0 ${isOpen ? "lg:grid-cols-2 lg:place-items-stretch xl:grid-cols-3 2xl:grid-cols-4" : "sm:grid-cols-2 sm:place-items-stretch lg:grid-cols-3 2xl:grid-cols-4"}`}
               >
                 {data?.jobs.data.length === 0 && (
                   <p className="italic text-gray-300">No jobs founded</p>

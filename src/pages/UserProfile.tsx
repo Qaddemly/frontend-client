@@ -17,7 +17,7 @@ function UserProfile({ profileType }: { profileType: "me" | "others" }) {
         <>
           {profileType === "me" && <Navbar />}
           <UserProfileHeader basicInfo={basicInfoData.basicInfo} />
-          <div className="flex">
+          <div className="flex flex-col-reverse lg:flex-row">
             <UserProfileBody
               profileType={profileType}
               basicInfo={basicInfoData.basicInfo}

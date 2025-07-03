@@ -79,23 +79,25 @@ function SSENotifications() {
                   {businessInfo?.name} • {businessInfo?.address?.country},{" "}
                   {businessInfo?.address?.city}
                 </p>
-                <div className="mt-3 flex space-x-4">
-                  <Button
-                    className="px-3"
-                    onClick={() => {
-                      navigate(`/findJob/jobProfile/${notification?.jobId}`);
-                      toast.dismiss(t.id);
-                    }}
-                  >
-                    <span className="flex items-center">View Job</span>
-                  </Button>
-                  <button
-                    onClick={() => toast.dismiss(t.id)}
-                    className="hover:bg-gray-50 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 focus:outline-none"
-                  >
-                    Dismiss
-                  </button>
-                </div>
+                {notification.type !== "messageSentToBusiness" && (
+                  <div className="mt-3 flex space-x-4">
+                    <Button
+                      className="px-3"
+                      onClick={() => {
+                        navigate(`/findJob/jobProfile/${notification?.jobId}`);
+                        toast.dismiss(t.id);
+                      }}
+                    >
+                      <span className="flex items-center">View Job</span>
+                    </Button>
+                    <button
+                      onClick={() => toast.dismiss(t.id)}
+                      className="hover:bg-gray-50 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 focus:outline-none"
+                    >
+                      Dismiss
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

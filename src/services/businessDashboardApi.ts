@@ -14,6 +14,7 @@ import { apiSlice } from "./apiSlice";
 
 const BASE_BUSINESS_URL = "/business";
 const BASE_JOB_URL = "/job";
+const BASE_AI_FEATURE_URL = "/AI-Feature";
 
 export const businessDashboardApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -23,7 +24,7 @@ export const businessDashboardApi = apiSlice.injectEndpoints({
       { id: string; data: FormData }
     >({
       query: ({ id, data }) => ({
-        url: `${BASE_BUSINESS_URL}/myBusiness/dashboard/edit/${id}`,
+        url: `${BASE_BUSINESS_URL}/myBusiness/dashboard/settings/${id}`,
         method: "PUT",
         body: data,
       }),
@@ -118,7 +119,7 @@ export const businessDashboardApi = apiSlice.injectEndpoints({
           params.append("filter.job_application_state.state", filterByState);
 
         return {
-          url: `${BASE_BUSINESS_URL}/jobApplication/getAllJobApplications/job/${id}${params.toString() ? `?${params.toString()}` : ""}`,
+          url: `${BASE_BUSINESS_URL}/dashboard/job/${id}/jobApplications${params.toString() ? `?${params.toString()}` : ""}`,
           method: "GET",
         };
       },
@@ -155,6 +156,55 @@ export const businessDashboardApi = apiSlice.injectEndpoints({
         };
       },
     }),
+    //////////////////////////// Dashboard Jobs Post Enhancement (AI Feature) ////////////////////////////////////
+    enhanceJobPostDescription: builder.mutation<
+      { enhancedDescription: { description: string } },
+      { data: { title: string; description: string } }
+    >({
+      query: ({ data }) => ({
+        url: `${BASE_AI_FEATURE_URL}/enhanceJobDescription`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    enhanceOrGenerateJobPostSkills: builder.mutation<
+      { enhancedSkills: { skills: string[] } },
+      { data: { title: string; description: string; skills: string[] } }
+    >({
+      query: ({ data }) => ({
+        url: `${BASE_AI_FEATURE_URL}/enhanceOrGenerateJobSkills`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    enhanceOrGenerateJobPostKeywords: builder.mutation<
+      { enhancedKeywords: { keywords: string[] } },
+      { data: { title: string; description: string; keywords: string[] } }
+    >({
+      query: ({ data }) => ({
+        url: `${BASE_AI_FEATURE_URL}/enhanceOrGenerateJobKeywords`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    generateJobPost: builder.mutation<
+      {
+        generatedJobPost: {
+          title: string;
+          description: string;
+          skills: string[];
+          keywords: string[];
+        };
+      },
+      { data: { prompt: string } }
+    >({
+      query: ({ data }) => ({
+        url: `${BASE_AI_FEATURE_URL}/generateJobPost`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
     //////////////////////////// Dashboard Jobs Tracker ////////////////////////////////////
     updateJobApplicationStatus: builder.mutation<
       IResponse,
@@ -170,11 +220,14 @@ export const businessDashboardApi = apiSlice.injectEndpoints({
 });
 
 export const {
-  useGetListOfHrRolesQuery,
+  //////////////////////////// Dashboard Settings ////////////////////////////////////
   useUpdateBusinessAccountMutation,
+  //////////////////////////// Dashboard Candidates ////////////////////////////////////
+  useGetListOfHrRolesQuery,
   useAddNewRoleMutation,
   useDeleteRoleMutation,
   useUpdateRoleMutation,
+  //////////////////////////// Dashboard Jobs ////////////////////////////////////
   usePostNewJobMutation,
   useMakeJobArchivedMutation,
   useMakeJobClosedMutation,
@@ -186,5 +239,11 @@ export const {
   useGetAllJobsOfBusinessQuery,
   useGetAllArchivedJobsOfBusinessQuery,
   useLazyGetAllArchivedJobsOfBusinessQuery,
+  //////////////////////////// Dashboard Jobs Post Enhancement (AI Feature) /////////////
+  useEnhanceJobPostDescriptionMutation,
+  useEnhanceOrGenerateJobPostSkillsMutation,
+  useEnhanceOrGenerateJobPostKeywordsMutation,
+  useGenerateJobPostMutation,
+  //////////////////////////// Dashboard Jobs Tracker //////////////
   useUpdateJobApplicationStatusMutation,
 } = businessDashboardApi;

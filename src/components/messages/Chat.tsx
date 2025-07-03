@@ -76,16 +76,21 @@ function Chat({
         ...prev,
         {
           ...message,
-          is_seen: true,
-          is_delivered: true,
+          is_seen: false,
+          is_delivered: false,
           created_at: new Date().toISOString(),
         },
       ]);
       setLastMessage({
         ...message,
-        is_seen: true,
-        is_delivered: true,
+        is_seen: false,
+        is_delivered: false,
         created_at: new Date().toISOString(),
+      });
+      socket.emit("user_message_seen", {
+        chatId: chat.id,
+        userId: chat.account_id,
+        businessId: chat.business_id,
       });
     };
 
@@ -95,58 +100,55 @@ function Chat({
         ...prev,
         {
           ...message,
-          is_seen: true,
-          is_delivered: true,
+          is_seen: false,
+          is_delivered: false,
           created_at: new Date().toISOString(),
         },
       ]);
       setLastMessage({
         ...message,
-        is_seen: true,
-        is_delivered: true,
+        is_seen: false,
+        is_delivered: false,
         created_at: new Date().toISOString(),
+      });
+      socket.emit("business_seen_message", {
+        chatId: chat.id,
+        userId: chat.account_id,
+        businessId: chat.business_id,
       });
     };
 
     const handleSeenMessage = () => {
+      if (chatType === "BUSINESS") console.log(`user seen message`);
+      else console.log("business seen message");
       setChatMessages((prev) => {
-        const updatedMessages = [...prev];
-        const lastMessage = updatedMessages[updatedMessages.length - 1];
-        if (lastMessage) {
-          updatedMessages[updatedMessages.length - 1] = {
-            ...lastMessage,
-            is_delivered: true,
-            is_seen: true,
-          };
-        }
-        return updatedMessages;
+        return [...prev].map((message) => {
+          return { ...message, is_seen: true };
+        });
       });
     };
 
     const handleDeliveredMessage = () => {
-      console.log(`business delivered message`);
+      if (chatType === "BUSINESS") console.log(`user delivered message`);
+      else console.log("business delivered message");
       setChatMessages((prev) => {
-        const updatedMessages = [...prev];
-        const lastMessage = updatedMessages[updatedMessages.length - 1];
-        if (lastMessage) {
-          lastMessage.is_delivered = true;
-        }
-        return updatedMessages;
+        return [...prev].map((message) => {
+          return { ...message, is_delivered: true };
+        });
       });
     };
 
     if (chatType === "USER") {
       socket.on("business_send_message", handleBusinessSendMessage);
-      socket.on("business_seen_message", handleSeenMessage);
       socket.on("business_delivered_message", handleDeliveredMessage);
+      socket.on("business_seen_message", handleSeenMessage);
     } else {
       socket.on("user_send_message", handleUserSendMessage);
-      socket.on("user_message_seen", handleSeenMessage);
       socket.on("user_delivered_message", handleDeliveredMessage);
+      socket.on("user_message_seen", handleSeenMessage);
     }
 
-    // TODO: there is a bug when any user refresh the last message still unseen => need handling from backend
-    socket.on("my_message_is_delivered", handleSeenMessage);
+    socket.on("my_message_is_delivered", handleDeliveredMessage);
 
     return () => {
       socket.off("business_send_message", handleBusinessSendMessage);
@@ -155,9 +157,9 @@ function Chat({
       socket.off("user_send_message", handleUserSendMessage);
       socket.off("user_message_seen", handleSeenMessage);
       socket.off("user_delivered_message", handleDeliveredMessage);
-      socket.off("my_message_is_delivered", handleSeenMessage);
+      socket.off("my_message_is_delivered", handleDeliveredMessage);
     };
-  }, [chatType, setLastMessage]);
+  }, [chat.account_id, chat.business_id, chat.id, chatType, setLastMessage]);
 
   const handleSendMessage = () => {
     if (messageInput.length > 0) {

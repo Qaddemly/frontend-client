@@ -58,6 +58,7 @@ function Projects() {
           data: { ...data, skills },
         }).unwrap();
         toast.success("Project updated successfully");
+        refetchProjects();
       } catch (error) {
         handleApiError(error);
       }
