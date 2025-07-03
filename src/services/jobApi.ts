@@ -1,7 +1,11 @@
 import { IResponse } from "../interfaces/Common.interfaces";
 import {
+  ArchivedJobApplicationsResponse,
+  IApplyToJobResponse,
+
   IGetAllJobsResponse,
-  IGetArchivedJobApplicationsResponse,
+  // IGetArchivedJobApplicationsResponse,
+  IGetJobApplicationResponse,
   IGetJobApplicationsResponse,
   IGetJobDetailsResponse,
   IGetJobQuestionsResponse,
@@ -115,21 +119,29 @@ export const jobApi = apiSlice.injectEndpoints({
     ),
     getUserJobApplications: builder.query<
       IGetJobApplicationsResponse,
-      { search?: string; page?: number; limit?: number }
+      {
+        search?: string;
+        page?: number;
+        limit?: number;
+        filterState?: string;
+      }
     >({
-      query: ({ search, page, limit }) => {
+      query: ({ search, page, limit, filterState }) => {
         const params = new URLSearchParams();
 
         if (search) params.append("search", search);
         if (page) params.append("page", page.toString());
         if (limit) params.append("limit", limit.toString());
+        if (filterState)
+          params.append("filter.job_application_state.state", filterState);
 
         return {
-          url: `user/jobApplication/myAllJobApplications${params.toString() ? `?${params.toString()}` : ""}`,
+          url: `user/jobApplication${params.toString() ? `?${params.toString()}` : ""}`,
           method: "GET",
         };
       },
     }),
+
     archiveJobApplication: builder.mutation<
       void,
       { id: string; archive: boolean }
@@ -140,7 +152,7 @@ export const jobApi = apiSlice.injectEndpoints({
       }),
     }),
     getOneJobApplication: builder.query<
-      IGetJobApplicationsResponse,
+      IGetJobApplicationResponse,
       { id: string }
     >({
       query: ({ id }) => ({
@@ -149,11 +161,11 @@ export const jobApi = apiSlice.injectEndpoints({
       }),
     }),
     getArchivedJobApplication: builder.query<
-      IGetArchivedJobApplicationsResponse,
+      ArchivedJobApplicationsResponse,
       void
     >({
       query: () => ({
-        url: "user/jobApplication/archived/all",
+        url: "user/jobApplication/archived",
         method: "GET",
       }),
     }),
