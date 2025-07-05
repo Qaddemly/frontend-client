@@ -13,12 +13,15 @@ import { ContentEditableEvent } from "react-simple-wysiwyg";
 import {
   useAddResumeSkillMutation,
   useDeleteResumeSkillMutation,
+  useGenerateOrEnhanceSkillsBasedOnJobMutation,
   useGetAllResumeSkillsQuery,
   useUpdateResumeSkillMutation,
 } from "../../../services/resumeBuilderApi.ts";
 import { handleApiError, handleResumeAction } from "../../../utils/helpers.ts";
 import { useParams } from "react-router-dom";
 import ResumeFormButtons from "../ResumeFormButtons.tsx";
+import GenerateOrEnhanceButton from "../../common/GenerateOrEnhanceButton.tsx";
+import toast from "react-hot-toast";
 
 function ResumeSkillsForm({ mode }: { mode: FormMode }) {
   const { setStatus, resumeInfo, setResumeInfo, currId } = useResumeBuilder();
@@ -155,66 +158,132 @@ function ResumeSkillsForm({ mode }: { mode: FormMode }) {
     }
   }
 
+  ///////////////////////////////////////////// Resume Builder Enhancement (AI Feature) /////////////////////
+  const [skills, setSkills] = useState<string[]>([]);
+  const [jobDescription, setJobDescription] = useState("");
+  const [generateOrEnhanceSkillsBasedOnJob] =
+    useGenerateOrEnhanceSkillsBasedOnJobMutation();
+
+  async function handleGenerateOrEnhanceSkillsBasedOnJob() {
+    const skills = resumeInfo.skills.map((skill) => skill.name);
+    if (jobDescription) {
+      try {
+        const promise = generateOrEnhanceSkillsBasedOnJob({
+          skills,
+          jobDescription,
+        }).unwrap();
+        toast.promise(promise, {
+          loading: `Generating skills`,
+          success: `skills generated successfully`,
+          error: `Could not generate skills`,
+        });
+        const res = await promise;
+        const generatedSkills = res?.enhancedSkills;
+        if (generatedSkills) {
+          setJobDescription("");
+          setSkills(generatedSkills);
+        }
+      } catch (error) {
+        handleApiError(error);
+      }
+    } else toast.error("Please enter job description to generate profile");
+  }
+
   return (
-    <FormPreviewSection
-      title={mode === "add" ? "Add Skills" : "Edit Skills"}
-      tips={true}
-      autoFill={true}
-    >
-      <form
-        onSubmit={handleSubmit(submitForm)}
-        className="flex w-full flex-col gap-5"
+    <>
+      <FormPreviewSection
+        title={mode === "add" ? "Add Skills" : "Edit Skills"}
+        tips={true}
+        autoFill={true}
       >
-        <InputField id="skill" label="Skill">
-          <Input
-            register={register}
-            onChange={(e) => handleOnChange(e, "name")}
-            value={name}
-            name="name"
-            props={{
-              placeholder: "Ex.Python, Data Analysis, Project management",
-              type: "text",
-              id: "skill",
+        <form
+          onSubmit={handleSubmit(submitForm)}
+          className="flex w-full flex-col gap-5"
+        >
+          <InputField id="skill" label="Skill">
+            <Input
+              register={register}
+              onChange={(e) => handleOnChange(e, "name")}
+              value={name}
+              name="name"
+              props={{
+                placeholder: "Ex.Python, Data Analysis, Project management",
+                type: "text",
+                id: "skill",
+              }}
+            />
+          </InputField>
+
+          <RichTextEditor
+            label="Description/Sub-skill"
+            value={information}
+            onChange={(e) => handleOnChange(e, "information")}
+          />
+
+          <InputField id="level" label="Skill level">
+            <Input
+              register={register}
+              onChange={(e) => handleOnChange(e, "level")}
+              value={level}
+              name="level"
+              props={{
+                placeholder: "Ex. Beginner, Intermediate, Expert",
+                type: "text",
+                id: "level",
+              }}
+            />
+          </InputField>
+          <ResumeFormButtons
+            mode={mode}
+            handleDelete={(e) => handleDelete(e)}
+            handleCancel={() => {
+              setResumeInfo((prevInfo) => {
+                const updatedArray = prevInfo.skills.filter(
+                  (skill) => skill.id !== 303030,
+                );
+                return {
+                  ...prevInfo,
+                  skills: updatedArray,
+                };
+              });
             }}
           />
-        </InputField>
+        </form>
+      </FormPreviewSection>
 
-        <RichTextEditor
-          label="Description/Sub-skill"
-          value={information}
-          onChange={(e) => handleOnChange(e, "information")}
-        />
+      {skills.length > 0 && (
+        <div>
+          <p className="w-fit rounded-lg p-3 text-lg font-semibold">
+            Generated Skills
+          </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {skills.map((skill, index) => (
+              <div
+                key={index}
+                className="flex items-center rounded-full bg-green-200 px-3 py-1 text-white hover:bg-green-100"
+              >
+                {skill}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
-        <InputField id="level" label="Skill level">
-          <Input
-            register={register}
-            onChange={(e) => handleOnChange(e, "level")}
-            value={level}
-            name="level"
-            props={{
-              placeholder: "Ex. Beginner, Intermediate, Expert",
-              type: "text",
-              id: "level",
-            }}
-          />
-        </InputField>
-        <ResumeFormButtons
-          mode={mode}
-          handleDelete={(e) => handleDelete(e)}
-          handleCancel={() => {
-            setResumeInfo((prevInfo) => {
-              const updatedArray = prevInfo.skills.filter(
-                (skill) => skill.id !== 303030,
-              );
-              return {
-                ...prevInfo,
-                skills: updatedArray,
-              };
-            });
-          }}
+      <div className="relative mt-10">
+        <textarea
+          className="h-[10rem] w-full rounded-md border border-gray-300 p-4 focus:border-main focus:outline-none focus:ring-1 focus:ring-main"
+          placeholder="Tell me about job description and I will generate skills for you"
+          value={jobDescription}
+          onChange={(e) => setJobDescription(e.target.value)}
         />
-      </form>
-    </FormPreviewSection>
+        <GenerateOrEnhanceButton
+          className="bottom-4 right-5"
+          text="Generate skills with AI"
+          noAnimation={true}
+          onClick={handleGenerateOrEnhanceSkillsBasedOnJob}
+        />
+      </div>
+    </>
   );
 }
 

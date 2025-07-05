@@ -1,6 +1,6 @@
 import Button from "./Button.tsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHexagonNodes } from "@fortawesome/free-solid-svg-icons";
+import { faBolt } from "@fortawesome/free-solid-svg-icons";
 
 function GenerateOrEnhanceButton({
   className,
@@ -20,7 +20,7 @@ function GenerateOrEnhanceButton({
         type="button"
         className={`relative rounded-full p-3 ${noAnimation ? "animate-none" : "animate-bounce"}`}
       >
-        <FontAwesomeIcon icon={faHexagonNodes} />
+        <FontAwesomeIcon icon={faBolt} />
       </Button>
 
       {/* Tooltip */}

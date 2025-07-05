@@ -61,16 +61,6 @@ import CustomApplicationForm from "../components/customApplication/CustomApplica
 
 const router = createBrowserRouter([
   {
-    path: "/apply/custom/:jobId",
-    element: (
-      <ProtectedRoute>
-        <ApplicationProvider>
-          <CustomApplicationForm />
-        </ApplicationProvider>
-      </ProtectedRoute>
-    ),
-  },
-  {
     path: "/",
     element: (
       <ProtectedRoute>
@@ -277,6 +267,16 @@ const router = createBrowserRouter([
         <CoverLetterProvider>
           <EditCoverLetter />
         </CoverLetterProvider>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/apply/custom/:jobId",
+    element: (
+      <ProtectedRoute>
+        <ApplicationProvider>
+          <CustomApplicationForm />
+        </ApplicationProvider>
       </ProtectedRoute>
     ),
   },
