@@ -159,6 +159,7 @@ function ResumeSkillsForm({ mode }: { mode: FormMode }) {
   }
 
   ///////////////////////////////////////////// Resume Builder Enhancement (AI Feature) /////////////////////
+  const [skills, setSkills] = useState<string[]>([]);
   const [jobDescription, setJobDescription] = useState("");
   const [generateOrEnhanceSkillsBasedOnJob] =
     useGenerateOrEnhanceSkillsBasedOnJobMutation();
@@ -179,7 +180,8 @@ function ResumeSkillsForm({ mode }: { mode: FormMode }) {
         const res = await promise;
         const generatedSkills = res?.enhancedSkills;
         if (generatedSkills) {
-          setJobDescription(generatedSkills.join(", "));
+          setJobDescription("");
+          setSkills(generatedSkills);
         }
       } catch (error) {
         handleApiError(error);
@@ -248,6 +250,25 @@ function ResumeSkillsForm({ mode }: { mode: FormMode }) {
           />
         </form>
       </FormPreviewSection>
+
+      {skills.length > 0 && (
+        <div>
+          <p className="w-fit rounded-lg p-3 text-lg font-semibold">
+            Generated Skills
+          </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {skills.map((skill, index) => (
+              <div
+                key={index}
+                className="flex items-center rounded-full bg-green-200 px-3 py-1 text-white hover:bg-green-100"
+              >
+                {skill}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="relative mt-10">
         <textarea
           className="h-[10rem] w-full rounded-md border border-gray-300 p-4 focus:border-main focus:outline-none focus:ring-1 focus:ring-main"
