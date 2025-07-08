@@ -14,7 +14,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Logo from "../common/Logo";
 import { useGetUserBusinessesQuery } from "../../services/businessAccountApi";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Button from "../common/Button";
 import { useClickOutside } from "../../hooks/useOutsideClick";
 import BusinessAccountsMenu from "../business account/BusinessAccountsMenu";
@@ -49,6 +49,24 @@ function Navbar() {
   const [makeNotificationsSeen] = useMakeNotificationsSeenMutation();
 
   const [showSideNav, setShowSideNav] = useState(false);
+
+  const [darkMode, setDarkMode] = useState(() => {
+    const stored = localStorage.getItem("darkMode");
+    return stored ? JSON.parse(stored) : false;
+  });
+
+  // useEffect(() => {
+  //   if (darkMode) {
+  //     document.documentElement.classList.add("dark");
+  //     document.documentElement.classList.remove("light");
+  //   } else {
+  //     document.documentElement.classList.add("light");
+  //     document.documentElement.classList.remove("dark");
+  //   }
+  //
+  //   localStorage.setItem("darkMode", JSON.stringify(darkMode));
+  // }, [darkMode]);
+
   return (
     <>
       <SidebarNotifications
@@ -82,7 +100,7 @@ function Navbar() {
                 to={["/resumeBuilder", `/resumeBuilder/edit/${resumeId}`]}
                 content="Build Resume"
               />
-            </li>{" "}
+            </li>
             <li>
               <NavbarLink
                 onClick={() => refetchCoverLetters()}
@@ -94,6 +112,7 @@ function Navbar() {
               />
             </li>
           </ul>
+          {/*<Button onClick={() => setDarkMode(!darkMode)}>dark mode</Button>*/}
         </div>
 
         {mobileMenuOpen && (

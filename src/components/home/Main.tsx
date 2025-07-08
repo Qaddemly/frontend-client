@@ -92,7 +92,7 @@ function Main() {
       <div className="mx-6 my-20 md:my-20">
         <div className="flex flex-col items-center justify-between gap-10 md:flex-row">
           <div className="mx-10 text-center md:ml-20 md:mr-0 md:text-left">
-            <p className="text-[2.6rem] font-semibold md:text-[3.2rem]">
+            <p className="text-[2.6rem] font-semibold md:text-[3.2rem] dark:text-[#fff]">
               Find Your Dream Job with Qaddemly!
             </p>
             <p className="mt-4 text-[1.5rem] text-gray-600 lg:w-[45rem]">
@@ -149,7 +149,8 @@ function Main() {
             </div>
             <p className="text-lg font-medium">Create account</p>
             <p className="text-gray-400">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quos.
+              Sign up quickly to access personalized job recommendations and
+              track your applications.
             </p>
           </div>
           {/* <ArrowUpFirst /> */}
@@ -164,7 +165,8 @@ function Main() {
             </div>
             <p className="text-lg font-medium">Upload CV/Resume</p>
             <p className="text-gray-400">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quos.
+              Easily upload your CV or resume to showcase your skills and
+              experience.
             </p>
           </div>
           {/* <ArrowDown /> */}
@@ -179,7 +181,8 @@ function Main() {
             </div>
             <p className="text-lg font-medium">Find suitable job</p>
             <p className="text-gray-400">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quos.
+              Discover job opportunities tailored to your profile and
+              preferences.
             </p>
           </div>
           {/* <ArrowUpSecond /> */}
@@ -194,7 +197,8 @@ function Main() {
             </div>
             <p className="text-lg font-medium">Apply job</p>
             <p className="text-gray-400">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quos.
+              Submit your application directly to employers in just a few
+              clicks.
             </p>
           </div>
         </div>

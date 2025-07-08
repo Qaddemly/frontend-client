@@ -293,7 +293,7 @@ const router = createBrowserRouter([
 function AppRouter() {
   return (
     // TODO: Handle Dark Mode
-    <div className="light">
+    <div>
       <RouterProvider router={router} />
       <Toaster
         position="top-center"

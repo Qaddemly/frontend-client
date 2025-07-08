@@ -164,7 +164,7 @@ function CompanyProfileBody({
           />
           <CompanyProfileCard
             title="Website"
-            description={companyData?.website}
+            description={companyData?.website.slice(0, 30)}
           />
           <CompanyProfileCard
             title="Headquarters"
