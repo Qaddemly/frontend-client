@@ -128,7 +128,23 @@ function Navbar() {
                 <NavbarLink to="/findCompany" content="Find company" />
               </li>
               <li>
+                <NavbarLink
+                  to={["/jobTracker", "/jobTracker/archived"]}
+                  content="Job Tracker"
+                />
+              </li>
+              <li>
                 <NavbarLink to="/resumeBuilder" content="Build Resume" />
+              </li>
+              <li>
+                <NavbarLink
+                  onClick={() => refetchCoverLetters()}
+                  to={[
+                    "/coverLetterBuilder",
+                    `/coverLetterBuilder/edit/${coverLetterId}`,
+                  ]}
+                  content="Build Cover Letter"
+                />
               </li>
               {!user.is_activated && (
                 <div className="flex flex-col space-y-2">

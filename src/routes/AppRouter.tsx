@@ -58,6 +58,7 @@ import CoverLetterBuilder from "../pages/CoverLetterBuilder.tsx";
 import EditCoverLetter from "../components/cover letter builder/EditCoverLetter.tsx";
 import { ApplicationProvider } from "../context/ApplicationContext.tsx";
 import CustomApplicationForm from "../components/customApplication/CustomApplicationForm.tsx";
+import KeywordOptimizer from "../pages/KeywordOptimizer.tsx";
 
 const router = createBrowserRouter([
   {
@@ -127,6 +128,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <UserProfile profileType={"me"} />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/keywordOptimizer",
+    element: (
+      <ProtectedRoute>
+        <KeywordOptimizer />
       </ProtectedRoute>
     ),
   },
