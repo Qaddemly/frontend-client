@@ -14,7 +14,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Logo from "../common/Logo";
 import { useGetUserBusinessesQuery } from "../../services/businessAccountApi";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import Button from "../common/Button";
 import { useClickOutside } from "../../hooks/useOutsideClick";
 import BusinessAccountsMenu from "../business account/BusinessAccountsMenu";
@@ -50,10 +50,11 @@ function Navbar() {
 
   const [showSideNav, setShowSideNav] = useState(false);
 
-  const [darkMode, setDarkMode] = useState(() => {
-    const stored = localStorage.getItem("darkMode");
-    return stored ? JSON.parse(stored) : false;
-  });
+  // TODO: Handle dark mode
+  // const [darkMode, setDarkMode] = useState(() => {
+  //   const stored = localStorage.getItem("darkMode");
+  //   return stored ? JSON.parse(stored) : false;
+  // });
 
   // useEffect(() => {
   //   if (darkMode) {
@@ -111,6 +112,12 @@ function Navbar() {
                 content="Build Cover Letter"
               />
             </li>
+            <li>
+              <NavbarLink
+                to={"/keywordOptimizer"}
+                content="Keyword optimizer"
+              />
+            </li>
           </ul>
           {/*<Button onClick={() => setDarkMode(!darkMode)}>dark mode</Button>*/}
         </div>
@@ -144,6 +151,12 @@ function Navbar() {
                     `/coverLetterBuilder/edit/${coverLetterId}`,
                   ]}
                   content="Build Cover Letter"
+                />
+              </li>
+              <li>
+                <NavbarLink
+                  to={"/keywordOptimizer"}
+                  content="Keyword optimizer"
                 />
               </li>
               {!user.is_activated && (

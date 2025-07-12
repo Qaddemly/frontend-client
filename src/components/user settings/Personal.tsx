@@ -14,7 +14,7 @@ import FileUpload from "../common/FileUpload";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { IUser } from "../../interfaces/Auth.interfaces";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   useGetUserQuery,
   useUpdatePersonalMutation,
@@ -26,6 +26,9 @@ import Loader from "../common/Loader";
 function Personal() {
   const user = useSelector((state: RootState) => state?.user?.user);
   const [updatePersonal, { isLoading }] = useUpdatePersonalMutation();
+  const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
+  const [image, setImage] = useState<File | null>(null);
+
   const { refetch } = useGetUserQuery();
 
   const countryKeys = Object.keys(Country).filter(
@@ -42,15 +45,28 @@ function Personal() {
     reset,
   } = useForm<IUser>();
 
-  const submitForm: SubmitHandler<IUser> = async (data) => {
-    const formData = createFormData(data as unknown as Record<string, unknown>);
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setImage(file);
+    setSelectedFileName(file.name);
+  };
 
+  const submitForm: SubmitHandler<IUser> = async (data) => {
+    const currData = {
+      ...data,
+      profile_picture: image,
+    };
+    const formData = createFormData(
+      currData as unknown as Record<string, unknown>,
+    );
+
+    console.log(currData);
     // if (Object.values(data).some((value) => value === null)) {
     //   toast.error("No changes detected or invalid data");
     // } else {
     try {
-      const res = await updatePersonal({ data: formData }).unwrap();
-      console.log(res);
+      await updatePersonal({ data: formData }).unwrap();
       toast.success("Profile updated successfully");
       refetch();
     } catch (error) {
@@ -217,8 +233,8 @@ function Personal() {
           <span className="font-medium"> Profile Photo</span>
 
           <FileUpload
-            register={register}
-            name={"profile_picture"}
+            onChange={handleFileChange}
+            fileName={selectedFileName}
             icon={faImage}
           />
         </div>
