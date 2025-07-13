@@ -35,7 +35,7 @@ export interface IUser {
   password: string;
   date_of_birth: string;
   profile_picture: string;
-  resume: string[]; // need interface
+  resume: File; // need interface
   skills: ISkills[];
   password_changed_at: string;
   about_me: string;

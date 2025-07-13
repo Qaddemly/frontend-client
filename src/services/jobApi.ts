@@ -1,8 +1,6 @@
 import { IResponse } from "../interfaces/Common.interfaces";
 import {
   ArchivedJobApplicationsResponse,
-  IApplyToJobResponse,
-
   IGetAllJobsResponse,
   // IGetArchivedJobApplicationsResponse,
   IGetJobApplicationResponse,
@@ -171,7 +169,7 @@ export const jobApi = apiSlice.injectEndpoints({
     }),
     getRecommendedJobs: builder.query<IGetRecommendedJobs, void>({
       query: () => ({
-        url: `${BASE_JOB_URL}/recommendedJobsForUser`,
+        url: `${BASE_AI_FEATURE_URL}/recommendJobsForUser`,
         method: "GET",
       }),
     }),

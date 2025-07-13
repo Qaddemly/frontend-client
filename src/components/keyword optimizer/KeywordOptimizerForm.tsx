@@ -1,95 +1,101 @@
-import { fa1, fa2, faRotate } from "@fortawesome/free-solid-svg-icons";
+import {
+  fa1,
+  fa2,
+  faCloudArrowUp,
+  faRotate,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { useState } from "react";
 import Button from "../common/Button";
-
-// type OptimizationResult = {
-//   summary: string;
-//   recommendations: {
-//     add: Array<{ section: string; content: string; reason: string }>;
-//     modify: Array<{
-//       section: string;
-//       suggested_change: string;
-//       reason: string;
-//     }>;
-//     remove: Array<{ section: string; reason: string }>;
-//   };
-//   keyword_analysis: {
-//     missing_keywords: string[];
-//     underrepresented_keywords: string[];
-//   };
-// };
+import FileUpload from "../common/FileUpload.tsx";
+import {
+  IOptimizedKeywords,
+  IOptimizedKeywordsResponse,
+} from "../../interfaces/KeywordOptimizer.interfaces.ts";
+import {
+  useKeywordOptimizationMutation,
+  useKeywordOptimizationWithPdfMutation,
+} from "../../services/keywordOptimizerApi.tsx";
+import { createFormData, handleApiError } from "../../utils/helpers.ts";
+import toast from "react-hot-toast";
+import { useGetAllResumeTemplatesQuery } from "../../services/resumeBuilderApi.ts";
+import { IResumeTemplate } from "../../interfaces/ResumeBuilder.interfaces.ts";
 
 function KeywordOptimizerForm() {
-  const { register, handleSubmit, watch } = useForm();
   const [resumeOption, setResumeOption] = useState<
     "existing" | "upload" | null
   >(null);
-  // const [existingResumes, setExistingResumes] = useState<Resume[]>([]);
-  const [selectedResume, setSelectedResume] = useState<Resume | File | null>(
+  const { data } = useGetAllResumeTemplatesQuery();
+  const allResumes = data?.data || [];
+  const [selectedResume, setSelectedResume] = useState<IResumeTemplate | null>(
     null,
   );
-  const [result, setResult] = useState<OptimizationResult | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [selectedResumePdf, setSelectedResumePdf] = useState<File | null>(null);
+  const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
+  const [jobDescription, setJobDescription] = useState<string>("");
+  const [result, setResult] = useState<IOptimizedKeywords | null>(null);
 
-  const jobDescription = watch("jobDescription", "");
+  const [keywordOptimization] = useKeywordOptimizationMutation();
+  const [keywordOptimizationWithPdf] = useKeywordOptimizationWithPdfMutation();
 
-  // Fetch existing resumes from API
-  // useEffect(() => {
-  //   const fetchResumes = async () => {
-  //     try {
-  //       const response = await fetch(); // TODO GAD: API
-  //       const data = await response.json();
-  //       setExistingResumes(data);
-  //     } catch (error) {
-  //       console.error("Error fetching resumes:", error);
-  //     }
-  //   };
-
-  //   fetchResumes();
-  // }, []);
-
-  // const handleUploadSuccess = (file: File) => {
-  //   setSelectedResume(file);
-  //   setResumeOption("upload");
-  // };
-
-  // const onSubmit = async () => {
-  //   if (!selectedResume || !jobDescription) return;
-
-  //   setIsLoading(true);
-
-  //   try {
-  //     const formData = new FormData();
-
-  //     if (selectedResume instanceof File) {
-  //       formData.append("resume_file", selectedResume);
-  //     } else {
-  //       formData.append("resume_id", selectedResume.id);
-  //     }
-
-  //     formData.append("job_description", jobDescription);
-
-  //     const response = await fetch("/api/optimize", {
-  //       method: "POST",
-  //       body: formData,
-  //     });
-
-  //     const data = await response.json();
-  //     setResult(data.optimizedKeywords);
-  //   } catch (error) {
-  //     console.error("Optimization error:", error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setSelectedResumePdf(file);
+    setSelectedFileName(file.name);
+  };
+  console.log(result);
 
   const resetForm = () => {
     setResumeOption(null);
-    // setSelectedResume(null);
+    setSelectedResume(null);
+    setSelectedResumePdf(null);
+    setSelectedFileName(null);
+    setJobDescription("");
     setResult(null);
   };
+
+  async function handleGetResult() {
+    const handleRequest = async (
+      promise: Promise<IOptimizedKeywordsResponse>,
+    ) => {
+      try {
+        toast.promise(promise, {
+          loading: "Generating result",
+          success: "Result generated successfully",
+          error: "Could not generate result",
+        });
+
+        const res = await promise;
+        setResult(res?.optimizedKeywords);
+        setResumeOption(null);
+        setJobDescription("");
+      } catch (error) {
+        handleApiError(error);
+      }
+    };
+
+    if (resumeOption === "existing") {
+      const promise = keywordOptimization({
+        resumeId: selectedResume?.id || 0,
+        jobDescription,
+      }).unwrap();
+
+      await handleRequest(promise);
+    } else {
+      const data = {
+        resume_pdf: selectedResumePdf,
+        job_description: jobDescription,
+      };
+      const formData = createFormData(data);
+
+      const promise = keywordOptimizationWithPdf({
+        data: formData,
+      }).unwrap();
+
+      await handleRequest(promise);
+    }
+  }
 
   return (
     <div className="mx-auto max-w-4xl p-4 md:p-6">
@@ -99,7 +105,7 @@ function KeywordOptimizerForm() {
             <h3 className="text-center text-lg font-bold md:text-left md:text-2xl">
               Summary:
             </h3>
-            <p className="text-gray-600">{result.summary}</p>
+            <p className="text-gray-600">{result?.summary}</p>
           </div>
 
           <div className="mb-6">
@@ -107,10 +113,10 @@ function KeywordOptimizerForm() {
               Our recommendations:
             </h3>
 
-            {result.recommendations?.add?.length > 0 && (
+            {result?.recommendations?.add?.length > 0 && (
               <div className="mb-4">
                 <h4 className="text-md font-semibold md:text-xl">Add:</h4>
-                {result.recommendations.add.map((item, index) => (
+                {result?.recommendations?.add?.map((item, index) => (
                   <div key={index} className="mb-3 ml-4">
                     <p>
                       <span className="font-medium">Section:</span>{" "}
@@ -128,10 +134,10 @@ function KeywordOptimizerForm() {
               </div>
             )}
 
-            {result.recommendations?.modify?.length > 0 && (
+            {result?.recommendations?.modify?.length > 0 && (
               <div className="mb-4">
                 <h4 className="text-md font-semibold md:text-xl">Modify:</h4>
-                {result.recommendations.modify.map((item, index) => (
+                {result?.recommendations?.modify?.map((item, index) => (
                   <div key={index} className="mb-3 ml-4">
                     <p>
                       <span className="font-medium">Section:</span>{" "}
@@ -149,10 +155,10 @@ function KeywordOptimizerForm() {
               </div>
             )}
 
-            {result.recommendations?.remove?.length > 0 && (
+            {result?.recommendations?.remove?.length > 0 && (
               <div className="mb-4">
                 <h4 className="text-md font-semibold md:text-xl">Remove:</h4>
-                {result.recommendations.remove.map((item, index) => (
+                {result?.recommendations?.remove?.map((item, index) => (
                   <div key={index} className="mb-3 ml-4">
                     <p>
                       <span className="font-medium">Section:</span>{" "}
@@ -173,8 +179,8 @@ function KeywordOptimizerForm() {
             </h3>
             <p className="mb-1">
               <span className="font-medium">Missing:</span>{" "}
-              {result.keyword_analysis?.missing_keywords?.join(", ")}{" "}
-              {result.keyword_analysis?.underrepresented_keywords?.join(", ")}
+              {result?.keyword_analysis?.missing_keywords?.join(", ")}{" "}
+              {result?.keyword_analysis?.underrepresented_keywords?.join(", ")}
             </p>
           </div>
           <Button
@@ -188,11 +194,14 @@ function KeywordOptimizerForm() {
         <div className="rounded-lg bg-white p-6 shadow-md">
           {/* Step 1: Resume Selection */}
           <div className="mb-8">
-            <h2 className="mb-4 text-center text-xl font-semibold text-gray-800 md:text-left">
-              <span className="rounded-full bg-main px-2 py-1 text-white">
-                <FontAwesomeIcon icon={fa1} />
-              </span>{" "}
-              Use Your Resume
+            <h2 className="mb-4 flex items-center gap-2 text-center text-xl font-semibold text-gray-800 md:text-left">
+              <span>
+                <FontAwesomeIcon
+                  icon={fa1}
+                  className="rounded-full bg-main px-3 py-2 text-white"
+                />
+              </span>
+              <span>Use Your Resume</span>
             </h2>
 
             <div className="mb-6 flex flex-col gap-4 md:flex-row">
@@ -223,12 +232,12 @@ function KeywordOptimizerForm() {
               <div className="rounded-lg border border-gray-200 p-4">
                 <h3 className="mb-3 font-medium">Your Resumes</h3>
                 <ul className="space-y-2">
-                  {/* {existingResumes.map((resume) => (
-                    <li key={resume.id}>
+                  {allResumes?.map((resume) => (
+                    <li key={resume.id} className="hover:bg-gray-100">
                       <button
                         className={`w-full rounded-md p-3 text-left ${
                           selectedResume?.id === resume.id
-                            ? "bg-blue-100 border-blue-300 border"
+                            ? "border border-main bg-main text-white"
                             : "hover:bg-gray-50 border border-gray-200"
                         }`}
                         onClick={() => setSelectedResume(resume)}
@@ -236,45 +245,51 @@ function KeywordOptimizerForm() {
                         {resume.name}
                       </button>
                     </li>
-                  ))} */}
+                  ))}
                 </ul>
               </div>
             )}
 
             {resumeOption === "upload" && (
               <div className="rounded-lg border border-gray-200 p-4">
-                <UploadResumeComponent onSuccess={handleUploadSuccess} />
-                <p className="mt-2 text-sm text-gray-500">
-                  Max. File Size: 15MB
-                </p>
+                <FileUpload
+                  icon={faCloudArrowUp}
+                  onChange={handleFileChange}
+                  fileName={selectedFileName}
+                />
               </div>
             )}
           </div>
 
           {/* Step 2: Job Description */}
           <div>
-            <h2 className="mb-4 text-center text-xl font-semibold text-gray-800 md:text-left">
-              <span className="rounded-full bg-main px-2 py-1 text-white">
-                <FontAwesomeIcon icon={fa2} />
-              </span>{" "}
-              Add Job Description
+            <h2 className="mb-4 flex items-center gap-2 text-center text-xl font-semibold text-gray-800 md:text-left">
+              <span>
+                <FontAwesomeIcon
+                  icon={fa2}
+                  className="rounded-full bg-main px-3 py-2 text-white"
+                />
+              </span>
+              <span>Add Job Description</span>
             </h2>
 
             <textarea
-              {...register("jobDescription")}
+              className="h-[10rem] w-full rounded-md border border-gray-300 p-4 focus:border-main focus:outline-none focus:ring-1 focus:ring-main"
               placeholder="Copy and paste the job description here"
-              className="h-40 w-full rounded-lg border border-gray-300 p-4 focus:border-main focus:ring-2 focus:ring-main"
+              value={jobDescription}
+              onChange={(e) => setJobDescription(e.target.value)}
             />
 
-            {selectedResume && jobDescription && (
+            {(selectedResume && jobDescription) ||
+            (selectedResumePdf && jobDescription) ? (
               <Button
-                onClick={handleSubmit(onSubmit)}
-                disabled={isLoading}
-                className="bg-blue-600 hover:bg-blue-700 mt-6 w-full rounded-lg px-4 py-3 font-medium text-white transition duration-200 disabled:opacity-50"
+                onClick={handleGetResult}
+                // disabled={isLoading}
+                className="mt-6 w-full rounded-lg px-4 py-3 font-medium text-white transition duration-200 disabled:opacity-50"
               >
                 Get Result
               </Button>
-            )}
+            ) : null}
           </div>
         </div>
       )}

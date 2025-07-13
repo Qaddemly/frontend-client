@@ -49,6 +49,25 @@ function Navbar() {
   const [makeNotificationsSeen] = useMakeNotificationsSeenMutation();
 
   const [showSideNav, setShowSideNav] = useState(false);
+
+  // TODO: Handle dark mode
+  // const [darkMode, setDarkMode] = useState(() => {
+  //   const stored = localStorage.getItem("darkMode");
+  //   return stored ? JSON.parse(stored) : false;
+  // });
+
+  // useEffect(() => {
+  //   if (darkMode) {
+  //     document.documentElement.classList.add("dark");
+  //     document.documentElement.classList.remove("light");
+  //   } else {
+  //     document.documentElement.classList.add("light");
+  //     document.documentElement.classList.remove("dark");
+  //   }
+  //
+  //   localStorage.setItem("darkMode", JSON.stringify(darkMode));
+  // }, [darkMode]);
+
   return (
     <>
       <SidebarNotifications
@@ -82,7 +101,7 @@ function Navbar() {
                 to={["/resumeBuilder", `/resumeBuilder/edit/${resumeId}`]}
                 content="Build Resume"
               />
-            </li>{" "}
+            </li>
             <li>
               <NavbarLink
                 onClick={() => refetchCoverLetters()}
@@ -93,7 +112,14 @@ function Navbar() {
                 content="Build Cover Letter"
               />
             </li>
+            <li>
+              <NavbarLink
+                to={"/keywordOptimizer"}
+                content="Keyword optimizer"
+              />
+            </li>
           </ul>
+          {/*<Button onClick={() => setDarkMode(!darkMode)}>dark mode</Button>*/}
         </div>
 
         {mobileMenuOpen && (
@@ -125,6 +151,12 @@ function Navbar() {
                     `/coverLetterBuilder/edit/${coverLetterId}`,
                   ]}
                   content="Build Cover Letter"
+                />
+              </li>
+              <li>
+                <NavbarLink
+                  to={"/keywordOptimizer"}
+                  content="Keyword optimizer"
                 />
               </li>
               {!user.is_activated && (

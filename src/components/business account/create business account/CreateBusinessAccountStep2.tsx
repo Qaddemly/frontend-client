@@ -13,9 +13,6 @@ function CreateBusinessAccountStep2({
   updateAccount: boolean;
   setStep?: React.Dispatch<React.SetStateAction<string>>;
 }) {
-  // const prefixValues = Object.values(Prefixes).filter(
-  //   (value) => typeof value == "string",
-  // );
   const {
     register,
     formState: { errors },
@@ -30,6 +27,7 @@ function CreateBusinessAccountStep2({
           label="CEO"
           id="CEO"
           required={!updateAccount}
+          props={{ className: "w-full" }}
         >
           <Input
             register={register}
@@ -44,63 +42,15 @@ function CreateBusinessAccountStep2({
             }}
           />
         </InputField>
-        {/* <div className="flex items-end gap-3">
-          <Select
-            register={register}
-            name="phone[0].country_code"
-            label="Phone"
-            id="phone"
-            className="w-fit"
-          >
-            {prefixValues.map((value) => (
-              <option
-                key={value}
-                value={Prefixes[value as keyof typeof Prefixes]}
-              >
-                {value} +({Prefixes[value as keyof typeof Prefixes]})
-              </option>
-            ))}
-          </Select>
-
-          <InputField errors={errors} icon={faPhone} id="phone">
-            <Input
-              register={register}
-              name={"phone[0].phone_number"}
-              icon={faPhone}
-              props={{
-                placeholder: "123-456-789",
-                id: "phone",
-                type: "number",
-              }}
-            />
-          </InputField>
-        </div> */}
       </div>
 
-      {/* phone number will be array  */}
       <div className="flex items-end justify-between gap-3">
-        {/* handle with backend */}
-        {/* <Select
-          register={register}
-          name="phone"
-          label="Phone number"
-          id="phone"
-        >
-          {prefixValues.map((value) => (
-            <option
-              key={value}
-              value={Prefixes[value as keyof typeof Prefixes]}
-            >
-              {value} +({Prefixes[value as keyof typeof Prefixes]})
-            </option>
-          ))}
-        </Select> */}
-
         <InputField
           errors={!updateAccount ? errors : {}}
           label="Founder"
           id="founder"
           required={!updateAccount}
+          props={{ className: "w-full" }}
         >
           <Input
             register={register}
