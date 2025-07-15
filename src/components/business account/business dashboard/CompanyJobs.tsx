@@ -259,7 +259,9 @@ function CompanyJobs() {
                                   {job.location_type}
                                 </td>
                                 <td className="px-6 py-4 text-sm font-normal">
-                                  {/* {job.noOfApps} */}2
+                                  {job.applicationsCount === 0
+                                    ? "No Applications"
+                                    : job.applicationsCount}
                                 </td>
                                 <td className="flex justify-center px-6 py-4 text-sm font-normal">
                                   <div className="flex flex-row gap-2">

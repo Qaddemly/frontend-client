@@ -3,8 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUsers } from "@fortawesome/free-solid-svg-icons";
 import { useLazyGetJobApplicationsQuery } from "../../../services/businessDashboardApi";
 import Loader from "../../common/Loader";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Pagination from "../../common/Pagination";
+import { useAtsScanQuery } from "../../../services/jobApi.ts";
 
 function ApplicationsTable() {
   const { companyId, jobId } = useParams();
@@ -19,9 +20,16 @@ function ApplicationsTable() {
   const [currentPage, setCurrentPage] = useState(meta?.currentPage);
   const [sort, setSort] = useState("");
 
-  // const currentJob: IJob | undefined = jobApplications?.find(
-  //   (application) => application?.job?.id.toString() === jobId,
-  // )?.job;
+  const { data: atsScanData } = useAtsScanQuery({
+    jobId: jobId?.toString() || "",
+  });
+  const atsScoresMap = useMemo(() => {
+    const map: Record<string, number> = {};
+    atsScanData?.atsResults?.forEach((r) => {
+      map[r.ID] = r.Score;
+    });
+    return map;
+  }, [atsScanData]);
 
   useEffect(() => {
     if (sort === "oldest")
@@ -93,9 +101,9 @@ function ApplicationsTable() {
                     <th className="p-3 text-sm font-bold text-gray-500">
                       Email
                     </th>
-                    {/*<th className="p-3 text-sm font-bold text-gray-500">*/}
-                    {/*  Country*/}
-                    {/*</th>*/}
+                    <th className="p-3 text-sm font-bold text-gray-500">
+                      ATS Scan
+                    </th>
                     <th className="p-3 text-sm font-bold text-gray-500">
                       Actions
                     </th>
@@ -117,10 +125,11 @@ function ApplicationsTable() {
                       <td className="px-6 py-4 text-sm font-normal">
                         {application.email}
                       </td>
-                      {/*<td className="px-6 py-4 text-sm font-normal">*/}
-                      {/*  {application.address.country},{" "}*/}
-                      {/*  {application.address.city}*/}
-                      {/*</td>*/}
+                      <td className="px-6 py-4 text-sm font-normal">
+                        {atsScoresMap[application.id] !== undefined
+                          ? `${(atsScoresMap[application.id] * 100).toFixed(2)}%`
+                          : "-- %"}
+                      </td>
                       <td className="flex gap-2 px-6 py-4 text-sm font-normal">
                         <button
                           onClick={() =>

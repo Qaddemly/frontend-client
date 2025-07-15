@@ -16,19 +16,25 @@ function CreateBusinessAccountForm() {
   const [createBusinessAccount, { isLoading }] =
     useCreateBusinessAccountMutation();
   const methods = useForm<IBusinessAccount>(formSettings);
+  const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
+  const [image, setImage] = useState<File | null>(null);
 
   const onSubmit: SubmitHandler<IBusinessAccount> = async (data) => {
-    console.log(data);
     try {
-      const formData = createFormData({ ...data } as Record<string, unknown>);
+      const currData = {
+        ...data,
+        logo: image,
+      };
+      const formData = createFormData({ ...currData } as Record<
+        string,
+        unknown
+      >);
       const res = await createBusinessAccount(formData).unwrap();
       toast.success(res.message);
       navigate("/");
     } catch (err) {
       handleApiError(err);
     }
-
-    console.log(data);
   };
 
   return (
@@ -47,6 +53,10 @@ function CreateBusinessAccountForm() {
             <CreateBusinessAccountStep2
               setStep={setStep}
               updateAccount={false}
+              image={image}
+              setImage={setImage}
+              selectedFileName={selectedFileName}
+              setSelectedFileName={setSelectedFileName}
             />
           )}
           {step === "1" && (
