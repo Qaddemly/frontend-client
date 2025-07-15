@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useSendMessageToBotMutation } from "../../services/coverLetterBuilderApi";
 
 type Message = {
   id: number;
@@ -11,7 +12,7 @@ const ChatBot = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      text: "Welcome, how can i help you today?",
+      text: "Welcome, how can I help you today?",
       sender: "bot",
       timestamp: new Date(),
     },
@@ -19,8 +20,9 @@ const ChatBot = () => {
   const [inputValue, setInputValue] = useState("");
   const [isMinimized, setIsMinimized] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [sendMessageToBot] = useSendMessageToBotMutation();
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (inputValue.trim() === "") return;
 
     const userMessage: Message = {
@@ -29,34 +31,30 @@ const ChatBot = () => {
       sender: "user",
       timestamp: new Date(),
     };
-    setMessages([...messages, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
+    const userInput = inputValue;
     setInputValue("");
+    const response = await sendMessageToBot({ message: userInput }).unwrap();
+    console.log("Response from bot:", response);
 
-    setTimeout(() => {
+    try {
+      const response = await sendMessageToBot({ message: userInput }).unwrap();
       const botMessage: Message = {
         id: messages.length + 2,
-        text: getBotResponse(inputValue),
+        text: response.answer || "No response from bot",
         sender: "bot",
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, botMessage]);
-    }, 1000);
-  };
-
-  const getBotResponse = (userInput: string): string => {
-    const input = userInput.toLowerCase();
-
-    if (/welcome|hello|hi/.test(input)) {
-      return "how can i help you?";
+    } catch {
+      const errorMessage: Message = {
+        id: messages.length + 2,
+        text: "Something went wrong. Please try again later.",
+        sender: "bot",
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, errorMessage]);
     }
-    if (/thanks|thank you/.test(input)) {
-      return "you are welcome";
-    }
-    if (/what is your name/.test(input)) {
-      return "i am smart chatbot";
-    }
-
-    return "sorry , ican not understand you";
   };
 
   const scrollToBottom = () => {
@@ -75,7 +73,6 @@ const ChatBot = () => {
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
-      {/* Floating Chat Button */}
       {isMinimized && (
         <button
           onClick={toggleChat}
@@ -99,10 +96,8 @@ const ChatBot = () => {
         </button>
       )}
 
-      {/* Chat Container */}
       {!isMinimized && (
         <div className="flex h-96 w-80 flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-xl">
-          {/* Chat Header */}
           <div className="flex items-center justify-between bg-light-main p-3 text-white">
             <div className="flex items-center">
               <svg
@@ -139,7 +134,6 @@ const ChatBot = () => {
             </button>
           </div>
 
-          {/* Messages container */}
           <div className="bg-gray-50 flex-1 space-y-3 overflow-y-auto p-3">
             {messages.map((message) => (
               <div
@@ -166,7 +160,6 @@ const ChatBot = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input area */}
           <div className="border-t border-gray-200 bg-white p-3">
             <div className="flex gap-2">
               <input
@@ -174,7 +167,7 @@ const ChatBot = () => {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
-                placeholder="write here..."
+                placeholder="Write here..."
                 className="focus:ring-blue-500 focus:border-transparent flex-1 rounded-full border border-gray-300 px-3 py-1 text-sm focus:outline-none focus:ring-1"
               />
               <button

@@ -13,6 +13,16 @@ const BASE_AI_FEATURE_URL = "/AI-Feature";
 
 export const coverLetterBuilderApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    ///////////////////////////////////////////// AI ChatBot //////////////////////////////////////////////
+    sendMessageToBot: builder.mutation<{ answer: string }, { message: string }>(
+      {
+        query: (body) => ({
+          url: `/AI-Feature/chatBot`,
+          method: "POST",
+          body,
+        }),
+      },
+    ),
     ///////////////////////////////////////////// Cover Letter Template //////////////////////////////////////////////
     getCoverLetter: builder.query<IGetCoverLetterResponse, { id: string }>({
       query: (id) => ({
@@ -103,6 +113,7 @@ export const coverLetterBuilderApi = apiSlice.injectEndpoints({
 });
 
 export const {
+  useSendMessageToBotMutation,
   useGetCoverLetterQuery,
   useGetCoverLettersQuery,
   useAddCoverLetterMutation,
