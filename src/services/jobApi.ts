@@ -183,6 +183,24 @@ export const jobApi = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    //////////////////////////////////////////// Ats Scan (AI Feature) /////////////////////////////////////////
+    atsScan: builder.query<
+      {
+        success: string;
+        message: string;
+        atsResults: {
+          ID: number;
+          Score: number;
+          Applicant: string;
+        }[];
+      },
+      { jobId: string }
+    >({
+      query: ({ jobId }) => ({
+        url: `${BASE_AI_FEATURE_URL}/ats-scan/${jobId}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -202,4 +220,6 @@ export const {
   useGetArchivedJobApplicationQuery,
   //////////////////////////////////////////// Matching Score (AI Feature) /////////////////////////////////////////
   useLazyMatchScoreQuery,
+  //////////////////////////////////////////// Ats Scan (AI Feature) /////////////////////////////////////////
+  useAtsScanQuery,
 } = jobApi;

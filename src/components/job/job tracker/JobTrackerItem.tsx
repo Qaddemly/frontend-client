@@ -51,7 +51,6 @@ function JobTrackerItem({ userType, jobApplication }: JobTrackerItemProps) {
   const [currentIndex, setCurrentIndex] = useState<number>(currentIndexValue);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  const user = jobApplication?.account;
   const [updateJobApplicationStatus, { isLoading: isLoading1 }] =
     useUpdateJobApplicationStatusMutation();
 
@@ -111,12 +110,6 @@ function JobTrackerItem({ userType, jobApplication }: JobTrackerItemProps) {
         <div className="w-fit rounded-md bg-gray-200 p-5">
           {userType === "user" ? (
             <GoogleLogo className="h-12 w-12" />
-          ) : user?.profile_picture ? (
-            <img
-              src={user.profile_picture}
-              alt="profile photo"
-              className="h-20 w-20 rounded-md object-cover"
-            />
           ) : (
             <FontAwesomeIcon icon={faUser} className="text-5xl" />
           )}
@@ -125,9 +118,9 @@ function JobTrackerItem({ userType, jobApplication }: JobTrackerItemProps) {
         <div className="flex flex-col gap-1">
           {userType === "user" ? (
             <>
-              <div className="text-lg font-semibold">
-                {jobApplication?.job?.title}
-              </div>
+              {/*<div className="text-lg font-semibold">*/}
+              {/*  {jobApplication?.job?.title}*/}
+              {/*</div>*/}
               <div className="flex items-center gap-2 text-gray-500">
                 <FontAwesomeIcon icon={faBuilding} />
                 <p>{data?.business.name}.</p>
@@ -140,16 +133,17 @@ function JobTrackerItem({ userType, jobApplication }: JobTrackerItemProps) {
           ) : (
             <>
               <div className="text-lg font-semibold">
-                {user?.first_name} {user?.last_name}
+                {jobApplication?.first_name} {jobApplication?.last_name}
               </div>
               <div className="flex items-center gap-2 text-gray-500">
                 <FontAwesomeIcon icon={faEnvelope} />
-                <p>{user?.email}</p>
+                <p>{jobApplication?.email}</p>
               </div>
               <div className="flex items-center gap-2 text-gray-500">
                 <FontAwesomeIcon icon={faPhone} />
                 <p>
-                  +{user?.phone.country_code} {user?.phone.number}
+                  +{jobApplication?.phone.country_code}{" "}
+                  {jobApplication?.phone.number}
                 </p>
               </div>
             </>
@@ -158,18 +152,18 @@ function JobTrackerItem({ userType, jobApplication }: JobTrackerItemProps) {
       </div>
 
       <JobTrackerStatus
-        currentIndex={currentIndex - 1}
+        currentIndex={currentIndex}
         setCurrentIndex={setCurrentIndex}
         userType={userType}
         setShowConfirm={setShowConfirm}
-        jobApplicationId="123"
+        jobApplicationId={jobApplication?.id.toString() || ""}
       />
 
       <div>
         {userType === "user" && jobApplication ? (
           <ArchiveButton
-            jobId={jobApplication.id.toString()}
-            isArchived={jobApplication.archived || false}
+            jobId={jobApplication?.id.toString()}
+            isArchived={jobApplication?.archived || false}
           />
         ) : (
           showConfirm && (

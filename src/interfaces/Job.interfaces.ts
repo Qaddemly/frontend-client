@@ -34,6 +34,7 @@ export interface IJob {
   isSaved: boolean;
   has_extra_link_application: boolean;
   extra_application_link: string;
+  applicationsCount: number;
 }
 export interface IGetArchivedJobApplication {
   id: number;

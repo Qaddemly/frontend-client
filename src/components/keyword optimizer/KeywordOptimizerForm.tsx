@@ -15,7 +15,7 @@ import {
 import {
   useKeywordOptimizationMutation,
   useKeywordOptimizationWithPdfMutation,
-} from "../../services/keywordOptimizerApi.tsx";
+} from "../../services/keywordOptimizerApi.ts";
 import { createFormData, handleApiError } from "../../utils/helpers.ts";
 import toast from "react-hot-toast";
 import { useGetAllResumeTemplatesQuery } from "../../services/resumeBuilderApi.ts";
@@ -44,7 +44,6 @@ function KeywordOptimizerForm() {
     setSelectedResumePdf(file);
     setSelectedFileName(file.name);
   };
-  console.log(result);
 
   const resetForm = () => {
     setResumeOption(null);

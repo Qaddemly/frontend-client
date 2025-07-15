@@ -60,8 +60,6 @@ function Personal() {
     const formData = createFormData(
       currData as unknown as Record<string, unknown>,
     );
-
-    console.log(currData);
     // if (Object.values(data).some((value) => value === null)) {
     //   toast.error("No changes detected or invalid data");
     // } else {

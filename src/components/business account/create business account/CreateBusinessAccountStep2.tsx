@@ -5,18 +5,34 @@ import Input from "../../common/Input";
 import InputField from "../../common/InputField";
 import Button from "../../common/Button";
 import { useFormContext } from "react-hook-form";
+import React from "react";
 
 function CreateBusinessAccountStep2({
   updateAccount,
   setStep,
+  setImage,
+  selectedFileName,
+  setSelectedFileName,
 }: {
   updateAccount: boolean;
   setStep?: React.Dispatch<React.SetStateAction<string>>;
+  image?: File | null;
+  setImage?: React.Dispatch<React.SetStateAction<File | null>>;
+  selectedFileName: string | null;
+  setSelectedFileName: React.Dispatch<React.SetStateAction<string | null>>;
 }) {
   const {
     register,
     formState: { errors },
   } = useFormContext();
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (setImage) setImage(file);
+    setSelectedFileName(file.name);
+  };
+
   return (
     <div
       className={`flex flex-col gap-5 ${updateAccount ? "lg:mt-10" : "mt-10"}`}
@@ -120,10 +136,9 @@ function CreateBusinessAccountStep2({
           {!updateAccount && <span className="text-danger-300">*</span>}
         </label>
         <FileUpload
+          onChange={handleFileChange}
+          fileName={selectedFileName}
           icon={faImage}
-          register={register}
-          name="logo"
-          options={!updateAccount ? { required: "this field is required" } : {}}
         />
       </div>
       <div className="flex items-center justify-between">

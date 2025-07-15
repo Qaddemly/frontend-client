@@ -12,7 +12,8 @@ function JobTrackerBusiness() {
   const jobApplications = data?.jobApplications.data;
   const currentStateJob: IJobApplicationState | undefined =
     jobApplications?.find(
-      (application) => application?.job?.id.toString() === jobId,
+      (application) =>
+        application?.job_application_state?.job_id?.toString() === jobId,
     )?.job_application_state;
 
   if (isLoading) return <Loader />;
