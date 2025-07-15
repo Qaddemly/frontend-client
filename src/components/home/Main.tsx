@@ -22,6 +22,7 @@ import {
 } from "../../services/homeApi";
 import Loader from "../common/Loader";
 import { useState } from "react";
+import ChatBot from "../chat bot/ChatBot";
 
 function Main() {
   const navigate = useNavigate();
@@ -92,7 +93,7 @@ function Main() {
       <div className="mx-6 my-20 md:my-20">
         <div className="flex flex-col items-center justify-between gap-10 md:flex-row">
           <div className="mx-10 text-center md:ml-20 md:mr-0 md:text-left">
-            <p className="text-[2.6rem] font-semibold md:text-[3.2rem] dark:text-[#fff]">
+            <p className="text-[2.6rem] font-semibold dark:text-[#fff] md:text-[3.2rem]">
               Find Your Dream Job with Qaddemly!
             </p>
             <p className="mt-4 text-[1.5rem] text-gray-600 lg:w-[45rem]">
@@ -247,6 +248,7 @@ function Main() {
           )}
         </div>
       </div>
+      <ChatBot />
     </>
   );
 }

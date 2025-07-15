@@ -23,7 +23,7 @@ function YourResume() {
 
   async function handleAddResume() {
     if (resume) {
-      const formData = createFormData({ resumes: resume });
+      const formData = createFormData({ resumes: resume?.[0] });
       try {
         await addResume({ resumes: formData }).unwrap();
         toast.success("Resume added successfully");
