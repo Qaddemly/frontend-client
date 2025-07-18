@@ -81,7 +81,7 @@ function FormCoverLetterPreview() {
       {status[0] === "normal" && <CoverLetterPersonalSection />}
       {status[0] === "normal" && (
         <CoverLetterBodySection
-          body={currentCoverLetterTemplate[0]?.body ?? ""}
+          body={`${currentCoverLetterTemplate[0]?.body?.slice(0, 100)}...`}
         />
       )}
       {status[0] === "normal" && (

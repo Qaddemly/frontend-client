@@ -45,13 +45,13 @@ function UserProfileBody({
   return (
     <div className="border-r-2 border-[#eee] lg:w-[80rem] xl:w-[120rem]">
       {/* About me Section */}
-      <div className="border-b-2 border-t-2 border-[#eee] px-10 py-10 sm:border-t-0 sm:px-20 md:px-10 lg:px-32">
+      <div className="border-b-2 border-t-2 border-[#eee] px-5 py-10 sm:border-t-0 sm:px-20 md:px-10 lg:px-32">
         <p className="mb-5 text-xl font-semibold">About me</p>
         <p>{basicInfo?.about_me}</p>
       </div>
 
       {/* Education Section */}
-      <div className="border-b-2 border-[#eee] px-10 py-10 sm:px-20 md:px-10 lg:px-32">
+      <div className="border-b-2 border-[#eee] px-5 py-10 sm:px-20 md:px-10 lg:px-32">
         <p className="mb-5 text-xl font-semibold">Education</p>
         {loadingEducation && <Loader forSection={true} />}
         {educationData?.educations?.map((education) => (
@@ -69,7 +69,7 @@ function UserProfileBody({
       </div>
 
       {/* Experience Section */}
-      <div className="border-b-2 border-[#eee] px-10 py-10 sm:px-20 md:px-10 lg:px-32">
+      <div className="border-b-2 border-[#eee] px-5 py-10 sm:px-20 md:px-10 lg:px-32">
         <p className="mb-5 text-xl font-semibold">Experience</p>
         {loadingExperience && <Loader forSection={true} />}
         {experienceData?.experiences?.map((experience) => (
@@ -86,7 +86,7 @@ function UserProfileBody({
       </div>
 
       {/* Project Section */}
-      <div className="border-b-2 border-[#eee] px-10 py-10 sm:px-20 md:px-10 lg:px-32">
+      <div className="border-b-2 border-[#eee] px-5 py-10 sm:px-20 md:px-10 lg:px-32">
         <p className="mb-5 text-xl font-semibold">Projects</p>
         {loadingProjects && <Loader forSection={true} />}
         {projectsData?.projects?.map((project) => (
@@ -101,7 +101,7 @@ function UserProfileBody({
         ))}
       </div>
       {/* Volunteering Section */}
-      <div className="border-b-2 border-[#eee] px-10 py-10 sm:px-20 md:px-10 lg:px-32">
+      <div className="border-b-2 border-[#eee] px-5 py-10 sm:px-20 md:px-10 lg:px-32">
         <p className="mb-5 text-xl font-semibold">Volunteering</p>
         {loadingVoulunteering && <Loader forSection={true} />}
         {voulunteeringData?.volunteerings?.map((volunteering) => (
@@ -116,22 +116,24 @@ function UserProfileBody({
         ))}
       </div>
       {/* Certificates Section */}
-      <div className="border-b-2 border-[#eee] px-10 py-10 sm:px-20 md:px-10 lg:px-32">
-        <p className="mb-5 text-xl font-semibold">Certificates</p>
+      <div className="border-b-2 border-[#eee] px-5 py-10 sm:px-20 md:px-10 lg:px-32">
         {loadingCertificates && <Loader forSection={true} />}
         {certificatesData?.certificates?.map((certificate) => (
-          <UserProfileSection
-            key={certificate.id}
-            title={certificate?.title}
-            startDate={formatDateByYearAndMonth(certificate?.start_date)}
-            endDate={formatDateByYearAndMonth(certificate?.end_date)}
-          >
-            <p>{certificate?.issuing_organization}</p>
-            <a href={certificate?.media} className="text-gray-500 underline">
-              See the certificate
-              <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
-            </a>
-          </UserProfileSection>
+          <>
+            <p className="mb-5 text-xl font-semibold">Certificates</p>
+            <UserProfileSection
+              key={certificate.id}
+              title={certificate?.title}
+              startDate={formatDateByYearAndMonth(certificate?.start_date)}
+              endDate={formatDateByYearAndMonth(certificate?.end_date)}
+            >
+              <p>{certificate?.issuing_organization}</p>
+              <a href={certificate?.media} className="text-gray-500 underline">
+                See the certificate
+                <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
+              </a>
+            </UserProfileSection>
+          </>
         ))}
       </div>
     </div>

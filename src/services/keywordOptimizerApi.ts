@@ -22,7 +22,7 @@ export const keywordOptimizerApi = apiSlice.injectEndpoints({
       query: ({ data }) => ({
         url: `${BASE_AI_FEATURE_URL}/keywordOptimizationPdf`,
         method: "POST",
-        body: { data },
+        body: data,
       }),
     }),
   }),

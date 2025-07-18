@@ -99,7 +99,7 @@ function KeywordOptimizerForm() {
   return (
     <div className="mx-auto max-w-4xl p-4 md:p-6">
       {result ? (
-        <div className="rounded-xl bg-white p-6 shadow-md">
+        <div className="rounded-xl bg-white p-6 text-left shadow-md">
           <div className="mb-6">
             <h3 className="text-center text-lg font-bold md:text-left md:text-2xl">
               Summary:
@@ -114,7 +114,9 @@ function KeywordOptimizerForm() {
 
             {result?.recommendations?.add?.length > 0 && (
               <div className="mb-4">
-                <h4 className="text-md font-semibold md:text-xl">Add:</h4>
+                <h4 className="text-md w-fit rounded-full bg-green-100 p-3 font-semibold text-white md:text-xl">
+                  Add:
+                </h4>
                 {result?.recommendations?.add?.map((item, index) => (
                   <div key={index} className="mb-3 ml-4">
                     <p>
@@ -135,7 +137,9 @@ function KeywordOptimizerForm() {
 
             {result?.recommendations?.modify?.length > 0 && (
               <div className="mb-4">
-                <h4 className="text-md font-semibold md:text-xl">Modify:</h4>
+                <h4 className="text-md w-fit rounded-full bg-yellow p-3 font-semibold text-white md:text-xl">
+                  Modify:
+                </h4>
                 {result?.recommendations?.modify?.map((item, index) => (
                   <div key={index} className="mb-3 ml-4">
                     <p>
@@ -156,7 +160,9 @@ function KeywordOptimizerForm() {
 
             {result?.recommendations?.remove?.length > 0 && (
               <div className="mb-4">
-                <h4 className="text-md font-semibold md:text-xl">Remove:</h4>
+                <h4 className="text-md w-fit rounded-full bg-danger-300 p-3 font-semibold text-white md:text-xl">
+                  Remove:
+                </h4>
                 {result?.recommendations?.remove?.map((item, index) => (
                   <div key={index} className="mb-3 ml-4">
                     <p>

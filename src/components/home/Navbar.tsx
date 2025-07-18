@@ -89,12 +89,12 @@ function Navbar() {
             <li>
               <NavbarLink to="/findCompany" content="Find company" />
             </li>
-            <li>
-              <NavbarLink
-                to={["/jobTracker", "/jobTracker/archived"]}
-                content="Job Tracker"
-              />
-            </li>
+            {/*<li>*/}
+            {/*  <NavbarLink*/}
+            {/*    to={["/jobTracker", "/jobTracker/archived"]}*/}
+            {/*    content="Job Tracker"*/}
+            {/*  />*/}
+            {/*</li>*/}
             <li>
               <NavbarLink
                 onClick={() => refetchResumes()}
@@ -134,12 +134,12 @@ function Navbar() {
               <li>
                 <NavbarLink to="/findCompany" content="Find company" />
               </li>
-              <li>
-                <NavbarLink
-                  to={["/jobTracker", "/jobTracker/archived"]}
-                  content="Job Tracker"
-                />
-              </li>
+              {/*<li>*/}
+              {/*  <NavbarLink*/}
+              {/*    to={["/jobTracker", "/jobTracker/archived"]}*/}
+              {/*    content="Job Tracker"*/}
+              {/*  />*/}
+              {/*</li>*/}
               <li>
                 <NavbarLink to="/resumeBuilder" content="Build Resume" />
               </li>
