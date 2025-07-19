@@ -116,6 +116,7 @@ function FindCompany() {
                       companyName={business.name}
                       companyImage={business.logo}
                       numberOfReviews={business.reviewsRatingsQuantity}
+                      reviewsAverage={business.reviewsRatingsAverage}
                       onClick={(e) => {
                         e.stopPropagation();
                         navigate(`/companyprofile/${business.id}`);

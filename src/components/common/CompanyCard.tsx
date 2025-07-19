@@ -7,6 +7,7 @@ type CompanyCardProps = {
   companyName: string;
   companyImage: string;
   numberOfReviews: number;
+  reviewsAverage: number;
 
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 };
@@ -15,6 +16,7 @@ function CompanyCard({
   companyName,
   companyImage,
   numberOfReviews,
+  reviewsAverage,
   onClick,
 }: CompanyCardProps) {
   return (
@@ -42,7 +44,7 @@ function CompanyCard({
                 <FontAwesomeIcon
                   className="text-main"
                   key={i}
-                  icon={i < Number(numberOfReviews) ? faStarFilled : faStar}
+                  icon={i < Number(reviewsAverage) ? faStarFilled : faStar}
                 />
               ))}
               <p className="text-light-main">
