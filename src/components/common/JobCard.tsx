@@ -1,5 +1,4 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import GoogleLogo from "./GoogleLogo";
 import {
   // faBookmark as faBookmarkSolid,
   faLocationDot,
@@ -61,8 +60,11 @@ function JobCard({ job }: { job: IJob }) {
         <div className="flex items-center justify-between">
           <div className="flex gap-5">
             <div className="w-fit rounded-md bg-[#eee] p-2">
-              <GoogleLogo />
-              {/*companyLogo} */}
+              <img
+                src={job?.business.logo}
+                alt={job?.business.name}
+                className="h-8 w-8 rounded-lg object-cover"
+              />
             </div>
             <div className="felx flex-col">
               <p className="text-base font-medium">{job?.business.name}</p>
@@ -76,21 +78,6 @@ function JobCard({ job }: { job: IJob }) {
               </div>
             </div>
           </div>
-          {/* {isSavedJob === undefined ? (
-            <button onClick={(e) => handleSaveJob(e)}>
-              <FontAwesomeIcon
-                icon={faBookmark}
-                className="text-2xl text-gray-300 transition-colors duration-100 hover:text-main"
-              />
-            </button>
-          ) : (
-            <button onClick={(e) => handleUnSaveJob(e)}>
-              <FontAwesomeIcon
-                icon={faBookmarkSolid}
-                className="text-2xl text-yellow"
-              />
-            </button>
-          )} */}
         </div>
       </div>
     </div>
